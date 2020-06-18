@@ -1,0 +1,6 @@
+theme: jekyll-theme-slate
+title: Optimal Allocation of COVID-19 Stimulus Checks
+google_analytics: UA-92953468-10
+plugins:
+  - jekyll-sitemap
+  - jekyll-seo-tag

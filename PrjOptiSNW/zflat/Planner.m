@@ -2,7 +2,7 @@ function [V_planner,Phi_mass]=Planner(Phi_true,j,married,kids,welf_checks,ymin,y
 
 %% Value function of planner
 
-global theta r agrid epsilon eta_grid SS pi_eta pi_kids pi_unemp n_agrid n_etagrid n_educgrid n_kidsgrid
+global agrid SS pi_eta pi_kids pi_unemp n_agrid n_etagrid n_educgrid n_kidsgrid
 
 Phi_norm=zeros(n_agrid,n_etagrid,n_educgrid);
 
@@ -12,8 +12,11 @@ for a=1:n_agrid % Assets
    for eta=1:n_etagrid % Productivity
        for educ=1:n_educgrid % Educational level
            
-           inc=r*agrid(a)+epsilon(j,educ)*theta*exp(eta_grid(eta))+SS(j,educ);
-           spouse_inc=spousal_income(j,educ,kids,epsilon(j,educ)*theta*exp(eta_grid(eta)),SS(j,educ));
+           [inc,earn]=individual_income(j,a,eta,educ);
+           spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
+           
+%            inc=r*agrid(a)+epsilon(j,educ)*theta*exp(eta_grid(eta))+SS(j,educ);
+%            spouse_inc=spousal_income(j,educ,kids,epsilon(j,educ)*theta*exp(eta_grid(eta)),SS(j,educ));
            inc_tot=inc+spouse_inc;
            
            if inc_tot>=ymin && inc_tot<ymax
@@ -86,7 +89,9 @@ for a=1:n_agrid % Assets in next period
        for educ=1:n_educgrid % Educational level
            for kids=1:n_kidsgrid % No. of kids in next period
                
-               wages=epsilon(j+1,educ)*theta*exp(eta_grid(eta));
+               [~,wages]=individual_income(j+1,a,eta,educ);
+%                wages=epsilon(j+1,educ)*theta*exp(eta_grid(eta));
+               
                if wages<=cutoffs(1)
                    wage_ind=1;
                elseif wages>cutoffs(1) && wages<=cutoffs(2)

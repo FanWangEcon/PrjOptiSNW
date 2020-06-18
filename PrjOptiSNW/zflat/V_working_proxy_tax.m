@@ -1,4 +1,4 @@
-function [V_W,exitflag_fsolve]=V_working_proxy_tax(welf_checks,TR,V_tax,a2_COVID,options2)
+function [V_W,exitflag_fsolve]=V_working_proxy_tax(welf_checks,TR,V_working_tax,a2_COVID,options2)
 %function [V_W,exitflag_fsolve]=V_working_proxy_tax(welf_checks,TR,V_ss,cons_ss,ap_ss,a2_COVID,options2)
 
 %% Solve optimization problem
@@ -50,80 +50,7 @@ for j=1:n_jgrid % Age
 
                        end
                        
-                       V_W(j,a,eta,educ,married,kids)=vals(1)*V_tax(j,inds(1),eta,educ,married,kids)+vals(2)*V_tax(j,inds(2),eta,educ,married,kids);
-%                        flow=vals(1)*utility(cons_ss(j,inds(1),eta,educ,married,kids),married,kids)+vals(2)*utility(cons_ss(j,inds(2),eta,educ,married,kids),married,kids);
-%                        
-%                        % Linear interpolation
-%                        ind_aux=find(agrid<=ap_ss(j,inds(1),eta,educ,married,kids),1,'last');
-%                        
-%                        if ap_ss(j,inds(1),eta,educ,married,kids)==0
-%                            indsp1(1)=1;
-%                            indsp1(2)=1;                       
-%                            valsp1(1)=1;
-%                            valsp1(2)=0;
-% 
-%                        elseif ap_ss(j,inds(1),eta,educ,married,kids)>=agrid(n_agrid)
-%                            indsp1(1)=n_agrid;
-%                            indsp1(2)=n_agrid;                       
-%                            valsp1(1)=1;
-%                            valsp1(2)=0;
-% 
-%                        else
-%                            indsp1(1)=ind_aux;
-%                            indsp1(2)=ind_aux+1;                       
-%                            valsp1(1)=1-((ap_ss(j,inds(1),eta,educ,married,kids)-agrid(indsp1(1)))/(agrid(indsp1(2))-agrid(indsp1(1))));
-%                            valsp1(2)=1-valsp1(1);
-% 
-%                        end
-%                        
-%                        % Linear interpolation
-%                        ind_aux=find(agrid<=ap_ss(j,inds(2),eta,educ,married,kids),1,'last');
-%                                               
-%                        if ap_ss(j,inds(2),eta,educ,married,kids)==0
-%                            indsp2(1)=1;
-%                            indsp2(2)=1;                       
-%                            valsp2(1)=1;
-%                            valsp2(2)=0;
-% 
-%                        elseif ap_ss(j,inds(2),eta,educ,married,kids)>=agrid(n_agrid)
-%                            indsp2(1)=n_agrid;
-%                            indsp2(2)=n_agrid;                       
-%                            valsp2(1)=1;
-%                            valsp2(2)=0;
-% 
-%                        else
-%                            indsp2(1)=ind_aux;
-%                            indsp2(2)=ind_aux+1;                       
-%                            valsp2(1)=1-((ap_ss(j,inds(2),eta,educ,married,kids)-agrid(indsp2(1)))/(agrid(indsp2(2))-agrid(indsp2(1))));
-%                            valsp2(2)=1-valsp2(1);
-% 
-%                        end
-%                        
-%                        if j<n_jgrid
-%                        
-%                            cont1=0;
-%                            for etap=1:n_etagrid
-%                                for kidsp=1:n_kidsgrid
-%                                    cont1=cont1+pi_eta(eta,etap)*pi_kids(kids,kidsp,j,married)*(valsp1(1)*V_ss(j+1,indsp1(1),etap,educ,married,kidsp)+valsp1(2)*V_ss(j+1,indsp1(2),etap,educ,married,kidsp));
-%                                end
-%                            end
-% 
-%                            cont2=0;
-%                            for etap=1:n_etagrid
-%                                for kidsp=1:n_kidsgrid
-%                                    cont2=cont2+pi_eta(eta,etap)*pi_kids(kids,kidsp,j,married)*(valsp2(1)*V_ss(j+1,indsp2(1),etap,educ,married,kidsp)+valsp2(2)*V_ss(j+1,indsp2(2),etap,educ,married,kidsp));
-%                                end
-%                            end
-%                            
-%                        else
-%                            
-%                            cont1=0;
-%                            cont2=0;
-%                            
-%                        end
-%                            
-% 
-%                        V_W(j,a,eta,educ,married,kids)=flow+beta*psi(j)*(vals(1)*cont1+vals(2)*cont2);
+                       V_W(j,a,eta,educ,married,kids)=vals(1)*V_working_tax(j,inds(1),eta,educ,married,kids)+vals(2)*V_working_tax(j,inds(2),eta,educ,married,kids);
    
                    end
                end

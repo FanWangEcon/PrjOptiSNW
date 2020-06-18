@@ -1,11 +1,14 @@
 function F=value_func_aux(ap_aux,j,a,eta,educ,married,kids,V_VFI)
 
-global beta theta r agrid epsilon eta_grid SS pi_eta pi_kids psi n_etagrid n_kidsgrid
+%global beta theta r agrid epsilon eta_grid SS pi_eta pi_kids psi n_etagrid n_kidsgrid
+global beta agrid pi_eta pi_kids psi n_etagrid n_kidsgrid
 
-inc=r*agrid(a)+epsilon(j,educ)*theta*exp(eta_grid(eta))+SS(j,educ);
-spouse_inc=spousal_income(j,educ,kids,epsilon(j,educ)*theta*exp(eta_grid(eta)),SS(j,educ));
+%inc=r*agrid(a)+epsilon(j,educ)*theta*exp(eta_grid(eta))+SS(j,educ);
+%spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
 
-c_aux=(1+r)*agrid(a)+epsilon(j,educ)*theta*exp(eta_grid(eta))+SS(j,educ)+(married-1)*spouse_inc-max(0,Tax(inc,(married-1)*spouse_inc))-ap_aux;
+%c_aux=(1+r)*agrid(a)+epsilon(j,educ)*theta*exp(eta_grid(eta))+SS(j,educ)+(married-1)*spouse_inc-max(0,Tax(inc,(married-1)*spouse_inc))-ap_aux;
+
+c_aux=consumption(j,a,eta,educ,married,kids,ap_aux);
 
 ind_aux=find(agrid<=ap_aux,1,'last');
 

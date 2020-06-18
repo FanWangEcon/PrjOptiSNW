@@ -7,9 +7,9 @@ clc
 
 format longg
 
-% Last updated: 06/17/2020
+% Last updated: 06/18/2020
 
-global beta gamma g_cons a2 rho_eta sigma_eta theta g_n cons_allocation_rule r agrid epsilon eta_grid SS pi_eta pi_kids pi_unemp V ap cons psi Pop n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
+global beta gamma g_cons a2 rho_eta sigma_eta theta g_n cons_allocation_rule r agrid epsilon eta_grid SS pi_eta pi_kids pi_unemp psi Pop n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
 
 %% Parameters
 % Non-calibrated parameters
@@ -353,8 +353,10 @@ for j=1:n_jgrid % Age
                        assets_avg(j)=assets_avg(j)+Phi_adj(j,a,eta,educ,married,kids)*agrid(a);
                        cons_avg(j)=cons_avg(j)+Phi_adj(j,a,eta,educ,married,kids)*cons(j,a,eta,educ,married,kids);
                        
-                       spouse_inc=spousal_income(j,educ,kids,epsilon(j,educ)*theta*exp(eta_grid(eta)),SS(j,educ));
-                       inc_avg(j)=inc_avg(j)+Phi_adj(j,a,eta,educ,married,kids)*( r*agrid(a)+epsilon(j,educ)*theta*exp(eta_grid(eta))+SS(j,educ)+(married-1)*spouse_inc );
+                       [inc,earn]=individual_income(j,a,eta,educ);
+                       spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
+                       
+                       inc_avg(j)=inc_avg(j)+Phi_adj(j,a,eta,educ,married,kids)*( inc+(married-1)*spouse_inc );
                        
                        nr_of_kids(j,kids)=nr_of_kids(j,kids)+Phi_adj(j,a,eta,educ,married,kids);
                    end
@@ -400,8 +402,10 @@ for j=1:n_jgrid % Age
                        assets_avg_marr(j,married)=assets_avg_marr(j,married)+Phi_adj2(j,a,eta,educ,married,kids)*agrid(a);
                        cons_avg_marr(j,married)=cons_avg_marr(j,married)+Phi_adj2(j,a,eta,educ,married,kids)*cons(j,a,eta,educ,married,kids);
                        
-                       spouse_inc=spousal_income(j,educ,kids,epsilon(j,educ)*theta*exp(eta_grid(eta)),SS(j,educ));
-                       inc_avg_marr(j,married)=inc_avg_marr(j,married)+Phi_adj2(j,a,eta,educ,married,kids)*( r*agrid(a)+epsilon(j,educ)*theta*exp(eta_grid(eta))+SS(j,educ)+(married-1)*spouse_inc );
+                       [inc,earn]=individual_income(j,a,eta,educ);
+                       spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
+                       
+                       inc_avg_marr(j,married)=inc_avg_marr(j,married)+Phi_adj2(j,a,eta,educ,married,kids)*( inc+(married-1)*spouse_inc );
                        
                        nr_of_kids_marr(j,kids,married)=nr_of_kids_marr(j,kids,married)+Phi_adj2(j,a,eta,educ,married,kids);
                        
@@ -430,47 +434,12 @@ end
 
 %% Compute value of employment and unemployment in 2020 conditional on number of welfare checks
 % "Manna-from-heaven" where taxes do not change
-% xi=0.5; % Proportional reduction in income due to unemployment (xi=0 refers to 0 labor income; xi=1 refers to no drop in labor income)
-% b=0; % Unemployment insurance replacement rate (b=0 refers to no UI benefits; b=1 refers to 100 percent labor income replacement)
-% 
-% % Compute policy functions in the event of unemployment. Required to compute V_U in the Planner's problem
-% disp('Compute policy functions in the event of unemployment')
-% [~,ap_unemp,cons_unemp,~]=VFI_unemp(A_aux,B_aux,Aeq,Beq,nonlcon,options,V,xi,b); 
-% 
-% TR=100/58056; % Value of a welfare check (can receive multiple checks). TO DO: Update with alternative values
-% 
-% n_welfchecksgrid=51; % Number of welfare checks. 0 refers to 0 dollars; 51 refers to 5000 dollars
-% 
-% V_W=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid,n_welfchecksgrid);
-% V_U=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid,n_welfchecksgrid);
-% 
-% disp('Solve for V_W and V_U for different number of welfare checks')
-% for welf_checks=0:(n_welfchecksgrid-1)
-%     [V_W(:,:,:,:,:,:,welf_checks+1),~]=V_working_proxy(welf_checks,TR,V,cons,ap,options2);
-%     [V_U(:,:,:,:,:,:,welf_checks+1),~]=V_unemp_proxy(welf_checks,TR,xi,b,V,cons_unemp,ap_unemp,options2);
-% 
-%     name='Welfare checks=';
-%     name2=[name,num2str(welf_checks)];
-%     disp(name2)
-% end
-
-%% Compute value of employment and unemployment in 2020 conditional on number of welfare checks
-% Taxes are fully adjusted in 2020 to balance the government budget
 xi=0.5; % Proportional reduction in income due to unemployment (xi=0 refers to 0 labor income; xi=1 refers to no drop in labor income)
 b=0; % Unemployment insurance replacement rate (b=0 refers to no UI benefits; b=1 refers to 100 percent labor income replacement)
 
-% Find tax rate that balances government budget given total spending on
-% unemployment bebenfits and welfare checks
-omega=0.025; % Total spending on welfare checks as a share of aggregate income
-
-a2_COVID=find_tax_rate(a2_guess,Phi_true,omega,xi,b,cutoffs);
-
 % Compute policy functions in the event of unemployment. Required to compute V_U in the Planner's problem
-disp('Compute policy functions when taxes adjust in the event of working')
-[V_W,exitflag_fsolve]=V_working_proxy_tax(welf_checks,TR,V_tax,a2_COVID,options2);
-[~,ap_unemp,cons_unemp,~]=VFI_unemp(A_aux,B_aux,Aeq,Beq,nonlcon,options,V,xi,b);
-disp('Compute policy functions when taxes adjust in the event of unemployment')
-[~,ap_unemp,cons_unemp,~]=VFI_unemp(A_aux,B_aux,Aeq,Beq,nonlcon,options,V,xi,b); 
+disp('Compute policy functions in the event of unemployment')
+[V_unemp,~,~,~]=VFI_unemp(A_aux,B_aux,Aeq,Beq,nonlcon,options,V,xi,b); 
 
 TR=100/58056; % Value of a welfare check (can receive multiple checks). TO DO: Update with alternative values
 
@@ -481,13 +450,48 @@ V_U=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid,n_welfchec
 
 disp('Solve for V_W and V_U for different number of welfare checks')
 for welf_checks=0:(n_welfchecksgrid-1)
-    [V_W(:,:,:,:,:,:,welf_checks+1),~]=V_working_proxy(welf_checks,TR,V,cons,ap,options2);
-    [V_U(:,:,:,:,:,:,welf_checks+1),~]=V_unemp_proxy(welf_checks,TR,xi,b,V,cons_unemp,ap_unemp,options2);
+    [V_W(:,:,:,:,:,:,welf_checks+1),~]=V_working_proxy(welf_checks,TR,V,options2);
+    [V_U(:,:,:,:,:,:,welf_checks+1),~]=V_unemp_proxy(welf_checks,TR,xi,b,V_unemp,options2);
 
     name='Welfare checks=';
     name2=[name,num2str(welf_checks)];
     disp(name2)
 end
+
+%% Compute value of employment and unemployment in 2020 conditional on number of welfare checks
+% Taxes are fully adjusted in 2020 to balance the government budget
+% xi=0.5; % Proportional reduction in income due to unemployment (xi=0 refers to 0 labor income; xi=1 refers to no drop in labor income)
+% b=0; % Unemployment insurance replacement rate (b=0 refers to no UI benefits; b=1 refers to 100 percent labor income replacement)
+% 
+% % Find tax rate that balances government budget given total spending on
+% % unemployment bebenfits and welfare checks
+% omega=0.025; % Total spending on welfare checks as a share of aggregate income
+% a2_guess=a2; % Initial guess for a2
+% 
+% a2_COVID=find_tax_rate(a2_guess,Phi_true,omega,xi,b,cutoffs);
+% 
+% % Compute policy functions in the event of working and unemployment when the government adjusts taxes to balances the budget. Required to compute V_U and V_W in the Planner's problem
+% disp('Compute policy functions when taxes adjust in the event of working')
+% [V_working_tax,~,~,~]=VFI_working_tax(A_aux,B_aux,Aeq,Beq,nonlcon,options,V,a2_COVID);
+% disp('Compute policy functions when taxes adjust in the event of unemployment')
+% [V_unemp_tax,~,~,~]=VFI_unemp_tax(A_aux,B_aux,Aeq,Beq,nonlcon,options,V,xi,b,a2_COVID);
+% 
+% TR=100/58056; % Value of a welfare check (can receive multiple checks). TO DO: Update with alternative values
+% 
+% n_welfchecksgrid=51; % Number of welfare checks. 0 refers to 0 dollars; 51 refers to 5000 dollars
+% 
+% V_W=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid,n_welfchecksgrid);
+% V_U=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid,n_welfchecksgrid);
+% 
+% disp('Solve for V_W and V_U for different number of welfare checks')
+% for welf_checks=0:(n_welfchecksgrid-1)
+%     [V_W(:,:,:,:,:,:,welf_checks+1),~]=V_working_proxy_tax(welf_checks,TR,V_working_tax,a2_COVID,options2);
+%     [V_U(:,:,:,:,:,:,welf_checks+1),~]=V_unemp_proxy_tax(welf_checks,TR,xi,b,V_unemp_tax,a2_COVID,options2);
+% 
+%     name='Welfare checks=';
+%     name2=[name,num2str(welf_checks)];
+%     disp(name2)
+% end
 
 %% Solve planner's problem
 n_incgrid=101; % Number of income groups

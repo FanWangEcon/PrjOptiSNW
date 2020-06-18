@@ -1,14 +1,14 @@
-function F=value_func_aux_unemp(ap_aux,j,a,eta,educ,married,kids,V_ss,xi,b)
+function F=value_func_aux_unemp_tax(ap_aux,j,a,eta,educ,married,kids,V_ss,xi,b,a2_COVID)
 
-%global beta theta r agrid epsilon eta_grid SS pi_eta pi_kids psi n_etagrid n_kidsgrid
-global beta agrid pi_eta pi_kids psi n_etagrid n_kidsgrid
+global beta theta r agrid epsilon eta_grid SS pi_eta pi_kids psi n_etagrid n_kidsgrid
 
 % inc=r*agrid(a)+( epsilon(j,educ)*theta*exp(eta_grid(eta)) )*(xi+b*(1-xi))+SS(j,educ);
 % spouse_inc=spousal_income(j,educ,kids,( epsilon(j,educ)*theta*exp(eta_grid(eta)) )*(xi+b*(1-xi)),SS(j,educ));
-% 
-% c_aux=(1+r)*agrid(a)+( epsilon(j,educ)*theta*exp(eta_grid(eta)) )*(xi+b*(1-xi))+SS(j,educ)+(married-1)*spouse_inc-max(0,Tax(inc,(married-1)*spouse_inc))-ap_aux;
 
-c_aux=consumption(j,a,eta,educ,married,kids,ap_aux,xi,b);
+[inc,earn]=individual_income(j,a,eta,educ,xi,b);
+spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
+
+c_aux=(1+r)*agrid(a)+( epsilon(j,educ)*theta*exp(eta_grid(eta)) )*(xi+b*(1-xi))+SS(j,educ)+(married-1)*spouse_inc-max(0,Tax_COVID(inc,(married-1)*spouse_inc,a2_COVID))-ap_aux;
 
 ind_aux=find(agrid<=ap_aux,1,'last');
 

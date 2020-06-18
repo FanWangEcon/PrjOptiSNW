@@ -2,7 +2,7 @@ function [Phi_true,Phi_adj,A_agg,Y_inc_agg]=Aggregation(stat_distr_eta,stat_dist
 
 %% Aggregation
 
-global theta r a2 g_cons agrid epsilon eta_grid SS pi_eta pi_kids ap Pop n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
+global a2 g_cons agrid SS pi_eta pi_kids ap Pop n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
 
 Phiss=zeros(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 
@@ -120,10 +120,12 @@ for j=1:n_jgrid
 
                        A_agg=A_agg+Phi_true(j,a,eta,educ,married,kids)*agrid(a); % Aggregate wealth
                        
-                       spouse_inc=spousal_income(j,educ,kids,epsilon(j,educ)*theta*exp(eta_grid(eta)),SS(j,educ));
-                       Y_inc_agg=Y_inc_agg+Phi_true(j,a,eta,educ,married,kids)*( r*agrid(a)+epsilon(j,educ)*theta*exp(eta_grid(eta))+SS(j,educ)+(married-1)*spouse_inc ); % Aggregate income
+                       [inc_aux,earn]=individual_income(j,a,eta,educ);
+                       spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
+                       
+                       Y_inc_agg=Y_inc_agg+Phi_true(j,a,eta,educ,married,kids)*( inc_aux+(married-1)*spouse_inc ); % Aggregate income
                                               
-                       inc_aux=r*agrid(a)+epsilon(j,educ)*theta*exp(eta_grid(eta))+SS(j,educ); % Income excluding spousal income (if married)
+%                      inc_aux=r*agrid(a)+epsilon(j,educ)*theta*exp(eta_grid(eta))+SS(j,educ); % Income excluding spousal income (if married)
                        Tax_revenues=Tax_revenues+Phi_true(j,a,eta,educ,married,kids)*max(0,Tax(inc_aux,(married-1)*spouse_inc)); % Tax revenues
 
                        SS_spend=SS_spend+Phi_true(j,a,eta,educ,married,kids)*SS(j,educ); % Total spending on Social Security
@@ -154,8 +156,8 @@ while err>tol
                    for married=1:n_marriedgrid
                        for kids=1:n_kidsgrid
                            
-                           inc_aux=r*agrid(a)+epsilon(j,educ)*theta*exp(eta_grid(eta))+SS(j,educ); % Income excluding spousal income (if married)
-                           spouse_inc=spousal_income(j,educ,kids,epsilon(j,educ)*theta*exp(eta_grid(eta)),SS(j,educ));
+                           [inc_aux,earn]=individual_income(j,a,eta,educ);
+                           spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
                            Tax_revenues_aux=Tax_revenues_aux+Phi_true(j,a,eta,educ,married,kids)*max(0,Tax(inc_aux,(married-1)*spouse_inc)); % Tax revenues
 
                        end                       

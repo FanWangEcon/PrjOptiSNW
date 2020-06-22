@@ -1,0 +1,292 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>SNW_MP_CONTROLS Organizes and Sets Various Solution Simu Control Parameters</title><meta name="generator" content="MATLAB 9.7"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-06-22"><meta name="DC.source" content="snw_mp_controls.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>SNW_MP_CONTROLS Organizes and Sets Various Solution Simu Control Parameters</h1><!--introduction--><pre>  SNW_MP_CONTROLS opitmizer control, graph, print, and other controls</pre><pre>  MP_CONTROLS = SNW_MP_CONTROLS() get default parameters all in the
+  same container map</pre><pre>  MP_CONTROLS = SNW_MP_CONTROLS(ST_PARAM_GROUP)
+  generates default parameters for the type ST_PARAM_GROUP.</pre><pre>  MP_CONTROLS = SNW_MP_CONTROLS(ST_PARAM_GROUP, bl_print_mp_controls) generates
+  default parameters for the type ST_PARAM_GROUP, display parameter map
+  details if bl_print_mp_controls is true.</pre><pre>  [MP_CONTROLS, MP_CONTROLS_PREFTECHPRICE, MP_CONTROLS_STATESGRID,
+  MP_CONTROLS_EXOTRANS, MP_CONTROLS_TYPELIFE, MP_CONTROLS_INTLEN] =
+  SNW_MP_CONTROLS(ST_PARAM_GROUP) generates default parameters for the type
+  ST_PARAM_GROUP, and output all parameters in one MP_CONTROLS, but also
+  parameters oraganized in submaps by parameter types</pre><pre>  See also SNWX_MP_CONTROLS</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Parse Main Inputs and Set Defaults</a></li><li><a href="#3">For minimization problem</a></li><li><a href="#4">Set Parameter Maps</a></li><li><a href="#5">Combine Maps</a></li><li><a href="#6">Print</a></li><li><a href="#7">Return</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> varargout = snw_mp_controls(varargin)
+</pre><h2 id="2">Parse Main Inputs and Set Defaults</h2><pre class="codeinput"><span class="keyword">if</span> (~isempty(varargin))
+
+    <span class="keyword">if</span> (length(varargin)==1)
+        st_param_group = varargin{:};
+        bl_print_mp_controls = false;
+    <span class="keyword">elseif</span> (length(varargin)==2)
+        [st_param_group, bl_print_mp_controls] = varargin{:};
+    <span class="keyword">end</span>
+
+<span class="keyword">else</span>
+
+    st_param_group = <span class="string">'default_base'</span>;
+    bl_print_mp_controls = true;
+
+<span class="keyword">end</span>
+</pre><h2 id="3">For minimization problem</h2><pre class="codeinput"><span class="comment">%amin=0;</span>
+<span class="comment">%amax=agrid(end);</span>
+A_aux=[];
+B_aux=[];
+Aeq=[];
+Beq=[];
+
+nonlcon=[];
+options=optimoptions(<span class="string">'fmincon'</span>,<span class="string">'Display'</span>, <span class="string">'off'</span>);
+options2=optimoptions(<span class="string">'fsolve'</span>,<span class="string">'Display'</span>,<span class="string">'off'</span>);
+</pre><h2 id="4">Set Parameter Maps</h2><pre class="codeinput">mp_minimizer_controls = containers.Map(<span class="string">'KeyType'</span>, <span class="string">'char'</span>, <span class="string">'ValueType'</span>, <span class="string">'any'</span>);
+mp_minimizer_controls(<span class="string">'A_aux'</span>) = A_aux;
+mp_minimizer_controls(<span class="string">'B_aux'</span>) = B_aux;
+mp_minimizer_controls(<span class="string">'Aeq'</span>) = Aeq;
+mp_minimizer_controls(<span class="string">'Beq'</span>) = Beq;
+mp_minimizer_controls(<span class="string">'nonlcon'</span>) = nonlcon;
+mp_minimizer_controls(<span class="string">'options'</span>) = options;
+mp_minimizer_controls(<span class="string">'options2'</span>) = options2;
+</pre><h2 id="5">Combine Maps</h2><pre class="codeinput">mp_controls = [mp_minimizer_controls];
+</pre><h2 id="6">Print</h2><pre class="codeinput"><span class="keyword">if</span> (bl_print_mp_controls)
+    ff_container_map_display(mp_minimizer_controls);
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">pos = 6 ; key = options
+  fmincon options:
+
+   Options used by current Algorithm ('interior-point'):
+   (Other available algorithms: 'active-set', 'sqp', 'sqp-legacy', 'trust-region-reflective')
+
+   Set properties:
+                      Display: 'off'
+
+   Default properties:
+                    Algorithm: 'interior-point'
+               CheckGradients: 0
+          ConstraintTolerance: 1e-06
+     FiniteDifferenceStepSize: 'sqrt(eps)'
+         FiniteDifferenceType: 'forward'
+         HessianApproximation: 'bfgs'
+                   HessianFcn: []
+           HessianMultiplyFcn: []
+                  HonorBounds: 1
+       MaxFunctionEvaluations: 3000
+                MaxIterations: 1000
+               ObjectiveLimit: -1e+20
+          OptimalityTolerance: 1e-06
+                    OutputFcn: []
+                      PlotFcn: []
+                 ScaleProblem: 0
+    SpecifyConstraintGradient: 0
+     SpecifyObjectiveGradient: 0
+                StepTolerance: 1e-10
+          SubproblemAlgorithm: 'factorization'
+                     TypicalX: 'ones(numberOfVariables,1)'
+                  UseParallel: 0
+
+   Options not used by current Algorithm ('interior-point')
+   Default properties:
+    FunctionTolerance: 1e-06
+
+
+pos = 7 ; key = options2
+  fsolve options:
+
+   Options used by current Algorithm ('trust-region-dogleg'):
+   (Other available algorithms: 'levenberg-marquardt', 'trust-region')
+
+   Set properties:
+                     Display: 'off'
+
+   Default properties:
+                   Algorithm: 'trust-region-dogleg'
+              CheckGradients: 0
+    FiniteDifferenceStepSize: 'sqrt(eps)'
+        FiniteDifferenceType: 'forward'
+           FunctionTolerance: 1e-06
+      MaxFunctionEvaluations: '100*numberOfVariables'
+               MaxIterations: 400
+         OptimalityTolerance: 1e-06
+                   OutputFcn: []
+                     PlotFcn: []
+    SpecifyObjectiveGradient: 0
+               StepTolerance: 1e-06
+                    TypicalX: 'ones(numberOfVariables,1)'
+                 UseParallel: 0
+
+   Options not used by current Algorithm ('trust-region-dogleg')
+   Default properties:
+    JacobianMultiplyFcn: []
+    SubproblemAlgorithm: 'factorization'
+
+
+----------------------------------------
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+CONTAINER NAME: mp_minimizer_controls Scalars
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+               i    idx    value
+               _    ___    _____
+
+    A_aux      1     1      NaN 
+    Aeq        2     2      NaN 
+    B_aux      3     3      NaN 
+    Beq        4     4      NaN 
+    nonlcon    5     5      NaN 
+
+</pre><h2 id="7">Return</h2><pre class="codeinput"><span class="keyword">if</span> (nargout==1)
+    varargout = cell(nargout,0);
+    varargout{1} = mp_controls;
+<span class="keyword">elseif</span> (nargout==2)
+    varargout = cell(nargout,0);
+    varargout{1} = mp_controls;
+    varargout{2} = mp_minimizer_controls;
+<span class="keyword">end</span>
+</pre><pre class="codeinput"><span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% SNW_MP_CONTROLS Organizes and Sets Various Solution Simu Control Parameters
+%    SNW_MP_CONTROLS opitmizer control, graph, print, and other controls
+%
+%    MP_CONTROLS = SNW_MP_CONTROLS() get default parameters all in the
+%    same container map
+%
+%    MP_CONTROLS = SNW_MP_CONTROLS(ST_PARAM_GROUP)
+%    generates default parameters for the type ST_PARAM_GROUP. 
+%
+%    MP_CONTROLS = SNW_MP_CONTROLS(ST_PARAM_GROUP, bl_print_mp_controls) generates
+%    default parameters for the type ST_PARAM_GROUP, display parameter map
+%    details if bl_print_mp_controls is true.
+%
+%    [MP_CONTROLS, MP_CONTROLS_PREFTECHPRICE, MP_CONTROLS_STATESGRID,
+%    MP_CONTROLS_EXOTRANS, MP_CONTROLS_TYPELIFE, MP_CONTROLS_INTLEN] =
+%    SNW_MP_CONTROLS(ST_PARAM_GROUP) generates default parameters for the type
+%    ST_PARAM_GROUP, and output all parameters in one MP_CONTROLS, but also
+%    parameters oraganized in submaps by parameter types
+%    
+%    See also SNWX_MP_CONTROLS
+%
+
+%%
+function varargout = snw_mp_controls(varargin)
+%% Parse Main Inputs and Set Defaults
+if (~isempty(varargin))
+    
+    if (length(varargin)==1)
+        st_param_group = varargin{:};
+        bl_print_mp_controls = false;        
+    elseif (length(varargin)==2)
+        [st_param_group, bl_print_mp_controls] = varargin{:};
+    end
+    
+else
+    
+    st_param_group = 'default_base';   
+    bl_print_mp_controls = true;
+    
+end
+
+%% For minimization problem
+%amin=0;
+%amax=agrid(end);
+A_aux=[];
+B_aux=[];
+Aeq=[];
+Beq=[];
+
+nonlcon=[];
+options=optimoptions('fmincon','Display', 'off');
+options2=optimoptions('fsolve','Display','off');
+
+%% Set Parameter Maps
+mp_minimizer_controls = containers.Map('KeyType', 'char', 'ValueType', 'any');
+mp_minimizer_controls('A_aux') = A_aux;
+mp_minimizer_controls('B_aux') = B_aux;
+mp_minimizer_controls('Aeq') = Aeq;
+mp_minimizer_controls('Beq') = Beq;
+mp_minimizer_controls('nonlcon') = nonlcon;
+mp_minimizer_controls('options') = options;
+mp_minimizer_controls('options2') = options2;
+
+%% Combine Maps
+mp_controls = [mp_minimizer_controls];
+
+%% Print 
+if (bl_print_mp_controls)
+    ff_container_map_display(mp_minimizer_controls);
+end
+
+%% Return
+if (nargout==1)
+    varargout = cell(nargout,0);
+    varargout{1} = mp_controls;
+elseif (nargout==2)
+    varargout = cell(nargout,0);
+    varargout{1} = mp_controls;
+    varargout{2} = mp_minimizer_controls;
+end
+
+end
+
+##### SOURCE END #####
+--></body></html>

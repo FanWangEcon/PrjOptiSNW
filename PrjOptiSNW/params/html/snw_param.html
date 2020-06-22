@@ -1,0 +1,782 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>SNW_PARAM Organizes and Sets Various Model Input Scalar and Array Parameters</title><meta name="generator" content="MATLAB 9.7"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-06-22"><meta name="DC.source" content="snw_param.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>SNW_PARAM Organizes and Sets Various Model Input Scalar and Array Parameters</h1><!--introduction--><pre>  SNW_PARAM sets several main default parameter structures. There are
+  four types of parameters: scalar (pref, tech, prices), state space
+  arrays, Transition Matrixes (Exogenous), Permanent Type (Life-cycle
+  Arrays)</pre><pre>  Pref, Technology, and prices SCALARS:</pre><pre>  * BETA discount
+  * THETA total factor productivity normalizer
+  * R interest rate</pre><pre>  Vectorized State Space ARRAYS:</pre><pre>  * AGRID asset grid
+  * ETA_GRID productivity shock grid</pre><pre>  Transition Matrixes ARRAYS:</pre><pre>  * PI_ETA shock productivity transition
+  * PI_KIDS shock kids count transition
+  * PSI shock survival probability</pre><pre>  Permanent Education Type Heterogeneity ARRAYS:</pre><pre>  * EPSILON perfect-foresight education type transition
+  * SS Social Security</pre><pre>  MP_PARAMS = SNW_PARAM() get default parameters all in the
+  same container map</pre><pre>  MP_PARAMS = SNW_PARAM(ST_PARAM_GROUP)
+  generates default parameters for the type ST_PARAM_GROUP.</pre><pre>  MP_PARAMS = SNW_PARAM(ST_PARAM_GROUP, BL_PRINT_MP_PARAMS) generates
+  default parameters for the type ST_PARAM_GROUP, display parameter map
+  details if BL_PRINT_MP_PARAMS is true.</pre><pre>  [MP_PARAMS, MP_PARAMS_PREFTECHPRICE, MP_PARAMS_STATESGRID,
+  MP_PARAMS_EXOTRANS, MP_PARAMS_TYPELIFE, MP_PARAMS_INTLEN] =
+  SNW_PARAM(ST_PARAM_GROUP) generates default parameters for the type
+  ST_PARAM_GROUP, and output all parameters in one MP_PARAMS, but also
+  parameters oraganized in submaps by parameter types</pre><pre>  See also SNWx_PARAM</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Parse Main Inputs and Set Defaults</a></li><li><a href="#3">Parameters</a></li><li><a href="#4">Data</a></li><li><a href="#5">Specifying asset grid (use non-linear spacing with minimum value of 0)</a></li><li><a href="#6">Derive transition probabilities and stationary distribution for productivity shock</a></li><li><a href="#7">Set map Subgroups</a></li><li><a href="#8">Combine Maps Together</a></li><li><a href="#9">Print</a></li><li><a href="#10">Return</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> varargout = snw_param(varargin)
+</pre><h2 id="2">Parse Main Inputs and Set Defaults</h2><pre class="codeinput"><span class="keyword">if</span> (~isempty(varargin))
+
+    <span class="keyword">if</span> (length(varargin)==1)
+        st_param_group = varargin{:};
+        bl_print_mp_params = false;
+    <span class="keyword">elseif</span> (length(varargin)==2)
+        [st_param_group, bl_print_mp_params] = varargin{:};
+    <span class="keyword">end</span>
+
+<span class="keyword">else</span>
+
+    st_param_group = <span class="string">'default_base'</span>;
+    bl_print_mp_params = true;
+
+<span class="keyword">end</span>
+</pre><h2 id="3">Parameters</h2><p>Non-calibrated parameters</p><pre class="codeinput">gamma=1; <span class="comment">% Risk aversion parameter</span>
+rho_eta=0.98; <span class="comment">% Ozkan (2017)</span>
+sigma_eta=0.02; <span class="comment">% Ozkan (2017)</span>
+g_n=(1.01^2)-1; <span class="comment">% Annual population growth of 1.1 percent</span>
+r=(1.04^2)-1; <span class="comment">% Annual real interest rate of 4.0 percent from McGrattan and Prescott</span>
+
+<span class="comment">% Government budget constraint parameters</span>
+g_cons=0.17575574; <span class="comment">% Government consumption expenditures to GDP (BEA: Average 2015-2019)</span>
+a2=3.664; <span class="comment">% Initial guess for average income tax burden (if we use GS)</span>
+
+<span class="comment">% Calibrated parameters</span>
+beta=0.96077; <span class="comment">% Discount factor</span>
+theta=0.42315; <span class="comment">% TFP parameter to normalize units such that GDP per capita equals 1 in the model: Real GDP/capita in 2019: $58,056</span>
+
+<span class="comment">% Consumption allocation rule (1=uniform; 2=square root)</span>
+cons_allocation_rule=2;
+
+<span class="comment">% Number of grid points</span>
+n_jgrid=42; <span class="comment">% Age runs from 18 to 100 (a period is 2 years)</span>
+n_agrid=40; <span class="comment">% No. of grid points for assets</span>
+n_etagrid=7; <span class="comment">% No. of grid points for persistent labor productivity shocks</span>
+n_educgrid=2; <span class="comment">% No. of grid points for educational attainment (college vs. non-college)</span>
+n_marriedgrid=2; <span class="comment">% No. of grid points for marital status</span>
+n_kidsgrid=6; <span class="comment">% No. of grid points for children (0 to 5+ children)</span>
+
+<span class="comment">% Social Security benefits</span>
+SS=zeros(n_jgrid,2);
+SS(25:end,1)=0.24433; <span class="comment">% Average SS non-college 2005-2009 as a share of GDP per capita</span>
+SS(25:end,2)=0.29263; <span class="comment">% Average SS college 2005-2009 as a share of GDP per capita</span>
+</pre><h2 id="4">Data</h2><pre class="codeinput">load(<span class="string">'Mortality_prob_by_age_20_99.mat'</span>,<span class="string">'mort_prob'</span>) <span class="comment">% Age-specific mortality probabilities (20-99 year-olds)</span>
+psi_aux=1-mort_prob;
+
+<span class="comment">% Convert to two-year survival probabilities</span>
+psi=NaN(40,1);
+<span class="keyword">for</span> i=1:40
+    psi(i)=prod(psi_aux((2*i-1):2*i));
+<span class="keyword">end</span>
+
+psi=[psi(1);psi]; <span class="comment">% Let survival probability of 18-year-olds be the same as that for 20-year-olds</span>
+psi=[psi;0]; <span class="comment">% Maximum lifespan=100 (survival probability at age 100=0)</span>
+
+clear <span class="string">mort_prob</span> <span class="string">psi_aux</span>
+
+load(<span class="string">'Life_cycle_prod_by_educ.mat'</span>,<span class="string">'life_cycle_prod_by_educ'</span>) <span class="comment">% Life-cycle labor productivity for 20-100 year-olds by education (non-college vs. college)</span>
+epsilon_aux=life_cycle_prod_by_educ;
+
+epsilon=NaN(41,2);
+<span class="keyword">for</span> i=1:40
+    <span class="keyword">for</span> e=1:2
+        epsilon(i,e)=sum(epsilon_aux((2*i-1):2*i,e))/2;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+epsilon(end,:)=epsilon_aux(end,:);
+
+epsilon=[epsilon(1,:);epsilon]; <span class="comment">% Let life-cycle labor productivity of 18-year-olds be the same as that for 20-year-olds</span>
+epsilon(25:end,:)=0; <span class="comment">% Assume zero labor productivity for 65+ year-olds (exogenous retirement)</span>
+
+clear <span class="string">life_cycle_prod_by_educ</span> <span class="string">epsilon_aux</span>
+
+<span class="comment">% Transition probabilities for number of children (0, 1, 2, 3, 4, or 5) (stored in the following order:</span>
+<span class="comment">% Number of children in year 1, age, educational status, marital status. Each column refers to the number of children</span>
+<span class="comment">% in year 2)</span>
+load(<span class="string">'pi_kids_trans_prob'</span>,<span class="string">'pi_kids_trans_prob'</span>)
+pi_kids=NaN(n_kidsgrid,n_kidsgrid,n_jgrid,n_marriedgrid);
+
+<span class="keyword">for</span> kidsp=1:n_kidsgrid <span class="comment">% No. of kids in year 2</span>
+
+    counter=0;
+
+    <span class="keyword">for</span> kids=1:n_kidsgrid <span class="comment">% No. of kids in year 1</span>
+        <span class="keyword">for</span> j=1:(n_jgrid-1) <span class="comment">% Age in year 1</span>
+            <span class="keyword">for</span> married=1:n_marriedgrid <span class="comment">% Marital status</span>
+
+                counter=counter+1;
+                pi_kids(kids,kidsp,j,married)=pi_kids_trans_prob(counter,kidsp);
+
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+<span class="keyword">end</span>
+
+pi_kids(:,:,n_jgrid,:)=0;
+pi_kids(:,1,n_jgrid,:)=1;
+
+<span class="comment">% Ensure that all rows sum to 1 in case of rounding error</span>
+<span class="keyword">for</span> kids=1:n_kidsgrid <span class="comment">% No. of kids in year 1</span>
+    <span class="keyword">for</span> j=1:(n_jgrid-1) <span class="comment">% Age in year 1</span>
+        <span class="keyword">for</span> married=1:n_marriedgrid <span class="comment">% Marital status</span>
+            aux_sum=sum(pi_kids(kids,:,j,married));
+            pi_kids(kids,:,j,married)=pi_kids(kids,:,j,married)/aux_sum;
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+clear <span class="string">aux_sum</span> <span class="string">counter</span> <span class="string">pi_kids_trans_prob</span>
+</pre><h2 id="5">Specifying asset grid (use non-linear spacing with minimum value of 0)</h2><pre class="codeinput">curv=3; <span class="comment">% Governs how the grid points are allocated</span>
+scale_a=50; <span class="comment">% Maximum value of assets (NOTE: Verifying that it does not bind in Aggregation.m)</span>
+
+agrid=zeros(n_agrid,1);
+
+<span class="keyword">for</span> i=2:n_agrid
+	agrid(i)=scale_a*((i-1)/(n_agrid-1))^curv;
+<span class="keyword">end</span>
+</pre><h2 id="6">Derive transition probabilities and stationary distribution for productivity shock</h2><pre class="codeinput"><span class="comment">% Discretize process for persistent productivity shocks and derive stationary distribution</span>
+[eta_grid,pi_eta]=rouwenhorst(rho_eta,sqrt(sigma_eta),n_etagrid);
+</pre><h2 id="7">Set map Subgroups</h2><pre class="codeinput">mp_params_preftechprice = containers.Map(<span class="string">'KeyType'</span>, <span class="string">'char'</span>, <span class="string">'ValueType'</span>, <span class="string">'any'</span>);
+mp_params_preftechprice(<span class="string">'beta'</span>) = beta;
+mp_params_preftechprice(<span class="string">'theta'</span>) = theta;
+mp_params_preftechprice(<span class="string">'r'</span>) = r;
+
+mp_params_statesgrid = containers.Map(<span class="string">'KeyType'</span>, <span class="string">'char'</span>, <span class="string">'ValueType'</span>, <span class="string">'any'</span>);
+mp_params_statesgrid(<span class="string">'agrid'</span>) = agrid;
+mp_params_statesgrid(<span class="string">'eta_grid'</span>) = eta_grid;
+
+mp_params_exotrans = containers.Map(<span class="string">'KeyType'</span>, <span class="string">'char'</span>, <span class="string">'ValueType'</span>, <span class="string">'any'</span>);
+mp_params_exotrans(<span class="string">'pi_eta'</span>) = pi_eta;
+mp_params_exotrans(<span class="string">'pi_kids'</span>) = pi_kids;
+mp_params_exotrans(<span class="string">'psi'</span>) = psi;
+
+mp_params_typelife = containers.Map(<span class="string">'KeyType'</span>, <span class="string">'char'</span>, <span class="string">'ValueType'</span>, <span class="string">'any'</span>);
+mp_params_typelife(<span class="string">'epsilon'</span>) = epsilon;
+mp_params_typelife(<span class="string">'SS'</span>) = SS;
+
+mp_params_intlen = containers.Map(<span class="string">'KeyType'</span>, <span class="string">'char'</span>, <span class="string">'ValueType'</span>, <span class="string">'any'</span>);
+mp_params_intlen(<span class="string">'n_jgrid'</span>) = n_jgrid;
+mp_params_intlen(<span class="string">'n_agrid'</span>) = n_agrid;
+mp_params_intlen(<span class="string">'n_etagrid'</span>) = n_etagrid;
+mp_params_intlen(<span class="string">'n_educgrid'</span>) = n_educgrid;
+mp_params_intlen(<span class="string">'n_marriedgrid'</span>) = n_marriedgrid;
+mp_params_intlen(<span class="string">'n_kidsgrid'</span>) = n_kidsgrid;
+</pre><h2 id="8">Combine Maps Together</h2><pre class="codeinput">mp_params = [mp_params_preftechprice; mp_params_statesgrid ; <span class="keyword">...</span>
+    mp_params_exotrans; mp_params_typelife; mp_params_intlen];
+
+<span class="comment">% MP_PARAMS = [MP_PARAMS_PREFTECHPRICE; MP_PARAMS_STATESGRID ; ...</span>
+<span class="comment">%     MP_PARAMS_EXOTRANS; MP_PARAMS_TYPELIFE; MP_PARAMS_INTLEN];</span>
+</pre><h2 id="9">Print</h2><pre class="codeinput"><span class="keyword">if</span> (bl_print_mp_params)
+    ff_container_map_display(mp_params_preftechprice);
+    ff_container_map_display(mp_params_intlen);
+    ff_container_map_display(mp_params_statesgrid, 100, 100);
+    ff_container_map_display(mp_params_exotrans, 100, 100);
+    ff_container_map_display(mp_params_typelife, 100, 100);
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">----------------------------------------
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+CONTAINER NAME: mp_params_preftechprice Scalars
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+             i    idx     value 
+             _    ___    _______
+
+    beta     1     1     0.96077
+    r        2     2      0.0816
+    theta    3     3     0.42315
+
+----------------------------------------
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+CONTAINER NAME: mp_params_intlen Scalars
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                     i    idx    value
+                     _    ___    _____
+
+    n_agrid          1     1      40  
+    n_educgrid       2     2       2  
+    n_etagrid        3     3       7  
+    n_jgrid          4     4      42  
+    n_kidsgrid       5     5       6  
+    n_marriedgrid    6     6       2  
+
+----------------------------------------
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+CONTAINER NAME: mp_params_statesgrid ND Array (Matrix etc)
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                i    idx    ndim    numel    rowN    colN     mean      std      coefvari      min       max  
+                _    ___    ____    _____    ____    ____    ______    ______    ________    _______    ______
+
+    agrid       1     1      2       40       40      1      12.821    14.881     1.1607           0        50
+    eta_grid    2     2      2        7        7      1           0    1.2535        Inf     -1.7408    1.7408
+
+xxx TABLE:agrid xxxxxxxxxxxxxxxxxx
+              c1    
+           _________
+
+    r1             0
+    r2     0.0008429
+    r3     0.0067432
+    r4      0.022758
+    r5      0.053946
+    r6       0.10536
+    r7       0.18207
+    r8       0.28911
+    r9       0.43156
+    r10      0.61447
+    r11       0.8429
+    r12       1.1219
+    r13       1.4565
+    r14       1.8519
+    r15       2.3129
+    r16       2.8448
+    r17       3.4525
+    r18       4.1412
+    r19       4.9158
+    r20       5.7815
+    r21       6.7432
+    r22       7.8061
+    r23       8.9752
+    r24       10.256
+    r25       11.652
+    r26        13.17
+    r27       14.815
+    r28       16.591
+    r29       18.503
+    r30       20.557
+    r31       22.758
+    r32       25.111
+    r33        27.62
+    r34       30.291
+    r35       33.129
+    r36       36.139
+    r37       39.326
+    r38       42.695
+    r39       46.252
+    r40           50
+
+xxx TABLE:eta_grid xxxxxxxxxxxxxxxxxx
+             c1   
+          ________
+
+    r1     -1.7408
+    r2     -1.1605
+    r3    -0.58026
+    r4           0
+    r5     0.58026
+    r6      1.1605
+    r7      1.7408
+
+----------------------------------------
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+CONTAINER NAME: mp_params_exotrans ND Array (Matrix etc)
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+               i    idx    ndim    numel    rowN    colN     mean        std      coefvari     min       max  
+               _    ___    ____    _____    ____    ____    _______    _______    ________    _____    _______
+
+    pi_eta     1     1      2        49       7       7     0.14286    0.33001     2.3101     1e-12    0.94234
+    pi_kids    2     2      4      3024       6     504     0.16667    0.25072     1.5043         0          1
+    psi        3     3      2        42      42       1     0.89299    0.19761    0.22129         0    0.99857
+
+xxx TABLE:pi_eta xxxxxxxxxxxxxxxxxx
+             c1            c2            c3            c4            c5            c6           c7    
+          _________    __________    __________    __________    __________    __________    _________
+
+    r1      0.94148      0.057059     0.0014409    1.9406e-05    1.4702e-07      5.94e-10        1e-12
+    r2    0.0095099       0.94196      0.047559    0.00096069    9.7035e-06    4.9006e-08      9.9e-11
+    r3    9.606e-05      0.019024       0.94225      0.038051    0.00057644    3.8814e-06    9.801e-09
+    r4    9.703e-07    0.00028821      0.028538       0.94234      0.028538    0.00028821    9.703e-07
+    r5    9.801e-09    3.8814e-06    0.00057644      0.038051       0.94225      0.019024    9.606e-05
+    r6      9.9e-11    4.9006e-08    9.7035e-06    0.00096069      0.047559       0.94196    0.0095099
+    r7        1e-12      5.94e-10    1.4702e-07    1.9406e-05     0.0014409      0.057059      0.94148
+
+xxx TABLE:pi_kids xxxxxxxxxxxxxxxxxx
+              c1            c2            c3            c4            c5            c6            c7            c8            c9           c10           c11           c12           c13           c14           c15           c16           c17           c18           c19           c20           c21           c22           c23           c24           c25           c26          c27          c28          c29           c30           c31           c32           c33          c34           c35           c36           c37           c38           c39          c40           c41           c42           c43           c44           c45          c46           c47           c48           c49           c50           c455          c456          c457          c458         c459          c460          c461          c462          c463          c464         c465          c466          c467          c468          c469          c470         c471          c472          c473          c474          c475          c476         c477          c478          c479          c480          c481          c482         c483          c484          c485          c486          c487          c488         c489          c490          c491          c492          c493          c494         c495          c496          c497          c498       c499    c500    c501    c502    c503    c504
+          __________    __________    __________    __________    __________    __________    __________    __________    __________    __________    __________    __________    __________    __________    __________    __________    __________    __________    __________    __________    __________    __________    __________    __________    __________    __________    ________    _________    __________    __________    __________    __________    _________    __________    __________    __________    __________    __________    _________    __________    __________    __________    __________    __________    _________    __________    __________    __________    __________    __________    __________    __________    __________    __________    _________    __________    __________    __________    __________    __________    _________    __________    __________    __________    __________    __________    _________    __________    __________    __________    __________    __________    _________    __________    __________    __________    __________    __________    _________    __________    __________    __________    __________    __________    _________    __________    __________    __________    __________    __________    _________    __________    __________    __________    ____    ____    ____    ____    ____    ____
+
+    r1       0.81478       0.16949      0.015153    0.00054863    2.7363e-05    2.5078e-06        0.8244       0.16084      0.014213    0.00051406    2.5638e-05    2.3497e-06       0.83606       0.15034        0.0131    0.00047325    2.3602e-05    2.1631e-06       0.84917       0.13849      0.011882    0.00042871    2.1379e-05    1.9594e-06       0.86315       0.12583    0.010621    0.0003827    1.9084e-05     1.749e-06       0.87745       0.11283    0.0093692    0.00033716    1.6812e-05    1.5408e-06       0.89157      0.099949    0.0081684    0.00029358    1.4638e-05    1.3416e-06       0.90513      0.087554    0.0070486    0.00025303    1.2616e-05    1.1562e-06       0.91781      0.075932    1.7186e-06     1.575e-07        0.9839      0.014952    0.0011076    3.9516e-05    1.9698e-06    1.8053e-07       0.98101      0.017628    0.0013097    4.6735e-05    2.3297e-06    2.1351e-07       0.97689      0.021447    0.0016001    5.7117e-05    2.8473e-06    2.6094e-07       0.97095       0.02695    0.0020229    7.2241e-05    3.6012e-06    3.3004e-07       0.96226      0.034989      0.00265    9.4698e-05    4.7208e-06    4.3265e-07       0.94934      0.046923    0.0036021    0.00012885    6.4235e-06    5.8869e-07       0.92982      0.064904    0.0050868    0.00018224    9.0856e-06    8.3267e-07     1       0       0       0       0       0  
+    r2      0.092707       0.49968        0.3833      0.023029     0.0011764    0.00010795      0.098332       0.50968       0.36917      0.021612     0.0011023    0.00010115       0.10592       0.52163       0.35141      0.019933     0.0010149    9.3113e-05       0.11565        0.5347       0.33054      0.018094    0.00091941    8.4345e-05       0.12779       0.54794     0.30719     0.016186     0.0008208     7.529e-05       0.14259       0.56026      0.28206       0.01429    0.00072316    6.6327e-05       0.16037       0.57057       0.2559      0.012468    0.00062973    5.7752e-05       0.18141       0.57774      0.22948      0.010766    0.00054279    4.9774e-05       0.20597       0.58078    7.3979e-05    6.7804e-06       0.58668       0.36612     0.045405     0.0016981    8.4794e-05    7.7717e-06       0.54549       0.39917     0.053224     0.0020076    0.00010028    9.1916e-06       0.49546       0.43773     0.064227     0.0024524    0.00012256    1.1234e-05       0.43707        0.4799     0.079768     0.0030996    0.00015501    1.4208e-05       0.37197       0.52192      0.10183     0.0040589    0.00020319    1.8625e-05       0.30327       0.55766      0.13325     0.0055138    0.00027645    2.5343e-05       0.23532        0.5787      0.17777     0.0077792    0.00039096    3.5845e-05     1       0       0       0       0       0  
+    r3     0.0082942      0.098014        0.6603       0.21792      0.014151     0.0013173     0.0088473       0.10381        0.6654       0.20743      0.013273     0.0012343     0.0096033       0.11159       0.67082       0.19461      0.012234     0.0011364      0.010591       0.12154       0.67571       0.18003      0.011097     0.0010295       0.01185       0.13386     0.67915       0.1643     0.0099197    0.00091907       0.01343       0.14878      0.68022       0.14802     0.0087511    0.00080974      0.015393       0.16652      0.67803       0.13172     0.0076298    0.00070512      0.017817       0.18727      0.67182        0.1159      0.006584    0.00060777      0.020791       0.21115    0.00090293    8.2832e-05       0.10409        0.5189      0.35556      0.020316     0.0010348    9.4941e-05      0.089448        0.4934      0.39189      0.023929     0.0012236    0.00011228      0.074398       0.45901      0.43588      0.029073     0.0014949    0.00013723      0.059753         0.415      0.48672       0.03646     0.0018899    0.00017356      0.046237       0.36187      0.54199      0.047199     0.0024757     0.0002275      0.034403       0.30191      0.59698      0.063025     0.0033651    0.00030953       0.02457        0.2392      0.64443      0.086615     0.0047518    0.00043776     1       0       0       0       0       0  
+    r4    0.00045666     0.0059994       0.14568        0.6245       0.19979      0.023577    0.00048737     0.0064001       0.15384         0.627       0.19016      0.022123     0.0005294     0.0069479       0.16472       0.62903       0.17837      0.020402     0.0005844     0.0076638       0.17851       0.62975       0.16497      0.018516    0.00065464     0.0085764      0.1954       0.6283       0.15052      0.016561    0.00074305     0.0097224      0.21556        0.6238       0.13556      0.014618    0.00085329      0.011148      0.23916       0.61549       0.12059      0.012752    0.00098993      0.012908      0.26625       0.60277       0.10607       0.01101     0.0011585       0.01507      0.016229     0.0015142     0.0063065      0.076487      0.63088       0.26604      0.018549     0.0017352     0.0053375      0.065573      0.60729        0.2979       0.02185     0.0020515     0.0043716      0.054407      0.57417       0.33799      0.026551     0.0025062     0.0034595      0.043592      0.52983       0.38665      0.033304     0.0031677     0.0026412      0.033657      0.47352       0.44291      0.043126     0.0041484     0.0019425      0.024993      0.40629       0.50353       0.05761     0.0056362     0.0013741      0.017821      0.33162       0.56201      0.079219     0.0079535     1       0       0       0       0       0  
+    r5    3.5981e-05    0.00047553      0.013423       0.20103       0.55039       0.23465    3.8402e-05    0.00050751      0.014312        0.2113       0.55069       0.22315    4.1715e-05    0.00055126      0.015527       0.22485       0.54989       0.20914    4.6051e-05    0.00060853      0.017111       0.24175       0.54723       0.19325     5.159e-05    0.00068167    0.019127      0.26207       0.54191       0.17616    5.8561e-05     0.0007737     0.021651        0.2858        0.5332       0.15851    6.7256e-05    0.00088848      0.02478       0.31283       0.52053        0.1409    7.8036e-05     0.0010307      0.02863       0.34288       0.50354       0.12385    9.1337e-05     0.0012062       0.16767      0.018891    0.00049959     0.0065595      0.15704       0.62774       0.18657      0.021593    0.00042245     0.0055527      0.13638       0.62047       0.21174      0.025438    0.00034569     0.0045486      0.11468       0.60507       0.24444      0.030915    0.00027333     0.0036003     0.093092       0.57843       0.28582      0.038784    0.00020852     0.0027491     0.072752       0.53778       0.33628      0.050235    0.00015326     0.0020221     0.054606       0.48165       0.39444      0.067137    0.00010836     0.0014306     0.039284       0.41115       0.45564      0.092391     1       0       0       0       0       0  
+    r6     1.863e-06    2.4634e-05    0.00070465      0.013249        0.1305       0.85552    1.9884e-06    2.6292e-05    0.00075203      0.014126       0.13781       0.84728    2.1599e-06     2.856e-05    0.00081685      0.015324       0.14757       0.83626    2.3845e-06    3.1529e-05    0.00090169      0.016887       0.15991       0.82227    2.6713e-06    3.5321e-05     0.00101     0.018876       0.17502       0.80506    3.0323e-06    4.0094e-05    0.0011463      0.021366       0.19305       0.78439    3.4825e-06    4.6047e-05    0.0013163      0.024453       0.21412       0.76006    4.0407e-06    5.3428e-05     0.001527      0.028249       0.23826       0.73191    4.7295e-06    6.2534e-05       0.54475       0.27107     2.588e-05    0.00034208    0.0096939       0.15448       0.53659       0.29886    2.1882e-05    0.00028925    0.0082097       0.13424       0.52208       0.33516    1.7904e-05    0.00023669    0.0067282       0.11294       0.49885       0.38123    1.4156e-05    0.00018715    0.0053276      0.091725       0.46477       0.43797    1.0799e-05    0.00014277    0.0040696      0.071717       0.41873       0.50533    7.9364e-06    0.00010493    0.0029944      0.053851       0.36146       0.58159     5.611e-06    7.4188e-05     0.002119      0.038753        0.2962       0.66285     1       0       0       0       0       0  
+
+xxx TABLE:psi xxxxxxxxxxxxxxxxxx
+             c1   
+           _______
+
+    r1     0.99853
+    r2     0.99853
+    r3     0.99845
+    r4     0.99851
+    r5     0.99857
+    r6     0.99851
+    r7     0.99834
+    r8      0.9981
+    r9     0.99775
+    r10    0.99733
+    r11    0.99683
+    r12    0.99626
+    r13    0.99567
+    r14    0.99503
+    r15    0.99432
+    r16    0.99366
+    r17    0.99293
+    r18    0.99183
+    r19    0.99023
+    r20    0.98819
+    r21    0.98578
+    r22    0.98285
+    r23    0.97918
+    r24    0.97462
+    r25    0.96915
+    r26    0.96304
+    r27    0.95564
+    r28    0.94713
+    r29    0.93766
+    r30    0.92515
+    r31    0.90988
+    r32    0.89031
+    r33    0.86484
+    r34     0.8327
+    r35    0.79417
+    r36    0.74957
+    r37    0.69903
+    r38    0.64301
+    r39     0.5832
+    r40    0.52581
+    r41    0.47541
+    r42          0
+
+----------------------------------------
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+CONTAINER NAME: mp_params_typelife ND Array (Matrix etc)
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+               i    idx    ndim    numel    rowN    colN     mean        std      coefvari    min      max  
+               _    ___    ____    _____    ____    ____    _______    _______    ________    ___    _______
+
+    SS         1     1      2       84       42      2      0.11506     0.1346     1.1698      0     0.29263
+    epsilon    2     2      2       84       42      2      0.96873    0.89659    0.92553      0      2.2609
+
+xxx TABLE:SS xxxxxxxxxxxxxxxxxx
+             c1         c2   
+           _______    _______
+
+    r1           0          0
+    r2           0          0
+    r3           0          0
+    r4           0          0
+    r5           0          0
+    r6           0          0
+    r7           0          0
+    r8           0          0
+    r9           0          0
+    r10          0          0
+    r11          0          0
+    r12          0          0
+    r13          0          0
+    r14          0          0
+    r15          0          0
+    r16          0          0
+    r17          0          0
+    r18          0          0
+    r19          0          0
+    r20          0          0
+    r21          0          0
+    r22          0          0
+    r23          0          0
+    r24          0          0
+    r25    0.24433    0.29263
+    r26    0.24433    0.29263
+    r27    0.24433    0.29263
+    r28    0.24433    0.29263
+    r29    0.24433    0.29263
+    r30    0.24433    0.29263
+    r31    0.24433    0.29263
+    r32    0.24433    0.29263
+    r33    0.24433    0.29263
+    r34    0.24433    0.29263
+    r35    0.24433    0.29263
+    r36    0.24433    0.29263
+    r37    0.24433    0.29263
+    r38    0.24433    0.29263
+    r39    0.24433    0.29263
+    r40    0.24433    0.29263
+    r41    0.24433    0.29263
+    r42    0.24433    0.29263
+
+xxx TABLE:epsilon xxxxxxxxxxxxxxxxxx
+             c1        c2  
+           ______    ______
+
+    r1     1.0199    1.0461
+    r2     1.0199    1.0461
+    r3     1.0978    1.2302
+    r4     1.1712     1.409
+    r5     1.2396    1.5765
+    r6     1.3024    1.7281
+    r7     1.3594    1.8606
+    r8     1.4105    1.9724
+    r9     1.4555    2.0633
+    r10    1.4946    2.1343
+    r11    1.5278     2.187
+    r12    1.5553    2.2236
+    r13    1.5773    2.2466
+    r14     1.594    2.2583
+    r15    1.6054    2.2609
+    r16    1.6118    2.2562
+    r17    1.6131    2.2458
+    r18    1.6094    2.2308
+    r19    1.6007    2.2118
+    r20    1.5869    2.1892
+    r21    1.5678    2.1626
+    r22    1.5435    2.1315
+    r23    1.5136    2.0951
+    r24    1.4781     2.052
+    r25         0         0
+    r26         0         0
+    r27         0         0
+    r28         0         0
+    r29         0         0
+    r30         0         0
+    r31         0         0
+    r32         0         0
+    r33         0         0
+    r34         0         0
+    r35         0         0
+    r36         0         0
+    r37         0         0
+    r38         0         0
+    r39         0         0
+    r40         0         0
+    r41         0         0
+    r42         0         0
+
+</pre><h2 id="10">Return</h2><pre class="codeinput"><span class="keyword">if</span> (nargout==1)
+    varargout = cell(nargout,0);
+    varargout{1} = mp_params;
+<span class="keyword">elseif</span> (nargout==6)
+    varargout = cell(nargout,0);
+    varargout{1} = mp_params;
+    varargout{2} = mp_params_preftechprice;
+    varargout{3} = mp_params_statesgrid;
+    varargout{4} = mp_params_exotrans;
+    varargout{5} = mp_params_typelife;
+    varargout{6} = mp_params_intlen;
+<span class="keyword">end</span>
+</pre><pre class="codeinput"><span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% SNW_PARAM Organizes and Sets Various Model Input Scalar and Array Parameters
+%    SNW_PARAM sets several main default parameter structures. There are
+%    four types of parameters: scalar (pref, tech, prices), state space
+%    arrays, Transition Matrixes (Exogenous), Permanent Type (Life-cycle
+%    Arrays)
+%
+%    Pref, Technology, and prices SCALARS:
+%
+%    * BETA discount
+%    * THETA total factor productivity normalizer
+%    * R interest rate
+%
+%    Vectorized State Space ARRAYS:
+%
+%    * AGRID asset grid
+%    * ETA_GRID productivity shock grid
+%
+%    Transition Matrixes ARRAYS:
+%
+%    * PI_ETA shock productivity transition
+%    * PI_KIDS shock kids count transition
+%    * PSI shock survival probability
+%
+%    Permanent Education Type Heterogeneity ARRAYS:
+%
+%    * EPSILON perfect-foresight education type transition
+%    * SS Social Security
+%
+%    MP_PARAMS = SNW_PARAM() get default parameters all in the
+%    same container map
+%
+%    MP_PARAMS = SNW_PARAM(ST_PARAM_GROUP)
+%    generates default parameters for the type ST_PARAM_GROUP. 
+%
+%    MP_PARAMS = SNW_PARAM(ST_PARAM_GROUP, BL_PRINT_MP_PARAMS) generates
+%    default parameters for the type ST_PARAM_GROUP, display parameter map
+%    details if BL_PRINT_MP_PARAMS is true.
+%
+%    [MP_PARAMS, MP_PARAMS_PREFTECHPRICE, MP_PARAMS_STATESGRID,
+%    MP_PARAMS_EXOTRANS, MP_PARAMS_TYPELIFE, MP_PARAMS_INTLEN] =
+%    SNW_PARAM(ST_PARAM_GROUP) generates default parameters for the type
+%    ST_PARAM_GROUP, and output all parameters in one MP_PARAMS, but also
+%    parameters oraganized in submaps by parameter types
+%    
+%    See also SNWx_PARAM
+%
+
+%%
+function varargout = snw_param(varargin)
+%% Parse Main Inputs and Set Defaults
+if (~isempty(varargin))
+    
+    if (length(varargin)==1)
+        st_param_group = varargin{:};
+        bl_print_mp_params = false;        
+    elseif (length(varargin)==2)
+        [st_param_group, bl_print_mp_params] = varargin{:};
+    end
+    
+else
+    
+    st_param_group = 'default_base';   
+    bl_print_mp_params = true;
+    
+end
+
+%% Parameters
+% Non-calibrated parameters
+gamma=1; % Risk aversion parameter
+rho_eta=0.98; % Ozkan (2017)
+sigma_eta=0.02; % Ozkan (2017)
+g_n=(1.01^2)-1; % Annual population growth of 1.1 percent
+r=(1.04^2)-1; % Annual real interest rate of 4.0 percent from McGrattan and Prescott
+
+% Government budget constraint parameters
+g_cons=0.17575574; % Government consumption expenditures to GDP (BEA: Average 2015-2019) 
+a2=3.664; % Initial guess for average income tax burden (if we use GS)
+
+% Calibrated parameters
+beta=0.96077; % Discount factor
+theta=0.42315; % TFP parameter to normalize units such that GDP per capita equals 1 in the model: Real GDP/capita in 2019: $58,056
+
+% Consumption allocation rule (1=uniform; 2=square root)
+cons_allocation_rule=2;
+
+% Number of grid points
+n_jgrid=42; % Age runs from 18 to 100 (a period is 2 years)
+n_agrid=40; % No. of grid points for assets
+n_etagrid=7; % No. of grid points for persistent labor productivity shocks
+n_educgrid=2; % No. of grid points for educational attainment (college vs. non-college)
+n_marriedgrid=2; % No. of grid points for marital status
+n_kidsgrid=6; % No. of grid points for children (0 to 5+ children)
+
+% Social Security benefits
+SS=zeros(n_jgrid,2);
+SS(25:end,1)=0.24433; % Average SS non-college 2005-2009 as a share of GDP per capita
+SS(25:end,2)=0.29263; % Average SS college 2005-2009 as a share of GDP per capita
+
+%% Data
+load('Mortality_prob_by_age_20_99.mat','mort_prob') % Age-specific mortality probabilities (20-99 year-olds)
+psi_aux=1-mort_prob;
+
+% Convert to two-year survival probabilities
+psi=NaN(40,1);
+for i=1:40
+    psi(i)=prod(psi_aux((2*i-1):2*i));
+end
+
+psi=[psi(1);psi]; % Let survival probability of 18-year-olds be the same as that for 20-year-olds
+psi=[psi;0]; % Maximum lifespan=100 (survival probability at age 100=0)
+
+clear mort_prob psi_aux
+
+load('Life_cycle_prod_by_educ.mat','life_cycle_prod_by_educ') % Life-cycle labor productivity for 20-100 year-olds by education (non-college vs. college)
+epsilon_aux=life_cycle_prod_by_educ;
+
+epsilon=NaN(41,2);
+for i=1:40
+    for e=1:2
+        epsilon(i,e)=sum(epsilon_aux((2*i-1):2*i,e))/2;
+    end
+end
+
+epsilon(end,:)=epsilon_aux(end,:);
+
+epsilon=[epsilon(1,:);epsilon]; % Let life-cycle labor productivity of 18-year-olds be the same as that for 20-year-olds
+epsilon(25:end,:)=0; % Assume zero labor productivity for 65+ year-olds (exogenous retirement)
+
+clear life_cycle_prod_by_educ epsilon_aux
+
+% Transition probabilities for number of children (0, 1, 2, 3, 4, or 5) (stored in the following order:
+% Number of children in year 1, age, educational status, marital status. Each column refers to the number of children
+% in year 2)
+load('pi_kids_trans_prob','pi_kids_trans_prob')
+pi_kids=NaN(n_kidsgrid,n_kidsgrid,n_jgrid,n_marriedgrid);
+
+for kidsp=1:n_kidsgrid % No. of kids in year 2
+    
+    counter=0;
+    
+    for kids=1:n_kidsgrid % No. of kids in year 1
+        for j=1:(n_jgrid-1) % Age in year 1
+            for married=1:n_marriedgrid % Marital status
+
+                counter=counter+1;
+                pi_kids(kids,kidsp,j,married)=pi_kids_trans_prob(counter,kidsp);
+
+            end
+        end
+    end
+    
+end
+
+pi_kids(:,:,n_jgrid,:)=0;
+pi_kids(:,1,n_jgrid,:)=1;
+
+% Ensure that all rows sum to 1 in case of rounding error
+for kids=1:n_kidsgrid % No. of kids in year 1
+    for j=1:(n_jgrid-1) % Age in year 1
+        for married=1:n_marriedgrid % Marital status
+            aux_sum=sum(pi_kids(kids,:,j,married));
+            pi_kids(kids,:,j,married)=pi_kids(kids,:,j,married)/aux_sum;
+        end
+    end
+end
+
+clear aux_sum counter pi_kids_trans_prob
+
+%% Specifying asset grid (use non-linear spacing with minimum value of 0)
+curv=3; % Governs how the grid points are allocated
+scale_a=50; % Maximum value of assets (NOTE: Verifying that it does not bind in Aggregation.m)
+
+agrid=zeros(n_agrid,1);
+
+for i=2:n_agrid
+	agrid(i)=scale_a*((i-1)/(n_agrid-1))^curv;
+end
+
+%% Derive transition probabilities and stationary distribution for productivity shock
+
+% Discretize process for persistent productivity shocks and derive stationary distribution
+[eta_grid,pi_eta]=rouwenhorst(rho_eta,sqrt(sigma_eta),n_etagrid);
+
+    
+%% Set map Subgroups
+mp_params_preftechprice = containers.Map('KeyType', 'char', 'ValueType', 'any');
+mp_params_preftechprice('beta') = beta;
+mp_params_preftechprice('theta') = theta;
+mp_params_preftechprice('r') = r;
+
+mp_params_statesgrid = containers.Map('KeyType', 'char', 'ValueType', 'any');
+mp_params_statesgrid('agrid') = agrid;
+mp_params_statesgrid('eta_grid') = eta_grid;
+
+mp_params_exotrans = containers.Map('KeyType', 'char', 'ValueType', 'any');
+mp_params_exotrans('pi_eta') = pi_eta;
+mp_params_exotrans('pi_kids') = pi_kids;
+mp_params_exotrans('psi') = psi;
+
+mp_params_typelife = containers.Map('KeyType', 'char', 'ValueType', 'any');
+mp_params_typelife('epsilon') = epsilon;
+mp_params_typelife('SS') = SS;
+
+mp_params_intlen = containers.Map('KeyType', 'char', 'ValueType', 'any');
+mp_params_intlen('n_jgrid') = n_jgrid;
+mp_params_intlen('n_agrid') = n_agrid;
+mp_params_intlen('n_etagrid') = n_etagrid;
+mp_params_intlen('n_educgrid') = n_educgrid;
+mp_params_intlen('n_marriedgrid') = n_marriedgrid;
+mp_params_intlen('n_kidsgrid') = n_kidsgrid;
+
+%% Combine Maps Together
+mp_params = [mp_params_preftechprice; mp_params_statesgrid ; ...
+    mp_params_exotrans; mp_params_typelife; mp_params_intlen];
+
+% MP_PARAMS = [MP_PARAMS_PREFTECHPRICE; MP_PARAMS_STATESGRID ; ...
+%     MP_PARAMS_EXOTRANS; MP_PARAMS_TYPELIFE; MP_PARAMS_INTLEN];
+
+%% Print 
+if (bl_print_mp_params)
+    ff_container_map_display(mp_params_preftechprice);
+    ff_container_map_display(mp_params_intlen);
+    ff_container_map_display(mp_params_statesgrid, 100, 100);
+    ff_container_map_display(mp_params_exotrans, 100, 100);
+    ff_container_map_display(mp_params_typelife, 100, 100);
+end
+
+%% Return
+if (nargout==1)
+    varargout = cell(nargout,0);
+    varargout{1} = mp_params;
+elseif (nargout==6)
+    varargout = cell(nargout,0);
+    varargout{1} = mp_params;
+    varargout{2} = mp_params_preftechprice;
+    varargout{3} = mp_params_statesgrid;
+    varargout{4} = mp_params_exotrans;
+    varargout{5} = mp_params_typelife;
+    varargout{6} = mp_params_intlen;
+end
+
+end
+
+##### SOURCE END #####
+--></body></html>

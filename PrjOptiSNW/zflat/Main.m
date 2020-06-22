@@ -245,7 +245,7 @@ while err>tol
     %[V_VFI,ap_VFI,cons_VFI,exitflag_VFI]=VFI_grid_search;
 
     % Aggregation
-    [Phi_true,Phi_adj,A_agg,Y_inc_agg]=Aggregation(stat_distr_eta,stat_distr_educ,stat_distr_married,stat_distr_kids);
+    [Phi_true,Phi_adj,A_agg,Y_inc_agg]=Aggregation(ap,stat_distr_eta,stat_distr_educ,stat_distr_married,stat_distr_kids);
     
     name='Income per capita (target=1)=';
     name2=[name,num2str(Y_inc_agg/sum(Pop))];

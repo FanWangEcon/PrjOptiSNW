@@ -1,8 +1,8 @@
-function [Phi_true,Phi_adj,A_agg,Y_inc_agg]=Aggregation(stat_distr_eta,stat_distr_educ,stat_distr_married,stat_distr_kids)
+function [Phi_true,Phi_adj,A_agg,Y_inc_agg]=Aggregation(ap_ss,stat_distr_eta,stat_distr_educ,stat_distr_married,stat_distr_kids)
 
 %% Aggregation
 
-global a2 g_cons agrid SS pi_eta pi_kids ap Pop n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
+global a2 g_cons agrid SS pi_eta pi_kids Pop n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
 
 Phiss=zeros(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 
@@ -28,13 +28,13 @@ for j=1:(n_jgrid-1) % Age
                for married=1:n_marriedgrid % Marital status
                    for kids=1:n_kidsgrid % No. of kids
 
-                       if ap(j,a,eta,educ,married,kids)==0
+                       if ap_ss(j,a,eta,educ,married,kids)==0
                            inds(1)=1;
                            inds(2)=1;
                            vals(1)=1;
                            vals(2)=0;
 
-                       elseif ap(j,a,eta,educ,married,kids)==agrid(n_agrid)
+                       elseif ap_ss(j,a,eta,educ,married,kids)==agrid(n_agrid)
                            inds(1)=n_agrid;
                            inds(2)=n_agrid;
                            vals(1)=1;
@@ -42,13 +42,13 @@ for j=1:(n_jgrid-1) % Age
 
                        else
 
-                           ind_aux=find(agrid<=ap(j,a,eta,educ,married,kids),1,'last');
+                           ind_aux=find(agrid<=ap_ss(j,a,eta,educ,married,kids),1,'last');
 
                            inds(1)=ind_aux;
                            inds(2)=ind_aux+1;
 
                            % Linear interpolation
-                           vals(1)=1-((ap(j,a,eta,educ,married,kids)-agrid(inds(1)))/(agrid(inds(2))-agrid(inds(1))));
+                           vals(1)=1-((ap_ss(j,a,eta,educ,married,kids)-agrid(inds(1)))/(agrid(inds(2))-agrid(inds(1))));
                            vals(2)=1-vals(1);
 
                        end

@@ -1,0 +1,150 @@
+<deployment-project plugin="plugin.toolbox" plugin-version="1.0">
+  <configuration file="C:\Users\fan\PrjOptiSNW\PrjOptiSNW.prj" location="C:\Users\fan\PrjOptiSNW" name="PrjOptiSNW" target="target.toolbox" target-name="Package Toolbox">
+    <param.appname>PrjOptiSNW</param.appname>
+    <param.authnamewatermark>V. Nygaard, B. Sorensen, Fan Wang</param.authnamewatermark>
+    <param.email>fanwangecon@gmail.com</param.email>
+    <param.company>Univerity of Houston</param.company>
+    <param.summary>Dynamic Life Cycle US Simulation and Welfare Checks COVID-19</param.summary>
+    <param.description />
+    <param.screenshot>${PROJECT_ROOT}\img\toolboxlogo.png</param.screenshot>
+    <param.version>0.1.1</param.version>
+    <param.output>${PROJECT_ROOT}\PrjOptiSNW.mltbx</param.output>
+    <param.products.name />
+    <param.products.id />
+    <param.products.version />
+    <param.platforms />
+    <param.guid>d9a13da5-51af-451d-ba99-90a71091f57e</param.guid>
+    <param.exclude.filters />
+    <param.exclude.pcodedmfiles>true</param.exclude.pcodedmfiles>
+    <param.examples>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;examples&gt;
+   &lt;exampleCategory name="params"&gt;
+      &lt;example name="snw_mp_controls" type="html"&gt;
+         &lt;file type="source"&gt;/PrjOptiSNW/params/html/snw_mp_controls.html&lt;/file&gt;
+         &lt;file type="main"&gt;/PrjOptiSNW/params/snw_mp_controls.m&lt;/file&gt;
+         &lt;file type="thumbnail"/&gt;
+      &lt;/example&gt;
+      &lt;example name="snw_mp_param" type="html"&gt;
+         &lt;file type="source"&gt;/PrjOptiSNW/params/html/snw_mp_param.html&lt;/file&gt;
+         &lt;file type="main"&gt;/PrjOptiSNW/params/snw_mp_param.m&lt;/file&gt;
+         &lt;file type="thumbnail"/&gt;
+      &lt;/example&gt;
+   &lt;/exampleCategory&gt;
+   &lt;exampleCategory name="svalpol"&gt;
+      &lt;example name="snw_vfi_main" type="html"&gt;
+         &lt;file type="source"&gt;/PrjOptiSNW/svalpol/html/snw_vfi_main.html&lt;/file&gt;
+         &lt;file type="main"&gt;/PrjOptiSNW/svalpol/snw_vfi_main.m&lt;/file&gt;
+         &lt;file type="thumbnail"/&gt;
+      &lt;/example&gt;
+   &lt;/exampleCategory&gt;
+&lt;/examples&gt;</param.examples>
+    <param.demosxml />
+    <param.apps />
+    <param.registered.apps />
+    <param.docs />
+    <param.getting.started.guide />
+    <param.matlabpath.excludes />
+    <param.javaclasspath.excludes />
+    <param.exported.on.package>false</param.exported.on.package>
+    <param.required.addons>
+      <requiredaddons>
+        <requiredAddOn downloadURL="https://github.com/FanWangEcon/MEconTools" earliest="earliest" fromRepository="false" id="629aec6f-8f88-4bdc-8c6e-6d731d1ae90b" include="false" latest="latest">MEconTools</requiredAddOn>
+      </requiredaddons>
+    </param.required.addons>
+    <param.matlab.project.id />
+    <param.matlab.project.name />
+    <param.release.start />
+    <param.release.end />
+    <param.release.current.only>false</param.release.current.only>
+    <param.compatiblity.windows>true</param.compatiblity.windows>
+    <param.compatiblity.macos>true</param.compatiblity.macos>
+    <param.compatiblity.linux>true</param.compatiblity.linux>
+    <param.compatiblity.matlabonline>true</param.compatiblity.matlabonline>
+    <param.installation.map />
+    <param.additional.sw.names />
+    <param.additional.sw.licenses />
+    <param.additional.sw.win.url />
+    <param.additional.sw.mac.url />
+    <param.additional.sw.linux.url />
+    <unset>
+      <param.description />
+      <param.output />
+      <param.products.name />
+      <param.products.id />
+      <param.products.version />
+      <param.platforms />
+      <param.exclude.filters />
+      <param.exclude.pcodedmfiles />
+      <param.demosxml />
+      <param.apps />
+      <param.registered.apps />
+      <param.docs />
+      <param.getting.started.guide />
+      <param.matlabpath.excludes />
+      <param.javaclasspath.excludes />
+      <param.exported.on.package />
+      <param.matlab.project.id />
+      <param.matlab.project.name />
+      <param.release.start />
+      <param.release.end />
+      <param.release.current.only />
+      <param.compatiblity.windows />
+      <param.compatiblity.macos />
+      <param.compatiblity.linux />
+      <param.compatiblity.matlabonline />
+      <param.installation.map />
+      <param.additional.sw.names />
+      <param.additional.sw.licenses />
+      <param.additional.sw.win.url />
+      <param.additional.sw.mac.url />
+      <param.additional.sw.linux.url />
+    </unset>
+    <fileset.rootdir>
+      <file>${PROJECT_ROOT}</file>
+    </fileset.rootdir>
+    <fileset.rootfiles>
+      <file>${PROJECT_ROOT}\.git</file>
+      <file>${PROJECT_ROOT}\.gitattributes</file>
+      <file>${PROJECT_ROOT}\.gitignore</file>
+      <file>${PROJECT_ROOT}\_config.yml</file>
+      <file>${PROJECT_ROOT}\demos.xml</file>
+      <file>${PROJECT_ROOT}\img</file>
+      <file>${PROJECT_ROOT}\LICENSE</file>
+      <file>${PROJECT_ROOT}\PrjOptiSNW</file>
+      <file>${PROJECT_ROOT}\README.md</file>
+    </fileset.rootfiles>
+    <fileset.depfun.included />
+    <fileset.depfun.excluded />
+    <fileset.package />
+    <build-deliverables>
+      <file location="${PROJECT_ROOT}" name="PrjOptiSNW.mltbx" optional="false">C:\Users\fan\PrjOptiSNW\PrjOptiSNW.mltbx</file>
+    </build-deliverables>
+    <workflow />
+    <matlab>
+      <root>C:\Program Files\MATLAB\R2019b</root>
+      <toolboxes>
+        <toolbox name="matlabcoder" />
+      </toolboxes>
+      <toolbox>
+        <matlabcoder>
+          <enabled>true</enabled>
+        </matlabcoder>
+      </toolbox>
+    </matlab>
+    <platform>
+      <unix>false</unix>
+      <mac>false</mac>
+      <windows>true</windows>
+      <win2k>false</win2k>
+      <winxp>false</winxp>
+      <vista>false</vista>
+      <linux>false</linux>
+      <solaris>false</solaris>
+      <osver>10.0</osver>
+      <os32>false</os32>
+      <os64>true</os64>
+      <arch>win64</arch>
+      <matlab>true</matlab>
+    </platform>
+  </configuration>
+</deployment-project>

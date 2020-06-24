@@ -45,52 +45,56 @@
 %
 %    MP_PARAMS = SNW_MP_PARAM(ST_PARAM_GROUP, BL_PRINT_MP_PARAMS,
 %    IT_ROW_N_KEEP, IT_COL_N_KEEP) Control for output matrixes how many
-%    rows and columns to print out. 
+%    rows and columns to print out.
 %
 %    [MP_PARAMS, MP_PARAMS_PREFTECHPRICEGOV, MP_PARAMS_STATESGRID,
 %    MP_PARAMS_EXOTRANS, MP_PARAMS_TYPELIFE, MP_PARAMS_INTLEN] =
 %    SNW_MP_PARAM(ST_PARAM_GROUP) generates default parameters for the type
 %    ST_PARAM_GROUP, and output all parameters in one MP_PARAMS, but also
 %    parameters oraganized in submaps by parameter types
-%    
+%
 %    See also SNWX_MP_PARAM
-% 
+%
 
 %%
 function varargout = snw_mp_param(varargin)
 %% Parse Main Inputs and Set Defaults
 if (~isempty(varargin))
-    
+
     [it_row_n_keep, it_col_n_keep] = deal(8, 8);
-    
+
     if (length(varargin)==1)
         st_param_group = varargin{:};
-        bl_print_mp_params = false;        
+        bl_print_mp_params = false;
     elseif (length(varargin)==2)
-        [st_param_group, bl_print_mp_params] = varargin{:};        
+        [st_param_group, bl_print_mp_params] = varargin{:};
     elseif (length(varargin)==4)
-        [st_param_group, bl_print_mp_params, it_row_n_keep, it_col_n_keep] = varargin{:};        
-    end    
-    
+        [st_param_group, bl_print_mp_params, it_row_n_keep, it_col_n_keep] = varargin{:};
+    end
+
 else
-    
+
     st_param_group = 'default_base';
     st_param_group = 'default_tiny';
     bl_print_mp_params = true;
     [it_row_n_keep, it_col_n_keep] = deal(8, 8);
-    
+
 end
 
 %% Parameters
 % Non-calibrated parameters
-gamma=1; % Risk aversion parameter
+if(strcmp(st_param_group, "default_base"))
+    gamma=1; % Risk aversion parameter, log kids don't matter
+else
+    gamma=2; % Risk aversion parameter, change to 2 so kids matter
+end
 rho_eta=0.98; % Ozkan (2017)
 sigma_eta=0.02; % Ozkan (2017)
 g_n=(1.01^2)-1; % Annual population growth of 1.1 percent
 r=(1.04^2)-1; % Annual real interest rate of 4.0 percent from McGrattan and Prescott
 
 % Government budget constraint parameters
-g_cons=0.17575574; % Government consumption expenditures to GDP (BEA: Average 2015-2019) 
+g_cons=0.17575574; % Government consumption expenditures to GDP (BEA: Average 2015-2019)
 a2=3.664; % Initial guess for average income tax burden (if we use GS)
 
 % Calibrated parameters
@@ -103,22 +107,22 @@ cons_allocation_rule=2;
 % Number of grid points
 n_educgrid=2; % No. of grid points for educational attainment (college vs. non-college)
 n_marriedgrid=2; % No. of grid points for marital status
-n_kidsgrid=6; % No. of grid points for children (0 to 5+ children)    
+n_kidsgrid=6; % No. of grid points for children (0 to 5+ children)
 if(strcmp(st_param_group, "default_base"))
     n_jgrid=42; % Age runs from 18 to 100 (a period is 2 years)
     n_agrid=40; % No. of grid points for assets
     n_etagrid=7; % No. of grid points for persistent labor productivity shocks
-    n_kidsgrid=6; % No. of grid points for children (0 to 5+ children)    
+    n_kidsgrid=6; % No. of grid points for children (0 to 5+ children)
 elseif(strcmp(st_param_group, "default_tiny"))
     n_jgrid   =7; % Age runs from 18 to 100 (5 periods of 16 years + terminal)
     n_agrid   =10; % No. of grid points for assets
     n_etagrid =5; % No. of grid points for persistent labor productivity shocks
-    n_kidsgrid=3; % No. of grid points for children (0 to 5+ children)    
+    n_kidsgrid=3; % No. of grid points for children (0 to 5+ children)
 elseif(strcmp(st_param_group, "default_small"))
     n_jgrid   =18; % Age runs from 18 to 100 (16 periods of 5 years + terminal)
     n_agrid   =20; % No. of grid points for assets
     n_etagrid =5; % No. of grid points for persistent labor productivity shocks
-    n_kidsgrid=3; % No. of grid points for children (0 to 5+ children)    
+    n_kidsgrid=3; % No. of grid points for children (0 to 5+ children)
 end
 
 % Social Security benefits
@@ -161,7 +165,7 @@ else
     psi = prod(reshape(psi_aux, 80/(n_jgrid-2), []), 1)';
 end
 
-% Averaging 
+% Averaging
 
 psi=[psi(1);psi]; % Let survival probability of 18-year-olds be the same as that for 20-year-olds
 psi=[psi;0]; % Maximum lifespan=100 (survival probability at age 100=0)
@@ -206,6 +210,7 @@ epsilon=[epsilon(1,:);epsilon]; % Let life-cycle labor productivity of 18-year-o
 if(strcmp(st_param_group, "default_base"))
     epsilon(25:end,:)=0; % Assume zero labor productivity for 65+ year-olds (exogenous retirement)
 elseif(strcmp(st_param_group, "default_tiny"))
+    gamma=2; % Risk aversion parameter
     epsilon(5:end,:)=0; % Assume zero labor productivity for 65+ year-olds (exogenous retirement)
 elseif(strcmp(st_param_group, "default_small"))
     epsilon(12:end,:)=0; % Assume zero labor productivity for 65+ year-olds (exogenous retirement)
@@ -237,16 +242,16 @@ pi_kids_pktp =NaN(...
     n_jgrid_pktp,...
     n_marriedgrid_kptp);
 
-for kidsp=1:n_kidsgrid_kptp % No. of kids in year 2    
-    counter=0;    
+for kidsp=1:n_kidsgrid_kptp % No. of kids in year 2
+    counter=0;
     for kids=1:n_kidsgrid_kptp % No. of kids in year 1
         for j=1:(n_jgrid_pktp-1) % Age in year 1
-            for married=1:n_marriedgrid_kptp % Marital status                
+            for married=1:n_marriedgrid_kptp % Marital status
                 counter=counter+1;
                 pi_kids_pktp(kids,kidsp,j,married)=pi_kids_trans_prob(counter,kidsp);
             end
         end
-    end    
+    end
 end
 
 pi_kids_pktp(:,:,n_jgrid_pktp,:)=0;
@@ -274,7 +279,7 @@ for kids=1:n_kidsgrid % No. of kids in year 1
     end
 end
 
-% 
+%
 
 clear aux_sum counter pi_kids_trans_prob pi_kids_pktp
 
@@ -293,7 +298,7 @@ end
 % Discretize process for persistent productivity shocks and derive stationary distribution
 [eta_grid,pi_eta]=rouwenhorst(rho_eta,sqrt(sigma_eta),n_etagrid);
 
-    
+
 %% Set Parameter Maps
 mp_params_preftechpricegov = containers.Map('KeyType', 'char', 'ValueType', 'any');
 mp_params_preftechpricegov('gamma') = gamma;
@@ -333,7 +338,7 @@ mp_params = [mp_params_preftechpricegov; mp_params_statesgrid ; ...
 % MP_PARAMS = [MP_PARAMS_PREFTECHPRICE; MP_PARAMS_STATESGRID ; ...
 %     MP_PARAMS_EXOTRANS; MP_PARAMS_TYPELIFE; MP_PARAMS_INTLEN];
 
-%% Print 
+%% Print
 if (bl_print_mp_params)
     ff_container_map_display(mp_params_preftechpricegov);
     ff_container_map_display(mp_params_intlen);

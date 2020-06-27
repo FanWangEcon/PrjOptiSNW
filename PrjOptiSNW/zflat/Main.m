@@ -7,41 +7,43 @@ clc
 
 format longg
 
-% Last updated: 06/24/2020
+% Last updated: 06/27/2020
 
-global beta gamma g_cons a2 rho_eta sigma_eta theta g_n cons_allocation_rule r agrid epsilon eta_grid SS pi_eta pi_kids pi_unemp psi Pop n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
+global beta gamma g_cons a2 rho_eta sigma_eta theta g_n cons_allocation_rule r agrid epsilon eta_grid SS pi_eta pi_kids pi_unemp psi Pop n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid jret
 
 %% Parameters
 % Non-calibrated parameters
 gamma=2; % Risk aversion parameter
-rho_eta=0.98; % Ozkan (2017)
-sigma_eta=0.02; % Ozkan (2017)
+rho_eta=0.98; % Persistence of AR(1) productivity shocks
+sigma_eta=0.018; % Variance of AR(1) productivity shocks 
 g_n=0.01; % Annual population growth of 1.1 percent
 r=0.04; % Annual real interest rate of 4.0 percent from McGrattan and Prescott
 
 % Government budget constraint parameters
 g_cons=0.17575574; % Government consumption expenditures to GDP (BEA: Average 2015-2019) 
-a2=3.664; % Initial guess for average income tax burden (if we use GS)
+a2=1.9007; % Initial guess for average income tax burden (if we use GS)
 
 % Calibrated parameters
-beta=0.96077; % Discount factor
-theta=0.42315; % TFP parameter to normalize units such that GDP per capita equals 1 in the model: Real GDP/capita in 2019: $58,056
+beta=0.972; % Discount factor
+theta=0.6595; % TFP parameter to normalize units such that average household income relative to GDP per capita equals (the latter is normalized to 1): Real GDP/capita in 2019: $58,056
 
 % Consumption allocation rule (1=uniform; 2=square root; 0=equivalent to only 1 household member independent of family size)
 cons_allocation_rule=2;
 
 % Number of grid points
 n_jgrid=83; % Age runs from 18 to 100 (a period is 1 year)
-n_agrid=40; % No. of grid points for assets
-n_etagrid=7; % No. of grid points for persistent labor productivity shocks
+n_agrid=55; % No. of grid points for assets
+n_etagrid=9; % No. of grid points for persistent labor productivity shocks
 n_educgrid=2; % No. of grid points for educational attainment (college vs. non-college)
 n_marriedgrid=2; % No. of grid points for marital status
-n_kidsgrid=6; % No. of grid points for children (0 to 5+ children)
+n_kidsgrid=5; % No. of grid points for children (0 to 4+ children)
+
+jret=49; % Retirement age (age 66)
 
 % Social Security benefits
 SS=zeros(n_jgrid,2);
-SS(49:end,1)=0.24433; % Average SS non-college 2005-2009 as a share of GDP per capita
-SS(49:end,2)=0.29263; % Average SS college 2005-2009 as a share of GDP per capita
+SS(jret:end,1)=0.24433; % Average SS non-college 2005-2009 as a share of GDP per capita
+SS(jret:end,2)=0.29263; % Average SS college 2005-2009 as a share of GDP per capita
 
 %% Data
 load('Mortality_prob_by_age_18_99.mat','mort_prob') % Age-specific mortality probabilities (18-99 year-olds)
@@ -77,18 +79,17 @@ epsilon(3:end,:)=life_cycle_prod_by_educ(:,:);
 epsilon(1,:)=epsilon(3,:); % Let life-cycle labor productivity of 18- and 19-year-olds be the same as that for 20-year-olds
 epsilon(2,:)=epsilon(3,:);
 
-epsilon(49:end,:)=0; % Assume zero labor productivity for 65+ year-olds (exogenous retirement)
+epsilon(jret:end,:)=0; % Assume zero labor productivity for 65+ year-olds (exogenous retirement)
 
 %clear life_cycle_prod_by_educ epsilon_aux
 clear life_cycle_prod_by_educ
 
 % Transition probabilities for number of children (0, 1, 2, 3, 4, or 5) (stored in the following order:
-% Number of children in year 1, age, educational status, marital status. Each column refers to the number of children
-% in year 2)
+% Number of children in year 1, age, marital status, college attainment. Each column refers to the 
+% number of children in year 2)
 %load('pi_kids_trans_prob','pi_kids_trans_prob_2year_intervals')
 load('pi_kids_trans_prob','pi_kids_trans_prob')
-pi_kids=NaN(n_kidsgrid,n_kidsgrid,n_jgrid,n_marriedgrid);
-pi_kids_aux=NaN(n_kidsgrid,n_kidsgrid,n_jgrid,n_marriedgrid);
+pi_kids=NaN(n_kidsgrid,n_kidsgrid,n_jgrid,n_educgrid,n_marriedgrid);
 
 for kidsp=1:n_kidsgrid % No. of kids in year 2
     
@@ -97,36 +98,29 @@ for kidsp=1:n_kidsgrid % No. of kids in year 2
     for kids=1:n_kidsgrid % No. of kids in year 1
         for j=1:(n_jgrid-1) % Age in year 1
             for married=1:n_marriedgrid % Marital status
+                for educ=1:n_educgrid % Educational level
 
-                counter=counter+1;
-                pi_kids_aux(kids,kidsp,j,married)=pi_kids_trans_prob(counter,kidsp);
-
+                    counter=counter+1;
+                    pi_kids(kids,kidsp,j,educ,married)=pi_kids_trans_prob(counter,kidsp);
+                    
+                end
             end
         end
     end
     
 end
 
-% Convert from bi-annual to annual transition probabilities since PSID is
-% bi-annual but a period in the model is one year
-for j=1:(n_jgrid-1) % Age in year 1
-    for married=1:n_marriedgrid % Marital status
-
-        pi_kids(:,:,j,married)=sqrtm(pi_kids_aux(:,:,j,married));
-
-    end
-end
-
-
-pi_kids(:,:,n_jgrid,:)=0;
-pi_kids(:,1,n_jgrid,:)=1;
+pi_kids(:,:,n_jgrid,:,:)=0;
+pi_kids(:,1,n_jgrid,:,:)=1;
 
 % Ensure that all rows sum to 1 in case of rounding error
 for kids=1:n_kidsgrid % No. of kids in year 1
-    for j=1:(n_jgrid-1) % Age in year 1
-        for married=1:n_marriedgrid % Marital status
-            aux_sum=sum(pi_kids(kids,:,j,married));
-            pi_kids(kids,:,j,married)=pi_kids(kids,:,j,married)/aux_sum;
+    for j=1:n_jgrid % Age in year 1
+        for educ=1:n_educgrid % Educational level
+            for married=1:n_marriedgrid % Marital status
+                aux_sum=sum(pi_kids(kids,:,j,educ,married));
+                pi_kids(kids,:,j,educ,married)=pi_kids(kids,:,j,educ,married)/aux_sum;
+            end
         end
     end
 end
@@ -135,7 +129,7 @@ clear aux_sum counter pi_kids_trans_prob
 
 %% Specifying asset grid (use non-linear spacing with minimum value of 0)
 curv=3; % Governs how the grid points are allocated
-scale_a=50; % Maximum value of assets (NOTE: Verifying that it does not bind in Aggregation.m)
+scale_a=190; % Maximum value of assets (NOTE: Verifying that it does not bind in Aggregation.m) grid=1.2451e-11
 
 agrid=zeros(n_agrid,1);
 
@@ -183,10 +177,14 @@ stat_distr_eta(1,:)=x0;
 stat_distr_educ(1,1)=0.6970; % No college
 stat_distr_educ(1,2)=0.3030; % College
 
-% Distribution of marital status from PSID
-% tab Rmarried if RAGE>=18 & RAGE!=. [aweight=WEIGHT]
-stat_distr_married(1,1)=0.5242; % Not married
-stat_distr_married(1,2)=0.4758; % Married
+% Distribution of marital status conditional on college attainment from PSID
+% tab  Rmarried if RAGE>=18 & RAGE!=. & Rcollege==0 [aweight=WEIGHT]
+stat_distr_married(1,1)=0.5635; % Not married
+stat_distr_married(1,2)=0.4365; % Married
+
+% tab  Rmarried if RAGE>=18 & RAGE!=. & Rcollege==1 [aweight=WEIGHT]
+stat_distr_married(2,1)=0.4364; % Not married
+stat_distr_married(2,2)=0.5636; % Married
 
 % Stationary distribution of children at age 20 from PSID
 % Not married and no college
@@ -195,8 +193,7 @@ stat_distr_kids(1,1,1)=0.7333;
 stat_distr_kids(1,1,2)=0.1513;
 stat_distr_kids(1,1,3)=0.0828;
 stat_distr_kids(1,1,4)=0.0236;
-stat_distr_kids(1,1,5)=0.0059;
-stat_distr_kids(1,1,6)=0.0030;
+stat_distr_kids(1,1,5)=0.0090;
 
 aux=sum(stat_distr_kids(1,1,:));
 stat_distr_kids(1,1,:)=stat_distr_kids(1,1,:)/aux;
@@ -208,7 +205,6 @@ stat_distr_kids(2,1,2)=0.0236;
 stat_distr_kids(2,1,3)=0.0001;
 stat_distr_kids(2,1,4)=0.0011;
 stat_distr_kids(2,1,5)=0;
-stat_distr_kids(2,1,6)=0;
 
 aux=sum(stat_distr_kids(2,1,:));
 stat_distr_kids(2,1,:)=stat_distr_kids(2,1,:)/aux;
@@ -220,7 +216,6 @@ stat_distr_kids(1,2,2)=0.2958;
 stat_distr_kids(1,2,3)=0.2131;
 stat_distr_kids(1,2,4)=0.0569;
 stat_distr_kids(1,2,5)=0.0199;
-stat_distr_kids(1,2,6)=0;
 
 aux=sum(stat_distr_kids(1,2,:));
 stat_distr_kids(1,2,:)=stat_distr_kids(1,2,:)/aux;
@@ -232,7 +227,6 @@ stat_distr_kids(2,2,2)=0.2153;
 stat_distr_kids(2,2,3)=0.0221;
 stat_distr_kids(2,2,4)=0.0091;
 stat_distr_kids(2,2,5)=0;
-stat_distr_kids(2,2,6)=0;
 
 aux=sum(stat_distr_kids(2,2,:));
 stat_distr_kids(2,2,:)=stat_distr_kids(2,2,:)/aux;
@@ -247,8 +241,8 @@ for j=2:n_jgrid
     Pop(j)=Pop(j-1)*psi(j-1)/(1+g_n);
 end
 
-name='Old-age dependency ratio=';
-name2=[name,num2str(sum(Pop(25:end))/sum(Pop(1:24)))];
+name='Old-age dependency ratio (ratio of 65+/(18-64))=';
+name2=[name,num2str(sum(Pop(48:end))/sum(Pop(1:47)))];
 disp(name2);
 
 %% Calibration
@@ -267,15 +261,15 @@ while err>tol
     % Aggregation
     [Phi_true,Phi_adj,A_agg,Y_inc_agg]=Aggregation(ap,stat_distr_eta,stat_distr_educ,stat_distr_married,stat_distr_kids);
     
-    name='Income per capita (target=1)=';
+    name='Average household income (target=1.38)=';
     name2=[name,num2str(Y_inc_agg/sum(Pop))];
     disp(name2);
-    name='Aggregate wealth to aggregate income (target=1.5)=';
+    name='Aggregate wealth to aggregate income (target=3.0)=';
     name2=[name,num2str(A_agg/Y_inc_agg)];
     disp(name2);
     
-    err1=abs((Y_inc_agg/sum(Pop))-1); % Target: Income per capita equals 1
-    err2=abs((A_agg/Y_inc_agg)-1.5); % Target: Annual capital/income ratio of 3
+    err1=abs((Y_inc_agg/sum(Pop))-1.38); % Target: Average household income relative to income per capita (latter is normalized to 1 in the model)
+    err2=abs((A_agg/Y_inc_agg)-3.0); % Target: Annual capital/income ratio of 3
         
     err=max(err1,err2);
     
@@ -283,8 +277,8 @@ while err>tol
     
     if err>tol
    
-        theta=theta*((sum(Pop)/Y_inc_agg)^0.1); % Normalize theta such that income per capita equals 1
-        beta=beta*((1.5/(A_agg/Y_inc_agg))^0.1); % Calibrate beta such that annual capital/income ratio equals 3
+        theta=theta*((1.38/(sum(Pop)/Y_inc_agg))^0.1); % Normalize theta such that income per capita equals 1
+        beta=beta*((3.0/(A_agg/Y_inc_agg))^0.1); % Calibrate beta such that annual capital/income ratio equals 3
         
     end
     
@@ -321,7 +315,7 @@ for j=1:n_jgrid % Age
                    
                        counter=counter+1;
 
-                       Output(counter,1)=16+(2*j);
+                       Output(counter,1)=17+j;
                        Output(counter,2)=agrid(a);
                        Output(counter,3)=eta_grid(eta);
                        Output(counter,4)=educ-1;

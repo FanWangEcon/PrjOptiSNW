@@ -19,7 +19,7 @@ vals(2)=1-vals(1);
 cont=0;
 for etap=1:n_etagrid
     for kidsp=1:n_kidsgrid
-        cont=cont+pi_eta(eta,etap)*pi_kids(kids,kidsp,j,married)*(vals(1)*V_VFI(j+1,ind_aux,etap,educ,married,kidsp)+vals(2)*V_VFI(j+1,ind_aux+1,etap,educ,married,kidsp));
+        cont=cont+pi_eta(eta,etap)*pi_kids(kids,kidsp,j,educ,married)*(vals(1)*V_VFI(j+1,ind_aux,etap,educ,married,kidsp)+vals(2)*V_VFI(j+1,ind_aux+1,etap,educ,married,kidsp));
     end
 end
 

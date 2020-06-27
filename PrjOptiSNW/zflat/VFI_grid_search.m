@@ -45,7 +45,7 @@ for j=n_jgrid:(-1):1 % Age
                                cont=0;
                                for etap=1:n_etagrid
                                    for kidsp=1:n_kidsgrid
-                                       cont=cont+pi_eta(eta,etap)*pi_kids(kids,kidsp,j,married)*V_VFI(j+1,aa,etap,educ,married,kidsp);
+                                       cont=cont+pi_eta(eta,etap)*pi_kids(kids,kidsp,j,educ,married)*V_VFI(j+1,aa,etap,educ,married,kidsp);
                                    end
                                end
 

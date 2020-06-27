@@ -59,7 +59,7 @@ for j=1:n_jgrid % Age
                            cont=0;
                            for etap=1:n_etagrid
                                for kidsp=1:n_kidsgrid
-                                   cont=cont+pi_eta(eta,etap)*pi_kids(kids,kidsp,j,married)*(vals(1)*V_ss(j+1,inds(1),etap,educ,married,kidsp)+vals(2)*V_ss(j+1,inds(2),etap,educ,married,kidsp));
+                                   cont=cont+pi_eta(eta,etap)*pi_kids(kids,kidsp,j,educ,married)*(vals(1)*V_ss(j+1,inds(1),etap,educ,married,kidsp)+vals(2)*V_ss(j+1,inds(2),etap,educ,married,kidsp));
                                end
                            end
 
@@ -76,7 +76,7 @@ for j=1:n_jgrid % Age
                            cont=0;
                            for etap=1:n_etagrid
                                for kidsp=1:n_kidsgrid
-                                   cont=cont+pi_eta(eta,etap)*pi_kids(kids,kidsp,j,married)*V_ss(j+1,1,etap,educ,married,kidsp);
+                                   cont=cont+pi_eta(eta,etap)*pi_kids(kids,kidsp,j,educ,married)*V_ss(j+1,1,etap,educ,married,kidsp);
                                end
                            end
                            V_aux3=utility(c_aux3,married,kids)+beta*psi(j)*cont;

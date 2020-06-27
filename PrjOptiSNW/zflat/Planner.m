@@ -72,8 +72,8 @@ for a=1:n_agrid % Assets
 
            for etap=1:n_etagrid
                for kidsp=1:n_kidsgrid
-                   Phi_p(inds(1),etap,educ,kidsp)=Phi_p(inds(1),etap,educ,kidsp)+Phi_norm(a,eta,educ)*vals(1)*pi_eta(eta,etap)*pi_kids(kids,kidsp,j,married);
-                   Phi_p(inds(2),etap,educ,kidsp)=Phi_p(inds(2),etap,educ,kidsp)+Phi_norm(a,eta,educ)*vals(2)*pi_eta(eta,etap)*pi_kids(kids,kidsp,j,married);
+                   Phi_p(inds(1),etap,educ,kidsp)=Phi_p(inds(1),etap,educ,kidsp)+Phi_norm(a,eta,educ)*vals(1)*pi_eta(eta,etap)*pi_kids(kids,kidsp,j,educ,married);
+                   Phi_p(inds(2),etap,educ,kidsp)=Phi_p(inds(2),etap,educ,kidsp)+Phi_norm(a,eta,educ)*vals(2)*pi_eta(eta,etap)*pi_kids(kids,kidsp,j,educ,married);
                end
            end
 

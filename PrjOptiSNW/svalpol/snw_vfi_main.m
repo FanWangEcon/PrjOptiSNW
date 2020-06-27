@@ -33,18 +33,18 @@
 %    MP_CONTROLS) invoke model with externally set parameter map MP_PARAMS
 %    as well as control mpa MP_CONTROLS.
 %
-%    See also SNWX_VFI_MAIN
+%    See also SNWX_VFI_MAIN, SNW_MP_CONTROL, SNW_MP_PARAM
 %
 
 %%
 function [V_VFI,ap_VFI,cons_VFI,exitflag_VFI]=snw_vfi_main(varargin)
 
-%% Catch Param Error
+%% Default and Parse 
 if (~isempty(varargin))
     
     if (length(varargin)==1)
         [mp_params] = varargin{:};
-        mp_controls = snw_mp_controls('default_base');
+        mp_controls = snw_mp_control('default_base');
     elseif (length(varargin)==2)
         [mp_params, mp_controls] = varargin{:};
     end
@@ -52,7 +52,7 @@ if (~isempty(varargin))
 else
     
     mp_params = snw_mp_param('default_tiny');
-    mp_controls = snw_mp_controls('default_base');
+    mp_controls = snw_mp_control('default_test');
     
 end
 
@@ -98,8 +98,8 @@ params_group = values(mp_controls, {'bl_timer'});
 [bl_timer] = params_group{:};
 
 % Display Controls
-params_group = values(mp_controls, {'bl_print_iter'});
-[bl_print_iter] = params_group{:};
+params_group = values(mp_controls, {'bl_print_vfi', 'bl_print_vfi_verbose'});
+[bl_print_vfi, bl_print_vfi_verbose] = params_group{:};
 
 %% Timing and Profiling Start
 if (bl_timer)
@@ -224,15 +224,21 @@ for j=n_jgrid:(-1):1 % Age
         end
     end
     
-    if (bl_print_iter)
-        disp(strcat(['Finished Age Group:' num2str(j) ' of ' num2str(n_jgrid)]));
+    if (bl_print_vfi)
+        disp(strcat(['SNW_VFI_MAIN: Finished Age Group:' num2str(j) ' of ' num2str(n_jgrid)]));
     end
     
 end
 
 %% Timing and Profiling End
 if (bl_timer)
-    toc;
+    toc;    
+    st_complete_vfi = strjoin(...
+        ["Completed SNW_VFI_MAIN", ...
+         ['SNW_MP_PARAM=' mp_params('mp_params_name')], ...
+         ['SNW_MP_CONTROL=' mp_controls('mp_params_name')] ...
+        ], ";");
+    disp(st_complete_vfi);
 end
 
 end

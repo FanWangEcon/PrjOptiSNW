@@ -8,7 +8,7 @@ if j<25
     coeff_Rage_sq=-0.0054628;
     coeff_Rage_cube=0.0000337;
     coeff_Reduc=0.2140897;
-    coeff_Rkids=-0.1685701;
+    coeff_Rkids=-0.1685701; % set equal to 0 to take out kid effect
     coeff_cons=-5.035496;
 
     F=coeff_cons+(coeff_Rearn*log(earn))+(coeff_Rage*((2*j)+16))+(coeff_Rage_sq*(((2*j)+16)^2))+(coeff_Rage_cube*(((2*j)+16)^3))+(coeff_Reduc*(educ-1))+(coeff_Rkids*(kids-1));

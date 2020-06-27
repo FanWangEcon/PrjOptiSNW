@@ -1,0 +1,1082 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>SNW_DS_MAIN Simulates Distributions</title><meta name="generator" content="MATLAB 9.7"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-06-24"><meta name="DC.source" content="snw_ds_main.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>SNW_DS_MAIN Simulates Distributions</h1><!--introduction--><pre>  Given policy functions, simulate distributions</pre><pre>  Pref, Technology, and prices SCALARS:</pre><pre>  * AP_SS ndarry of policy function solution from SNW_VFI_MAIN
+  * MP_PARAMS contain map of parameters
+  * MP_CONTROLS container map of parameters</pre><pre>  [MP_DSVFI_RESULTS] = SNW_DS_MAIN() invoke model with externally set
+  parameter map and control map. Results outputed to a map containing
+  various output matrixes.</pre><pre>  See also SNWX_DS_MAIN, SNW_VFI_MAIN, SNW_MP_CONTROLS, SNW_MP_PARAM</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#3">Default and Parse Inputs</a></li><li><a href="#4">Reset All globals</a></li><li><a href="#5">Parse Model Parameters</a></li><li><a href="#6">Parse Model Controls</a></li><li><a href="#7">Aggregation</a></li><li><a href="#8">Timing and Profiling End</a></li><li><a href="#9">Collect Results</a></li><li><a href="#10">Results Basic Print and Verbose print</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> mp_dsvfi_results=snw_ds_main(varargin)
+</pre><h2 id="3">Default and Parse Inputs</h2><pre class="codeinput"><span class="keyword">if</span> (~isempty(varargin))
+
+    <span class="keyword">if</span> (length(varargin)==1)
+        [mp_params] = varargin{:};
+        mp_controls = snw_mp_controls(<span class="string">'default_base'</span>);
+    <span class="keyword">elseif</span> (length(varargin)==2)
+        [mp_params, mp_controls] = varargin{:};
+        [v_ss, ap_ss, c_ss, exitflag_VFI] = snw_vfi_main(mp_params, mp_controls);
+    <span class="keyword">elseif</span> (length(varargin)==3)
+        [mp_params, mp_controls, ap_ss] = varargin{:};
+    <span class="keyword">end</span>
+
+<span class="keyword">else</span>
+
+    mp_params = snw_mp_param(<span class="string">'default_tiny'</span>);
+    mp_controls = snw_mp_control(<span class="string">'default_test'</span>);
+    [v_ss, ap_ss, c_ss, exitflag_VFI] = snw_vfi_main(mp_params, mp_controls);
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">SNW_VFI_MAIN: Finished Age Group:7 of 7
+SNW_VFI_MAIN: Finished Age Group:6 of 7
+SNW_VFI_MAIN: Finished Age Group:5 of 7
+SNW_VFI_MAIN: Finished Age Group:4 of 7
+SNW_VFI_MAIN: Finished Age Group:3 of 7
+SNW_VFI_MAIN: Finished Age Group:2 of 7
+SNW_VFI_MAIN: Finished Age Group:1 of 7
+Elapsed time is 64.178849 seconds.
+Completed SNW_VFI_MAIN;SNW_MP_PARAM=;default_tiny;SNW_MP_CONTROL=;default_test
+</pre><h2 id="4">Reset All globals</h2><p>globals = who('global'); clear(globals{:}); Parameters used in this code directly</p><pre class="codeinput"><span class="keyword">global</span> a2 g_cons agrid SS pi_eta pi_kids Pop n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
+</pre><h2 id="5">Parse Model Parameters</h2><pre class="codeinput">params_group = values(mp_params, {<span class="string">'g_cons'</span>, <span class="string">'a2'</span>});
+[g_cons, a2] = params_group{:};
+
+params_group = values(mp_params, {<span class="string">'agrid'</span>});
+[agrid] = params_group{:};
+
+params_group = values(mp_params, {<span class="string">'pi_eta'</span>, <span class="string">'pi_kids'</span>});
+[pi_eta, pi_kids] = params_group{:};
+
+params_group = values(mp_params, {<span class="string">'SS'</span>});
+[SS] = params_group{:};
+
+params_group = values(mp_params, <span class="keyword">...</span>
+    {<span class="string">'n_jgrid'</span>, <span class="string">'n_agrid'</span>, <span class="string">'n_etagrid'</span>, <span class="string">'n_educgrid'</span>, <span class="string">'n_marriedgrid'</span>, <span class="string">'n_kidsgrid'</span>});
+[n_jgrid, n_agrid, n_etagrid, n_educgrid, n_marriedgrid, n_kidsgrid] = params_group{:};
+
+params_group = values(mp_params, <span class="keyword">...</span>
+    {<span class="string">'stat_distr_eta'</span>, <span class="string">'stat_distr_educ'</span>, <span class="string">'stat_distr_married'</span>, <span class="string">'stat_distr_kids'</span>, <span class="string">'Pop'</span>});
+[stat_distr_eta, stat_distr_educ, stat_distr_married, stat_distr_kids, Pop] = params_group{:};
+</pre><h2 id="6">Parse Model Controls</h2><p>Profiling Controls</p><pre class="codeinput">params_group = values(mp_controls, {<span class="string">'bl_timer'</span>});
+[bl_timer] = params_group{:};
+
+<span class="comment">% Display Controls</span>
+params_group = values(mp_controls, {<span class="string">'bl_compute_drv_stats'</span>});
+[bl_compute_drv_stats] = params_group{:};
+
+<span class="comment">% Display Controls</span>
+params_group = values(mp_controls, {<span class="string">'bl_print_ds'</span>, <span class="string">'bl_print_ds_verbose'</span>});
+[bl_print_ds, bl_print_ds_verbose] = params_group{:};
+
+<span class="comment">% Store Controls</span>
+params_group = values(mp_controls, {<span class="string">'bl_vfi_store_all'</span>, <span class="string">'bl_ds_store_all'</span>});
+[bl_vfi_store_all, bl_ds_store_all] = params_group{:};
+</pre><h2 id="7">Aggregation</h2><pre class="codeinput">Phiss=zeros(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+
+<span class="comment">% Assume everyone starts with 0 assets</span>
+<span class="comment">% Use stationary distribution of productivity shock and initial</span>
+<span class="comment">% distribution for educational attainment, marital status, and number of</span>
+<span class="comment">% kids from PSID</span>
+<span class="keyword">for</span> eta=1:n_etagrid <span class="comment">% Productivity</span>
+    <span class="keyword">for</span> educ=1:n_educgrid <span class="comment">% Fixed effects</span>
+        <span class="keyword">for</span> married=1:n_marriedgrid <span class="comment">% Marital status</span>
+            <span class="keyword">for</span> kids=1:n_kidsgrid <span class="comment">% No. of kids</span>
+                Phiss(1,1,eta,educ,married,kids)=stat_distr_eta(eta)*stat_distr_educ(educ)*stat_distr_married(married)*stat_distr_kids(educ,married,kids);
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% Use policy functions and survival probabilities to get distribution of remaining idiosyncratic states</span>
+<span class="keyword">for</span> j=1:(n_jgrid-1) <span class="comment">% Age</span>
+    <span class="keyword">for</span> a=1:n_agrid <span class="comment">% Assets</span>
+        <span class="keyword">for</span> eta=1:n_etagrid <span class="comment">% Productivity</span>
+            <span class="keyword">for</span> educ=1:n_educgrid <span class="comment">% Educational level</span>
+                <span class="keyword">for</span> married=1:n_marriedgrid <span class="comment">% Marital status</span>
+                    <span class="keyword">for</span> kids=1:n_kidsgrid <span class="comment">% No. of kids</span>
+
+                        <span class="keyword">if</span> ap_ss(j,a,eta,educ,married,kids)==0
+                            inds(1)=1;
+                            inds(2)=1;
+                            vals(1)=1;
+                            vals(2)=0;
+
+                        <span class="keyword">elseif</span> ap_ss(j,a,eta,educ,married,kids)==agrid(n_agrid)
+                            inds(1)=n_agrid;
+                            inds(2)=n_agrid;
+                            vals(1)=1;
+                            vals(2)=0;
+
+                        <span class="keyword">else</span>
+
+                            ind_aux=find(agrid&lt;=ap_ss(j,a,eta,educ,married,kids),1,<span class="string">'last'</span>);
+
+                            inds(1)=ind_aux;
+                            inds(2)=ind_aux+1;
+
+                            <span class="comment">% Linear interpolation</span>
+                            vals(1)=1-((ap_ss(j,a,eta,educ,married,kids)-agrid(inds(1)))/(agrid(inds(2))-agrid(inds(1))));
+                            vals(2)=1-vals(1);
+
+                        <span class="keyword">end</span>
+
+                        <span class="keyword">for</span> etap=1:n_etagrid
+                            <span class="keyword">for</span> kidsp=1:n_kidsgrid
+                                Phiss(j+1,inds(1),etap,educ,married,kidsp)=Phiss(j+1,inds(1),etap,educ,married,kidsp)+Phiss(j,a,eta,educ,married,kids)*vals(1)*pi_eta(eta,etap)*pi_kids(kids,kidsp,j,married);
+                                Phiss(j+1,inds(2),etap,educ,married,kidsp)=Phiss(j+1,inds(2),etap,educ,married,kidsp)+Phiss(j,a,eta,educ,married,kids)*vals(2)*pi_eta(eta,etap)*pi_kids(kids,kidsp,j,married);
+                            <span class="keyword">end</span>
+                        <span class="keyword">end</span>
+
+                    <span class="keyword">end</span>
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% Normalize distribution of idiosyncratic states to sum to 1 for each age</span>
+<span class="comment">% Phi_true = joint probability mass function all states</span>
+<span class="comment">% Phi_adj  = conditional probability mass function given age</span>
+Phi_adj=zeros(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+Phi_true=zeros(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+
+<span class="keyword">for</span> j=1:n_jgrid
+
+    dummy=sum(sum(sum(sum(sum(Phiss(j,:,:,:,:,:))))));
+
+    <span class="keyword">for</span> a=1:n_agrid
+        <span class="keyword">for</span> eta=1:n_etagrid
+            <span class="keyword">for</span> educ=1:n_educgrid
+                <span class="keyword">for</span> married=1:n_marriedgrid
+                    <span class="keyword">for</span> kids=1:n_kidsgrid
+
+                        <span class="keyword">if</span> dummy&gt;0
+                            Phi_adj(j,a,eta,educ,married,kids)=Phiss(j,a,eta,educ,married,kids)/dummy;
+                        <span class="keyword">else</span>
+                            Phi_adj(j,a,eta,educ,married,kids)=0;
+                        <span class="keyword">end</span>
+
+                        Phi_true(j,a,eta,educ,married,kids)=Phi_adj(j,a,eta,educ,married,kids)*Pop(j);
+
+                    <span class="keyword">end</span>
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+<span class="keyword">end</span>
+
+
+<span class="comment">% Check if the upper bound on assets binds</span>
+check_asset_distr=sum(sum(sum(sum(sum(Phi_true(:,n_agrid,:,:,:,:))))));
+
+<span class="keyword">if</span> (bl_print_ds || bl_ds_store_all)
+    name=<span class="string">'SNW_DS_MAIN: Share of population with assets equal to upper bound on asset grid='</span>;
+    st_pop_max_asset = [name,num2str(check_asset_distr/sum(Pop))];
+    disp(st_pop_max_asset);
+<span class="keyword">end</span>
+
+<span class="comment">% Aggregate variables</span>
+A_agg=0;
+Y_inc_agg=0;
+Tax_revenues=0;
+SS_spend=0;
+
+<span class="keyword">for</span> j=1:n_jgrid
+    <span class="keyword">for</span> a=1:n_agrid
+        <span class="keyword">for</span> eta=1:n_etagrid
+            <span class="keyword">for</span> educ=1:n_educgrid
+                <span class="keyword">for</span> married=1:n_marriedgrid
+                    <span class="keyword">for</span> kids=1:n_kidsgrid
+
+                        A_agg=A_agg+Phi_true(j,a,eta,educ,married,kids)*agrid(a); <span class="comment">% Aggregate wealth</span>
+
+                        [inc_aux,earn]=individual_income(j,a,eta,educ);
+                        spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
+
+                        Y_inc_agg=Y_inc_agg+Phi_true(j,a,eta,educ,married,kids)*( inc_aux+(married-1)*spouse_inc ); <span class="comment">% Aggregate income</span>
+
+                        <span class="comment">%                      inc_aux=r*agrid(a)+epsilon(j,educ)*theta*exp(eta_grid(eta))+SS(j,educ); % Income excluding spousal income (if married)</span>
+                        Tax_revenues=Tax_revenues+Phi_true(j,a,eta,educ,married,kids)*max(0,Tax(inc_aux,(married-1)*spouse_inc)); <span class="comment">% Tax revenues</span>
+
+                        SS_spend=SS_spend+Phi_true(j,a,eta,educ,married,kids)*SS(j,educ); <span class="comment">% Total spending on Social Security</span>
+
+                    <span class="keyword">end</span>
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% Update guess for a2 (determines average level of income taxation)</span>
+<span class="comment">% Assuming government balances its budget period-by-period</span>
+
+tol=10^-4;
+err=abs((Tax_revenues/(SS_spend+g_cons*Y_inc_agg))-1);
+
+a2_update=a2;
+
+<span class="keyword">while</span> err&gt;tol
+
+    Tax_revenues_aux=0;
+
+    <span class="keyword">for</span> j=1:n_jgrid
+        <span class="keyword">for</span> a=1:n_agrid
+            <span class="keyword">for</span> eta=1:n_etagrid
+                <span class="keyword">for</span> educ=1:n_educgrid
+                    <span class="keyword">for</span> married=1:n_marriedgrid
+                        <span class="keyword">for</span> kids=1:n_kidsgrid
+
+                            [inc_aux,earn]=individual_income(j,a,eta,educ);
+                            spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
+                            Tax_revenues_aux=Tax_revenues_aux+Phi_true(j,a,eta,educ,married,kids)*max(0,Tax(inc_aux,(married-1)*spouse_inc)); <span class="comment">% Tax revenues</span>
+
+                        <span class="keyword">end</span>
+                    <span class="keyword">end</span>
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+    a2=a2*(((SS_spend+g_cons*Y_inc_agg)/Tax_revenues_aux)^0.5); <span class="comment">% Find value of a2 that balances government budget</span>
+
+    err=abs((Tax_revenues_aux/(SS_spend+g_cons*Y_inc_agg))-1);
+
+    <span class="keyword">if</span> (bl_print_ds_verbose)
+        disp([<span class="string">'SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)='</span> num2str(err)])
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+a2_update=[a2_update,a2];
+
+<span class="keyword">if</span> (bl_print_ds || bl_ds_store_all)
+    name=<span class="string">'SNW_DS_MAIN: Old and updated value of a2='</span>;
+    st_a2_update=[name,num2str(a2_update)];
+    disp(st_a2_update);
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">SNW_DS_MAIN: Share of population with assets equal to upper bound on asset grid=0
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.056154
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.052344
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.048713
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.045263
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.041996
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.038911
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.036006
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.033277
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.03072
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.02833
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.0261
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.024023
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.022093
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.020302
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.018643
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.017107
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.015689
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.014379
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.013172
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.012061
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.011038
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.010098
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.0092347
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.0084422
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.0077152
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.0070488
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.0064383
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.0058792
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.0053675
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.0048993
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.0044711
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.0040797
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.0037219
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.003395
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.0030965
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.0028239
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.002575
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.0023478
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.0021404
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.0019512
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.0017786
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.0016212
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.0014776
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.0013466
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.0012272
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.0011183
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.0010191
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.00092859
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.00084611
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.00077093
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.00070241
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.00063996
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.00058305
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.00053119
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.00048393
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.00044087
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.00040163
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.00036588
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.00033331
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.00030363
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.00027659
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.00025196
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.00022952
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.00020907
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.00019045
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.00017348
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.00015803
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.00014395
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.00013112
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.00011944
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=0.00010879
+SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=9.9096e-05
+SNW_DS_MAIN: Old and updated value of a2=3.664      2.5687
+</pre><h2 id="8">Timing and Profiling End</h2><pre class="codeinput"><span class="keyword">if</span> (bl_timer)
+    toc;
+    st_complete_ds = strjoin(<span class="keyword">...</span>
+        [<span class="string">"Completed SNW_DS_MAIN"</span>, <span class="keyword">...</span>
+         [<span class="string">'SNW_MP_PARAM='</span> mp_params(<span class="string">'mp_params_name'</span>)], <span class="keyword">...</span>
+         [<span class="string">'SNW_MP_CONTROL='</span> mp_controls(<span class="string">'mp_params_name'</span>)] <span class="keyword">...</span>
+        ], <span class="string">";"</span>);
+    disp(st_complete_ds);
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">Elapsed time is 69.816264 seconds.
+Completed SNW_DS_MAIN;SNW_MP_PARAM=;default_tiny;SNW_MP_CONTROL=;default_test
+</pre><h2 id="9">Collect Results</h2><pre class="codeinput">mp_dsvfi_results = containers.Map(<span class="string">'KeyType'</span>, <span class="string">'char'</span>, <span class="string">'ValueType'</span>, <span class="string">'any'</span>);
+mp_dsvfi_results(<span class="string">'mp_params'</span>) = mp_params;
+mp_dsvfi_results(<span class="string">'mp_controls'</span>) = mp_controls;
+mp_dsvfi_results(<span class="string">'ap_ss'</span>) = ap_ss;
+
+mp_dsvfi_results(<span class="string">'Phi_true'</span>) = Phi_true;
+mp_dsvfi_results(<span class="string">'Phi_adj'</span>) = Phi_adj;
+mp_dsvfi_results(<span class="string">'A_agg'</span>) = A_agg;
+mp_dsvfi_results(<span class="string">'Y_inc_agg'</span>) = Y_inc_agg;
+
+<span class="comment">% Store all of DS Function Outputs</span>
+<span class="keyword">if</span> (bl_ds_store_all)
+    <span class="comment">% Numeric Values</span>
+    mp_dsvfi_results(<span class="string">'dummy'</span>) = dummy;
+    mp_dsvfi_results(<span class="string">'check_asset_distr'</span>) = check_asset_distr;
+    mp_dsvfi_results(<span class="string">'Tax_revenues'</span>) = Tax_revenues;
+    mp_dsvfi_results(<span class="string">'SS_spend'</span>) = SS_spend;
+    mp_dsvfi_results(<span class="string">'err'</span>) = err;
+
+    <span class="comment">% Strings</span>
+    mp_dsvfi_results(<span class="string">'st_pop_max_asset'</span>) = string(st_pop_max_asset);
+    mp_dsvfi_results(<span class="string">'st_a2_update'</span>) = string(st_a2_update);
+<span class="keyword">end</span>
+
+<span class="comment">% Store all of VFI Function Outputs</span>
+<span class="keyword">if</span> (bl_vfi_store_all &amp;&amp; (length(varargin)&lt;3))
+    mp_dsvfi_results(<span class="string">'v_ss'</span>) = v_ss;
+    mp_dsvfi_results(<span class="string">'c_ss'</span>) = c_ss;
+    mp_dsvfi_results(<span class="string">'exitflag_VFI'</span>) = exitflag_VFI;
+<span class="keyword">end</span>
+</pre><h2 id="10">Results Basic Print and Verbose print</h2><pre class="codeinput"><span class="keyword">if</span> (bl_print_ds_verbose)
+    ff_container_map_display(mp_params);
+    ff_container_map_display(mp_controls);
+    ff_container_map_display(mp_dsvfi_results);
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> (bl_compute_drv_stats &amp;&amp; (length(varargin)&lt;3))
+    <span class="comment">% Array Inputs</span>
+    mp_cl_ar_xyz_of_s = containers.Map(<span class="string">'KeyType'</span>,<span class="string">'char'</span>, <span class="string">'ValueType'</span>,<span class="string">'any'</span>);
+    mp_cl_ar_xyz_of_s(<span class="string">'ap_ss'</span>) = {ap_ss(:), zeros(1)};
+    mp_cl_ar_xyz_of_s(<span class="string">'c_ss'</span>) = {c_ss(:), zeros(1)};
+    mp_cl_ar_xyz_of_s(<span class="string">'v_ss'</span>) = {v_ss(:), zeros(1)};
+    mp_cl_ar_xyz_of_s(<span class="string">'ar_st_y_name'</span>) = [<span class="string">"ap_ss"</span>, <span class="string">"c_ss"</span>, <span class="string">"v_ss"</span>];
+
+    <span class="comment">% controls</span>
+    mp_support = containers.Map(<span class="string">'KeyType'</span>,<span class="string">'char'</span>, <span class="string">'ValueType'</span>,<span class="string">'any'</span>);
+    mp_support(<span class="string">'ar_fl_percentiles'</span>) = [0.01 0.1 1 5 10 20 25 30 40 50 60 70 75 80 90 95 99 99.9 99.99];
+    <span class="keyword">if</span> (bl_print_ds)
+        mp_support(<span class="string">'bl_display_final'</span>) = true;
+    <span class="keyword">else</span>
+        mp_support(<span class="string">'bl_display_final'</span>) = false;
+    <span class="keyword">end</span>
+    mp_support(<span class="string">'bl_display_detail'</span>) = false;
+    mp_support(<span class="string">'bl_display_drvm2outcomes'</span>) = false;
+    mp_support(<span class="string">'bl_display_drvstats'</span>) = false;
+    mp_support(<span class="string">'bl_display_drvm2covcor'</span>) = false;
+
+    <span class="comment">% Call Function</span>
+    mp_cl_mt_xyz_of_s = ff_simu_stats(Phi_true(:)/sum(Phi_true,<span class="string">'all'</span>), mp_cl_ar_xyz_of_s, mp_support);
+    <span class="keyword">if</span> (bl_vfi_store_all)
+        mp_dsvfi_results(<span class="string">'mp_cl_mt_xyz_of_s'</span>) = mp_cl_mt_xyz_of_s;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">----------------------------------------
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+CONTAINER NAME: mp_params ND Array (Matrix etc)
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                          i     idx    ndim    numel    rowN    colN       mean         std        coefvari        min          max  
+                          __    ___    ____    _____    ____    ____    __________    ________    __________    __________    _______
+
+    Pop                    1     1      2         7       7       1        0.53756     0.35339       0.65741     0.0053974          1
+    SS                     2     2      2        14       7       2        0.11506     0.13885        1.2067             0    0.29263
+    agrid                  3     4      2        10      10       1         13.889      17.236         1.241             0         50
+    epsilon                4     7      2        14       7       2        0.94364     0.88779       0.94082             0     2.2266
+    eta_grid               5     8      2         5       5       1     4.4409e-17      1.1237    2.5303e+16       -1.4213     1.4213
+    pi_eta                 6    19      2        25       5       5            0.2     0.38844        1.9422         1e-08    0.96099
+    pi_kids                7    20      4       126       3      42        0.33333     0.34999          1.05             0          1
+    psi                    8    21      2         7       7       1        0.62404     0.44469       0.71261             0    0.98684
+    stat_distr_educ        9    24      2         2       1       2            0.5      0.2786        0.5572         0.303      0.697
+    stat_distr_eta        10    25      2         5       1       5            0.2      0.1355       0.67748        0.0625      0.375
+    stat_distr_kids       11    26      3        12       2       6        0.33333     0.33166       0.99497    0.00010011    0.97627
+    stat_distr_married    12    27      2         2       1       2            0.5    0.034224      0.068448        0.4758     0.5242
+
+----------------------------------------
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+CONTAINER NAME: mp_params Scalars
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                            i     idx     value 
+                            __    ___    _______
+
+    a2                       1     3       3.664
+    beta                     2     5     0.96077
+    cons_allocation_rule     3     6           2
+    g_cons                   4     9     0.17576
+    g_n                      5    10     0.17258
+    gamma                    6    11           2
+    n_agrid                  7    13          10
+    n_educgrid               8    14           2
+    n_etagrid                9    15           5
+    n_jgrid                 10    16           7
+    n_kidsgrid              11    17           3
+    n_marriedgrid           12    18           2
+    r                       13    22     0.87298
+    theta                   14    28     0.42315
+
+----------------------------------------
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+CONTAINER NAME: mp_params String
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                          i     idx                   string              
+                         ___    ____    __________________________________
+
+    mp_params_name       "1"    "12"    "default_tiny"                    
+    st_old_age_depend    "2"    "23"    "Old-age dependency ratio=0.20168"
+
+pos = 16 ; key = options
+  fmincon options:
+
+   Options used by current Algorithm ('interior-point'):
+   (Other available algorithms: 'active-set', 'sqp', 'sqp-legacy', 'trust-region-reflective')
+
+   Set properties:
+                      Display: 'off'
+
+   Default properties:
+                    Algorithm: 'interior-point'
+               CheckGradients: 0
+          ConstraintTolerance: 1.0000e-06
+     FiniteDifferenceStepSize: 'sqrt(eps)'
+         FiniteDifferenceType: 'forward'
+         HessianApproximation: 'bfgs'
+                   HessianFcn: []
+           HessianMultiplyFcn: []
+                  HonorBounds: 1
+       MaxFunctionEvaluations: 3000
+                MaxIterations: 1000
+               ObjectiveLimit: -1.0000e+20
+          OptimalityTolerance: 1.0000e-06
+                    OutputFcn: []
+                      PlotFcn: []
+                 ScaleProblem: 0
+    SpecifyConstraintGradient: 0
+     SpecifyObjectiveGradient: 0
+                StepTolerance: 1.0000e-10
+          SubproblemAlgorithm: 'factorization'
+                     TypicalX: 'ones(numberOfVariables,1)'
+                  UseParallel: 0
+
+   Options not used by current Algorithm ('interior-point')
+   Default properties:
+    FunctionTolerance: 1.0000e-06
+
+
+pos = 17 ; key = options2
+  fsolve options:
+
+   Options used by current Algorithm ('trust-region-dogleg'):
+   (Other available algorithms: 'levenberg-marquardt', 'trust-region')
+
+   Set properties:
+                     Display: 'off'
+
+   Default properties:
+                   Algorithm: 'trust-region-dogleg'
+              CheckGradients: 0
+    FiniteDifferenceStepSize: 'sqrt(eps)'
+        FiniteDifferenceType: 'forward'
+           FunctionTolerance: 1.0000e-06
+      MaxFunctionEvaluations: '100*numberOfVariables'
+               MaxIterations: 400
+         OptimalityTolerance: 1.0000e-06
+                   OutputFcn: []
+                     PlotFcn: []
+    SpecifyObjectiveGradient: 0
+               StepTolerance: 1.0000e-06
+                    TypicalX: 'ones(numberOfVariables,1)'
+                 UseParallel: 0
+
+   Options not used by current Algorithm ('trust-region-dogleg')
+   Default properties:
+    JacobianMultiplyFcn: []
+    SubproblemAlgorithm: 'factorization'
+
+
+----------------------------------------
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+CONTAINER NAME: mp_controls Scalars
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                            i     idx    value
+                            __    ___    _____
+
+    A_aux                    1     1       NaN
+    Aeq                      2     2       NaN
+    B_aux                    3     3       NaN
+    Beq                      4     4       NaN
+    bl_compute_drv_stats     5     5         1
+    bl_ds_store_all          6     6         1
+    bl_print_ds              7     7         1
+    bl_print_ds_verbose      8     8         1
+    bl_print_vfi             9     9         1
+    bl_print_vfi_verbose    10    10         1
+    bl_timer                11    11         1
+    bl_vfi_store_all        12    12         1
+    err                     13    13         1
+    nonlcon                 14    15       NaN
+    tol                     15    18     0.005
+
+----------------------------------------
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+CONTAINER NAME: mp_controls String
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                       i     idx         string    
+                      ___    ____    ______________
+
+    mp_params_name    "1"    "14"    "default_test"
+
+pos = 13 ; key = mp_controls
+  Map with properties:
+
+        Count: 18
+      KeyType: char
+    ValueType: any
+
+pos = 14 ; key = mp_params
+  Map with properties:
+
+        Count: 28
+      KeyType: char
+    ValueType: any
+
+----------------------------------------
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+CONTAINER NAME: mp_dsvfi_results ND Array (Matrix etc)
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                    i    idx    ndim    numel    rowN    colN       mean          std       coefvari      min         max  
+                    _    ___    ____    _____    ____    ____    __________    _________    ________    ________    _______
+
+    Phi_adj         1     2      6      4200      7      600      0.0016667    0.0075836     4.5501            0    0.12481
+    Phi_true        2     3      6      4200      7      600     0.00089593    0.0047618      5.315            0    0.10386
+    ap_ss           3     7      6      4200      7      600         9.6409       14.072     1.4596            0         50
+    c_ss            4     8      6      4200      7      600         13.892       17.876     1.2868     0.095434     82.651
+    exitflag_VFI    5    12      6      4200      7      600            NaN          NaN        NaN            1          2
+    v_ss            6    17      6      4200      7      600      -0.079132       4.4427    -56.144      -42.186     4.6012
+
+----------------------------------------
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+CONTAINER NAME: mp_dsvfi_results Scalars
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                         i    idx      value   
+                         _    ___    __________
+
+    A_agg                1     1         1.1011
+    SS_spend             2     4        0.16354
+    Tax_revenues         3     5        0.92938
+    Y_inc_agg            4     6         4.0763
+    check_asset_distr    5     9              0
+    dummy                6    10              1
+    err                  7    11     9.9096e-05
+
+----------------------------------------
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+CONTAINER NAME: mp_dsvfi_results String
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                         i     idx                                           string                                       
+                        ___    ____    ___________________________________________________________________________________
+
+    st_a2_update        "1"    "15"    "SNW_DS_MAIN: Old and updated value of a2=3.664      2.5687"                       
+    st_pop_max_asset    "2"    "16"    "SNW_DS_MAIN: Share of population with assets equal to upper bound on asset grid=0"
+
+xxx tb_outcomes: all stats xxx
+    OriginalVariableNames      ap_ss         c_ss          v_ss   
+    _____________________    _________    __________    __________
+
+      {'mean'        }         0.39766       0.73126       -5.1069
+      {'sd'          }         0.54943       0.64444        5.6954
+      {'coefofvar'   }          1.3816       0.88127       -1.1152
+      {'min'         }               0      0.095434       -42.186
+      {'max'         }              50        82.651        4.6012
+      {'pYis0'       }        0.054747             0             0
+      {'pYls0'       }               0             0       0.85981
+      {'pYgr0'       }         0.94525             1       0.14019
+      {'pYisMINY'    }        0.054747     0.0046001    0.00051941
+      {'pYisMAXY'    }               0             0             0
+      {'p0_01'       }               0      0.095434       -42.186
+      {'p0_1'        }               0      0.095434       -34.611
+      {'p1'          }               0       0.11117       -24.237
+      {'p5'          }               0       0.19459       -15.959
+      {'p10'         }        0.021544       0.26307       -12.359
+      {'p20'         }        0.068587       0.31675        -8.143
+      {'p25'         }        0.068587       0.34587       -7.7671
+      {'p30'         }        0.068587       0.38588       -7.2112
+      {'p40'         }         0.12791       0.43572       -5.1656
+      {'p50'         }         0.19725       0.49973       -4.0804
+      {'p60'         }         0.29181       0.67164       -2.2912
+      {'p70'         }         0.45831       0.79185       -1.4913
+      {'p75'         }         0.47666       0.94389      -0.89588
+      {'p80'         }          0.5487        1.0471      -0.60786
+      {'p90'         }          1.0969        1.2972       0.32265
+      {'p95'         }          1.3134        2.0514       0.95828
+      {'p99'         }           2.729        2.7588        1.7478
+      {'p99_9'       }          4.3896        5.2246         2.361
+      {'p99_99'      }          5.1892        6.9438         2.361
+      {'fl_cov_ap_ss'}         0.30187       0.30044        1.6021
+      {'fl_cor_ap_ss'}               1       0.84852       0.51198
+      {'fl_cov_c_ss' }         0.30044        0.4153        2.1114
+      {'fl_cor_c_ss' }         0.84852             1       0.57527
+      {'fl_cov_v_ss' }          1.6021        2.1114        32.437
+      {'fl_cor_v_ss' }         0.51198       0.57527             1
+      {'fracByP0_01' }               0    0.00060034     0.0042906
+      {'fracByP0_1'  }               0    0.00060034      0.011342
+      {'fracByP1'    }               0     0.0014498      0.071309
+      {'fracByP5'    }               0      0.010621       0.23659
+      {'fracByP10'   }       0.0016278      0.028843       0.35187
+      {'fracByP20'   }        0.013934      0.066351       0.55279
+      {'fracByP25'   }        0.030229      0.089021       0.62949
+      {'fracByP30'   }        0.032056       0.11942       0.70585
+      {'fracByP40'   }        0.057118       0.16987       0.82204
+      {'fracByP50'   }         0.09806       0.23711       0.90385
+      {'fracByP60'   }         0.16152       0.32114       0.96646
+      {'fracByP70'   }         0.24711       0.41158        1.0012
+      {'fracByP75'   }         0.30472       0.47122        1.0125
+      {'fracByP80'   }         0.38872       0.54615        1.0193
+      {'fracByP90'   }         0.57895        0.6922        1.0209
+      {'fracByP95'   }         0.72212       0.81195        1.0144
+      {'fracByP99'   }         0.91729       0.94157         1.004
+      {'fracByP99_9' }         0.99086       0.99136             1
+      {'fracByP99_99'}               1        0.9989             1
+
+</pre><pre class="codeinput"><span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% SNW_DS_MAIN Simulates Distributions
+%    Given policy functions, simulate distributions
+%
+%    Pref, Technology, and prices SCALARS:
+%
+%    * AP_SS ndarry of policy function solution from SNW_VFI_MAIN
+%    * MP_PARAMS contain map of parameters
+%    * MP_CONTROLS container map of parameters
+%
+%    [MP_DSVFI_RESULTS] = SNW_DS_MAIN() invoke model with externally set
+%    parameter map and control map. Results outputed to a map containing
+%    various output matrixes. 
+%
+%    See also SNWX_DS_MAIN, SNW_VFI_MAIN, SNW_MP_CONTROLS, SNW_MP_PARAM
+%
+
+%%
+function mp_dsvfi_results=snw_ds_main(varargin)
+
+%% Default and Parse Inputs
+if (~isempty(varargin))
+    
+    if (length(varargin)==1)
+        [mp_params] = varargin{:};
+        mp_controls = snw_mp_controls('default_base');
+    elseif (length(varargin)==2)
+        [mp_params, mp_controls] = varargin{:};
+        [v_ss, ap_ss, c_ss, exitflag_VFI] = snw_vfi_main(mp_params, mp_controls);        
+    elseif (length(varargin)==3)
+        [mp_params, mp_controls, ap_ss] = varargin{:};
+    end
+    
+else
+    
+    mp_params = snw_mp_param('default_tiny');
+    mp_controls = snw_mp_control('default_test');
+    [v_ss, ap_ss, c_ss, exitflag_VFI] = snw_vfi_main(mp_params, mp_controls);
+end
+
+%% Reset All globals
+% globals = who('global');
+% clear(globals{:});
+% Parameters used in this code directly
+global a2 g_cons agrid SS pi_eta pi_kids Pop n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
+
+%% Parse Model Parameters
+params_group = values(mp_params, {'g_cons', 'a2'});
+[g_cons, a2] = params_group{:};
+
+params_group = values(mp_params, {'agrid'});
+[agrid] = params_group{:};
+
+params_group = values(mp_params, {'pi_eta', 'pi_kids'});
+[pi_eta, pi_kids] = params_group{:};
+
+params_group = values(mp_params, {'SS'});
+[SS] = params_group{:};
+
+params_group = values(mp_params, ...
+    {'n_jgrid', 'n_agrid', 'n_etagrid', 'n_educgrid', 'n_marriedgrid', 'n_kidsgrid'});
+[n_jgrid, n_agrid, n_etagrid, n_educgrid, n_marriedgrid, n_kidsgrid] = params_group{:};
+
+params_group = values(mp_params, ...
+    {'stat_distr_eta', 'stat_distr_educ', 'stat_distr_married', 'stat_distr_kids', 'Pop'});
+[stat_distr_eta, stat_distr_educ, stat_distr_married, stat_distr_kids, Pop] = params_group{:};
+
+%% Parse Model Controls
+% Profiling Controls
+params_group = values(mp_controls, {'bl_timer'});
+[bl_timer] = params_group{:};
+
+% Display Controls
+params_group = values(mp_controls, {'bl_compute_drv_stats'});
+[bl_compute_drv_stats] = params_group{:};
+
+% Display Controls
+params_group = values(mp_controls, {'bl_print_ds', 'bl_print_ds_verbose'});
+[bl_print_ds, bl_print_ds_verbose] = params_group{:};
+
+% Store Controls
+params_group = values(mp_controls, {'bl_vfi_store_all', 'bl_ds_store_all'});
+[bl_vfi_store_all, bl_ds_store_all] = params_group{:};
+
+%% Aggregation
+Phiss=zeros(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+
+% Assume everyone starts with 0 assets
+% Use stationary distribution of productivity shock and initial
+% distribution for educational attainment, marital status, and number of
+% kids from PSID
+for eta=1:n_etagrid % Productivity
+    for educ=1:n_educgrid % Fixed effects
+        for married=1:n_marriedgrid % Marital status
+            for kids=1:n_kidsgrid % No. of kids
+                Phiss(1,1,eta,educ,married,kids)=stat_distr_eta(eta)*stat_distr_educ(educ)*stat_distr_married(married)*stat_distr_kids(educ,married,kids);
+            end
+        end
+    end
+end
+
+% Use policy functions and survival probabilities to get distribution of remaining idiosyncratic states
+for j=1:(n_jgrid-1) % Age
+    for a=1:n_agrid % Assets
+        for eta=1:n_etagrid % Productivity
+            for educ=1:n_educgrid % Educational level
+                for married=1:n_marriedgrid % Marital status
+                    for kids=1:n_kidsgrid % No. of kids
+                        
+                        if ap_ss(j,a,eta,educ,married,kids)==0
+                            inds(1)=1;
+                            inds(2)=1;
+                            vals(1)=1;
+                            vals(2)=0;
+                            
+                        elseif ap_ss(j,a,eta,educ,married,kids)==agrid(n_agrid)
+                            inds(1)=n_agrid;
+                            inds(2)=n_agrid;
+                            vals(1)=1;
+                            vals(2)=0;
+                            
+                        else
+                            
+                            ind_aux=find(agrid<=ap_ss(j,a,eta,educ,married,kids),1,'last');
+                            
+                            inds(1)=ind_aux;
+                            inds(2)=ind_aux+1;
+                            
+                            % Linear interpolation
+                            vals(1)=1-((ap_ss(j,a,eta,educ,married,kids)-agrid(inds(1)))/(agrid(inds(2))-agrid(inds(1))));
+                            vals(2)=1-vals(1);
+                            
+                        end
+                        
+                        for etap=1:n_etagrid
+                            for kidsp=1:n_kidsgrid
+                                Phiss(j+1,inds(1),etap,educ,married,kidsp)=Phiss(j+1,inds(1),etap,educ,married,kidsp)+Phiss(j,a,eta,educ,married,kids)*vals(1)*pi_eta(eta,etap)*pi_kids(kids,kidsp,j,married);
+                                Phiss(j+1,inds(2),etap,educ,married,kidsp)=Phiss(j+1,inds(2),etap,educ,married,kidsp)+Phiss(j,a,eta,educ,married,kids)*vals(2)*pi_eta(eta,etap)*pi_kids(kids,kidsp,j,married);
+                            end
+                        end
+                        
+                    end
+                end
+            end
+        end
+    end
+end
+
+% Normalize distribution of idiosyncratic states to sum to 1 for each age
+% Phi_true = joint probability mass function all states
+% Phi_adj  = conditional probability mass function given age
+Phi_adj=zeros(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+Phi_true=zeros(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+
+for j=1:n_jgrid
+    
+    dummy=sum(sum(sum(sum(sum(Phiss(j,:,:,:,:,:))))));
+    
+    for a=1:n_agrid
+        for eta=1:n_etagrid
+            for educ=1:n_educgrid
+                for married=1:n_marriedgrid
+                    for kids=1:n_kidsgrid
+                        
+                        if dummy>0
+                            Phi_adj(j,a,eta,educ,married,kids)=Phiss(j,a,eta,educ,married,kids)/dummy;
+                        else
+                            Phi_adj(j,a,eta,educ,married,kids)=0;
+                        end
+                        
+                        Phi_true(j,a,eta,educ,married,kids)=Phi_adj(j,a,eta,educ,married,kids)*Pop(j);
+                        
+                    end
+                end
+            end
+        end
+    end
+    
+end
+
+
+% Check if the upper bound on assets binds
+check_asset_distr=sum(sum(sum(sum(sum(Phi_true(:,n_agrid,:,:,:,:))))));
+
+if (bl_print_ds || bl_ds_store_all)
+    name='SNW_DS_MAIN: Share of population with assets equal to upper bound on asset grid=';
+    st_pop_max_asset = [name,num2str(check_asset_distr/sum(Pop))];
+    disp(st_pop_max_asset);
+end
+
+% Aggregate variables
+A_agg=0;
+Y_inc_agg=0;
+Tax_revenues=0;
+SS_spend=0;
+
+for j=1:n_jgrid
+    for a=1:n_agrid
+        for eta=1:n_etagrid
+            for educ=1:n_educgrid
+                for married=1:n_marriedgrid
+                    for kids=1:n_kidsgrid
+                        
+                        A_agg=A_agg+Phi_true(j,a,eta,educ,married,kids)*agrid(a); % Aggregate wealth
+                        
+                        [inc_aux,earn]=individual_income(j,a,eta,educ);
+                        spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
+                        
+                        Y_inc_agg=Y_inc_agg+Phi_true(j,a,eta,educ,married,kids)*( inc_aux+(married-1)*spouse_inc ); % Aggregate income
+                        
+                        %                      inc_aux=r*agrid(a)+epsilon(j,educ)*theta*exp(eta_grid(eta))+SS(j,educ); % Income excluding spousal income (if married)
+                        Tax_revenues=Tax_revenues+Phi_true(j,a,eta,educ,married,kids)*max(0,Tax(inc_aux,(married-1)*spouse_inc)); % Tax revenues
+                        
+                        SS_spend=SS_spend+Phi_true(j,a,eta,educ,married,kids)*SS(j,educ); % Total spending on Social Security
+                        
+                    end
+                end
+            end
+        end
+    end
+end
+
+% Update guess for a2 (determines average level of income taxation)
+% Assuming government balances its budget period-by-period
+
+tol=10^-4;
+err=abs((Tax_revenues/(SS_spend+g_cons*Y_inc_agg))-1);
+
+a2_update=a2;
+
+while err>tol
+    
+    Tax_revenues_aux=0;
+    
+    for j=1:n_jgrid
+        for a=1:n_agrid
+            for eta=1:n_etagrid
+                for educ=1:n_educgrid
+                    for married=1:n_marriedgrid
+                        for kids=1:n_kidsgrid
+                            
+                            [inc_aux,earn]=individual_income(j,a,eta,educ);
+                            spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
+                            Tax_revenues_aux=Tax_revenues_aux+Phi_true(j,a,eta,educ,married,kids)*max(0,Tax(inc_aux,(married-1)*spouse_inc)); % Tax revenues
+                            
+                        end
+                    end
+                end
+            end
+        end
+    end
+    
+    a2=a2*(((SS_spend+g_cons*Y_inc_agg)/Tax_revenues_aux)^0.5); % Find value of a2 that balances government budget
+    
+    err=abs((Tax_revenues_aux/(SS_spend+g_cons*Y_inc_agg))-1);
+        
+    if (bl_print_ds_verbose)
+        disp(['SNW_DS_MAIN: err=abs((TAX/(SS+g_cons*Y))-1)=' num2str(err)])
+    end
+end
+
+a2_update=[a2_update,a2];
+
+if (bl_print_ds || bl_ds_store_all)
+    name='SNW_DS_MAIN: Old and updated value of a2=';
+    st_a2_update=[name,num2str(a2_update)];
+    disp(st_a2_update);
+end
+
+%% Timing and Profiling End
+if (bl_timer)
+    toc;
+    st_complete_ds = strjoin(...
+        ["Completed SNW_DS_MAIN", ...
+         ['SNW_MP_PARAM=' mp_params('mp_params_name')], ...
+         ['SNW_MP_CONTROL=' mp_controls('mp_params_name')] ...
+        ], ";");
+    disp(st_complete_ds);
+end
+
+%% Collect Results
+mp_dsvfi_results = containers.Map('KeyType', 'char', 'ValueType', 'any');
+mp_dsvfi_results('mp_params') = mp_params;
+mp_dsvfi_results('mp_controls') = mp_controls;
+mp_dsvfi_results('ap_ss') = ap_ss;
+
+mp_dsvfi_results('Phi_true') = Phi_true;
+mp_dsvfi_results('Phi_adj') = Phi_adj;
+mp_dsvfi_results('A_agg') = A_agg;
+mp_dsvfi_results('Y_inc_agg') = Y_inc_agg;
+
+% Store all of DS Function Outputs
+if (bl_ds_store_all)    
+    % Numeric Values
+    mp_dsvfi_results('dummy') = dummy;
+    mp_dsvfi_results('check_asset_distr') = check_asset_distr;
+    mp_dsvfi_results('Tax_revenues') = Tax_revenues;    
+    mp_dsvfi_results('SS_spend') = SS_spend;    
+    mp_dsvfi_results('err') = err;
+    
+    % Strings
+    mp_dsvfi_results('st_pop_max_asset') = string(st_pop_max_asset);
+    mp_dsvfi_results('st_a2_update') = string(st_a2_update);
+end
+
+% Store all of VFI Function Outputs
+if (bl_vfi_store_all && (length(varargin)<3))
+    mp_dsvfi_results('v_ss') = v_ss;    
+    mp_dsvfi_results('c_ss') = c_ss;
+    mp_dsvfi_results('exitflag_VFI') = exitflag_VFI;
+end
+
+%% Results Basic Print and Verbose print
+if (bl_print_ds_verbose)
+    ff_container_map_display(mp_params);
+    ff_container_map_display(mp_controls);
+    ff_container_map_display(mp_dsvfi_results);
+end
+
+if (bl_compute_drv_stats && (length(varargin)<3))
+    % Array Inputs
+    mp_cl_ar_xyz_of_s = containers.Map('KeyType','char', 'ValueType','any');
+    mp_cl_ar_xyz_of_s('ap_ss') = {ap_ss(:), zeros(1)};
+    mp_cl_ar_xyz_of_s('c_ss') = {c_ss(:), zeros(1)};
+    mp_cl_ar_xyz_of_s('v_ss') = {v_ss(:), zeros(1)};
+    mp_cl_ar_xyz_of_s('ar_st_y_name') = ["ap_ss", "c_ss", "v_ss"];
+
+    % controls
+    mp_support = containers.Map('KeyType','char', 'ValueType','any');
+    mp_support('ar_fl_percentiles') = [0.01 0.1 1 5 10 20 25 30 40 50 60 70 75 80 90 95 99 99.9 99.99];
+    if (bl_print_ds)
+        mp_support('bl_display_final') = true;
+    else
+        mp_support('bl_display_final') = false;
+    end
+    mp_support('bl_display_detail') = false;    
+    mp_support('bl_display_drvm2outcomes') = false;  
+    mp_support('bl_display_drvstats') = false;
+    mp_support('bl_display_drvm2covcor') = false;
+
+    % Call Function     
+    mp_cl_mt_xyz_of_s = ff_simu_stats(Phi_true(:)/sum(Phi_true,'all'), mp_cl_ar_xyz_of_s, mp_support);
+    if (bl_vfi_store_all)
+        mp_dsvfi_results('mp_cl_mt_xyz_of_s') = mp_cl_mt_xyz_of_s;
+    end
+end
+
+end
+##### SOURCE END #####
+--></body></html>

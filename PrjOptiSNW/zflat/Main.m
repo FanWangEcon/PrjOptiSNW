@@ -7,17 +7,17 @@ clc
 
 format longg
 
-% Last updated: 06/18/2020
+% Last updated: 06/24/2020
 
 global beta gamma g_cons a2 rho_eta sigma_eta theta g_n cons_allocation_rule r agrid epsilon eta_grid SS pi_eta pi_kids pi_unemp psi Pop n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
 
 %% Parameters
 % Non-calibrated parameters
-gamma=1; % Risk aversion parameter
+gamma=2; % Risk aversion parameter
 rho_eta=0.98; % Ozkan (2017)
 sigma_eta=0.02; % Ozkan (2017)
-g_n=(1.01^2)-1; % Annual population growth of 1.1 percent
-r=(1.04^2)-1; % Annual real interest rate of 4.0 percent from McGrattan and Prescott
+g_n=0.01; % Annual population growth of 1.1 percent
+r=0.04; % Annual real interest rate of 4.0 percent from McGrattan and Prescott
 
 % Government budget constraint parameters
 g_cons=0.17575574; % Government consumption expenditures to GDP (BEA: Average 2015-2019) 
@@ -27,11 +27,11 @@ a2=3.664; % Initial guess for average income tax burden (if we use GS)
 beta=0.96077; % Discount factor
 theta=0.42315; % TFP parameter to normalize units such that GDP per capita equals 1 in the model: Real GDP/capita in 2019: $58,056
 
-% Consumption allocation rule (1=uniform; 2=square root)
+% Consumption allocation rule (1=uniform; 2=square root; 0=equivalent to only 1 household member independent of family size)
 cons_allocation_rule=2;
 
 % Number of grid points
-n_jgrid=42; % Age runs from 18 to 100 (a period is 2 years)
+n_jgrid=83; % Age runs from 18 to 100 (a period is 1 year)
 n_agrid=40; % No. of grid points for assets
 n_etagrid=7; % No. of grid points for persistent labor productivity shocks
 n_educgrid=2; % No. of grid points for educational attainment (college vs. non-college)
@@ -40,46 +40,55 @@ n_kidsgrid=6; % No. of grid points for children (0 to 5+ children)
 
 % Social Security benefits
 SS=zeros(n_jgrid,2);
-SS(25:end,1)=0.24433; % Average SS non-college 2005-2009 as a share of GDP per capita
-SS(25:end,2)=0.29263; % Average SS college 2005-2009 as a share of GDP per capita
+SS(49:end,1)=0.24433; % Average SS non-college 2005-2009 as a share of GDP per capita
+SS(49:end,2)=0.29263; % Average SS college 2005-2009 as a share of GDP per capita
 
 %% Data
-load('Mortality_prob_by_age_20_99.mat','mort_prob') % Age-specific mortality probabilities (20-99 year-olds)
-psi_aux=1-mort_prob;
+load('Mortality_prob_by_age_18_99.mat','mort_prob') % Age-specific mortality probabilities (18-99 year-olds)
+% psi_aux=1-mort_prob;
+%  
+% % Convert to two-year survival probabilities
+% psi=NaN(41,1);
+% for i=1:41
+%     psi(i)=prod(psi_aux((2*i-1):2*i));
+% end
 
-% Convert to two-year survival probabilities
-psi=NaN(40,1);
-for i=1:40
-    psi(i)=prod(psi_aux((2*i-1):2*i));
-end
-
-psi=[psi(1);psi]; % Let survival probability of 18-year-olds be the same as that for 20-year-olds
+psi=1-mort_prob;
 psi=[psi;0]; % Maximum lifespan=100 (survival probability at age 100=0)
 
-clear mort_prob psi_aux
+%clear mort_prob psi_aux
+clear mort_prob
 
 load('Life_cycle_prod_by_educ.mat','life_cycle_prod_by_educ') % Life-cycle labor productivity for 20-100 year-olds by education (non-college vs. college)
-epsilon_aux=life_cycle_prod_by_educ;
+% epsilon_aux=life_cycle_prod_by_educ;
+% 
+% epsilon=NaN(41,2);
+% for i=1:40
+%     for e=1:2
+%         epsilon(i,e)=sum(epsilon_aux((2*i-1):2*i,e))/2;
+%     end
+% end
+% 
+% epsilon(end,:)=epsilon_aux(end,:);
 
-epsilon=NaN(41,2);
-for i=1:40
-    for e=1:2
-        epsilon(i,e)=sum(epsilon_aux((2*i-1):2*i,e))/2;
-    end
-end
+epsilon=NaN(83,2);
+epsilon(3:end,:)=life_cycle_prod_by_educ(:,:);
 
-epsilon(end,:)=epsilon_aux(end,:);
+epsilon(1,:)=epsilon(3,:); % Let life-cycle labor productivity of 18- and 19-year-olds be the same as that for 20-year-olds
+epsilon(2,:)=epsilon(3,:);
 
-epsilon=[epsilon(1,:);epsilon]; % Let life-cycle labor productivity of 18-year-olds be the same as that for 20-year-olds
-epsilon(25:end,:)=0; % Assume zero labor productivity for 65+ year-olds (exogenous retirement)
+epsilon(49:end,:)=0; % Assume zero labor productivity for 65+ year-olds (exogenous retirement)
 
-clear life_cycle_prod_by_educ epsilon_aux
+%clear life_cycle_prod_by_educ epsilon_aux
+clear life_cycle_prod_by_educ
 
 % Transition probabilities for number of children (0, 1, 2, 3, 4, or 5) (stored in the following order:
 % Number of children in year 1, age, educational status, marital status. Each column refers to the number of children
 % in year 2)
+%load('pi_kids_trans_prob','pi_kids_trans_prob_2year_intervals')
 load('pi_kids_trans_prob','pi_kids_trans_prob')
 pi_kids=NaN(n_kidsgrid,n_kidsgrid,n_jgrid,n_marriedgrid);
+pi_kids_aux=NaN(n_kidsgrid,n_kidsgrid,n_jgrid,n_marriedgrid);
 
 for kidsp=1:n_kidsgrid % No. of kids in year 2
     
@@ -90,13 +99,24 @@ for kidsp=1:n_kidsgrid % No. of kids in year 2
             for married=1:n_marriedgrid % Marital status
 
                 counter=counter+1;
-                pi_kids(kids,kidsp,j,married)=pi_kids_trans_prob(counter,kidsp);
+                pi_kids_aux(kids,kidsp,j,married)=pi_kids_trans_prob(counter,kidsp);
 
             end
         end
     end
     
 end
+
+% Convert from bi-annual to annual transition probabilities since PSID is
+% bi-annual but a period in the model is one year
+for j=1:(n_jgrid-1) % Age in year 1
+    for married=1:n_marriedgrid % Marital status
+
+        pi_kids(:,:,j,married)=sqrtm(pi_kids_aux(:,:,j,married));
+
+    end
+end
+
 
 pi_kids(:,:,n_jgrid,:)=0;
 pi_kids(:,1,n_jgrid,:)=1;

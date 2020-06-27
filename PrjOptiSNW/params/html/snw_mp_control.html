@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>SNW_MP_CONTROLS Organizes and Sets Various Solution Simu Control Parameters</title><meta name="generator" content="MATLAB 9.7"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-06-24"><meta name="DC.source" content="snw_mp_controls.m"><style type="text/css">
+      --><title>SNW_MP_CONTROL Organizes and Sets Various Solution Simu Control Parameters</title><meta name="generator" content="MATLAB 9.7"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-06-24"><meta name="DC.source" content="snw_mp_control.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,11 +66,11 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>SNW_MP_CONTROLS Organizes and Sets Various Solution Simu Control Parameters</h1><!--introduction--><pre>  SNW_MP_CONTROLS opitmizer control, graph, print, and other controls</pre><pre>  MP_CONTROLS = SNW_MP_CONTROLS() get default parameters all in the
-  same container map</pre><pre>  MP_CONTROLS = SNW_MP_CONTROLS(ST_PARAM_GROUP)
-  generates default parameters for the type ST_PARAM_GROUP.</pre><pre>  MP_CONTROLS = SNW_MP_CONTROLS(ST_PARAM_GROUP, bl_print_mp_controls) generates
+  </style></head><body><div class="content"><h1>SNW_MP_CONTROL Organizes and Sets Various Solution Simu Control Parameters</h1><!--introduction--><pre>  SNW_MP_CONTROL opitmizer control, graph, print, and other controls</pre><pre>  MP_CONTROLS = SNW_MP_CONTROL() get default parameters all in the
+  same container map</pre><pre>  MP_CONTROLS = SNW_MP_CONTROL(ST_PARAM_GROUP)
+  generates default parameters for the type ST_PARAM_GROUP.</pre><pre>  MP_CONTROLS = SNW_MP_CONTROL(ST_PARAM_GROUP, bl_print_mp_controls) generates
   default parameters for the type ST_PARAM_GROUP, display parameter map
-  details if bl_print_mp_controls is true.</pre><pre>  See also SNWX_MP_CONTROLS</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Parse Main Inputs and Set Defaults</a></li><li><a href="#3">For minimization problem</a></li><li><a href="#4">For Calibration</a></li><li><a href="#5">Timer and Profiler</a></li><li><a href="#6">Print Controls</a></li><li><a href="#7">Set Parameter Maps</a></li><li><a href="#8">Combine Maps</a></li><li><a href="#9">Print</a></li><li><a href="#10">Return</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> varargout = snw_mp_controls(varargin)
+  details if bl_print_mp_controls is true.</pre><pre>  See also SNWX_MP_CONTROLS</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Parse Main Inputs and Set Defaults</a></li><li><a href="#3">Control Optimization</a></li><li><a href="#4">Control Calibration</a></li><li><a href="#5">Control Profiling and Display</a></li><li><a href="#6">Controls Print</a></li><li><a href="#7">Control Storage</a></li><li><a href="#8">Control Optimization</a></li><li><a href="#9">Combine Maps</a></li><li><a href="#10">Print</a></li><li><a href="#11">Return</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> varargout = snw_mp_control(varargin)
 </pre><h2 id="2">Parse Main Inputs and Set Defaults</h2><pre class="codeinput"><span class="keyword">if</span> (~isempty(varargin))
 
     <span class="keyword">if</span> (length(varargin)==1)
@@ -83,10 +83,11 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <span class="keyword">else</span>
 
     st_param_group = <span class="string">'default_base'</span>;
+    st_param_group = <span class="string">'default_test'</span>;
     bl_print_mp_controls = true;
 
 <span class="keyword">end</span>
-</pre><h2 id="3">For minimization problem</h2><pre class="codeinput"><span class="comment">%amin=0;</span>
+</pre><h2 id="3">Control Optimization</h2><pre class="codeinput"><span class="comment">%amin=0;</span>
 <span class="comment">%amax=agrid(end);</span>
 A_aux=[];
 B_aux=[];
@@ -96,11 +97,27 @@ Beq=[];
 nonlcon=[];
 options=optimoptions(<span class="string">'fmincon'</span>,<span class="string">'Display'</span>, <span class="string">'off'</span>);
 options2=optimoptions(<span class="string">'fsolve'</span>,<span class="string">'Display'</span>,<span class="string">'off'</span>);
-</pre><h2 id="4">For Calibration</h2><pre class="codeinput">err=1;
+</pre><h2 id="4">Control Calibration</h2><pre class="codeinput">err=1;
 tol=0.005;
-</pre><h2 id="5">Timer and Profiler</h2><pre class="codeinput">bl_timer = true;
-</pre><h2 id="6">Print Controls</h2><pre class="codeinput">bl_print_iter = true;
-</pre><h2 id="7">Set Parameter Maps</h2><pre class="codeinput">mp_minimizer_controls = containers.Map(<span class="string">'KeyType'</span>, <span class="string">'char'</span>, <span class="string">'ValueType'</span>, <span class="string">'any'</span>);
+</pre><h2 id="5">Control Profiling and Display</h2><pre class="codeinput">bl_timer = true;
+</pre><h2 id="6">Controls Print</h2><pre class="codeinput">bl_print_vfi = true;
+bl_print_ds = true;
+
+<span class="keyword">if</span> (strcmp(st_param_group, <span class="string">'default_test'</span>))
+    bl_print_ds_verbose = true;
+    bl_print_vfi_verbose = true;
+<span class="keyword">else</span>
+    bl_print_ds_verbose = false;
+    bl_print_vfi_verbose = false;
+<span class="keyword">end</span>
+</pre><h2 id="7">Control Storage</h2><pre class="codeinput"><span class="keyword">if</span> (strcmp(st_param_group, <span class="string">'default_test'</span>))
+    bl_ds_store_all = true;
+    bl_vfi_store_all = true;
+<span class="keyword">else</span>
+    bl_ds_store_all = false;
+    bl_vfi_store_all = false;
+<span class="keyword">end</span>
+</pre><h2 id="8">Control Optimization</h2><pre class="codeinput">mp_minimizer_controls = containers.Map(<span class="string">'KeyType'</span>, <span class="string">'char'</span>, <span class="string">'ValueType'</span>, <span class="string">'any'</span>);
 mp_minimizer_controls(<span class="string">'A_aux'</span>) = A_aux;
 mp_minimizer_controls(<span class="string">'B_aux'</span>) = B_aux;
 mp_minimizer_controls(<span class="string">'Aeq'</span>) = Aeq;
@@ -117,13 +134,21 @@ mp_profile = containers.Map(<span class="string">'KeyType'</span>, <span class="
 mp_profile(<span class="string">'bl_timer'</span>) = bl_timer;
 
 mp_display = containers.Map(<span class="string">'KeyType'</span>, <span class="string">'char'</span>, <span class="string">'ValueType'</span>, <span class="string">'any'</span>);
-mp_display(<span class="string">'bl_print_iter'</span>) = bl_print_iter;
-</pre><h2 id="8">Combine Maps</h2><pre class="codeinput">mp_controls = [mp_minimizer_controls; <span class="keyword">...</span>
-    mp_calibrate; mp_profile; mp_display];
-</pre><h2 id="9">Print</h2><pre class="codeinput"><span class="keyword">if</span> (bl_print_mp_controls)
+mp_display(<span class="string">'bl_print_vfi'</span>) = bl_print_vfi;
+mp_display(<span class="string">'bl_print_ds'</span>) = bl_print_vfi;
+mp_display(<span class="string">'bl_print_ds_verbose'</span>) = bl_print_ds_verbose;
+mp_display(<span class="string">'bl_print_vfi_verbose'</span>) = bl_print_vfi_verbose;
+
+mp_store = containers.Map(<span class="string">'KeyType'</span>, <span class="string">'char'</span>, <span class="string">'ValueType'</span>, <span class="string">'any'</span>);
+mp_store(<span class="string">'bl_ds_store_all'</span>) = bl_ds_store_all;
+mp_store(<span class="string">'bl_vfi_store_all'</span>) = bl_vfi_store_all;
+</pre><h2 id="9">Combine Maps</h2><pre class="codeinput">mp_controls = [mp_minimizer_controls; <span class="keyword">...</span>
+    mp_calibrate; mp_profile; mp_display; mp_store];
+mp_controls(<span class="string">'mp_params_name'</span>) = string(st_param_group);
+</pre><h2 id="10">Print</h2><pre class="codeinput"><span class="keyword">if</span> (bl_print_mp_controls)
     ff_container_map_display(mp_controls);
 <span class="keyword">end</span>
-</pre><pre class="codeoutput">pos = 9 ; key = options
+</pre><pre class="codeoutput">pos = 15 ; key = options
   fmincon options:
 
    Options used by current Algorithm ('interior-point'):
@@ -161,7 +186,7 @@ mp_display(<span class="string">'bl_print_iter'</span>) = bl_print_iter;
     FunctionTolerance: 1.0000e-06
 
 
-pos = 10 ; key = options2
+pos = 16 ; key = options2
   fsolve options:
 
    Options used by current Algorithm ('trust-region-dogleg'):
@@ -196,20 +221,34 @@ pos = 10 ; key = options2
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 CONTAINER NAME: mp_controls Scalars
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                     i    idx    value
-                     _    ___    _____
+                            i     idx    value
+                            __    ___    _____
 
-    A_aux            1     1       NaN
-    Aeq              2     2       NaN
-    B_aux            3     3       NaN
-    Beq              4     4       NaN
-    bl_print_iter    5     5         1
-    bl_timer         6     6         1
-    err              7     7         1
-    nonlcon          8     8       NaN
-    tol              9    11     0.005
+    A_aux                    1     1       NaN
+    Aeq                      2     2       NaN
+    B_aux                    3     3       NaN
+    Beq                      4     4       NaN
+    bl_ds_store_all          5     5         1
+    bl_print_ds              6     6         1
+    bl_print_ds_verbose      7     7         1
+    bl_print_vfi             8     8         1
+    bl_print_vfi_verbose     9     9         1
+    bl_timer                10    10         1
+    bl_vfi_store_all        11    11         1
+    err                     12    12         1
+    nonlcon                 13    14       NaN
+    tol                     14    17     0.005
 
-</pre><h2 id="10">Return</h2><pre class="codeinput"><span class="keyword">if</span> (nargout==1)
+----------------------------------------
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+CONTAINER NAME: mp_controls String
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                       i     idx         string    
+                      ___    ____    ______________
+
+    mp_params_name    "1"    "13"    "default_test"
+
+</pre><h2 id="11">Return</h2><pre class="codeinput"><span class="keyword">if</span> (nargout==1)
     varargout = cell(nargout,0);
     varargout{1} = mp_controls;
 <span class="keyword">elseif</span> (nargout==3)
@@ -222,16 +261,16 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 </pre><pre class="codeinput"><span class="keyword">end</span>
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-%% SNW_MP_CONTROLS Organizes and Sets Various Solution Simu Control Parameters
-%    SNW_MP_CONTROLS opitmizer control, graph, print, and other controls
+%% SNW_MP_CONTROL Organizes and Sets Various Solution Simu Control Parameters
+%    SNW_MP_CONTROL opitmizer control, graph, print, and other controls
 %
-%    MP_CONTROLS = SNW_MP_CONTROLS() get default parameters all in the
+%    MP_CONTROLS = SNW_MP_CONTROL() get default parameters all in the
 %    same container map
 %
-%    MP_CONTROLS = SNW_MP_CONTROLS(ST_PARAM_GROUP)
+%    MP_CONTROLS = SNW_MP_CONTROL(ST_PARAM_GROUP)
 %    generates default parameters for the type ST_PARAM_GROUP. 
 %
-%    MP_CONTROLS = SNW_MP_CONTROLS(ST_PARAM_GROUP, bl_print_mp_controls) generates
+%    MP_CONTROLS = SNW_MP_CONTROL(ST_PARAM_GROUP, bl_print_mp_controls) generates
 %    default parameters for the type ST_PARAM_GROUP, display parameter map
 %    details if bl_print_mp_controls is true.
 %    
@@ -239,7 +278,7 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 %
 
 %%
-function varargout = snw_mp_controls(varargin)
+function varargout = snw_mp_control(varargin)
 %% Parse Main Inputs and Set Defaults
 if (~isempty(varargin))
     
@@ -253,11 +292,12 @@ if (~isempty(varargin))
 else
     
     st_param_group = 'default_base';   
+    st_param_group = 'default_test';   
     bl_print_mp_controls = true;
     
 end
 
-%% For minimization problem
+%% Control Optimization 
 %amin=0;
 %amax=agrid(end);
 A_aux=[];
@@ -269,17 +309,35 @@ nonlcon=[];
 options=optimoptions('fmincon','Display', 'off');
 options2=optimoptions('fsolve','Display','off');
 
-%% For Calibration 
+%% Control Calibration 
 err=1;
 tol=0.005;
 
-%% Timer and Profiler
+%% Control Profiling and Display
 bl_timer = true;
 
-%% Print Controls
-bl_print_iter = true;
+%% Controls Print
+bl_print_vfi = true;
+bl_print_ds = true;
 
-%% Set Parameter Maps
+if (strcmp(st_param_group, 'default_test')) 
+    bl_print_ds_verbose = true;
+    bl_print_vfi_verbose = true;
+else
+    bl_print_ds_verbose = false;
+    bl_print_vfi_verbose = false;
+end
+
+%% Control Storage
+if (strcmp(st_param_group, 'default_test')) 
+    bl_ds_store_all = true;
+    bl_vfi_store_all = true;
+else
+    bl_ds_store_all = false;
+    bl_vfi_store_all = false;
+end
+
+%% Control Optimization 
 mp_minimizer_controls = containers.Map('KeyType', 'char', 'ValueType', 'any');
 mp_minimizer_controls('A_aux') = A_aux;
 mp_minimizer_controls('B_aux') = B_aux;
@@ -297,11 +355,19 @@ mp_profile = containers.Map('KeyType', 'char', 'ValueType', 'any');
 mp_profile('bl_timer') = bl_timer;
 
 mp_display = containers.Map('KeyType', 'char', 'ValueType', 'any');
-mp_display('bl_print_iter') = bl_print_iter;
+mp_display('bl_print_vfi') = bl_print_vfi;
+mp_display('bl_print_ds') = bl_print_vfi;
+mp_display('bl_print_ds_verbose') = bl_print_ds_verbose;
+mp_display('bl_print_vfi_verbose') = bl_print_vfi_verbose;
+
+mp_store = containers.Map('KeyType', 'char', 'ValueType', 'any');
+mp_store('bl_ds_store_all') = bl_ds_store_all;
+mp_store('bl_vfi_store_all') = bl_vfi_store_all;
 
 %% Combine Maps
 mp_controls = [mp_minimizer_controls; ...
-    mp_calibrate; mp_profile; mp_display];
+    mp_calibrate; mp_profile; mp_display; mp_store];
+mp_controls('mp_params_name') = string(st_param_group);
 
 %% Print 
 if (bl_print_mp_controls)

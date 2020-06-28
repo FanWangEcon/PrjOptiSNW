@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>SNW_MP_PARAM Organizes and Sets Various Model Input Scalar and Array Parameters</title><meta name="generator" content="MATLAB 9.7"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-06-24"><meta name="DC.source" content="snw_mp_param.m"><style type="text/css">
+      --><title>SNW_MP_PARAM Organizes and Sets Various Model Input Scalar and Array Parameters</title><meta name="generator" content="MATLAB 9.7"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-06-27"><meta name="DC.source" content="snw_mp_param.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -104,136 +104,122 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 <span class="keyword">else</span>
 
-    st_param_group = <span class="string">'default_base'</span>;
-    st_param_group = <span class="string">'default_tiny'</span>;
+<span class="comment">%     st_param_group = 'default_base';</span>
+    st_param_group = <span class="string">'default_dense'</span>;
+<span class="comment">%     st_param_group = 'default_tiny';</span>
     bl_print_mp_params = true;
     [it_row_n_keep, it_col_n_keep] = deal(8, 8);
 
 <span class="keyword">end</span>
 </pre><h2 id="3">Parametesr Grid Points</h2><p>Number of grid points</p><pre class="codeinput">n_educgrid=2; <span class="comment">% No. of grid points for educational attainment (college vs. non-college)</span>
 n_marriedgrid=2; <span class="comment">% No. of grid points for marital status</span>
-n_kidsgrid=6; <span class="comment">% No. of grid points for children (0 to 5+ children)</span>
-<span class="keyword">if</span>(strcmp(st_param_group, <span class="string">"default_base"</span>))
+n_kidsgrid=5; <span class="comment">% No. of grid points for children (0 to 5+ children)</span>
+<span class="keyword">if</span>(strcmp(st_param_group, <span class="string">"default_dense"</span>))
+    n_jgrid  =83; <span class="comment">% Age runs from 18 to 100 (a period is 2 years)</span>
+    jret     =49;
+    n_agrid  =55; <span class="comment">% No. of grid points for assets</span>
+    n_etagrid =9; <span class="comment">% No. of grid points for persistent labor productivity shocks</span>
+    n_kidsgrid=5; <span class="comment">% No. of grid points for children (0 to 4+ children)</span>
+<span class="keyword">elseif</span>(strcmp(st_param_group, <span class="string">"default_base"</span>))
     n_jgrid  =42; <span class="comment">% Age runs from 18 to 100 (a period is 2 years)</span>
-    it_retire=25;
+    jret=25;
     n_agrid  =40; <span class="comment">% No. of grid points for assets</span>
     n_etagrid =7; <span class="comment">% No. of grid points for persistent labor productivity shocks</span>
-    n_kidsgrid=6; <span class="comment">% No. of grid points for children (0 to 5+ children)</span>
+    n_kidsgrid=5; <span class="comment">% No. of grid points for children (0 to 4+ children)</span>
 <span class="keyword">elseif</span>(strcmp(st_param_group, <span class="string">"default_tiny"</span>))
     n_jgrid   =7; <span class="comment">% Age runs from 18 to 100 (5 periods of 16 years + terminal)</span>
-    it_retire =5;
+    jret =5;
     n_agrid   =10; <span class="comment">% No. of grid points for assets</span>
     n_etagrid =5; <span class="comment">% No. of grid points for persistent labor productivity shocks</span>
     n_kidsgrid=3; <span class="comment">% No. of grid points for children (0 to 5+ children)</span>
 <span class="keyword">elseif</span>(strcmp(st_param_group, <span class="string">"default_small"</span>))
     n_jgrid   =18; <span class="comment">% Age runs from 18 to 100 (16 periods of 5 years + terminal)</span>
-    it_retire =13;
+    jret =13;
     n_agrid   =20; <span class="comment">% No. of grid points for assets</span>
     n_etagrid =5; <span class="comment">% No. of grid points for persistent labor productivity shocks</span>
     n_kidsgrid=3; <span class="comment">% No. of grid points for children (0 to 5+ children)</span>
 <span class="keyword">end</span>
-</pre><h2 id="4">Preferences, Technologies, etc.</h2><p>Non-calibrated parameters</p><pre class="codeinput"><span class="keyword">if</span>(strcmp(st_param_group, <span class="string">"default_base"</span>))
-    gamma=1; <span class="comment">% Risk aversion parameter, log kids don't matter</span>
-<span class="keyword">else</span>
-    gamma=2; <span class="comment">% Risk aversion parameter, change to 2 so kids matter</span>
-<span class="keyword">end</span>
-rho_eta=0.98; <span class="comment">% Ozkan (2017)</span>
-sigma_eta=0.02; <span class="comment">% Ozkan (2017)</span>
 
-<span class="keyword">if</span>(strcmp(st_param_group, <span class="string">"default_base"</span>))
-    g_n=(1.01^2)-1; <span class="comment">% Annual population growth of 1.1 percent</span>
-    r=(1.04^2)-1; <span class="comment">% Annual real interest rate of 4.0 percent from McGrattan and Prescott</span>
+<span class="comment">% Years Per Period</span>
+<span class="keyword">if</span> (n_jgrid == 83)
+    it_yrs_per_period = 1;
 <span class="keyword">else</span>
-    g_n=(1.01^(80/(n_jgrid-2)))-1;
-    r=(1.04^(80/(n_jgrid-2)))-1;
+    it_yrs_per_period = (80/(n_jgrid-2));
+<span class="keyword">end</span>
+</pre><h2 id="4">Preferences, Technologies, etc.</h2><p>Non-calibrated parameters</p><pre class="codeinput">gamma=2; <span class="comment">% Risk aversion parameter</span>
+<span class="keyword">if</span>(strcmp(st_param_group, <span class="string">"default_dense"</span>))
+    rho_eta=0.98; <span class="comment">% Persistence of AR(1) productivity shocks</span>
+    sigma_eta=0.018; <span class="comment">% Variance of AR(1) productivity shocks</span>
+    g_n=0.01; <span class="comment">% Annual population growth of 1.1 percent</span>
+    r=0.04; <span class="comment">% Annual real interest rate of 4.0 percent from McGrattan and Prescott</span>
+    beta=0.972; <span class="comment">% Discount factor</span>
+<span class="keyword">else</span>
+    rho_eta=0.98^it_yrs_per_period;
+    sigma_eta=sqrt(0.018^2*sum((0.98.^(0:(it_yrs_per_period-1))).^2));
+    g_n=(1.01^it_yrs_per_period)-1;
+    r=(1.04^it_yrs_per_period)-1;
+    beta=0.972^it_yrs_per_period; <span class="comment">% Discount factor</span>
 <span class="keyword">end</span>
 
 <span class="comment">% Government budget constraint parameters</span>
 g_cons=0.17575574; <span class="comment">% Government consumption expenditures to GDP (BEA: Average 2015-2019)</span>
-a2=3.664; <span class="comment">% Initial guess for average income tax burden (if we use GS)</span>
+a2=1.9007; <span class="comment">% Initial guess for average income tax burden (if we use GS)</span>
 
 <span class="comment">% Calibrated parameters</span>
-beta=0.96077; <span class="comment">% Discount factor</span>
-theta=0.42315; <span class="comment">% TFP parameter to normalize units such that GDP per capita equals 1 in the model: Real GDP/capita in 2019: $58,056</span>
+theta=0.6595; <span class="comment">% TFP parameter to normalize units such that average household income relative to GDP per capita equals (the latter is normalized to 1): Real GDP/capita in 2019: $58,056</span>
 
 <span class="comment">% Consumption allocation rule (1=uniform; 2=square root)</span>
 cons_allocation_rule=2;
 
 <span class="comment">% Social Security benefits</span>
 SS=zeros(n_jgrid,2);
-SS(it_retire:end,1)=0.24433; <span class="comment">% Average SS non-college 2005-2009 as a share of GDP per capita</span>
-SS(it_retire:end,2)=0.29263; <span class="comment">% Average SS college 2005-2009 as a share of GDP per capita</span>
-</pre><h2 id="5">PARAM Mortality</h2><p>Assume MORT_PROB will have 80 rows. Average based on Resulting Dataframes</p><pre class="codeinput">load(<span class="string">'Mortality_prob_by_age_20_99.mat'</span>,<span class="string">'mort_prob'</span>) <span class="comment">% Age-specific mortality probabilities (20-99 year-olds)</span>
-psi_aux=1-mort_prob;
+SS(jret:end,1)=0.24433; <span class="comment">% Average SS non-college 2005-2009 as a share of GDP per capita</span>
+SS(jret:end,2)=0.29263; <span class="comment">% Average SS college 2005-2009 as a share of GDP per capita</span>
+</pre><h2 id="5">PARAM Mortality</h2><p>Assume MORT_PROB will have 80 rows. Average based on Resulting Dataframes</p><pre class="codeinput">load(<span class="string">'Mortality_prob_by_age_18_99.mat'</span>,<span class="string">'mort_prob'</span>)
+psi_full=1-mort_prob;
+psi_full=[psi_full;0]; <span class="comment">% Maximum lifespan=100 (survival probability at age 100=0)</span>
 
-<span class="comment">% Convert to two-year survival probabilities</span>
-<span class="keyword">if</span>(strcmp(st_param_group, <span class="string">"default_base"</span>))
-    <span class="comment">% A3. File is 81 by 2, uses the 1st to the 80th row, avg every two</span>
-    bl_loop_trans = false;
-    <span class="keyword">if</span> (bl_loop_trans)
-        psi=NaN(40,1);
-        <span class="keyword">for</span> i=1:40
-            psi(i)=prod(psi_aux((2*i-1):2*i));
-        <span class="keyword">end</span>
-    <span class="keyword">else</span>
-        <span class="comment">%This is kept here to make sure it generates the same results as</span>
-        <span class="comment">%the original looped code, below tiny and small use the same</span>
-        <span class="comment">%structure for averaging.</span>
-        psi = prod(reshape(psi_aux, 2, []), 1)';
-    <span class="keyword">end</span>
+<span class="keyword">if</span>(strcmp(st_param_group, <span class="string">"default_dense"</span>))
+    psi = psi_full;
 <span class="keyword">else</span>
-    psi = prod(reshape(psi_aux, 80/(n_jgrid-2), []), 1)';
+    psi = NaN(n_jgrid,1);
+    psi(1) = mean(1-mort_prob(1:2));
+    psi(2:(end-1)) = prod(reshape(1-mort_prob(3:end), it_yrs_per_period, []), 1)';
+    psi(end) = 0;
 <span class="keyword">end</span>
 
-<span class="comment">% Averaging</span>
-
-psi=[psi(1);psi]; <span class="comment">% Let survival probability of 18-year-olds be the same as that for 20-year-olds</span>
-psi=[psi;0]; <span class="comment">% Maximum lifespan=100 (survival probability at age 100=0)</span>
-
-clear <span class="string">mort_prob</span> <span class="string">psi_aux</span>
+clear <span class="string">mort_prob</span> <span class="string">psi_full</span>
 </pre><h2 id="6">PARAM Productivity by Education Types</h2><p>Generate epsilon matrix A1. load external</p><pre class="codeinput">load(<span class="string">'Life_cycle_prod_by_educ.mat'</span>,<span class="string">'life_cycle_prod_by_educ'</span>) <span class="comment">% Life-cycle labor productivity for 20-100 year-olds by education (non-college vs. college)</span>
-epsilon_aux=life_cycle_prod_by_educ;
-<span class="comment">% A2. Initialize</span>
-epsilon=NaN(n_jgrid-1,2);
-<span class="keyword">if</span>(strcmp(st_param_group, <span class="string">"default_base"</span>))
-    <span class="comment">% A3. File is 81 by 2, uses the 1st to the 80th row, avg every two</span>
-    bl_loop_trans = false;
-    <span class="keyword">if</span> (bl_loop_trans)
-        <span class="keyword">for</span> i=1:40
-            <span class="keyword">for</span> e=1:2
-                epsilon(i,e)=sum(epsilon_aux((2*i-1):2*i,e))/2;
-            <span class="keyword">end</span>
-        <span class="keyword">end</span>
-        epsilon(end,:)=epsilon_aux(end,:);
-    <span class="keyword">else</span>
-        <span class="comment">%This is kept here to make sure it generates the same results as</span>
-        <span class="comment">%the original looped code, below tiny and small use the same</span>
-        <span class="comment">%structure for averaging.</span>
-        <span class="keyword">for</span> e=1:2
-            epsilon(1:(end-1),e) = mean(reshape(epsilon_aux(1:80, e), 2, 40))';
-        <span class="keyword">end</span>
-        epsilon(end, :) = epsilon_aux(end,:);
-    <span class="keyword">end</span>
+<span class="comment">% Set Annual</span>
+epsilon_full=NaN(83,2);
+epsilon_full(3:end,:)=life_cycle_prod_by_educ(:,:);
+
+epsilon_full(1,:)=epsilon_full(3,:); <span class="comment">% Let life-cycle labor productivity of 18- and 19-year-olds be the same as that for 20-year-olds</span>
+epsilon_full(2,:)=epsilon_full(3,:);
+
+<span class="keyword">if</span>(strcmp(st_param_group, <span class="string">"default_dense"</span>))
+    epsilon = epsilon_full;
 <span class="keyword">else</span>
+    epsilon=NaN(n_jgrid,2);
+    epsilon(1,:) = epsilon_full(3,:);
     <span class="keyword">for</span> e=1:2
-        epsilon(1:(end-1),e) = mean(reshape(epsilon_aux(1:80, e), 80/(n_jgrid-2), (n_jgrid-2)))';
+        epsilon(2:end-1,e) = mean(reshape(life_cycle_prod_by_educ(1:80, e), it_yrs_per_period, (n_jgrid-2)))';
     <span class="keyword">end</span>
-    epsilon(end, :) = epsilon_aux(end,:);
 <span class="keyword">end</span>
-<span class="comment">% A5. init ages</span>
-epsilon=[epsilon(1,:);epsilon]; <span class="comment">% Let life-cycle labor productivity of 18-year-olds be the same as that for 20-year-olds</span>
-<span class="comment">% A6. Older</span>
-epsilon(it_retire:end,:)=0; <span class="comment">% Assume zero labor productivity for 65+ year-olds (exogenous retirement)</span>
+
+epsilon(jret:end,:)=0; <span class="comment">% Assume zero labor productivity for 65+ year-olds (exogenous retirement)</span>
 
 clear <span class="string">life_cycle_prod_by_educ</span> <span class="string">epsilon_aux</span>
-</pre><h2 id="7">PARAM Kids Transition</h2><p>Transition probabilities for number of children (0, 1, 2, 3, 4, or 5) (stored in the following order: Number of children in year 1, age, educational status, marital status. Each column refers to the number of children in year 2)</p><p>PI_KIDS_TRANS_PROB has 6*2*41 = 492 rows. It is assuming strcmp(st_param_group, "default_base"). For tiny and small grid, select appropriate subset of rows to match appropriate age groups from PI_KIDS.</p><p>pi_kids_trans_prob estimation might change in the future if there are more age groups added. To make sure this code here works, use N_JGRID_PKTP as the N_JGRID count for PI_KIDS_TRANS_PROB. But assume there will always be up to 6 kids, and 2 marriage/notmarry groups.</p><pre class="codeinput">load(<span class="string">'pi_kids_trans_prob'</span>,<span class="string">'pi_kids_trans_prob'</span>)
-n_kidsgrid_kptp = 6;
+</pre><h2 id="7">PARAM Kids Transition</h2><p>Transition probabilities for number of children (0, 1, 2, 3, 4, or 5) (stored in the following order: Number of children in year 1, age, marital status, college attainment. Each column refers to the number of children in year 2)</p><p>PI_KIDS_TRANS_PROB has 6*2*41 = 492 rows. It is assuming strcmp(st_param_group, "default_base"). For tiny and small grid, select appropriate subset of rows to match appropriate age groups from PI_KIDS.</p><p>pi_kids_trans_prob estimation might change in the future if there are more age groups added. To make sure this code here works, use N_JGRID_PKTP as the N_JGRID count for PI_KIDS_TRANS_PROB. But assume there will always be up to 6 kids, and 2 marriage/notmarry groups.</p><pre class="codeinput">load(<span class="string">'pi_kids_trans_prob'</span>,<span class="string">'pi_kids_trans_prob'</span>)
+n_kidsgrid_kptp = 5;
+n_educgrid_kptp = 2;
 n_marriedgrid_kptp = 2;
-n_jgrid_pktp = size(pi_kids_trans_prob, 1)/(n_kidsgrid_kptp*n_marriedgrid_kptp);
+n_jgrid_pktp = 83;
 pi_kids_pktp =NaN(<span class="keyword">...</span>
     n_kidsgrid_kptp,<span class="keyword">...</span>
     n_kidsgrid_kptp,<span class="keyword">...</span>
     n_jgrid_pktp,<span class="keyword">...</span>
+    n_educgrid_kptp,<span class="keyword">...</span>
     n_marriedgrid_kptp);
 
 <span class="keyword">for</span> kidsp=1:n_kidsgrid_kptp <span class="comment">% No. of kids in year 2</span>
@@ -241,34 +227,38 @@ pi_kids_pktp =NaN(<span class="keyword">...</span>
     <span class="keyword">for</span> kids=1:n_kidsgrid_kptp <span class="comment">% No. of kids in year 1</span>
         <span class="keyword">for</span> j=1:(n_jgrid_pktp-1) <span class="comment">% Age in year 1</span>
             <span class="keyword">for</span> married=1:n_marriedgrid_kptp <span class="comment">% Marital status</span>
-                counter=counter+1;
-                pi_kids_pktp(kids,kidsp,j,married)=pi_kids_trans_prob(counter,kidsp);
+                <span class="keyword">for</span> educ=1:n_educgrid_kptp <span class="comment">% Educational level</span>
+                    counter=counter+1;
+                    pi_kids_pktp(kids,kidsp,j,educ,married)=pi_kids_trans_prob(counter,kidsp);
+                <span class="keyword">end</span>
             <span class="keyword">end</span>
         <span class="keyword">end</span>
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 
-pi_kids_pktp(:,:,n_jgrid_pktp,:)=0;
-pi_kids_pktp(:,1,n_jgrid_pktp,:)=1;
+pi_kids_pktp(:,:,n_jgrid_pktp,:,:)=0;
+pi_kids_pktp(:,1,n_jgrid_pktp,:,:)=1;
 
 <span class="comment">% Subset Selection</span>
-<span class="keyword">if</span>(strcmp(st_param_group, <span class="string">"default_base"</span>))
+<span class="keyword">if</span>(strcmp(st_param_group, <span class="string">"default_dense"</span>))
     pi_kids = pi_kids_pktp;
 <span class="keyword">else</span>
     pi_kids = pi_kids_pktp(<span class="keyword">...</span>
         1:n_kidsgrid, <span class="keyword">...</span>
         1:n_kidsgrid, <span class="keyword">...</span>
         round(linspace(1, n_jgrid_pktp, n_jgrid)), <span class="keyword">...</span>
-        : <span class="keyword">...</span>
+        :, : <span class="keyword">...</span>
         );
 <span class="keyword">end</span>
 
 <span class="comment">% Ensure that all rows sum to 1 in case of rounding error</span>
 <span class="keyword">for</span> kids=1:n_kidsgrid <span class="comment">% No. of kids in year 1</span>
-    <span class="keyword">for</span> j=1:(n_jgrid-1) <span class="comment">% Age in year 1</span>
-        <span class="keyword">for</span> married=1:n_marriedgrid <span class="comment">% Marital status</span>
-            aux_sum=sum(pi_kids(kids,:,j,married));
-            pi_kids(kids,:,j,married)=pi_kids(kids,:,j,married)/aux_sum;
+    <span class="keyword">for</span> j=1:n_jgrid <span class="comment">% Age in year 1</span>
+        <span class="keyword">for</span> educ=1:n_educgrid <span class="comment">% Educational level</span>
+            <span class="keyword">for</span> married=1:n_marriedgrid <span class="comment">% Marital status</span>
+                aux_sum=sum(pi_kids(kids,:,j,educ,married));
+                pi_kids(kids,:,j,educ,married)=pi_kids(kids,:,j,educ,married)/aux_sum;
+            <span class="keyword">end</span>
         <span class="keyword">end</span>
     <span class="keyword">end</span>
 <span class="keyword">end</span>
@@ -277,7 +267,7 @@ pi_kids_pktp(:,1,n_jgrid_pktp,:)=1;
 
 clear <span class="string">aux_sum</span> <span class="string">counter</span> <span class="string">pi_kids_trans_prob</span> <span class="string">pi_kids_pktp</span>
 </pre><h2 id="8">PARAM Specifying asset grid (use non-linear spacing with minimum value of 0)</h2><pre class="codeinput">curv=3; <span class="comment">% Governs how the grid points are allocated</span>
-scale_a=50; <span class="comment">% Maximum value of assets (NOTE: Verifying that it does not bind in Aggregation.m)</span>
+scale_a=190; <span class="comment">% Maximum value of assets (NOTE: Verifying that it does not bind in Aggregation.m) grid=1.2451e-11</span>
 
 agrid=zeros(n_agrid,1);
 
@@ -299,57 +289,57 @@ tol=10^-12;
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 stat_distr_eta(1,:)=x0;
+stat_distr_eta = stat_distr_eta./sum(stat_distr_eta);
 </pre><h2 id="10">Initial conditions for marital status, college attainment, and number of kids</h2><p>Distribution of educational attainment from PSID tab Rcollege if RAGE&gt;=18 &amp; RAGE!=. [aweight=WEIGHT]</p><pre class="codeinput">stat_distr_educ(1,1)=0.6970; <span class="comment">% No college</span>
 stat_distr_educ(1,2)=0.3030; <span class="comment">% College</span>
 
-<span class="comment">% Distribution of marital status from PSID</span>
-<span class="comment">% tab Rmarried if RAGE&gt;=18 &amp; RAGE!=. [aweight=WEIGHT]</span>
-stat_distr_married(1,1)=0.5242; <span class="comment">% Not married</span>
-stat_distr_married(1,2)=0.4758; <span class="comment">% Married</span>
+<span class="comment">% Distribution of marital status conditional on college attainment from PSID</span>
+<span class="comment">% tab  Rmarried if RAGE&gt;=18 &amp; RAGE!=. &amp; Rcollege==0 [aweight=WEIGHT]</span>
+stat_distr_married(1,1)=0.5635; <span class="comment">% Not married</span>
+stat_distr_married(1,2)=0.4365; <span class="comment">% Married</span>
+
+<span class="comment">% tab  Rmarried if RAGE&gt;=18 &amp; RAGE!=. &amp; Rcollege==1 [aweight=WEIGHT]</span>
+stat_distr_married(2,1)=0.4364; <span class="comment">% Not married</span>
+stat_distr_married(2,2)=0.5636; <span class="comment">% Married</span>
 
 <span class="comment">% Stationary distribution of children at age 20 from PSID</span>
 <span class="comment">% Not married and no college</span>
 <span class="comment">% tab kids if Rmarried==0 &amp; Rcollege==0 &amp; inrange(RAGE,18,25) [aweight=WEIGHT]</span>
-stat_distr_kids_kn6(1,1,1)=0.7333;
-stat_distr_kids_kn6(1,1,2)=0.1513;
-stat_distr_kids_kn6(1,1,3)=0.0828;
-stat_distr_kids_kn6(1,1,4)=0.0236;
-stat_distr_kids_kn6(1,1,5)=0.0059;
-stat_distr_kids_kn6(1,1,6)=0.0030;
+stat_distr_kids_kn5(1,1,1)=0.7333;
+stat_distr_kids_kn5(1,1,2)=0.1513;
+stat_distr_kids_kn5(1,1,3)=0.0828;
+stat_distr_kids_kn5(1,1,4)=0.0236;
+stat_distr_kids_kn5(1,1,5)=0.0059;
 
 <span class="comment">% Not married but college-educated</span>
 <span class="comment">% tab kids if Rmarried==0 &amp; Rcollege==1 &amp; inrange(RAGE,18,25) [aweight=WEIGHT]</span>
-stat_distr_kids_kn6(2,1,1)=0.9752;
-stat_distr_kids_kn6(2,1,2)=0.0236;
-stat_distr_kids_kn6(2,1,3)=0.0001;
-stat_distr_kids_kn6(2,1,4)=0.0011;
-stat_distr_kids_kn6(2,1,5)=0;
-stat_distr_kids_kn6(2,1,6)=0;
+stat_distr_kids_kn5(2,1,1)=0.9752;
+stat_distr_kids_kn5(2,1,2)=0.0236;
+stat_distr_kids_kn5(2,1,3)=0.0001;
+stat_distr_kids_kn5(2,1,4)=0.0011;
+stat_distr_kids_kn5(2,1,5)=0;
 
 <span class="comment">% Married and no college</span>
 <span class="comment">% tab kids if Rmarried==1 &amp; Rcollege==0 &amp; inrange(RAGE,18,25) [aweight=WEIGHT]</span>
-stat_distr_kids_kn6(1,2,1)=0.4143;
-stat_distr_kids_kn6(1,2,2)=0.2958;
-stat_distr_kids_kn6(1,2,3)=0.2131;
-stat_distr_kids_kn6(1,2,4)=0.0569;
-stat_distr_kids_kn6(1,2,5)=0.0199;
-stat_distr_kids_kn6(1,2,6)=0;
-
+stat_distr_kids_kn5(1,2,1)=0.4143;
+stat_distr_kids_kn5(1,2,2)=0.2958;
+stat_distr_kids_kn5(1,2,3)=0.2131;
+stat_distr_kids_kn5(1,2,4)=0.0569;
+stat_distr_kids_kn5(1,2,5)=0.0199;
 
 <span class="comment">% Married and college-educated</span>
 <span class="comment">% tab kids if Rmarried==1 &amp; Rcollege==1 &amp; inrange(RAGE,18,25) [aweight=WEIGHT]</span>
-stat_distr_kids_kn6(2,2,1)=0.7534;
-stat_distr_kids_kn6(2,2,2)=0.2153;
-stat_distr_kids_kn6(2,2,3)=0.0221;
-stat_distr_kids_kn6(2,2,4)=0.0091;
-stat_distr_kids_kn6(2,2,5)=0;
-stat_distr_kids_kn6(2,2,6)=0;
+stat_distr_kids_kn5(2,2,1)=0.7534;
+stat_distr_kids_kn5(2,2,2)=0.2153;
+stat_distr_kids_kn5(2,2,3)=0.0221;
+stat_distr_kids_kn5(2,2,4)=0.0091;
+stat_distr_kids_kn5(2,2,5)=0;
 
 <span class="comment">% Subset Kids for Smaller Solutions</span>
 <span class="keyword">if</span>(strcmp(st_param_group, <span class="string">"default_base"</span>))
-    stat_distr_kids = stat_distr_kids_kn6;
+    stat_distr_kids = stat_distr_kids_kn5;
 <span class="keyword">else</span>
-    stat_distr_kids = stat_distr_kids_kn6(:,:,1:n_kidsgrid);
+    stat_distr_kids = stat_distr_kids_kn5(:,:,1:n_kidsgrid);
 <span class="keyword">end</span>
 
 <span class="comment">% Reweight</span>
@@ -376,8 +366,8 @@ Pop(1)=1;
     Pop(j)=Pop(j-1)*psi(j-1)/(1+g_n);
 <span class="keyword">end</span>
 
-name=<span class="string">'Old-age dependency ratio='</span>;
-st_old_age_depend =[name,num2str(sum(Pop(it_retire:end))/sum(Pop(1:(it_retire-1))))];
+name=<span class="string">'Old-age dependency ratio (ratio of 65+/(18-64))='</span>;
+st_old_age_depend =[name,num2str(sum(Pop(jret:end))/sum(Pop(1:(jret-1))))];
 <span class="comment">% disp(st_old_age_depend);</span>
 </pre><h2 id="12">Set Parameter Maps</h2><pre class="codeinput">mp_params_preftechpricegov = containers.Map(<span class="string">'KeyType'</span>, <span class="string">'char'</span>, <span class="string">'ValueType'</span>, <span class="string">'any'</span>);
 mp_params_preftechpricegov(<span class="string">'gamma'</span>) = gamma;
@@ -437,17 +427,17 @@ mp_params(<span class="string">'mp_params_name'</span>) = string(st_param_group)
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 CONTAINER NAME: mp_params_preftechpricegov Scalars
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                            i    idx     value 
-                            _    ___    _______
+                            i    idx      value   
+                            _    ___    __________
 
-    a2                      1     1       3.664
-    beta                    2     2     0.96077
-    cons_allocation_rule    3     3           2
-    g_cons                  4     4     0.17576
-    g_n                     5     5     0.17258
-    gamma                   6     6           2
-    r                       7     7     0.87298
-    theta                   8     8     0.42315
+    a2                      1     1         1.9007
+    beta                    2     2          0.972
+    cons_allocation_rule    3     3              2
+    g_cons                  4     4     0.17575574
+    g_n                     5     5           0.01
+    gamma                   6     6              2
+    r                       7     7           0.04
+    theta                   8     8         0.6595
 
 ----------------------------------------
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -456,145 +446,157 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                      i    idx    value
                      _    ___    _____
 
-    n_agrid          1     1      10  
+    n_agrid          1     1      55  
     n_educgrid       2     2       2  
-    n_etagrid        3     3       5  
-    n_jgrid          4     4       7  
-    n_kidsgrid       5     5       3  
+    n_etagrid        3     3       9  
+    n_jgrid          4     4      83  
+    n_kidsgrid       5     5       5  
     n_marriedgrid    6     6       2  
 
 ----------------------------------------
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 CONTAINER NAME: mp_params_statesgrid ND Array (Matrix etc)
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                i    idx    ndim    numel    rowN    colN       mean        std       coefvari       min       max  
-                _    ___    ____    _____    ____    ____    __________    ______    __________    _______    ______
+                i    idx    ndim    numel    rowN    colN             sum                     mean                   std                 coefvari                  min                 max       
+                _    ___    ____    _____    ____    ____    _____________________    _____________________    ________________    _____________________    _________________    ________________
 
-    agrid       1     1      2       10       10      1          13.889    17.236         1.241          0        50
-    eta_grid    2     2      2        5        5      1      4.4409e-17    1.1237    2.5303e+16    -1.4213    1.4213
+    agrid       1     1      2       55       55      1           2660.87962962963         48.3796296296296    55.8001666608665         1.15338143528681                    0                 190
+    eta_grid    2     2      2        9        9      1      -2.22044604925031e-16    -2.46716227694479e-17    1.30558241966773    -5.29183844884536e+16    -1.90692517849118    1.90692517849118
 
 xxx TABLE:agrid xxxxxxxxxxxxxxxxxx
-              c1   
-           ________
+                   c1         
+           ___________________
 
-    r1            0
-    r2     0.068587
-    r3       0.5487
-    r4       1.8519
-    r7       14.815
-    r8       23.525
-    r9       35.117
-    r10          50
+    r1                       0
+    r2     0.00120662500635066
+    r3     0.00965300005080526
+    r4      0.0325788751714678
+    r52       160.060013717421
+    r53       169.661128892953
+    r54       179.638711070467
+    r55                    190
 
 xxx TABLE:eta_grid xxxxxxxxxxxxxxxxxx
-             c1   
-          ________
+                  c1        
+          __________________
 
-    r1     -1.4213
-    r2    -0.71067
-    r3           0
-    r4     0.71067
-    r5      1.4213
+    r1     -1.90692517849118
+    r2     -1.43019388386839
+    r3    -0.953462589245592
+    r4    -0.476731294622796
+    r6     0.476731294622796
+    r7     0.953462589245592
+    r8      1.43019388386839
+    r9      1.90692517849118
 
 ----------------------------------------
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 CONTAINER NAME: mp_params_exotrans ND Array (Matrix etc)
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-               i    idx    ndim    numel    rowN    colN     mean        std      coefvari     min       max  
-               _    ___    ____    _____    ____    ____    _______    _______    ________    _____    _______
+               i    idx    ndim    numel    rowN    colN        sum               mean                  std               coefvari                 min                    max       
+               _    ___    ____    _____    ____    ____    ____________    _________________    _________________    _________________    ____________________    _________________
 
-    pi_eta     1     1      2        25      5        5         0.2    0.38844     1.9422     1e-08    0.96099
-    pi_kids    2     2      4       126      3       42     0.33333    0.34999       1.05         0          1
-    psi        3     3      2         7      7        1     0.62404    0.44469    0.71261         0    0.98684
+    pi_eta     1     1      2        81       9        9               9    0.111111111111111    0.289681339309146     2.60713205378232    1.00000000000001e-16    0.924251408497207
+    pi_kids    2     2      5      8300       5     1660            1660                  0.2     0.29879519368243     1.49397596841215                       0                    1
+    psi        3     3      2        83      83        1    78.160070152    0.941687592192771    0.131199873233344    0.139324202974617                       0          0.999369671
 
 xxx TABLE:pi_eta xxxxxxxxxxxxxxxxxx
-             c1            c2            c3            c4           c5    
-          _________    __________    __________    __________    _________
+                   c1                      c2                      c3                      c4                      c6                      c7                      c8                      c9         
+          ____________________    ____________________    ____________________    ____________________    ____________________    ____________________    ____________________    ____________________
 
-    r1       0.9606      0.038812    0.00058806      3.96e-06        1e-08
-    r2     0.009703       0.96089      0.029112    0.00029404      9.9e-07
-    r3    9.801e-05      0.019408       0.96099      0.019408    9.801e-05
-    r4      9.9e-07    0.00029404      0.029112       0.96089     0.009703
-    r5        1e-08      3.96e-06    0.00058806      0.038812       0.9606
+    r1        0.92274469442792      0.0745652278325593      0.0026361444183228    5.32554427944001e-05    5.43367440000002e-09    2.74428000000001e-11    7.92000000000005e-14    1.00000000000001e-16
+    r2     0.00932065347906991       0.923403730532501      0.0652645451445373      0.0019774445223456    3.36229185600001e-07    2.03769720000001e-09    6.86080000000004e-12    9.90000000000006e-15
+    r3    9.41480149401002e-05      0.0186470128984392       0.923874614696603      0.0559524525165144    1.90227119544001e-05         1.441011628e-07    5.82199200000003e-10    9.80100000000005e-13
+    r4    9.50990049900002e-07      0.0002824920746208      0.0279762262582572       0.924157202840626    0.000941768342905602    9.51135597720002e-06    4.80327408000002e-08    9.70299000000004e-11
+    r6    9.70299000000004e-11    4.80327408000002e-08    9.51135597720003e-06    0.000941768342905602       0.924157202840626      0.0279762262582572      0.0002824920746208    9.50990049900002e-07
+    r7    9.80100000000005e-13    5.82199200000003e-10         1.441011628e-07    1.90227119544001e-05      0.0559524525165144       0.923874614696603      0.0186470128984392    9.41480149401002e-05
+    r8    9.90000000000006e-15    6.86080000000004e-12    2.03769720000001e-09    3.36229185600001e-07      0.0019774445223456      0.0652645451445373       0.923403730532501     0.00932065347906991
+    r9    1.00000000000001e-16    7.92000000000005e-14    2.74428000000001e-11    5.43367440000002e-09    5.32554427944001e-05      0.0026361444183228      0.0745652278325593        0.92274469442792
 
 xxx TABLE:pi_kids xxxxxxxxxxxxxxxxxx
-            c1          c2          c3           c4          c39        c40    c41    c42
-          _______    ________    _________    ________    __________    ___    ___    ___
+                   c1                      c2                      c3                      c4             c1657    c1658    c1659    c1660
+          ____________________    ____________________    ____________________    ____________________    _____    _____    _____    _____
 
-    r1    0.81525     0.16959     0.015162     0.90537    0.00096649     1      0      0 
-    r2    0.96017    0.037024    0.0028106     0.16251      0.036038     1      0      0 
-    r3    0.44271     0.47851     0.078781    0.015942       0.29396     1      0      0 
+    r1       0.885810221147405       0.111368785929732     0.00279039338576291    3.02059206004454e-05      0        0        0        0  
+    r2      0.0511182117632578       0.659431849982379       0.285062928221033      0.0043303340909526      0        0        0        0  
+    r3     0.00126545853158291      0.0533200987428242       0.787629128602746       0.155381262519464      0        0        0        0  
+    r4    1.80799519610212e-05    0.000805119610741851      0.0699524858721347       0.784743106946937      0        0        0        0  
+    r5    1.81853676308963e-07    8.10474364589005e-06    0.000757218270042704      0.0554441317825653      0        0        0        0  
 
 xxx TABLE:psi xxxxxxxxxxxxxxxxxx
-             c1   
-          ________
+               c1     
+           ___________
 
-    r1     0.98684
-    r2     0.98684
-    r3     0.96264
-    r4      0.8697
-    r5     0.52975
-    r6    0.032482
-    r7           0
+    r1     0.999369671
+    r2     0.999328247
+    r3     0.999287421
+    r4     0.999246823
+    r80     0.71587307
+    r81     0.69771592
+    r82    0.681385166
+    r83              0
 
 ----------------------------------------
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 CONTAINER NAME: mp_params_typelife ND Array (Matrix etc)
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-               i    idx    ndim    numel    rowN    colN     mean        std      coefvari    min      max  
-               _    ___    ____    _____    ____    ____    _______    _______    ________    ___    _______
+               i    idx    ndim    numel    rowN    colN         sum               mean                  std               coefvari         min        max    
+               _    ___    ____    _____    ____    ____    _____________    _________________    _________________    _________________    ___    ___________
 
-    SS         1     1      2       14       7       2      0.11506    0.13885     1.2067      0     0.29263
-    epsilon    2     2      2       14       7       2      0.94364    0.88779    0.94082      0      2.2266
+    SS         1     1      2       166      83      2            18.7936    0.113214457831325    0.133911415049701     1.18281196248991     0         0.29263
+    epsilon    2     2      2       166      83      2      162.614843843     0.97960749303012    0.892942204468349    0.911530598552592     0     2.261193991
 
 xxx TABLE:SS xxxxxxxxxxxxxxxxxx
-            c1         c2   
-          _______    _______
+             c1         c2   
+           _______    _______
 
-    r1          0          0
-    r2          0          0
-    r3          0          0
-    r4          0          0
-    r5    0.24433    0.29263
-    r6    0.24433    0.29263
-    r7    0.24433    0.29263
+    r1           0          0
+    r2           0          0
+    r3           0          0
+    r4           0          0
+    r80    0.24433    0.29263
+    r81    0.24433    0.29263
+    r82    0.24433    0.29263
+    r83    0.24433    0.29263
 
 xxx TABLE:epsilon xxxxxxxxxxxxxxxxxx
-            c1        c2  
-          ______    ______
+               c1             c2     
+           ___________    ___________
 
-    r1     1.257    1.6108
-    r2     1.257    1.6108
-    r3    1.5724    2.2266
-    r4    1.5421    2.1342
-    r5         0         0
-    r6         0         0
-    r7         0         0
+    r1               1              1
+    r2               1              1
+    r3               1              1
+    r4     1.039896011    1.092294335
+    r80              0              0
+    r81              0              0
+    r82              0              0
+    r83              0              0
 
 ----------------------------------------
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 CONTAINER NAME: mp_params_stat ND Array (Matrix etc)
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                          i    idx    ndim    numel    rowN    colN     mean        std       coefvari       min          max  
-                          _    ___    ____    _____    ____    ____    _______    ________    ________    __________    _______
+                          i    idx    ndim    numel    rowN    colN          sum                 mean                  std                coefvari                 min                   max       
+                          _    ___    ____    _____    ____    ____    ________________    _________________    __________________    _________________    ___________________    _________________
 
-    Pop                   1     1      2        7       7       1      0.53756     0.35339     0.65741     0.0053974          1
-    stat_distr_educ       2     3      2        2       1       2          0.5      0.2786      0.5572         0.303      0.697
-    stat_distr_eta        3     4      2        5       1       5          0.2      0.1355     0.67748        0.0625      0.375
-    stat_distr_kids       4     5      3       12       2       6      0.33333     0.33166     0.99497    0.00010011    0.97627
-    stat_distr_married    5     6      2        2       1       2          0.5    0.034224    0.068448        0.4758     0.5242
+    Pop                   1     1      2       83       83       1     45.7930651914795    0.551723677005778     0.301399253298434    0.546286602986004    0.00627865793435248                    1
+    stat_distr_educ       2     3      2        2        1       2                    1                  0.5       0.2786000717875    0.557200143574999                  0.303                0.697
+    stat_distr_eta        3     4      2        9        1       9                    1    0.111111111111111     0.103240922183481    0.929168299651329     0.0039062500025211    0.273437499974789
+    stat_distr_kids       4     5      3       20        2      10                    4                  0.2     0.294334846368898     1.47167423184449                      0               0.9752
+    stat_distr_married    5     6      2        4        2       2                    2                  0.5    0.0733812419264397    0.146762483852879                 0.4364               0.5636
 
 xxx TABLE:Pop xxxxxxxxxxxxxxxxxx
-             c1    
-          _________
+                   c1         
+           ___________________
 
-    r1            1
-    r2       0.8416
-    r3      0.70829
-    r4      0.58148
-    r5      0.43128
-    r6      0.19484
-    r7    0.0053974
+    r1                       1
+    r2       0.989474921782178
+    r3       0.979020038648561
+    r4        0.96863604903806
+    r80     0.0190074392897291
+    r81     0.0134721919972049
+    r82     0.0093066958749965
+    r83    0.00627865793435248
 
 xxx TABLE:stat_distr_educ xxxxxxxxxxxxxxxxxx
            c1       c2  
@@ -603,32 +605,33 @@ xxx TABLE:stat_distr_educ xxxxxxxxxxxxxxxxxx
     r1    0.697    0.303
 
 xxx TABLE:stat_distr_eta xxxxxxxxxxxxxxxxxx
-            c1       c2      c3       c4       c5  
-          ______    ____    _____    ____    ______
+                  c1                    c2                   c3                   c4                   c6                   c7                    c8                    c9        
+          __________________    __________________    _________________    _________________    _________________    _________________    __________________    __________________
 
-    r1    0.0625    0.25    0.375    0.25    0.0625
+    r1    0.0039062500025211    0.0312500000100844    0.109375000010084    0.218749999989916    0.218749999989916    0.109375000010085    0.0312500000100844    0.0039062500025211
 
 xxx TABLE:stat_distr_kids xxxxxxxxxxxxxxxxxx
-            c1         c2          c3         c4           c5           c6   
-          _______    _______    ________    _______    __________    ________
+                 c1                   c2                   c3                   c4                    c7                    c8                    c9              c10  
+          _________________    _________________    _________________    _________________    __________________    __________________    ___________________    ______
 
-    r1    0.75801    0.44877      0.1564    0.32041       0.08559     0.23083
-    r2    0.97627     0.7604    0.023626     0.2173    0.00010011    0.022305
+    r1    0.735580298926673               0.4143    0.151770488514395               0.2958    0.0236733875012539                0.0569    0.00591834687531347    0.0199
+    r2               0.9752    0.753475347534754               0.0236    0.215321532153215                0.0011    0.0091009100910091                      0         0
 
 xxx TABLE:stat_distr_married xxxxxxxxxxxxxxxxxx
             c1        c2  
           ______    ______
 
-    r1    0.5242    0.4758
+    r1    0.5635    0.4365
+    r2    0.4364    0.5636
 
 ----------------------------------------
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 CONTAINER NAME: mp_params_stat String
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                          i     idx                  string              
-                         ___    ___    __________________________________
+                          i     idx                             string                          
+                         ___    ___    _________________________________________________________
 
-    st_old_age_depend    "1"    "2"    "Old-age dependency ratio=0.20168"
+    st_old_age_depend    "1"    "2"    "Old-age dependency ratio (ratio of 65+/(18-64))=0.23426"
 
 </pre><h2 id="15">Return</h2><pre class="codeinput"><span class="keyword">if</span> (nargout==1)
     varargout = cell(nargout,0);
@@ -721,8 +724,9 @@ if (~isempty(varargin))
 
 else
 
-    st_param_group = 'default_base';
-    st_param_group = 'default_tiny';
+%     st_param_group = 'default_base';
+    st_param_group = 'default_dense';    
+%     st_param_group = 'default_tiny';
     bl_print_mp_params = true;
     [it_row_n_keep, it_col_n_keep] = deal(8, 8);
 
@@ -732,136 +736,119 @@ end
 % Number of grid points
 n_educgrid=2; % No. of grid points for educational attainment (college vs. non-college)
 n_marriedgrid=2; % No. of grid points for marital status
-n_kidsgrid=6; % No. of grid points for children (0 to 5+ children)
-if(strcmp(st_param_group, "default_base"))
+n_kidsgrid=5; % No. of grid points for children (0 to 5+ children)
+if(strcmp(st_param_group, "default_dense"))
+    n_jgrid  =83; % Age runs from 18 to 100 (a period is 2 years)
+    jret     =49;
+    n_agrid  =55; % No. of grid points for assets
+    n_etagrid =9; % No. of grid points for persistent labor productivity shocks
+    n_kidsgrid=5; % No. of grid points for children (0 to 4+ children)
+elseif(strcmp(st_param_group, "default_base"))
     n_jgrid  =42; % Age runs from 18 to 100 (a period is 2 years)
-    it_retire=25;
+    jret=25;
     n_agrid  =40; % No. of grid points for assets
     n_etagrid =7; % No. of grid points for persistent labor productivity shocks
-    n_kidsgrid=6; % No. of grid points for children (0 to 5+ children)
+    n_kidsgrid=5; % No. of grid points for children (0 to 4+ children)
 elseif(strcmp(st_param_group, "default_tiny"))
     n_jgrid   =7; % Age runs from 18 to 100 (5 periods of 16 years + terminal)
-    it_retire =5;
+    jret =5;
     n_agrid   =10; % No. of grid points for assets
     n_etagrid =5; % No. of grid points for persistent labor productivity shocks
     n_kidsgrid=3; % No. of grid points for children (0 to 5+ children)
 elseif(strcmp(st_param_group, "default_small"))
     n_jgrid   =18; % Age runs from 18 to 100 (16 periods of 5 years + terminal)
-    it_retire =13;
+    jret =13;
     n_agrid   =20; % No. of grid points for assets
     n_etagrid =5; % No. of grid points for persistent labor productivity shocks
     n_kidsgrid=3; % No. of grid points for children (0 to 5+ children)
 end
 
+% Years Per Period
+if (n_jgrid == 83)
+    it_yrs_per_period = 1;
+else
+    it_yrs_per_period = (80/(n_jgrid-2));
+end
+
+
 %% Preferences, Technologies, etc.
 % Non-calibrated parameters
-if(strcmp(st_param_group, "default_base"))
-    gamma=1; % Risk aversion parameter, log kids don't matter
+gamma=2; % Risk aversion parameter
+if(strcmp(st_param_group, "default_dense"))
+    rho_eta=0.98; % Persistence of AR(1) productivity shocks
+    sigma_eta=0.018; % Variance of AR(1) productivity shocks
+    g_n=0.01; % Annual population growth of 1.1 percent
+    r=0.04; % Annual real interest rate of 4.0 percent from McGrattan and Prescott
+    beta=0.972; % Discount factor
 else
-    gamma=2; % Risk aversion parameter, change to 2 so kids matter
-end
-rho_eta=0.98; % Ozkan (2017)
-sigma_eta=0.02; % Ozkan (2017)
-
-if(strcmp(st_param_group, "default_base"))
-    g_n=(1.01^2)-1; % Annual population growth of 1.1 percent
-    r=(1.04^2)-1; % Annual real interest rate of 4.0 percent from McGrattan and Prescott
-else
-    g_n=(1.01^(80/(n_jgrid-2)))-1; 
-    r=(1.04^(80/(n_jgrid-2)))-1;
+    rho_eta=0.98^it_yrs_per_period;
+    sigma_eta=sqrt(0.018^2*sum((0.98.^(0:(it_yrs_per_period-1))).^2));
+    g_n=(1.01^it_yrs_per_period)-1;
+    r=(1.04^it_yrs_per_period)-1;
+    beta=0.972^it_yrs_per_period; % Discount factor
 end
 
 % Government budget constraint parameters
 g_cons=0.17575574; % Government consumption expenditures to GDP (BEA: Average 2015-2019)
-a2=3.664; % Initial guess for average income tax burden (if we use GS)
+a2=1.9007; % Initial guess for average income tax burden (if we use GS)
 
 % Calibrated parameters
-beta=0.96077; % Discount factor
-theta=0.42315; % TFP parameter to normalize units such that GDP per capita equals 1 in the model: Real GDP/capita in 2019: $58,056
+theta=0.6595; % TFP parameter to normalize units such that average household income relative to GDP per capita equals (the latter is normalized to 1): Real GDP/capita in 2019: $58,056
 
 % Consumption allocation rule (1=uniform; 2=square root)
 cons_allocation_rule=2;
 
 % Social Security benefits
 SS=zeros(n_jgrid,2);
-SS(it_retire:end,1)=0.24433; % Average SS non-college 2005-2009 as a share of GDP per capita
-SS(it_retire:end,2)=0.29263; % Average SS college 2005-2009 as a share of GDP per capita
+SS(jret:end,1)=0.24433; % Average SS non-college 2005-2009 as a share of GDP per capita
+SS(jret:end,2)=0.29263; % Average SS college 2005-2009 as a share of GDP per capita
 
 %% PARAM Mortality
 % Assume MORT_PROB will have 80 rows. Average based on Resulting Dataframes
+load('Mortality_prob_by_age_18_99.mat','mort_prob')
+psi_full=1-mort_prob;
+psi_full=[psi_full;0]; % Maximum lifespan=100 (survival probability at age 100=0)
 
-load('Mortality_prob_by_age_20_99.mat','mort_prob') % Age-specific mortality probabilities (20-99 year-olds)
-psi_aux=1-mort_prob;
-
-% Convert to two-year survival probabilities
-if(strcmp(st_param_group, "default_base"))
-    % A3. File is 81 by 2, uses the 1st to the 80th row, avg every two
-    bl_loop_trans = false;
-    if (bl_loop_trans)
-        psi=NaN(40,1);
-        for i=1:40
-            psi(i)=prod(psi_aux((2*i-1):2*i));
-        end
-    else
-        %This is kept here to make sure it generates the same results as
-        %the original looped code, below tiny and small use the same
-        %structure for averaging.
-        psi = prod(reshape(psi_aux, 2, []), 1)';
-    end
+if(strcmp(st_param_group, "default_dense"))
+    psi = psi_full;
 else
-    psi = prod(reshape(psi_aux, 80/(n_jgrid-2), []), 1)';
+    psi = NaN(n_jgrid,1);
+    psi(1) = mean(1-mort_prob(1:2));
+    psi(2:(end-1)) = prod(reshape(1-mort_prob(3:end), it_yrs_per_period, []), 1)';
+    psi(end) = 0;
 end
 
-% Averaging
-
-psi=[psi(1);psi]; % Let survival probability of 18-year-olds be the same as that for 20-year-olds
-psi=[psi;0]; % Maximum lifespan=100 (survival probability at age 100=0)
-
-clear mort_prob psi_aux
+clear mort_prob psi_full
 
 %% PARAM Productivity by Education Types
 % Generate epsilon matrix
 % A1. load external
 load('Life_cycle_prod_by_educ.mat','life_cycle_prod_by_educ') % Life-cycle labor productivity for 20-100 year-olds by education (non-college vs. college)
-epsilon_aux=life_cycle_prod_by_educ;
-% A2. Initialize
-epsilon=NaN(n_jgrid-1,2);
-if(strcmp(st_param_group, "default_base"))
-    % A3. File is 81 by 2, uses the 1st to the 80th row, avg every two
-    bl_loop_trans = false;
-    if (bl_loop_trans)
-        for i=1:40
-            for e=1:2
-                epsilon(i,e)=sum(epsilon_aux((2*i-1):2*i,e))/2;
-            end
-        end
-        epsilon(end,:)=epsilon_aux(end,:);
-    else
-        %This is kept here to make sure it generates the same results as
-        %the original looped code, below tiny and small use the same
-        %structure for averaging.
-        for e=1:2
-            epsilon(1:(end-1),e) = mean(reshape(epsilon_aux(1:80, e), 2, 40))';
-        end
-        epsilon(end, :) = epsilon_aux(end,:);
-    end
+% Set Annual
+epsilon_full=NaN(83,2);
+epsilon_full(3:end,:)=life_cycle_prod_by_educ(:,:);
+
+epsilon_full(1,:)=epsilon_full(3,:); % Let life-cycle labor productivity of 18- and 19-year-olds be the same as that for 20-year-olds
+epsilon_full(2,:)=epsilon_full(3,:);
+
+if(strcmp(st_param_group, "default_dense"))
+    epsilon = epsilon_full;
 else
+    epsilon=NaN(n_jgrid,2);
+    epsilon(1,:) = epsilon_full(3,:);
     for e=1:2
-        epsilon(1:(end-1),e) = mean(reshape(epsilon_aux(1:80, e), 80/(n_jgrid-2), (n_jgrid-2)))';
+        epsilon(2:end-1,e) = mean(reshape(life_cycle_prod_by_educ(1:80, e), it_yrs_per_period, (n_jgrid-2)))';
     end
-    epsilon(end, :) = epsilon_aux(end,:);
 end
-% A5. init ages
-epsilon=[epsilon(1,:);epsilon]; % Let life-cycle labor productivity of 18-year-olds be the same as that for 20-year-olds
-% A6. Older
-epsilon(it_retire:end,:)=0; % Assume zero labor productivity for 65+ year-olds (exogenous retirement)
+
+epsilon(jret:end,:)=0; % Assume zero labor productivity for 65+ year-olds (exogenous retirement)
 
 clear life_cycle_prod_by_educ epsilon_aux
 
 %% PARAM Kids Transition
 % Transition probabilities for number of children (0, 1, 2, 3, 4, or 5) (stored in the following order:
-% Number of children in year 1, age, educational status, marital status. Each column refers to the number of children
-% in year 2)
+% Number of children in year 1, age, marital status, college attainment. Each column refers to
+% the number of children in year 2)
 %
 % PI_KIDS_TRANS_PROB has 6*2*41 = 492 rows. It is assuming
 % strcmp(st_param_group, "default_base"). For tiny and small grid, select
@@ -872,14 +859,17 @@ clear life_cycle_prod_by_educ epsilon_aux
 % N_JGRID_PKTP as the N_JGRID count for PI_KIDS_TRANS_PROB. But assume
 % there will always be up to 6 kids, and 2 marriage/notmarry groups.
 
+
 load('pi_kids_trans_prob','pi_kids_trans_prob')
-n_kidsgrid_kptp = 6;
+n_kidsgrid_kptp = 5;
+n_educgrid_kptp = 2;
 n_marriedgrid_kptp = 2;
-n_jgrid_pktp = size(pi_kids_trans_prob, 1)/(n_kidsgrid_kptp*n_marriedgrid_kptp);
+n_jgrid_pktp = 83;
 pi_kids_pktp =NaN(...
     n_kidsgrid_kptp,...
     n_kidsgrid_kptp,...
     n_jgrid_pktp,...
+    n_educgrid_kptp,...
     n_marriedgrid_kptp);
 
 for kidsp=1:n_kidsgrid_kptp % No. of kids in year 2
@@ -887,34 +877,38 @@ for kidsp=1:n_kidsgrid_kptp % No. of kids in year 2
     for kids=1:n_kidsgrid_kptp % No. of kids in year 1
         for j=1:(n_jgrid_pktp-1) % Age in year 1
             for married=1:n_marriedgrid_kptp % Marital status
-                counter=counter+1;
-                pi_kids_pktp(kids,kidsp,j,married)=pi_kids_trans_prob(counter,kidsp);
+                for educ=1:n_educgrid_kptp % Educational level
+                    counter=counter+1;
+                    pi_kids_pktp(kids,kidsp,j,educ,married)=pi_kids_trans_prob(counter,kidsp);
+                end
             end
         end
     end
 end
 
-pi_kids_pktp(:,:,n_jgrid_pktp,:)=0;
-pi_kids_pktp(:,1,n_jgrid_pktp,:)=1;
+pi_kids_pktp(:,:,n_jgrid_pktp,:,:)=0;
+pi_kids_pktp(:,1,n_jgrid_pktp,:,:)=1;
 
 % Subset Selection
-if(strcmp(st_param_group, "default_base"))
+if(strcmp(st_param_group, "default_dense"))
     pi_kids = pi_kids_pktp;
 else
     pi_kids = pi_kids_pktp(...
         1:n_kidsgrid, ...
         1:n_kidsgrid, ...
         round(linspace(1, n_jgrid_pktp, n_jgrid)), ...
-        : ...
+        :, : ...
         );
 end
 
 % Ensure that all rows sum to 1 in case of rounding error
 for kids=1:n_kidsgrid % No. of kids in year 1
-    for j=1:(n_jgrid-1) % Age in year 1
-        for married=1:n_marriedgrid % Marital status
-            aux_sum=sum(pi_kids(kids,:,j,married));
-            pi_kids(kids,:,j,married)=pi_kids(kids,:,j,married)/aux_sum;
+    for j=1:n_jgrid % Age in year 1
+        for educ=1:n_educgrid % Educational level
+            for married=1:n_marriedgrid % Marital status
+                aux_sum=sum(pi_kids(kids,:,j,educ,married));
+                pi_kids(kids,:,j,educ,married)=pi_kids(kids,:,j,educ,married)/aux_sum;
+            end
         end
     end
 end
@@ -925,7 +919,7 @@ clear aux_sum counter pi_kids_trans_prob pi_kids_pktp
 
 %% PARAM Specifying asset grid (use non-linear spacing with minimum value of 0)
 curv=3; % Governs how the grid points are allocated
-scale_a=50; % Maximum value of assets (NOTE: Verifying that it does not bind in Aggregation.m)
+scale_a=190; % Maximum value of assets (NOTE: Verifying that it does not bind in Aggregation.m) grid=1.2451e-11
 
 agrid=zeros(n_agrid,1);
 
@@ -946,10 +940,11 @@ while err>tol
     x1=x0*pi_eta(:,:);
     err=max(abs(x1-x0));
     if err>tol
-       x0=x1; 
+       x0=x1;
     end
 end
 stat_distr_eta(1,:)=x0;
+stat_distr_eta = stat_distr_eta./sum(stat_distr_eta);
 
 %% Initial conditions for marital status, college attainment, and number of kids
 % Distribution of educational attainment from PSID
@@ -957,54 +952,53 @@ stat_distr_eta(1,:)=x0;
 stat_distr_educ(1,1)=0.6970; % No college
 stat_distr_educ(1,2)=0.3030; % College
 
-% Distribution of marital status from PSID
-% tab Rmarried if RAGE>=18 & RAGE!=. [aweight=WEIGHT]
-stat_distr_married(1,1)=0.5242; % Not married
-stat_distr_married(1,2)=0.4758; % Married
+% Distribution of marital status conditional on college attainment from PSID
+% tab  Rmarried if RAGE>=18 & RAGE!=. & Rcollege==0 [aweight=WEIGHT]
+stat_distr_married(1,1)=0.5635; % Not married
+stat_distr_married(1,2)=0.4365; % Married
+
+% tab  Rmarried if RAGE>=18 & RAGE!=. & Rcollege==1 [aweight=WEIGHT]
+stat_distr_married(2,1)=0.4364; % Not married
+stat_distr_married(2,2)=0.5636; % Married
 
 % Stationary distribution of children at age 20 from PSID
 % Not married and no college
 % tab kids if Rmarried==0 & Rcollege==0 & inrange(RAGE,18,25) [aweight=WEIGHT]
-stat_distr_kids_kn6(1,1,1)=0.7333;
-stat_distr_kids_kn6(1,1,2)=0.1513;
-stat_distr_kids_kn6(1,1,3)=0.0828;
-stat_distr_kids_kn6(1,1,4)=0.0236;
-stat_distr_kids_kn6(1,1,5)=0.0059;
-stat_distr_kids_kn6(1,1,6)=0.0030;
+stat_distr_kids_kn5(1,1,1)=0.7333;
+stat_distr_kids_kn5(1,1,2)=0.1513;
+stat_distr_kids_kn5(1,1,3)=0.0828;
+stat_distr_kids_kn5(1,1,4)=0.0236;
+stat_distr_kids_kn5(1,1,5)=0.0059;
 
 % Not married but college-educated
 % tab kids if Rmarried==0 & Rcollege==1 & inrange(RAGE,18,25) [aweight=WEIGHT]
-stat_distr_kids_kn6(2,1,1)=0.9752;
-stat_distr_kids_kn6(2,1,2)=0.0236;
-stat_distr_kids_kn6(2,1,3)=0.0001;
-stat_distr_kids_kn6(2,1,4)=0.0011;
-stat_distr_kids_kn6(2,1,5)=0;
-stat_distr_kids_kn6(2,1,6)=0;
+stat_distr_kids_kn5(2,1,1)=0.9752;
+stat_distr_kids_kn5(2,1,2)=0.0236;
+stat_distr_kids_kn5(2,1,3)=0.0001;
+stat_distr_kids_kn5(2,1,4)=0.0011;
+stat_distr_kids_kn5(2,1,5)=0;
 
 % Married and no college
 % tab kids if Rmarried==1 & Rcollege==0 & inrange(RAGE,18,25) [aweight=WEIGHT]
-stat_distr_kids_kn6(1,2,1)=0.4143;
-stat_distr_kids_kn6(1,2,2)=0.2958;
-stat_distr_kids_kn6(1,2,3)=0.2131;
-stat_distr_kids_kn6(1,2,4)=0.0569;
-stat_distr_kids_kn6(1,2,5)=0.0199;
-stat_distr_kids_kn6(1,2,6)=0;
-
+stat_distr_kids_kn5(1,2,1)=0.4143;
+stat_distr_kids_kn5(1,2,2)=0.2958;
+stat_distr_kids_kn5(1,2,3)=0.2131;
+stat_distr_kids_kn5(1,2,4)=0.0569;
+stat_distr_kids_kn5(1,2,5)=0.0199;
 
 % Married and college-educated
 % tab kids if Rmarried==1 & Rcollege==1 & inrange(RAGE,18,25) [aweight=WEIGHT]
-stat_distr_kids_kn6(2,2,1)=0.7534;
-stat_distr_kids_kn6(2,2,2)=0.2153;
-stat_distr_kids_kn6(2,2,3)=0.0221;
-stat_distr_kids_kn6(2,2,4)=0.0091;
-stat_distr_kids_kn6(2,2,5)=0;
-stat_distr_kids_kn6(2,2,6)=0;
+stat_distr_kids_kn5(2,2,1)=0.7534;
+stat_distr_kids_kn5(2,2,2)=0.2153;
+stat_distr_kids_kn5(2,2,3)=0.0221;
+stat_distr_kids_kn5(2,2,4)=0.0091;
+stat_distr_kids_kn5(2,2,5)=0;
 
 % Subset Kids for Smaller Solutions
 if(strcmp(st_param_group, "default_base"))
-    stat_distr_kids = stat_distr_kids_kn6;
+    stat_distr_kids = stat_distr_kids_kn5;
 else
-    stat_distr_kids = stat_distr_kids_kn6(:,:,1:n_kidsgrid);
+    stat_distr_kids = stat_distr_kids_kn5(:,:,1:n_kidsgrid);
 end
 
 % Reweight
@@ -1034,8 +1028,8 @@ for j=2:n_jgrid
     Pop(j)=Pop(j-1)*psi(j-1)/(1+g_n);
 end
 
-name='Old-age dependency ratio=';
-st_old_age_depend =[name,num2str(sum(Pop(it_retire:end))/sum(Pop(1:(it_retire-1))))];
+name='Old-age dependency ratio (ratio of 65+/(18-64))=';
+st_old_age_depend =[name,num2str(sum(Pop(jret:end))/sum(Pop(1:(jret-1))))];
 % disp(st_old_age_depend);
 
 %% Set Parameter Maps

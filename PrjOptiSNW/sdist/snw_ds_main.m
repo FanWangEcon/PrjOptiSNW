@@ -92,7 +92,7 @@ for eta=1:n_etagrid % Productivity
     for educ=1:n_educgrid % Fixed effects
         for married=1:n_marriedgrid % Marital status
             for kids=1:n_kidsgrid % No. of kids
-                Phiss(1,1,eta,educ,married,kids)=stat_distr_eta(eta)*stat_distr_educ(educ)*stat_distr_married(married)*stat_distr_kids(educ,married,kids);
+                Phiss(1,1,eta,educ,married,kids)=stat_distr_eta(eta)*stat_distr_educ(educ)*stat_distr_married(educ,married)*stat_distr_kids(educ,married,kids);
             end
         end
     end
@@ -133,8 +133,8 @@ for j=1:(n_jgrid-1) % Age
                         
                         for etap=1:n_etagrid
                             for kidsp=1:n_kidsgrid
-                                Phiss(j+1,inds(1),etap,educ,married,kidsp)=Phiss(j+1,inds(1),etap,educ,married,kidsp)+Phiss(j,a,eta,educ,married,kids)*vals(1)*pi_eta(eta,etap)*pi_kids(kids,kidsp,j,married);
-                                Phiss(j+1,inds(2),etap,educ,married,kidsp)=Phiss(j+1,inds(2),etap,educ,married,kidsp)+Phiss(j,a,eta,educ,married,kids)*vals(2)*pi_eta(eta,etap)*pi_kids(kids,kidsp,j,married);
+                                Phiss(j+1,inds(1),etap,educ,married,kidsp)=Phiss(j+1,inds(1),etap,educ,married,kidsp)+Phiss(j,a,eta,educ,married,kids)*vals(1)*pi_eta(eta,etap)*pi_kids(kids,kidsp,j,educ,married);
+                                Phiss(j+1,inds(2),etap,educ,married,kidsp)=Phiss(j+1,inds(2),etap,educ,married,kidsp)+Phiss(j,a,eta,educ,married,kids)*vals(2)*pi_eta(eta,etap)*pi_kids(kids,kidsp,j,educ,married);
                             end
                         end
                         
@@ -306,6 +306,26 @@ end
 if (bl_vfi_store_all && (length(varargin)<3))
     mp_dsvfi_results('v_ss') = v_ss;    
     mp_dsvfi_results('c_ss') = c_ss;
+    
+    % Household Asset State Space Value
+    a_ss = zeros(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+    for a=1:n_agrid
+        a_ss(:,a,:,:,:,:) = agrid(a);
+    end
+    mp_dsvfi_results('a_ss') = a_ss;
+    
+    % Households Population At State-Space
+    n_ss = zeros(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+    % add kids
+    for it_kids=2:n_kidsgrid
+        n_ss(:,:,:,:,:,it_kids) = it_kids-1;
+    end
+    % marry
+    n_ss(:,:,:,:,2,:) = n_ss(:,:,:,:,2,:) + 1;
+    % add own
+    n_ss = n_ss + 1;
+    mp_dsvfi_results('n_ss') = n_ss;
+
     mp_dsvfi_results('exitflag_VFI') = exitflag_VFI;
 end
 
@@ -320,21 +340,11 @@ if (bl_compute_drv_stats && (length(varargin)<3))
     % Array Inputs
     mp_cl_ar_xyz_of_s = containers.Map('KeyType','char', 'ValueType','any');
     mp_cl_ar_xyz_of_s('ap_ss') = {ap_ss(:), zeros(1)};
+    mp_cl_ar_xyz_of_s('a_ss') = {a_ss(:), zeros(1)};
     mp_cl_ar_xyz_of_s('c_ss') = {c_ss(:), zeros(1)};
-    mp_cl_ar_xyz_of_s('v_ss') = {v_ss(:), zeros(1)};
-    
-    n_ss = zeros(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
-    % add kids
-    for it_kids=2:n_kidsgrid
-        n_ss(:,:,:,:,:,it_kids) = it_kids-1;
-    end
-    % marry
-    n_ss(:,:,:,:,2,:) = n_ss(:,:,:,:,2,:) + 1;
-    % add own
-    n_ss = n_ss + 1;
-    
+    mp_cl_ar_xyz_of_s('v_ss') = {v_ss(:), zeros(1)};    
     mp_cl_ar_xyz_of_s('n_ss') = {n_ss(:), zeros(1)};
-    mp_cl_ar_xyz_of_s('ar_st_y_name') = ["ap_ss", "c_ss", "v_ss", "n_ss"];
+    mp_cl_ar_xyz_of_s('ar_st_y_name') = ["a_ss", "ap_ss", "c_ss", "v_ss", "n_ss"];
 
     % controls
     mp_support = containers.Map('KeyType','char', 'ValueType','any');

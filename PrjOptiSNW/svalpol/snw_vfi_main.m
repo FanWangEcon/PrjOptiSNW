@@ -62,13 +62,13 @@ end
 % Parameters used in this code directly
 global beta theta r agrid epsilon eta_grid SS pi_eta pi_kids psi n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
 % Used in functions that are called by this code
-global gamma g_n g_cons a2 cons_allocation_rule
+global gamma g_n g_cons a2 cons_allocation_rule jret
 
 %% Parse Model Parameters
 params_group = values(mp_params, {'gamma', 'beta', 'theta', 'cons_allocation_rule', ...
-    'r', 'g_n', 'g_cons', 'a2'});
+    'r', 'g_n', 'g_cons', 'a2', 'jret'});
 [gamma, beta, theta, cons_allocation_rule, ...
-    r, g_n, g_cons, a2] = params_group{:};
+    r, g_n, g_cons, a2, jret] = params_group{:};
 
 params_group = values(mp_params, {'agrid', 'eta_grid'});
 [agrid, eta_grid] = params_group{:};
@@ -101,6 +101,10 @@ params_group = values(mp_controls, {'bl_timer'});
 params_group = values(mp_controls, {'bl_print_vfi', 'bl_print_vfi_verbose'});
 [bl_print_vfi, bl_print_vfi_verbose] = params_group{:};
 
+% Store Controls
+params_group = values(mp_controls, {'bl_vfi_store_all'});
+[bl_vfi_store_all] = params_group{:};
+
 %% Timing and Profiling Start
 if (bl_timer)
     tic
@@ -111,6 +115,11 @@ end
 V_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 ap_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 cons_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+% if (bl_vfi_store_all)
+%     y_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+%     tax_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+%     SS_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+% end
 
 exitflag_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 
@@ -133,6 +142,12 @@ for j=n_jgrid:(-1):1 % Age
                             end
                             
                             V_VFI(j,a,eta,educ,married,kids)=utility(cons_VFI(j,a,eta,educ,married,kids),married,kids);
+                            
+%                             if (bl_vfi_store_all)
+%                                 y_VFI(j,a,eta,educ,married,kids) = ;
+%                                 tax_VFI(j,a,eta,educ,married,kids);
+%                                 SS_VFI(j,a,eta,educ,married,kids);
+%                             end
                             
                         else
                             
@@ -181,7 +196,7 @@ for j=n_jgrid:(-1):1 % Age
                             for etap=1:n_etagrid
                                 for kidsp=1:n_kidsgrid
                                     cont=cont ...
-                                        +pi_eta(eta,etap)*pi_kids(kids,kidsp,j,married)*(...
+                                        +pi_eta(eta,etap)*pi_kids(kids,kidsp,j,educ,married)*(...
                                             vals(1)*V_VFI(j+1,inds(1),etap,educ,married,kidsp) ...
                                             +vals(2)*V_VFI(j+1,inds(2),etap,educ,married,kidsp));
                                 end
@@ -199,7 +214,7 @@ for j=n_jgrid:(-1):1 % Age
                             cont=0;
                             for etap=1:n_etagrid
                                 for kidsp=1:n_kidsgrid
-                                    cont=cont+pi_eta(eta,etap)*pi_kids(kids,kidsp,j,married)*V_VFI(j+1,1,etap,educ,married,kidsp);
+                                    cont=cont+pi_eta(eta,etap)*pi_kids(kids,kidsp,j,educ,married)*V_VFI(j+1,1,etap,educ,married,kidsp);
                                 end
                             end
                             V_aux3=utility(c_aux3,married,kids)+beta*psi(j)*cont;

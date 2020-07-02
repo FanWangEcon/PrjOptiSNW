@@ -108,12 +108,13 @@ params_group = values(mp_controls, {'bl_vfi_store_all'});
 %% Define Functions
 
 % Current Function and their Derivatives
-if(gamma == 1) 
-    f_util = @(c) log(c);
-    f_du_da = @(c) -1./(c);
+hh_power=1/cons_allocation_rule;
+if(gamma == 1)     
+    f_util = @(c,hh_size) log(c./(hh_size.^hh_power));
+    f_du_da = @(c,hh_size) (-1)./(c);
 else
-    f_util = @(c) (((c).^(1-gamma)-1)./(1-gamma));
-    f_du_da = @(c) -1./(c.^gamma);
+    f_util = @(c,hh_size) ((c./(hh_size.^hh_power)).^(1-gamma)-1)./(1-gamma);
+    f_du_da = @(c,hh_size) (-(hh_size.^(hh_power.*(gamma-1))))./(c.^gamma);
 end
 
 % Utility 
@@ -144,12 +145,16 @@ for j=n_jgrid:(-1):1 % Age
     % A1. Generate the Resources Matrix
     mn_resources = zeros(n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);    
     mn_z_ctr = zeros(n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+    mn_hh_size = zeros(n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
     for a=1:n_agrid % Assets
         it_z_ctr = 0;
-        for eta=1:n_etagrid % Productivity
-            for educ=1:n_educgrid % Educational level
-                for married=1:n_marriedgrid % Marital status
-                    for kids=1:n_kidsgrid % Number of kids    
+        % order here is reverse of order of loops at L181, so that it_z_ctr
+        % match up with column order after reshape(mn_ev_ap_z, n_agrid, [])
+        for kids=1:n_kidsgrid % Number of kids
+            for married=1:n_marriedgrid % Marital status
+                for educ=1:n_educgrid % Educational level
+                    for eta=1:n_etagrid % Productivity
+                        
                         % Resources
                         [inc,earn]=individual_income(j,a,eta,educ);
                         spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
@@ -159,17 +164,27 @@ for j=n_jgrid:(-1):1 % Age
                                     + (married-1)*spouse_inc ...
                                     - max(0,Tax(inc,(married-1)*spouse_inc));
                         mn_resources(a, eta, educ, married, kids) = resources;
-                        % non-asset position
+                        
+                        % Non-asset position Counter
                         it_z_ctr = it_z_ctr + 1;
                         mn_z_ctr(a, eta, educ, married, kids) = it_z_ctr;
+                        
+                        % Household Size: 1 kid married, hh_size = 2 + 2 -
+                        % 1 = 3. 0 kid and unmarried hh_size = 1 + 1 - 1 =
+                        % 1
+                        hh_size = married + kids - 1; % m=1 if single; m=2 if married; k=1 if 0 children
+                        mn_hh_size(a, eta, educ, married, kids) = hh_size;
+                        
                     end
                 end
             end
         end
     end
+    
     % array states/shocks all
     ar_resources_amz = mn_resources(:);
     ar_z_ctr_amz = mn_z_ctr(:);
+    ar_hh_size_amz = mn_hh_size(:);
     
     % A2. Solve For EV(ap,z) = EV(ap,zp|z)f(zp|z) for all possible ap points
     % ev = 0 in final decision period.
@@ -184,10 +199,10 @@ for j=n_jgrid:(-1):1 % Age
                         for a=1:n_agrid
                             % Add to each cell of mt_ev_ap_z, integrating over f(zp|z)
                             for etap=1:n_etagrid
-                                for kidsp=1:n_kidsgrid
-                                    
-                                    mn_ev_ap_z(a,eta,educ,married,kids) = mn_ev_ap_z(a,eta,educ,married,kids) ...
-                                        + pi_eta(eta,etap)*pi_kids(kids,kidsp,j,educ,married)...
+                                for kidsp=1:n_kidsgrid                                    
+                                    mn_ev_ap_z(a,eta,educ,married,kids) = ...
+                                        mn_ev_ap_z(a,eta,educ,married,kids) ...
+                                        + psi(j)*pi_eta(eta,etap)*pi_kids(kids,kidsp,j,educ,married)...
                                           *V_VFI(j+1,a,etap,educ,married,kidsp);
                                 end
                             end
@@ -209,11 +224,19 @@ for j=n_jgrid:(-1):1 % Age
         % x = fl_aprime_frac
         fc_ffi_vec_foc_u_v_ap = @(x) ffi_vec_foc_u_v_ap(...
             x, agrid', ...
-            ar_resources_amz, ar_z_ctr_amz, mt_deri_dev_dap, ...
+            ar_resources_amz, ar_z_ctr_amz, ar_hh_size_amz, ...
+            mt_deri_dev_dap, ...
             f_du_da, f_FOC);
         
         % D. Solve via Bisection 
-        [ar_opti_saveborr_frac_amz] = ff_optim_bisec_savezrone(fc_ffi_vec_foc_u_v_ap);
+        mp_bisec_ctrlinfo = containers.Map('KeyType','char', 'ValueType','any');
+        mp_bisec_ctrlinfo('it_bisect_max_iter') = 30;
+        mp_bisec_ctrlinfo('fl_x_left_start') = 10e-6;
+        mp_bisec_ctrlinfo('fl_x_right_start') = 1-10e-6;
+
+        [ar_opti_saveborr_frac_amz] = ...
+            ff_optim_bisec_savezrone(fc_ffi_vec_foc_u_v_ap,...
+            false, false, mp_bisec_ctrlinfo);
 
         % E. Evaluate at Bounds
         ar_nan_idx = isnan(ar_opti_saveborr_frac_amz);    
@@ -223,7 +246,7 @@ for j=n_jgrid:(-1):1 % Age
             for it_minmax = [1,2]
                 [~, mt_val_min_max(:,it_minmax), ~] = ffi_vec_u_v_ap(...
                     ar_min_max(it_minmax), agrid', ...
-                    ar_resources_amz(ar_nan_idx), ar_z_ctr_amz(ar_nan_idx), ...
+                    ar_resources_amz(ar_nan_idx), ar_z_ctr_amz(ar_nan_idx), ar_hh_size_amz(ar_nan_idx), ...
                     mt_ev_ap_z, mt_deri_dev_dap, ...
                     f_util, f_U);
             end
@@ -234,14 +257,14 @@ for j=n_jgrid:(-1):1 % Age
         % F. Evaluate 
         [ar_aprime_amz, ar_val_opti_amz, ar_c_opti_amz] = ffi_vec_u_v_ap(...
             ar_opti_saveborr_frac_amz, agrid', ...
-            ar_resources_amz, ar_z_ctr_amz, ...
+            ar_resources_amz, ar_z_ctr_amz, ar_hh_size_amz, ...
             mt_ev_ap_z, mt_deri_dev_dap, ...
             f_util, f_U);
 
         % G. Record Results    
         mn_val_cur = reshape(ar_val_opti_amz, size(mn_ev_ap_z));
         mn_aprime_cur = reshape(ar_aprime_amz, size(mn_ev_ap_z));
-        mn_c_opti_amz = reshape(ar_aprime_amz, size(mn_ev_ap_z));
+        mn_c_opti_amz = reshape(ar_c_opti_amz, size(mn_ev_ap_z));
         
         % H. To main store:
         V_VFI(j,:,:,:,:,:) = mn_val_cur;
@@ -296,7 +319,8 @@ end
 % Utility Maximization First Order Conditions
 function [ar_dU_dap, ar_aprime] = ...
     ffi_vec_foc_u_v_ap(ar_aprime_frac_amz, ar_a, ...
-                       ar_resources_amz, ar_z_ctr_amz, mt_deri_dev_dap,...
+                       ar_resources_amz, ar_z_ctr_amz, ar_hh_size_amz, ...
+                       mt_deri_dev_dap,...
                        f_du_da, f_FOC)
 % A. Percentage Asset Choice to Level Asset Choices
 ar_aprime = ar_aprime_frac_amz.*(ar_resources_amz);
@@ -309,7 +333,7 @@ ar_ap_near_lower_idx(ar_ap_near_lower_idx == length(ar_a)) = length(ar_a) - 1;
 ar_c = ar_resources_amz - ar_aprime;
 
 % D. Do not need to check fl_c > 0, because asset bound by 0 to 1 open set
-ar_du_dap = f_du_da(ar_c);
+ar_du_dap = f_du_da(ar_c, ar_hh_size_amz);
 
 % E. the marginal effects of additional asset is determined by the slope
 % mt_z_ctr_amz = repmat(ar_z_ctr_amz, [1, size(ar_aprime_frac_amz,2)]);
@@ -325,7 +349,8 @@ end
 % Utility given choices
 function [ar_aprime, ar_val, ar_c] = ffi_vec_u_v_ap(...
     ar_aprime_frac, ar_a, ...
-    ar_resources_amz, ar_z_ctr_amz, mt_ev_ap_z, mt_deri_dev_dap, ...
+    ar_resources_amz, ar_z_ctr_amz, ar_hh_size_amz, ...
+    mt_ev_ap_z, mt_deri_dev_dap, ...
     f_util, f_U)
 % A. Percentage Asset Choice to Level Asset Choices
 ar_aprime = ar_aprime_frac.*(ar_resources_amz);
@@ -338,7 +363,7 @@ ar_it_ap_near_lower_idx(ar_it_ap_near_lower_idx == length(ar_a)) = length(ar_a) 
 ar_c = ar_resources_amz - ar_aprime;
 
 % D. Evaluate Value
-ar_u_of_ap = f_util(ar_c);
+ar_u_of_ap = f_util(ar_c, ar_hh_size_amz);
 
 % the marginal effects of additional asset is determined by the slope
 ar_deri_lin_idx = sub2ind(size(mt_deri_dev_dap), ar_it_ap_near_lower_idx, ar_z_ctr_amz);

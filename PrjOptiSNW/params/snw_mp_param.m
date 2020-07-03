@@ -75,10 +75,11 @@ if (~isempty(varargin))
 else
 
 %     st_param_group = 'default_base';
-    st_param_group = 'default_dense';    
+    st_param_group = 'default_verydense';
+%     st_param_group = 'default_dense';
 %     st_param_group = 'default_tiny';
     bl_print_mp_params = true;
-    [it_row_n_keep, it_col_n_keep] = deal(8, 8);
+    [it_row_n_keep, it_col_n_keep] = deal(20, 8);
 
 end
 
@@ -87,31 +88,43 @@ end
 n_educgrid=2; % No. of grid points for educational attainment (college vs. non-college)
 n_marriedgrid=2; % No. of grid points for marital status
 n_kidsgrid=5; % No. of grid points for children (0 to 5+ children)
-if(strcmp(st_param_group, "default_dense"))
+if(strcmp(st_param_group, "default_verydense"))
+    n_jgrid  =83; % Age runs from 18 to 100 (a period is 2 years)
+    jret     =49;
+    n_agrid  =251; % No. of grid points for assets
+    n_eta_H_grid=9; % 9; % No. of grid points for persistent labor productivity shocks
+    n_eta_S_grid=5; % 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
+    n_kidsgrid=5; % No. of grid points for children (0 to 4+ children)
+elseif(strcmp(st_param_group, "default_dense"))
     n_jgrid  =83; % Age runs from 18 to 100 (a period is 2 years)
     jret     =49;
     n_agrid  =55; % No. of grid points for assets
-    n_etagrid =9; % No. of grid points for persistent labor productivity shocks
+    n_eta_H_grid=7; % 9; % No. of grid points for persistent labor productivity shocks
+    n_eta_S_grid=3; % 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
     n_kidsgrid=5; % No. of grid points for children (0 to 4+ children)
 elseif(strcmp(st_param_group, "default_base"))
     n_jgrid  =42; % Age runs from 18 to 100 (a period is 2 years)
     jret=25;
     n_agrid  =40; % No. of grid points for assets
-    n_etagrid =7; % No. of grid points for persistent labor productivity shocks
+    n_eta_H_grid=5; % 9; % No. of grid points for persistent labor productivity shocks
+    n_eta_S_grid=3; % 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
     n_kidsgrid=5; % No. of grid points for children (0 to 4+ children)
-elseif(strcmp(st_param_group, "default_tiny"))
-    n_jgrid   =7; % Age runs from 18 to 100 (5 periods of 16 years + terminal)
-    jret =5;
-    n_agrid   =10; % No. of grid points for assets
-    n_etagrid =5; % No. of grid points for persistent labor productivity shocks
-    n_kidsgrid=3; % No. of grid points for children (0 to 5+ children)
 elseif(strcmp(st_param_group, "default_small"))
     n_jgrid   =18; % Age runs from 18 to 100 (16 periods of 5 years + terminal)
     jret      =13;
     n_agrid   =25; % No. of grid points for assets
-    n_etagrid =5; % No. of grid points for persistent labor productivity shocks
+    n_eta_H_grid=3; % 9; % No. of grid points for persistent labor productivity shocks
+    n_eta_S_grid=3; % 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
+    n_kidsgrid=3; % No. of grid points for children (0 to 5+ children)
+elseif(strcmp(st_param_group, "default_tiny"))
+    n_jgrid   =7; % Age runs from 18 to 100 (5 periods of 16 years + terminal)
+    jret =5;
+    n_agrid   =10; % No. of grid points for assets
+    n_eta_H_grid=5; % 9; % No. of grid points for persistent labor productivity shocks
+    n_eta_S_grid=1; % 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
     n_kidsgrid=3; % No. of grid points for children (0 to 5+ children)
 end
+n_etagrid=n_eta_H_grid*n_eta_S_grid; % Length of productivity shock grid
 
 % Years Per Period
 if (n_jgrid == 83)
@@ -122,28 +135,50 @@ end
 
 
 %% Preferences, Technologies, etc.
+
 % Non-calibrated parameters
 gamma=2; % Risk aversion parameter
-if(strcmp(st_param_group, "default_dense"))
+if(contains(st_param_group, "dense"))
     rho_eta=0.98; % Persistence of AR(1) productivity shocks
     sigma_eta=0.018; % Variance of AR(1) productivity shocks
     g_n=0.01; % Annual population growth of 1.1 percent
     r=0.04; % Annual real interest rate of 4.0 percent from McGrattan and Prescott
-    beta=0.972; % Discount factor
+    beta=0.9730053; % Discount factor
 else
     rho_eta=0.98^it_yrs_per_period;
     sigma_eta=sqrt(0.018^2*sum((0.98.^(0:(it_yrs_per_period-1))).^2));
     g_n=(1.01^it_yrs_per_period)-1;
     r=(1.04^it_yrs_per_period)-1;
-    beta=0.972^it_yrs_per_period; % Discount factor
+    beta=0.9730053^it_yrs_per_period;
 end
+
+% Spousal Shocks
+rho_eta_spouse=0; % Persistence of spousal AR(1) productivity shocks
+sigma_eta_spouse=1.078196^2; % Variance of spousal AR(1) productivity shocks (standard deviation of residual from spousal income regression for 18-65 year-old household heads. See spousal_income.m for regression specification details)
+
+% Bequest
+% Bequests allocation rule (=1: accidental bequests go to the government; =2: accidental bequests uniformly across the population)
+% Bequests=Bequests_aux/((1+g_n)*sum(sum(sum(sum(sum(sum(Phi_true(:,:,:,:,:,:))))))));
+bequests_option=1;
+Bequests=0.05826*(bequests_option-1);
+throw_in_ocean=1; % If bequests go to the government, a value of 1 for throw_in_ocean means that all accidental bequests are "thrown in the ocean", whereas a value of 0 means the full amount goes to the government
+
+if bequests_option==2
+    a2=1.575; % Initial guess for average income tax burden (if we use GS)
+elseif bequests_option==1
+    if throw_in_ocean==0
+        a2=0.7027; % 1.57; % Initial guess for average income tax burden (if we use GS
+    elseif throw_in_ocean==1
+        a2=1.55; % 1.55888288714205;
+    end
+end
+
 
 % Government budget constraint parameters
 g_cons=0.17575574; % Government consumption expenditures to GDP (BEA: Average 2015-2019)
-a2=1.9007; % Initial guess for average income tax burden (if we use GS)
 
 % Calibrated parameters
-theta=0.6595; % TFP parameter to normalize units such that average household income relative to GDP per capita equals (the latter is normalized to 1): Real GDP/capita in 2019: $58,056
+theta=0.676557; % TFP parameter to normalize units such that average household income relative to GDP per capita equals (the latter is normalized to 1): Real GDP/capita in 2019: $58,056
 
 % Consumption allocation rule (1=uniform; 2=square root)
 cons_allocation_rule=2;
@@ -159,7 +194,7 @@ load('Mortality_prob_by_age_18_99.mat','mort_prob')
 psi_full=1-mort_prob;
 psi_full=[psi_full;0]; % Maximum lifespan=100 (survival probability at age 100=0)
 
-if(strcmp(st_param_group, "default_dense"))
+if(contains(st_param_group, "dense"))
     psi = psi_full;
 else
     psi = NaN(n_jgrid,1);
@@ -181,7 +216,7 @@ epsilon_full(3:end,:)=life_cycle_prod_by_educ(:,:);
 epsilon_full(1,:)=epsilon_full(3,:); % Let life-cycle labor productivity of 18- and 19-year-olds be the same as that for 20-year-olds
 epsilon_full(2,:)=epsilon_full(3,:);
 
-if(strcmp(st_param_group, "default_dense"))
+if(contains(st_param_group, "dense"))
     epsilon = epsilon_full;
 else
     epsilon=NaN(n_jgrid,2);
@@ -240,7 +275,7 @@ pi_kids_pktp(:,:,n_jgrid_pktp,:,:)=0;
 pi_kids_pktp(:,1,n_jgrid_pktp,:,:)=1;
 
 % Subset Selection
-if(strcmp(st_param_group, "default_dense"))
+if(contains(st_param_group, "dense"))
     pi_kids = pi_kids_pktp;
 else
     pi_kids = pi_kids_pktp(...
@@ -264,7 +299,6 @@ for kids=1:n_kidsgrid % No. of kids in year 1
 end
 
 %
-
 clear aux_sum counter pi_kids_trans_prob pi_kids_pktp
 
 %% PARAM Specifying asset grid (use non-linear spacing with minimum value of 0)
@@ -277,15 +311,37 @@ for i=2:n_agrid
 	agrid(i)=scale_a*((i-1)/(n_agrid-1))^curv;
 end
 
-%% PARAM Derive transition probabilities and stationary distribution for productivity shock
-
+%% Derive transition probabilities and stationary distribution for productivity shock
 % Discretize process for persistent productivity shocks and derive stationary distribution
-[eta_grid,pi_eta]=rouwenhorst(rho_eta,sqrt(sigma_eta),n_etagrid);
+[eta_H_grid_aux,pi_H_eta]=rouwenhorst(rho_eta,sqrt(sigma_eta),n_eta_H_grid);
+[eta_S_grid_aux,pi_S_eta]=rouwenhorst(rho_eta_spouse,sqrt(sigma_eta_spouse),n_eta_S_grid);
+
+pi_eta=NaN(n_etagrid,n_etagrid);
+counter=0;
+for eta_S=1:n_eta_S_grid
+    for eta_H=1:n_eta_H_grid
+        counter=counter+1;
+
+        counterp=0;
+        for eta_Sp=1:n_eta_S_grid
+            for eta_Hp=1:n_eta_H_grid
+                counterp=counterp+1;
+                pi_eta(counter,counterp)=pi_H_eta(eta_H,eta_Hp)*pi_S_eta(eta_S,eta_Sp);
+            end
+        end
+    end
+end
+
+eta_H_grid=repmat(eta_H_grid_aux,n_eta_S_grid,1);
+eta_S_grid=sort(repmat(eta_S_grid_aux,n_eta_H_grid,1));
 
 stat_distr_eta=NaN(1,n_etagrid);
+
 x0=(1/n_etagrid)*ones(1,n_etagrid);
+
 err=1;
 tol=10^-12;
+
 while err>tol
     x1=x0*pi_eta(:,:);
     err=max(abs(x1-x0));
@@ -293,8 +349,10 @@ while err>tol
        x0=x1;
     end
 end
+
 stat_distr_eta(1,:)=x0;
-stat_distr_eta = stat_distr_eta./sum(stat_distr_eta);
+
+clear counter counterp eta_H_grid_aux eta_S_grid_aux
 
 %% Initial conditions for marital status, college attainment, and number of kids
 % Distribution of educational attainment from PSID
@@ -393,13 +451,19 @@ mp_params_preftechpricegov('g_n') = g_n;
 mp_params_preftechpricegov('g_cons') = g_cons;
 mp_params_preftechpricegov('a2') = a2;
 mp_params_preftechpricegov('jret') = jret;
+mp_params_preftechpricegov('Bequests') = g_cons;
+mp_params_preftechpricegov('bequests_option') = a2;
+mp_params_preftechpricegov('throw_in_ocean') = jret;
 
 mp_params_statesgrid = containers.Map('KeyType', 'char', 'ValueType', 'any');
 mp_params_statesgrid('agrid') = agrid;
-mp_params_statesgrid('eta_grid') = eta_grid;
+mp_params_statesgrid('eta_H_grid') = eta_H_grid;
+mp_params_statesgrid('eta_S_grid') = eta_S_grid;
 
 mp_params_exotrans = containers.Map('KeyType', 'char', 'ValueType', 'any');
 mp_params_exotrans('pi_eta') = pi_eta;
+mp_params_exotrans('pi_H_eta') = pi_H_eta;
+mp_params_exotrans('pi_S_eta') = pi_S_eta;
 mp_params_exotrans('pi_kids') = pi_kids;
 mp_params_exotrans('psi') = psi;
 
@@ -411,6 +475,8 @@ mp_params_intlen = containers.Map('KeyType', 'char', 'ValueType', 'any');
 mp_params_intlen('n_jgrid') = n_jgrid;
 mp_params_intlen('n_agrid') = n_agrid;
 mp_params_intlen('n_etagrid') = n_etagrid;
+mp_params_intlen('n_eta_S_grid') = n_eta_S_grid;
+mp_params_intlen('n_eta_H_grid') = n_eta_H_grid;
 mp_params_intlen('n_educgrid') = n_educgrid;
 mp_params_intlen('n_marriedgrid') = n_marriedgrid;
 mp_params_intlen('n_kidsgrid') = n_kidsgrid;

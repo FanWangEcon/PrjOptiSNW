@@ -60,20 +60,27 @@ end
 % globals = who('global');
 % clear(globals{:});
 % Parameters used in this code directly
-global beta theta r agrid epsilon eta_grid SS pi_eta pi_kids psi n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
+global beta theta r agrid epsilon SS pi_eta pi_kids psi n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
 % Used in functions that are called by this code
 global gamma g_n g_cons a2 cons_allocation_rule jret
+% July 1st new parameters
+global eta_H_grid eta_S_grid Bequests bequests_option throw_in_ocean
 
 %% Parse Model Parameters
-params_group = values(mp_params, {'gamma', 'beta', 'theta', 'cons_allocation_rule', ...
+params_group = values(mp_params, {...
+    'gamma', 'beta', 'theta', 'cons_allocation_rule', ...
     'r', 'g_n', 'g_cons', 'a2', 'jret'});
 [gamma, beta, theta, cons_allocation_rule, ...
     r, g_n, g_cons, a2, jret] = params_group{:};
 
-params_group = values(mp_params, {'agrid', 'eta_grid'});
-[agrid, eta_grid] = params_group{:};
+params_group = values(mp_params, {'Bequests', 'bequests_option', 'throw_in_ocean'});
+[Bequests, bequests_option, throw_in_ocean] = params_group{:};
 
-params_group = values(mp_params, {'pi_eta', 'pi_kids', 'psi'});
+params_group = values(mp_params, {'agrid', 'eta_H_grid', 'eta_S_grid'});
+[agrid, eta_H_grid, eta_S_grid] = params_group{:};
+
+params_group = values(mp_params, ...
+    {'pi_eta', 'pi_kids', 'psi'});
 [pi_eta, pi_kids, psi] = params_group{:};
 
 params_group = values(mp_params, {'epsilon', 'SS'});
@@ -158,11 +165,11 @@ for j=n_jgrid:(-1):1 % Age
                         % Resources
                         [inc,earn]=individual_income(j,a,eta,educ);
                         spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
-                        resources = (1+r)*agrid(a) ...
-                                    + epsilon(j,educ)*theta*exp(eta_grid(eta)) ...
+                        resources = (1+r)*(agrid(a)+Bequests*(bequests_option-1)) ...
+                                    + epsilon(j,educ)*theta*exp(eta_H_grid(eta)) ...
                                     + SS(j,educ) ...
-                                    + (married-1)*spouse_inc ...
-                                    - max(0,Tax(inc,(married-1)*spouse_inc));
+                                    + (married-1)*spouse_inc*exp(eta_S_grid(eta)) ...
+                                    - max(0,Tax(inc,(married-1)*spouse_inc*exp(eta_S_grid(eta))));
                         mn_resources(a, eta, educ, married, kids) = resources;
                         
                         % Non-asset position Counter

@@ -7,6 +7,6 @@ a1=0.768;
 
 inc_fam=inc+spouse_inc;
 
-F=a0*(inc_fam-(((inc_fam^(-a1))+a2)^(-1/a1)));
+F=a0*(inc_fam-(((inc_fam.^(-a1))+a2).^(-1/a1)));
 
 end

@@ -1,4 +1,4 @@
-function [Phi_true,Phi_adj,A_agg,Y_inc_agg,it]=Aggregation(ap_ss,cons_ss,stat_distr_eta,stat_distr_educ,stat_distr_married,stat_distr_kids)
+function [Phi_true,Phi_adj,A_agg,Y_inc_agg,it]=Aggregation_grid_search(ap_ss,cons_ss,stat_distr_eta,stat_distr_educ,stat_distr_married,stat_distr_kids)
 
 %% Aggregation
 
@@ -28,35 +28,9 @@ for j=1:(n_jgrid-1) % Age
                for married=1:n_marriedgrid % Marital status
                    for kids=1:n_kidsgrid % No. of kids
 
-                       if ap_ss(j,a,eta,educ,married,kids)==0
-                           inds(1)=1;
-                           inds(2)=1;
-                           vals(1)=1;
-                           vals(2)=0;
-
-                       elseif ap_ss(j,a,eta,educ,married,kids)==agrid(n_agrid)
-                           inds(1)=n_agrid;
-                           inds(2)=n_agrid;
-                           vals(1)=1;
-                           vals(2)=0;
-
-                       else
-
-                           ind_aux=find(agrid<=ap_ss(j,a,eta,educ,married,kids),1,'last');
-
-                           inds(1)=ind_aux;
-                           inds(2)=ind_aux+1;
-
-                           % Linear interpolation
-                           vals(1)=1-((ap_ss(j,a,eta,educ,married,kids)-agrid(inds(1)))/(agrid(inds(2))-agrid(inds(1))));
-                           vals(2)=1-vals(1);
-
-                       end
-
                        for etap=1:n_etagrid
                            for kidsp=1:n_kidsgrid
-                               Phiss(j+1,inds(1),etap,educ,married,kidsp)=Phiss(j+1,inds(1),etap,educ,married,kidsp)+Phiss(j,a,eta,educ,married,kids)*vals(1)*pi_eta(eta,etap)*pi_kids(kids,kidsp,j,educ,married);
-                               Phiss(j+1,inds(2),etap,educ,married,kidsp)=Phiss(j+1,inds(2),etap,educ,married,kidsp)+Phiss(j,a,eta,educ,married,kids)*vals(2)*pi_eta(eta,etap)*pi_kids(kids,kidsp,j,educ,married);
+                               Phiss(j+1,ap_ss(j,a,eta,educ,married,kids),etap,educ,married,kidsp)=Phiss(j+1,ap_ss(j,a,eta,educ,married,kids),etap,educ,married,kidsp)+Phiss(j,a,eta,educ,married,kids)*pi_eta(eta,etap)*pi_kids(kids,kidsp,j,educ,married);
                            end
                        end
 
@@ -121,7 +95,7 @@ for j=1:n_jgrid
                for kids=1:n_kidsgrid
 
                    A_agg=A_agg+Phi_true(j,1:n_agrid,eta,educ,married,kids)*agrid(1:n_agrid); % Aggregate wealth
-                   Aprime_agg=Aprime_agg+Phi_true(j,1:n_agrid,eta,educ,married,kids)*ap_ss(j,1:n_agrid,eta,educ,married,kids)'; % Aggregate saving
+                   Aprime_agg=Aprime_agg+Phi_true(j,1:n_agrid,eta,educ,married,kids)*agrid(ap_ss(j,1:n_agrid,eta,educ,married,kids)); % Aggregate saving
                    C_agg=C_agg+Phi_true(j,1:n_agrid,eta,educ,married,kids)*cons_ss(j,1:n_agrid,eta,educ,married,kids)'; % Aggregate consumption
 
                    [inc,earn]=individual_income(j,1:n_agrid,eta,educ);
@@ -135,7 +109,7 @@ for j=1:n_jgrid
 
                    SS_spend=SS_spend+sum(Phi_true(j,1:n_agrid,eta,educ,married,kids)*SS(j,educ)); % Total spending on Social Security
 
-                   Bequests_aux=Bequests_aux+Phi_true(j,1:n_agrid,eta,educ,married,kids)*ap_ss(j,1:n_agrid,eta,educ,married,kids)'*(1-psi(j)); % Accidental Bequests*(bequests_option-1)
+                   Bequests_aux=Bequests_aux+Phi_true(j,1:n_agrid,eta,educ,married,kids)*agrid(ap_ss(j,1:n_agrid,eta,educ,married,kids))*(1-psi(j)); % Accidental Bequests*(bequests_option-1)
 
                end                       
            end
@@ -160,7 +134,7 @@ end
 % Update guess for a2 (determines average level of income taxation)
 % Assuming government balances its budget period-by-period
 
-tol=10^-3; %10^-4; %5*10^-4;
+tol=10^-4;
 err=abs((Tax_revenues/(SS_spend+g_cons*Y_inc_agg))-1);
 
 a2_update=a2;
@@ -195,7 +169,7 @@ while err>tol
         end
     end
     
-    a2=a2*(((SS_spend+g_cons*Y_inc_agg)/Tax_revenues_aux)^0.75); % Find value of a2 that balances government budget
+    a2=a2*(((SS_spend+g_cons*Y_inc_agg)/Tax_revenues_aux)^0.25); % Find value of a2 that balances government budget
     
     err=abs((Tax_revenues_aux/(SS_spend+g_cons*Y_inc_agg))-1);
     
@@ -203,13 +177,15 @@ while err>tol
     
 end
 
+a2=a2*0.5+a2_update*0.5;
+
 name='Number of a2-adjustments (for taxation) used to balance the government budget= ';
 name2=[name,num2str(it)];
 disp(name2);
 
 a2_update=[a2_update,a2];
 
-name='Old and updated value of a2=';
+name='Old and updated value of a2= ';
 name2=[name,num2str(a2_update)];
 disp(name2);
 

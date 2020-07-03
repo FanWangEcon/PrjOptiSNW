@@ -1,10 +1,12 @@
-function [V_U,exitflag_fsolve]=V_unemp_proxy(welf_checks,TR,xi,b,V_unemp,options2)
+function [V_W,exitflag_fsolve]=V_working_proxy(welf_checks,TR,V_ss,options2)
+%function [V_W,exitflag_fsolve]=V_working_proxy(welf_checks,TR,V_ss,cons_ss,ap_ss,options2)
 
 %% Solve optimization problem
 
+%global beta agrid pi_eta pi_kids psi n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
 global agrid n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
 
-V_U=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+V_W=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 exitflag_fsolve=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 
 for j=1:n_jgrid % Age
@@ -17,7 +19,7 @@ for j=1:n_jgrid % Age
                        % Find value of assets that approximates the value of the welfare checks                   
                        x0=agrid(a)+TR*welf_checks; % Initial guess for a
 
-                       [a_aux,~,exitflag_fsolve(j,a,eta,educ,married,kids)]=fsolve(@(x)find_a_unemp(x,j,a,eta,educ,married,kids,TR,xi,b,welf_checks),x0,options2);
+                       [a_aux,~,exitflag_fsolve(j,a,eta,educ,married,kids)]=fsolve(@(x)find_a_working(x,j,a,eta,educ,married,kids,TR,welf_checks),x0,options2);
 
                        if a_aux<0
 						   disp(a_aux)
@@ -48,8 +50,8 @@ for j=1:n_jgrid % Age
                            vals(2)=1-vals(1);
 
                        end
-
-                       V_U(j,a,eta,educ,married,kids)=vals(1)*V_unemp(j,inds(1),eta,educ,married,kids)+vals(2)*V_unemp(j,inds(2),eta,educ,married,kids);
+                       
+                       V_W(j,a,eta,educ,married,kids)=vals(1)*V_ss(j,inds(1),eta,educ,married,kids)+vals(2)*V_ss(j,inds(2),eta,educ,married,kids);
    
                    end
                end

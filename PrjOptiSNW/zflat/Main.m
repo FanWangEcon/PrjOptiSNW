@@ -7,9 +7,9 @@ clc
 
 format longg
 
-% Last updated: 06/27/2020
+% Last updated: 07/02/2020
 
-global beta gamma g_cons a2 rho_eta sigma_eta theta g_n cons_allocation_rule r agrid epsilon eta_grid SS pi_eta pi_kids pi_unemp psi Pop n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid jret
+global beta gamma g_cons a2 rho_eta sigma_eta theta g_n cons_allocation_rule r agrid epsilon eta_H_grid eta_S_grid SS pi_eta pi_kids pi_unemp psi Pop n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid jret Bequests bequests_option throw_in_ocean
 
 %% Parameters
 % Non-calibrated parameters
@@ -19,21 +19,41 @@ sigma_eta=0.018; % Variance of AR(1) productivity shocks
 g_n=0.01; % Annual population growth of 1.1 percent
 r=0.04; % Annual real interest rate of 4.0 percent from McGrattan and Prescott
 
-% Government budget constraint parameters
-g_cons=0.17575574; % Government consumption expenditures to GDP (BEA: Average 2015-2019) 
-a2=1.9007; % Initial guess for average income tax burden (if we use GS)
+rho_eta_spouse=0; % Persistence of spousal AR(1) productivity shocks
+sigma_eta_spouse=1.078196^2; % Variance of spousal AR(1) productivity shocks (standard deviation of residual from spousal income regression for 18-65 year-old household heads. See spousal_income.m for regression specification details) 
 
 % Calibrated parameters
-beta=0.972; % Discount factor
-theta=0.6595; % TFP parameter to normalize units such that average household income relative to GDP per capita equals (the latter is normalized to 1): Real GDP/capita in 2019: $58,056
+beta=0.9730053; % 0.97068903873305; % Discount factor
+theta=0.676557; % 0.691180561033545; % TFP parameter to normalize units such that average household income relative to GDP per capita equals (the latter is normalized to 1): Real GDP/capita in 2019: $58,056
 
 % Consumption allocation rule (1=uniform; 2=square root; 0=equivalent to only 1 household member independent of family size)
 cons_allocation_rule=2;
 
+% Bequests allocation rule (=1: accidental bequests go to the government; =2: accidental bequests uniformly across the population)
+% Bequests=Bequests_aux/((1+g_n)*sum(sum(sum(sum(sum(sum(Phi_true(:,:,:,:,:,:))))))));
+bequests_option=1;
+Bequests=0.05826*(bequests_option-1);
+throw_in_ocean=1; % If bequests go to the government, a value of 1 for throw_in_ocean means that all accidental bequests are "thrown in the ocean", whereas a value of 0 means the full amount goes to the government
+
+% Government budget constraint parameters
+g_cons=0.17575574; % Government consumption expenditures to GDP (BEA: Average 2015-2019)
+
+if bequests_option==2
+    a2=1.575; % Initial guess for average income tax burden (if we use GS)
+elseif bequests_option==1
+    if throw_in_ocean==0
+        a2=0.7027; % 1.57; % Initial guess for average income tax burden (if we use GS
+    elseif throw_in_ocean==1
+        a2=1.55; % 1.55888288714205;
+    end
+end
+
 % Number of grid points
 n_jgrid=83; % Age runs from 18 to 100 (a period is 1 year)
-n_agrid=55; % No. of grid points for assets
-n_etagrid=9; % No. of grid points for persistent labor productivity shocks
+n_agrid=251; %151; % No. of grid points for assets
+n_eta_H_grid=9; % 9; % No. of grid points for persistent labor productivity shocks
+n_eta_S_grid=1; % 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
+n_etagrid=n_eta_H_grid*n_eta_S_grid; % Length of productivity shock grid
 n_educgrid=2; % No. of grid points for educational attainment (college vs. non-college)
 n_marriedgrid=2; % No. of grid points for marital status
 n_kidsgrid=5; % No. of grid points for children (0 to 4+ children)
@@ -129,7 +149,7 @@ clear aux_sum counter pi_kids_trans_prob
 
 %% Specifying asset grid (use non-linear spacing with minimum value of 0)
 curv=3; % Governs how the grid points are allocated
-scale_a=190; % Maximum value of assets (NOTE: Verifying that it does not bind in Aggregation.m) grid=1.2451e-11
+scale_a=135; % 225; % Maximum value of assets (NOTE: Verifying that it does not bind in Aggregation.m) grid=0
 
 agrid=zeros(n_agrid,1);
 
@@ -150,9 +170,28 @@ options=optimoptions('fmincon','Display', 'off');
 options2=optimoptions('fsolve','Display','off');
 
 %% Derive transition probabilities and stationary distribution for productivity shock
-
 % Discretize process for persistent productivity shocks and derive stationary distribution
-[eta_grid,pi_eta]=rouwenhorst(rho_eta,sqrt(sigma_eta),n_etagrid);
+[eta_H_grid_aux,pi_H_eta]=rouwenhorst(rho_eta,sqrt(sigma_eta),n_eta_H_grid);
+[eta_S_grid_aux,pi_S_eta]=rouwenhorst(rho_eta_spouse,sqrt(sigma_eta_spouse),n_eta_S_grid);
+
+pi_eta=NaN(n_etagrid,n_etagrid);
+counter=0;
+for eta_S=1:n_eta_S_grid
+    for eta_H=1:n_eta_H_grid
+        counter=counter+1;
+        
+        counterp=0;
+        for eta_Sp=1:n_eta_S_grid
+            for eta_Hp=1:n_eta_H_grid
+                counterp=counterp+1;
+                pi_eta(counter,counterp)=pi_H_eta(eta_H,eta_Hp)*pi_S_eta(eta_S,eta_Sp);
+            end
+        end
+    end
+end
+
+eta_H_grid=repmat(eta_H_grid_aux,n_eta_S_grid,1);
+eta_S_grid=sort(repmat(eta_S_grid_aux,n_eta_H_grid,1));
 
 stat_distr_eta=NaN(1,n_etagrid);
 
@@ -170,6 +209,8 @@ while err>tol
 end
 
 stat_distr_eta(1,:)=x0;
+
+clear counter counterp eta_H_grid_aux eta_S_grid_aux
 
 %% Initial conditions for marital status, college attainment, and number of kids
 % Distribution of educational attainment from PSID
@@ -249,17 +290,29 @@ disp(name2);
 err=1;
 tol=0.005;
 
+disp('Start calibration')
+
 while err>tol
     
-    disp('Start calibration')
+    it=1;
+    
+    while it>0
+    
+        % Solve optimization problem
+        % Uncomment for continuous choice for ap
+%         tic;
+%         [V,ap,cons,exitflag]=VFI(A_aux,B_aux,Aeq,Beq,nonlcon,options);
+%         toc;
+%         Uncomment for grid search method for ap rather than continuous choice
+        tic;
+        [V,ap,cons,exitflag]=VFI_grid_search;
+        toc;
 
-    % Solve optimization problem
-    [V,ap,cons,exitflag]=VFI(A_aux,B_aux,Aeq,Beq,nonlcon,options);
-    % Uncomment for grid search method for ap rather than continuous choice
-    %[V_VFI,ap_VFI,cons_VFI,exitflag_VFI]=VFI_grid_search;
+        % Aggregation
+%         [Phi_true,Phi_adj,A_agg,Y_inc_agg,it]=Aggregation(ap,cons,stat_distr_eta,stat_distr_educ,stat_distr_married,stat_distr_kids);
+        [Phi_true,Phi_adj,A_agg,Y_inc_agg,it]=Aggregation_grid_search(ap,cons,stat_distr_eta,stat_distr_educ,stat_distr_married,stat_distr_kids);
 
-    % Aggregation
-    [Phi_true,Phi_adj,A_agg,Y_inc_agg]=Aggregation(ap,stat_distr_eta,stat_distr_educ,stat_distr_married,stat_distr_kids);
+    end
     
     name='Average household income (target=1.38)=';
     name2=[name,num2str(Y_inc_agg/sum(Pop))];
@@ -277,8 +330,8 @@ while err>tol
     
     if err>tol
    
-        theta=theta*((1.38/(sum(Pop)/Y_inc_agg))^0.1); % Normalize theta such that income per capita equals 1
-        beta=beta*((3.0/(A_agg/Y_inc_agg))^0.1); % Calibrate beta such that annual capital/income ratio equals 3
+        theta=theta*((1.38/(Y_inc_agg/sum(Pop)))^0.2); % Normalize theta such that income per capita equals 1
+        beta=beta*((3.0/(A_agg/Y_inc_agg))^0.025); % Calibrate beta such that annual capital/income ratio equals 3
         
     end
     
@@ -297,6 +350,12 @@ while err>tol
 end
 
 disp('Done with calibration')
+
+name='Calibrated parameters: beta,theta,a2=';
+name2=[name,num2str([beta,theta,a2])];
+disp(name2);
+
+clear name name2
 
 %% Save value and policy functions from stationary distribution
 %load('Value_and_policy_functions_ss','V','ap','cons');
@@ -317,13 +376,14 @@ for j=1:n_jgrid % Age
 
                        Output(counter,1)=17+j;
                        Output(counter,2)=agrid(a);
-                       Output(counter,3)=eta_grid(eta);
+                       Output(counter,3)=eta_H_grid(eta);
                        Output(counter,4)=educ-1;
                        Output(counter,5)=married-1;
                        Output(counter,6)=kids-1;
                        Output(counter,7)=V(j,a,eta,educ,married,kids);
                        Output(counter,8)=cons(j,a,eta,educ,married,kids);
-                       Output(counter,9)=ap(j,a,eta,educ,married,kids);
+                       Output(counter,9)=agrid(ap(j,a,eta,educ,married,kids));
+%                        Output(counter,9)=ap(j,a,eta,educ,married,kids);
                        
                        if Phi_true(j,a,eta,educ,married,kids)>0
                            Output(counter,10)=Phi_true(j,a,eta,educ,married,kids)/sum(sum(sum(sum(sum(sum(Phi_true))))));
@@ -370,7 +430,7 @@ for j=1:n_jgrid % Age
                        [inc,earn]=individual_income(j,a,eta,educ);
                        spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
                        
-                       inc_avg(j)=inc_avg(j)+Phi_adj(j,a,eta,educ,married,kids)*( inc+(married-1)*spouse_inc );
+                       inc_avg(j)=inc_avg(j)+Phi_adj(j,a,eta,educ,married,kids)*( inc+(married-1)*spouse_inc*exp(eta_S_grid(eta)) );
                        
                        nr_of_kids(j,kids)=nr_of_kids(j,kids)+Phi_adj(j,a,eta,educ,married,kids);
                    end
@@ -419,7 +479,7 @@ for j=1:n_jgrid % Age
                        [inc,earn]=individual_income(j,a,eta,educ);
                        spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
                        
-                       inc_avg_marr(j,married)=inc_avg_marr(j,married)+Phi_adj2(j,a,eta,educ,married,kids)*( inc+(married-1)*spouse_inc );
+                       inc_avg_marr(j,married)=inc_avg_marr(j,married)+Phi_adj2(j,a,eta,educ,married,kids)*( inc+(married-1)*spouse_inc*exp(eta_S_grid(eta)) );
                        
                        nr_of_kids_marr(j,kids,married)=nr_of_kids_marr(j,kids,married)+Phi_adj2(j,a,eta,educ,married,kids);
                        
@@ -433,27 +493,41 @@ end
 clear dummy Phi_adj2
 
 %% Probability of unemployment
-pi_j=[0.22;0.175;0.16;0.165;0.22]; % Probability of unemployment in 2020 by age groups from Cajner et al. (2020, NBER)
-pi_w=[0.360;0.22;0.17;0.14;0.09]; % Probability of unemployment in 2020 by wage quintiles from Cajner et al. (2020, NBER)
-[age_factor,cutoffs]=pi_unemp_calibration(Phi_true,pi_j,pi_w);
+% disp('HAVE TO UPDATE THIS')
+% pi_j=[0.22;0.175;0.16;0.165;0.22]; % Probability of unemployment in 2020 by age groups from Cajner et al. (2020, NBER)
+% pi_w=[0.360;0.22;0.17;0.14;0.09]; % Probability of unemployment in 2020 by wage quintiles from Cajner et al. (2020, NBER)
+% 
+% pi_unemp=zeros(n_jgrid,5);
+% % Columns are wage groups; rows are age groups.
+% % TO DO: Check that it leads to corresponding moments as in the data
+% % Also, make these continuous in at least age
+% % 0.08027790 0.05170647 0.04150239 0.03537994 0.02517586
+% % 0.07070343 0.04213200 0.03192792 0.02580547 0.01560139
+% % 0.06751194 0.03894051 0.02873643 0.02261398 0.01240990
+% % 0.06857577 0.04000434 0.02980026 0.02367781 0.01347373
+% % 0.08027790 0.05170647 0.04150239 0.03537994 0.02517586
+% 
+% 
+% 
+% [age_factor,cutoffs]=pi_unemp_calibration(Phi_true,pi_j,pi_w);
+% 
+% pi_unemp=zeros(n_jgrid,5);
+% for i=1:5
+%     pi_unemp(1:7,i)=age_factor(1)*pi_w(i);
+%     pi_unemp(8:12,i)=age_factor(2)*pi_w(i);
+%     pi_unemp(13:17,i)=age_factor(3)*pi_w(i);
+%     pi_unemp(18:22,i)=age_factor(4)*pi_w(i);
+%     pi_unemp(23:24,i)=age_factor(5)*pi_w(i);
+% end
 
-pi_unemp=zeros(n_jgrid,5);
-for i=1:5
-    pi_unemp(1:7,i)=age_factor(1)*pi_w(i);
-    pi_unemp(8:12,i)=age_factor(2)*pi_w(i);
-    pi_unemp(13:17,i)=age_factor(3)*pi_w(i);
-    pi_unemp(18:22,i)=age_factor(4)*pi_w(i);
-    pi_unemp(23:24,i)=age_factor(5)*pi_w(i);
-end
-
-%% Compute value of employment and unemployment in 2020 conditional on number of welfare checks
-% "Manna-from-heaven" where taxes do not change
+%% Compute value of employment and unemployment in 2020 conditional on number of welfare checks: "Manna-from-heaven" where taxes do not change
 xi=0.5; % Proportional reduction in income due to unemployment (xi=0 refers to 0 labor income; xi=1 refers to no drop in labor income)
 b=0; % Unemployment insurance replacement rate (b=0 refers to no UI benefits; b=1 refers to 100 percent labor income replacement)
 
 % Compute policy functions in the event of unemployment. Required to compute V_U in the Planner's problem
-disp('Compute policy functions in the event of unemployment')
-[V_unemp,~,~,~]=VFI_unemp(A_aux,B_aux,Aeq,Beq,nonlcon,options,V,xi,b); 
+disp('Compute value function and policy functions in the event of unemployment')
+%[V_unemp,~,~,~]=VFI_unemp(A_aux,B_aux,Aeq,Beq,nonlcon,options,V,xi,b);
+[V_unemp,~,~,~]=VFI_unemp_grid_search(V,xi,b);
 
 TR=100/58056; % Value of a welfare check (can receive multiple checks). TO DO: Update with alternative values
 
@@ -472,8 +546,7 @@ for welf_checks=0:(n_welfchecksgrid-1)
     disp(name2)
 end
 
-%% Compute value of employment and unemployment in 2020 conditional on number of welfare checks
-% Taxes are fully adjusted in 2020 to balance the government budget
+%% Compute value of employment and unemployment in 2020 conditional on number of welfare checks: Taxes are fully adjusted in 2020 to balance the government budget
 % xi=0.5; % Proportional reduction in income due to unemployment (xi=0 refers to 0 labor income; xi=1 refers to no drop in labor income)
 % b=0; % Unemployment insurance replacement rate (b=0 refers to no UI benefits; b=1 refers to 100 percent labor income replacement)
 % 
@@ -549,7 +622,7 @@ for j=1:(n_jgrid-1) % Age
                    
                    counter=counter+1;
                    
-                   Output(counter,1)=16+(2*j);
+                   Output(counter,1)=17+j;
                    Output(counter,2)=married-1;
                    Output(counter,3)=kids-1;
                    Output(counter,4)=welf_checks;

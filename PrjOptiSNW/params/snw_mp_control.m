@@ -90,10 +90,14 @@ mp_minimizer_controls('nonlcon') = nonlcon;
 mp_minimizer_controls('options') = options;
 mp_minimizer_controls('options2') = options2;
 
+mp_m4check_controls = containers.Map('KeyType', 'char', 'ValueType', 'any');
+mp_m4check_controls('fl_max_trchk_perc_increase') = 1.50;
+
 mp_calibrate = containers.Map('KeyType', 'char', 'ValueType', 'any');
 mp_calibrate('err') = err;
 mp_calibrate('tol') = tol;
 
+%% What to Print Out, Store, Etc
 mp_compute_stats = containers.Map('KeyType', 'char', 'ValueType', 'any');
 mp_compute_stats('bl_compute_drv_stats') = bl_compute_drv_stats;
 
@@ -115,7 +119,7 @@ mp_store('bl_ds_store_all') = bl_ds_store_all;
 mp_store('bl_vfi_store_all') = bl_vfi_store_all;
 
 %% Combine Maps
-mp_controls = [mp_minimizer_controls; ...
+mp_controls = [mp_minimizer_controls; mp_m4check_controls; ...
     mp_calibrate; mp_compute_stats; mp_profile; mp_display; mp_store];
 mp_controls('mp_params_name') = string(st_param_group);
 
@@ -125,15 +129,27 @@ if (bl_print_mp_controls)
 end
 
 %% Return
-if (nargout==1)
-    varargout = cell(nargout,0);
-    varargout{1} = mp_controls;
-elseif (nargout==3)
-    varargout = cell(nargout,0);
-    varargout{1} = mp_controls;
-    varargout{2} = mp_minimizer_controls;
-    varargout{3} = mp_profile;
-    varargout{4} = mp_display;    
+varargout = cell(nargout,0);
+for it_k = 1:nargout
+    if (it_k==1)
+        ob_out_cur = mp_controls;
+    elseif (it_k==2)
+        ob_out_cur = mp_minimizer_controls;
+    elseif (it_k==3)
+        ob_out_cur = mp_m4check_controls;
+    elseif (it_k==4)
+        ob_out_cur = mp_calibrate;
+    elseif (it_k==5)
+        ob_out_cur = mp_compute_stats;        
+    elseif (it_k==6)
+        ob_out_cur = mp_profile;        
+    elseif (it_k==7)
+        ob_out_cur = mp_display;        
+    elseif (it_k==8)
+        ob_out_cur = mp_store;        
+    end
+    varargout{it_k} = ob_out_cur;
 end
+
 
 end

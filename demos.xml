@@ -6,12 +6,21 @@
    <website/>
    <description/>
    <demosection>
+      <label>sdist</label>
+      <demoitem>
+         <label>snw_ds_main</label>
+         <type>other</type>
+         <source>snw_ds_main</source>
+         <file>PrjOptiSNW/sdist/html/snw_ds_main.html</file>
+      </demoitem>
+   </demosection>
+   <demosection>
       <label>params</label>
       <demoitem>
-         <label>snw_mp_controls</label>
+         <label>snw_mp_control</label>
          <type>other</type>
-         <source>snw_mp_controls</source>
-         <file>PrjOptiSNW/params/html/snw_mp_controls.html</file>
+         <source>snw_mp_control</source>
+         <file>PrjOptiSNW/params/html/snw_mp_control.html</file>
       </demoitem>
       <demoitem>
          <label>snw_mp_param</label>
@@ -27,6 +36,12 @@
          <type>other</type>
          <source>snw_vfi_main</source>
          <file>PrjOptiSNW/svalpol/html/snw_vfi_main.html</file>
+      </demoitem>
+      <demoitem>
+         <label>snw_vfi_main_bisec_vec</label>
+         <type>other</type>
+         <source>snw_vfi_main_bisec_vec</source>
+         <file>PrjOptiSNW/svalpol/html/snw_vfi_main_bisec_vec.html</file>
       </demoitem>
    </demosection>
 </demos>

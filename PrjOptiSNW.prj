@@ -7,7 +7,7 @@
     <param.summary>Dynamic Life Cycle US Simulation and Welfare Checks COVID-19</param.summary>
     <param.description />
     <param.screenshot>${PROJECT_ROOT}\img\toolboxlogo.png</param.screenshot>
-    <param.version>0.1.1</param.version>
+    <param.version>0.1.2</param.version>
     <param.output>${PROJECT_ROOT}\PrjOptiSNW.mltbx</param.output>
     <param.products.name />
     <param.products.id />
@@ -18,10 +18,17 @@
     <param.exclude.pcodedmfiles>true</param.exclude.pcodedmfiles>
     <param.examples>&lt;?xml version="1.0" encoding="utf-8"?&gt;
 &lt;examples&gt;
+   &lt;exampleCategory name="sdist"&gt;
+      &lt;example name="snw_ds_main" type="html"&gt;
+         &lt;file type="source"&gt;/PrjOptiSNW/sdist/html/snw_ds_main.html&lt;/file&gt;
+         &lt;file type="main"&gt;/PrjOptiSNW/sdist/snw_ds_main.m&lt;/file&gt;
+         &lt;file type="thumbnail"/&gt;
+      &lt;/example&gt;
+   &lt;/exampleCategory&gt;
    &lt;exampleCategory name="params"&gt;
-      &lt;example name="snw_mp_controls" type="html"&gt;
-         &lt;file type="source"&gt;/PrjOptiSNW/params/html/snw_mp_controls.html&lt;/file&gt;
-         &lt;file type="main"&gt;/PrjOptiSNW/params/snw_mp_controls.m&lt;/file&gt;
+      &lt;example name="snw_mp_control" type="html"&gt;
+         &lt;file type="source"&gt;/PrjOptiSNW/params/html/snw_mp_control.html&lt;/file&gt;
+         &lt;file type="main"&gt;/PrjOptiSNW/params/snw_mp_control.m&lt;/file&gt;
          &lt;file type="thumbnail"/&gt;
       &lt;/example&gt;
       &lt;example name="snw_mp_param" type="html"&gt;
@@ -34,6 +41,11 @@
       &lt;example name="snw_vfi_main" type="html"&gt;
          &lt;file type="source"&gt;/PrjOptiSNW/svalpol/html/snw_vfi_main.html&lt;/file&gt;
          &lt;file type="main"&gt;/PrjOptiSNW/svalpol/snw_vfi_main.m&lt;/file&gt;
+         &lt;file type="thumbnail"/&gt;
+      &lt;/example&gt;
+      &lt;example name="snw_vfi_main_bisec_vec" type="html"&gt;
+         &lt;file type="source"&gt;/PrjOptiSNW/svalpol/html/snw_vfi_main_bisec_vec.html&lt;/file&gt;
+         &lt;file type="main"&gt;/PrjOptiSNW/svalpol/snw_vfi_main_bisec_vec.m&lt;/file&gt;
          &lt;file type="thumbnail"/&gt;
       &lt;/example&gt;
    &lt;/exampleCategory&gt;

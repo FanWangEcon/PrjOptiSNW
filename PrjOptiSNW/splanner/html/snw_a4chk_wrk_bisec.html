@@ -1,0 +1,594 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>SNW_A4CHK_WRK_BISEC (loop) solves for Asset Position Corresponding to Check Level</title><meta name="generator" content="MATLAB 9.7"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-07-04"><meta name="DC.source" content="snw_a4chk_wrk_bisec.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>SNW_A4CHK_WRK_BISEC (loop) solves for Asset Position Corresponding to Check Level</h1><!--introduction--><pre>  What is the value of a check? From the perspective of the value
+  function? We have Asset as a state variable, in a cash-on-hand sense,
+  how much must the asset (or think cash-on-hand) increase by, so that
+  it is equivalent to providing the household with a check? This is not
+  the same as the check amount because of tax as well as interest rates.
+  Interest rates means that you might need to offer a smaller a than the
+  check amount. The tax rate means that we might need to shift a by
+  larger than the check amount.</pre><pre>  This function mainly exists to make sure to the bisection solution
+  returns the same answer as the fzero solution. Given that these are
+  the same, the vectorized version of this code should be used:
+  SNW_A4CHK_WRK_BISEC_VEC. Note that here, FF_OPTIM_BISEC_SAVEZRONE or
+  fzero speed differences is not substantial it seems.</pre><pre>  This file solves the problem using bisection with the function
+  FF_OPTIM_BISEC_SAVEZRONE from MEconTools. Also solves via fsolve. Can
+  solve using both, and check if the answers are the same. This function
+  requires a common zero and 1 starting point. For the problem here, 0
+  bound is for a change for check to be zero, the 1 bound is for a
+  change for check to be 130 percent of the check value, which considers
+  the possible upper bound of taxes.</pre><pre>  * WELF_CHECKS integer the number of checks
+  * TR float the value of each check
+  * V_SS ndarray the value matrix along standard state-space dimensions:
+  (n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid)
+  * MP_PARAMS map with model parameters
+  * MP_CONTROLS map with control parameters</pre><pre>  % bl_fzero is true if solve via fzero
+  mp_controls('bl_fzero') = false;
+  $ bl_ff_bisec is true is solve via ff_optim_bisec_savezrone, if both
+  true solve both and return error message if answers do not match up.
+  mp_controls('bl_ff_bisec') = true;</pre><pre>  [V_W, EXITFLAG_FSOLVE] = SNW_A4CHK_WRK_BISEC(WELF_CHECKS, TR,
+  V_SS, MP_PARAMS, MP_CONTROLS) solves for working value given V_SS
+  value function results, for number of check WELF_CHECKS, and given the
+  value of each check equal to TR.</pre><pre>  See also SNW_A4CHK_WRK_BISEC_VEC, SNW_A4CHK_WRK, FIND_A_WORKING</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#3">Default and Parse</a></li><li><a href="#4">Reset All globals</a></li><li><a href="#5">Parse Model Parameters</a></li><li><a href="#6">Control Map Function Specific Local Defaults</a></li><li><a href="#7">Parse Model Controls</a></li><li><a href="#8">Timing and Profiling Start</a></li><li><a href="#9">Loop over states and find A state for a Particular Check Level</a></li><li><a href="#10">Timing and Profiling End</a></li><li><a href="#11">Compare Difference between V_ss and V_W</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> [V_W, exitflag_fsolve]=snw_a4chk_wrk_bisec(varargin)
+</pre><h2 id="3">Default and Parse</h2><pre class="codeinput"><span class="keyword">if</span> (~isempty(varargin))
+
+    <span class="keyword">if</span> (length(varargin)==3)
+        [welf_checks, TR, V_ss] = varargin{:};
+        mp_controls_ext = snw_mp_control(<span class="string">'default_base'</span>);
+    <span class="keyword">elseif</span> (length(varargin)==5)
+        [welf_checks, TR, V_ss, mp_params, mp_controls_ext] = varargin{:};
+    <span class="keyword">end</span>
+
+<span class="keyword">else</span>
+    close <span class="string">all</span>;
+
+    <span class="comment">% Solve the VFI Problem and get Value Function</span>
+    mp_params = snw_mp_param(<span class="string">'default_tiny'</span>);
+    mp_controls_ext = snw_mp_control(<span class="string">'default_test'</span>);
+    [V_ss,~,~,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls_ext);
+    welf_checks = 2;
+    TR = 100/58056;
+
+    <span class="comment">% run fzero</span>
+    mp_controls_ext(<span class="string">'bl_fzero'</span>) = true;
+    <span class="comment">% run ff_optim_bisec_savezrone bisect as well to compare results</span>
+    mp_controls_ext(<span class="string">'bl_ff_bisec'</span>) = true;
+
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">SNW_VFI_MAIN: Finished Age Group:7 of 7
+SNW_VFI_MAIN: Finished Age Group:6 of 7
+SNW_VFI_MAIN: Finished Age Group:5 of 7
+SNW_VFI_MAIN: Finished Age Group:4 of 7
+SNW_VFI_MAIN: Finished Age Group:3 of 7
+SNW_VFI_MAIN: Finished Age Group:2 of 7
+SNW_VFI_MAIN: Finished Age Group:1 of 7
+Elapsed time is 0.206634 seconds.
+Completed SNW_VFI_MAIN;SNW_MP_PARAM=default_tiny;SNW_MP_CONTROL=default_test
+</pre><h2 id="4">Reset All globals</h2><p>globals = who('global'); clear(globals{:}); Parameters used in this code directly</p><pre class="codeinput"><span class="keyword">global</span> agrid n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
+<span class="comment">% Used in find_a_working function</span>
+<span class="keyword">global</span> theta r agrid epsilon eta_H_grid eta_S_grid SS Bequests bequests_option throw_in_ocean
+</pre><h2 id="5">Parse Model Parameters</h2><pre class="codeinput">params_group = values(mp_params, {<span class="string">'theta'</span>, <span class="string">'r'</span>});
+[theta,  r] = params_group{:};
+
+params_group = values(mp_params, {<span class="string">'Bequests'</span>, <span class="string">'bequests_option'</span>, <span class="string">'throw_in_ocean'</span>});
+[Bequests, bequests_option, throw_in_ocean] = params_group{:};
+
+params_group = values(mp_params, {<span class="string">'agrid'</span>, <span class="string">'eta_H_grid'</span>, <span class="string">'eta_S_grid'</span>});
+[agrid, eta_H_grid, eta_S_grid] = params_group{:};
+
+params_group = values(mp_params, {<span class="string">'epsilon'</span>, <span class="string">'SS'</span>});
+[epsilon, SS] = params_group{:};
+
+params_group = values(mp_params, <span class="keyword">...</span>
+    {<span class="string">'n_jgrid'</span>, <span class="string">'n_agrid'</span>, <span class="string">'n_etagrid'</span>, <span class="string">'n_educgrid'</span>, <span class="string">'n_marriedgrid'</span>, <span class="string">'n_kidsgrid'</span>});
+[n_jgrid, n_agrid, n_etagrid, n_educgrid, n_marriedgrid, n_kidsgrid] = params_group{:};
+</pre><h2 id="6">Control Map Function Specific Local Defaults</h2><pre class="codeinput">mp_controls = containers.Map(<span class="string">'KeyType'</span>, <span class="string">'char'</span>, <span class="string">'ValueType'</span>, <span class="string">'any'</span>);
+mp_controls(<span class="string">'bl_fzero'</span>) = false;
+mp_controls(<span class="string">'bl_ff_bisec'</span>) = true;
+
+<span class="keyword">if</span> (length(varargin)&gt;=2 || isempty(varargin))
+    mp_controls = [mp_controls; mp_controls_ext];
+<span class="keyword">end</span>
+</pre><h2 id="7">Parse Model Controls</h2><p>Which to Run Controls</p><pre class="codeinput">params_group = values(mp_controls, {<span class="string">'bl_fzero'</span>, <span class="string">'bl_ff_bisec'</span>});
+[bl_fzero, bl_ff_bisec] = params_group{:};
+
+<span class="comment">% Minimizer Controls</span>
+params_group = values(mp_controls, {<span class="string">'fl_max_trchk_perc_increase'</span>, <span class="string">'options2'</span>});
+[fl_max_trchk_perc_increase, options2] = params_group{:};
+
+<span class="comment">% Profiling Controls</span>
+params_group = values(mp_controls, {<span class="string">'bl_timer'</span>});
+[bl_timer] = params_group{:};
+
+<span class="comment">% Display Controls</span>
+params_group = values(mp_controls, {<span class="string">'bl_print_a4chk'</span>,<span class="string">'bl_print_a4chk_verbose'</span>});
+[bl_print_a4chk, bl_print_a4chk_verbose] = params_group{:};
+</pre><h2 id="8">Timing and Profiling Start</h2><pre class="codeinput"><span class="keyword">if</span> (bl_timer)
+    tic
+<span class="keyword">end</span>
+</pre><h2 id="9">Loop over states and find A state for a Particular Check Level</h2><pre class="codeinput">V_W=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+exitflag_fsolve=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+
+<span class="keyword">for</span> j=1:n_jgrid <span class="comment">% Age</span>
+    <span class="keyword">for</span> a=1:n_agrid <span class="comment">% Assets</span>
+        <span class="keyword">for</span> eta=1:n_etagrid <span class="comment">% Productivity</span>
+            <span class="keyword">for</span> educ=1:n_educgrid <span class="comment">% Educational level</span>
+                <span class="keyword">for</span> married=1:n_marriedgrid <span class="comment">% Marital status</span>
+                    <span class="keyword">for</span> kids=1:n_kidsgrid <span class="comment">% Number of kids</span>
+
+                        <span class="comment">% A. solve using ff_optim_bisec_savezrone</span>
+                        <span class="keyword">if</span> (bl_ff_bisec)
+                            <span class="comment">% A1. Construct Bisect Percentage Function Handle</span>
+                            fc_ffi_frac0t1_find_a_working = @(x) ffi_frac0t1_find_a_working(<span class="keyword">...</span>
+                                x, agrid(a), <span class="keyword">...</span>
+                                j,a,eta,educ,married,kids,<span class="keyword">...</span>
+                                welf_checks, TR, fl_max_trchk_perc_increase);
+
+                            <span class="comment">% A2. Solve via Bisection</span>
+                            [a_aux_bisec_frac, a_aux_bisec] = <span class="keyword">...</span>
+                                ff_optim_bisec_savezrone(fc_ffi_frac0t1_find_a_working);
+                        <span class="keyword">end</span>
+
+                        <span class="comment">% B. Solve via fzero</span>
+                        <span class="keyword">if</span> (bl_fzero)
+                            x0=agrid(a)+TR*welf_checks; <span class="comment">% Initial guess for a</span>
+
+                            [a_aux_fzero,~,it_flag_fzero]=<span class="keyword">...</span>
+                                fsolve(@(x)find_a_working(x,j,a,eta,educ,married,kids,TR,welf_checks),x0,options2);
+                            exitflag_fsolve(j,a,eta,educ,married,kids) = it_flag_fzero;
+                        <span class="keyword">end</span>
+
+                        <span class="comment">% C. Check if Solution Answers are the Same</span>
+                        <span class="keyword">if</span> (bl_ff_bisec &amp;&amp; bl_fzero)
+                            <span class="keyword">if</span> (abs(a_aux_fzero - a_aux_bisec) &gt;= 10e-5)
+                                st_message = [<span class="string">'SNW_A4CHK_WRK_BISEC: a_aux='</span> num2str(a_aux_fzero) <span class="keyword">...</span>
+                                    <span class="string">', but, a_aux_bisec='</span> num2str(a_aux_bisec)];
+                                error(st_message)
+                            <span class="keyword">end</span>
+                            a_aux = a_aux_bisec;
+                        <span class="keyword">elseif</span> (bl_ff_bisec)
+                            a_aux = a_aux_bisec;
+                        <span class="keyword">else</span>
+                            a_aux = a_aux_fzero;
+                        <span class="keyword">end</span>
+
+                        <span class="comment">% D. Error Check</span>
+                        <span class="keyword">if</span> a_aux&lt;0
+                            disp(a_aux)
+                            error(<span class="string">'Check code! Should not allow for negative welfare checks'</span>)
+                        <span class="keyword">elseif</span> a_aux&gt;agrid(n_agrid)
+                            a_aux=agrid(n_agrid);
+                        <span class="keyword">end</span>
+
+                        <span class="comment">% Linear interpolation</span>
+                        ind_aux=find(agrid&lt;=a_aux,1,<span class="string">'last'</span>);
+
+                        <span class="keyword">if</span> a_aux==0
+                            inds(1)=1;
+                            inds(2)=1;
+                            vals(1)=1;
+                            vals(2)=0;
+
+                        <span class="keyword">elseif</span> a_aux==agrid(n_agrid)
+                            inds(1)=n_agrid;
+                            inds(2)=n_agrid;
+                            vals(1)=1;
+                            vals(2)=0;
+
+                        <span class="keyword">else</span>
+                            inds(1)=ind_aux;
+                            inds(2)=ind_aux+1;
+                            vals(1)=1-((a_aux-agrid(inds(1)))/(agrid(inds(2))-agrid(inds(1))));
+                            vals(2)=1-vals(1);
+
+                        <span class="keyword">end</span>
+
+                        V_W(j,a,eta,educ,married,kids)=vals(1)*V_ss(j,inds(1),eta,educ,married,kids)+vals(2)*V_ss(j,inds(2),eta,educ,married,kids);
+
+                    <span class="keyword">end</span>
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span> (bl_print_a4chk)
+        disp(strcat([<span class="string">'SNW_A4CHK_WRK: Finished Age Group:'</span> num2str(j) <span class="string">' of '</span> num2str(n_jgrid)]));
+    <span class="keyword">end</span>
+
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">SNW_A4CHK_WRK: Finished Age Group:1 of 7
+SNW_A4CHK_WRK: Finished Age Group:2 of 7
+SNW_A4CHK_WRK: Finished Age Group:3 of 7
+SNW_A4CHK_WRK: Finished Age Group:4 of 7
+SNW_A4CHK_WRK: Finished Age Group:5 of 7
+SNW_A4CHK_WRK: Finished Age Group:6 of 7
+SNW_A4CHK_WRK: Finished Age Group:7 of 7
+</pre><h2 id="10">Timing and Profiling End</h2><pre class="codeinput"><span class="keyword">if</span> (bl_timer)
+    toc;
+    st_complete_a4chk = strjoin(<span class="keyword">...</span>
+        [<span class="string">"Completed SNW_A4CHK_WRK"</span>, <span class="keyword">...</span>
+         [<span class="string">'welf_checks='</span> num2str(welf_checks)], <span class="keyword">...</span>
+         [<span class="string">'TR='</span> num2str(TR)], <span class="keyword">...</span>
+         [<span class="string">'SNW_MP_PARAM='</span> char(mp_params(<span class="string">'mp_params_name'</span>))], <span class="keyword">...</span>
+         [<span class="string">'SNW_MP_CONTROL='</span> char(mp_controls(<span class="string">'mp_params_name'</span>))] <span class="keyword">...</span>
+        ], <span class="string">";"</span>);
+    disp(st_complete_a4chk);
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">Elapsed time is 10.271937 seconds.
+Completed SNW_A4CHK_WRK;welf_checks=2;TR=0.0017225;SNW_MP_PARAM=default_tiny;SNW_MP_CONTROL=default_test
+</pre><h2 id="11">Compare Difference between V_ss and V_W</h2><pre class="codeinput"><span class="keyword">if</span> (bl_print_a4chk_verbose)
+    mn_V_gain_check = V_W - V_ss;
+    mn_V_gain_frac_check = (V_W - V_ss)./V_ss;
+    mp_container_map = containers.Map(<span class="string">'KeyType'</span>,<span class="string">'char'</span>, <span class="string">'ValueType'</span>,<span class="string">'any'</span>);
+    mp_container_map(<span class="string">'V_W'</span>) = V_W;
+    mp_container_map(<span class="string">'V_ss'</span>) = V_ss;
+    mp_container_map(<span class="string">'V_W_minus_V_ss'</span>) = mn_V_gain_check;
+    mp_container_map(<span class="string">'V_W_minus_V_ss_divide_V_ss'</span>) = mn_V_gain_frac_check;
+    ff_container_map_display(mp_container_map);
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">----------------------------------------
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+CONTAINER NAME: mp_container_map ND Array (Matrix etc)
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                                  i    idx    ndim    numel    rowN    colN      sum         mean           std       coefvari      min         max   
+                                  _    ___    ____    _____    ____    ____    _______    ___________    _________    ________    ________    ________
+
+    V_W                           1     1      6      4200      7      600      3427.2          0.816       1.6657     2.0413       -9.032      2.4887
+    V_W_minus_V_ss                2     2      6      4200      7      600      5.9942      0.0014272    0.0049537     3.4709            0    0.042206
+    V_W_minus_V_ss_divide_V_ss    3     3      6      4200      7      600     -2.9465    -0.00070154     0.014971     -21.34     -0.92064     0.21546
+    V_ss                          4     4      6      4200      7      600      3421.2        0.81457       1.6698     2.0499      -9.0742      2.4887
+
+</pre><pre class="codeinput"><span class="keyword">end</span>
+
+<span class="keyword">function</span> [ar_root_zero, ar_a_aux_amz] = <span class="keyword">...</span>
+    ffi_frac0t1_find_a_working(<span class="keyword">...</span>
+    ar_aux_change_frac_amz, ar_a_state_level_amz, <span class="keyword">...</span>
+    j_amz,a_amz,eta_amz,educ_amz,married_amz,kids_amz, <span class="keyword">...</span>
+    welf_checks, TR, fl_max_trchk_perc_increase)
+
+    fl_a_aux_max = TR*welf_checks*fl_max_trchk_perc_increase;
+    ar_a_aux_amz = ar_a_state_level_amz + ar_aux_change_frac_amz.*fl_a_aux_max;
+
+    ar_root_zero = find_a_working(<span class="keyword">...</span>
+        ar_a_aux_amz,<span class="keyword">...</span>
+        j_amz,a_amz,eta_amz,educ_amz,married_amz,kids_amz,<span class="keyword">...</span>
+        TR,welf_checks);
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% SNW_A4CHK_WRK_BISEC (loop) solves for Asset Position Corresponding to Check Level
+%    What is the value of a check? From the perspective of the value
+%    function? We have Asset as a state variable, in a cash-on-hand sense,
+%    how much must the asset (or think cash-on-hand) increase by, so that
+%    it is equivalent to providing the household with a check? This is not
+%    the same as the check amount because of tax as well as interest rates.
+%    Interest rates means that you might need to offer a smaller a than the
+%    check amount. The tax rate means that we might need to shift a by
+%    larger than the check amount.
+%
+%    This function mainly exists to make sure to the bisection solution
+%    returns the same answer as the fzero solution. Given that these are
+%    the same, the vectorized version of this code should be used:
+%    SNW_A4CHK_WRK_BISEC_VEC. Note that here, FF_OPTIM_BISEC_SAVEZRONE or
+%    fzero speed differences is not substantial it seems.
+%
+%    This file solves the problem using bisection with the function
+%    FF_OPTIM_BISEC_SAVEZRONE from MEconTools. Also solves via fsolve. Can
+%    solve using both, and check if the answers are the same. This function
+%    requires a common zero and 1 starting point. For the problem here, 0
+%    bound is for a change for check to be zero, the 1 bound is for a
+%    change for check to be 130 percent of the check value, which considers
+%    the possible upper bound of taxes.
+%
+%    * WELF_CHECKS integer the number of checks
+%    * TR float the value of each check
+%    * V_SS ndarray the value matrix along standard state-space dimensions:
+%    (n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid)
+%    * MP_PARAMS map with model parameters
+%    * MP_CONTROLS map with control parameters
+%
+%    % bl_fzero is true if solve via fzero
+%    mp_controls('bl_fzero') = false;
+%    $ bl_ff_bisec is true is solve via ff_optim_bisec_savezrone, if both
+%    true solve both and return error message if answers do not match up.
+%    mp_controls('bl_ff_bisec') = true;
+%
+%    [V_W, EXITFLAG_FSOLVE] = SNW_A4CHK_WRK_BISEC(WELF_CHECKS, TR,
+%    V_SS, MP_PARAMS, MP_CONTROLS) solves for working value given V_SS
+%    value function results, for number of check WELF_CHECKS, and given the
+%    value of each check equal to TR.
+%
+%    See also SNW_A4CHK_WRK_BISEC_VEC, SNW_A4CHK_WRK, FIND_A_WORKING
+%
+
+%%
+function [V_W, exitflag_fsolve]=snw_a4chk_wrk_bisec(varargin)
+
+%% Default and Parse
+if (~isempty(varargin))
+    
+    if (length(varargin)==3)
+        [welf_checks, TR, V_ss] = varargin{:};
+        mp_controls_ext = snw_mp_control('default_base');
+    elseif (length(varargin)==5)
+        [welf_checks, TR, V_ss, mp_params, mp_controls_ext] = varargin{:};
+    end
+    
+else
+    close all;
+    
+    % Solve the VFI Problem and get Value Function
+    mp_params = snw_mp_param('default_tiny');
+    mp_controls_ext = snw_mp_control('default_test');
+    [V_ss,~,~,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls_ext);
+    welf_checks = 2;
+    TR = 100/58056;
+    
+    % run fzero
+    mp_controls_ext('bl_fzero') = true;    
+    % run ff_optim_bisec_savezrone bisect as well to compare results
+    mp_controls_ext('bl_ff_bisec') = true;
+    
+end
+
+%% Reset All globals
+% globals = who('global');
+% clear(globals{:});
+% Parameters used in this code directly
+global agrid n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
+% Used in find_a_working function
+global theta r agrid epsilon eta_H_grid eta_S_grid SS Bequests bequests_option throw_in_ocean
+
+%% Parse Model Parameters
+params_group = values(mp_params, {'theta', 'r'});
+[theta,  r] = params_group{:};
+
+params_group = values(mp_params, {'Bequests', 'bequests_option', 'throw_in_ocean'});
+[Bequests, bequests_option, throw_in_ocean] = params_group{:};
+
+params_group = values(mp_params, {'agrid', 'eta_H_grid', 'eta_S_grid'});
+[agrid, eta_H_grid, eta_S_grid] = params_group{:};
+
+params_group = values(mp_params, {'epsilon', 'SS'});
+[epsilon, SS] = params_group{:};
+
+params_group = values(mp_params, ...
+    {'n_jgrid', 'n_agrid', 'n_etagrid', 'n_educgrid', 'n_marriedgrid', 'n_kidsgrid'});
+[n_jgrid, n_agrid, n_etagrid, n_educgrid, n_marriedgrid, n_kidsgrid] = params_group{:};
+
+%% Control Map Function Specific Local Defaults
+mp_controls = containers.Map('KeyType', 'char', 'ValueType', 'any');
+mp_controls('bl_fzero') = false;
+mp_controls('bl_ff_bisec') = true;
+
+if (length(varargin)>=2 || isempty(varargin))
+    mp_controls = [mp_controls; mp_controls_ext];
+end
+
+%% Parse Model Controls
+% Which to Run Controls
+params_group = values(mp_controls, {'bl_fzero', 'bl_ff_bisec'});
+[bl_fzero, bl_ff_bisec] = params_group{:};
+
+% Minimizer Controls
+params_group = values(mp_controls, {'fl_max_trchk_perc_increase', 'options2'});
+[fl_max_trchk_perc_increase, options2] = params_group{:};
+
+% Profiling Controls
+params_group = values(mp_controls, {'bl_timer'});
+[bl_timer] = params_group{:};
+
+% Display Controls
+params_group = values(mp_controls, {'bl_print_a4chk','bl_print_a4chk_verbose'});
+[bl_print_a4chk, bl_print_a4chk_verbose] = params_group{:};
+
+%% Timing and Profiling Start
+
+if (bl_timer)
+    tic
+end
+
+%% Loop over states and find A state for a Particular Check Level
+
+V_W=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+exitflag_fsolve=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+
+for j=1:n_jgrid % Age
+    for a=1:n_agrid % Assets
+        for eta=1:n_etagrid % Productivity
+            for educ=1:n_educgrid % Educational level
+                for married=1:n_marriedgrid % Marital status
+                    for kids=1:n_kidsgrid % Number of kids
+                        
+                        % A. solve using ff_optim_bisec_savezrone
+                        if (bl_ff_bisec)
+                            % A1. Construct Bisect Percentage Function Handle 
+                            fc_ffi_frac0t1_find_a_working = @(x) ffi_frac0t1_find_a_working(...
+                                x, agrid(a), ...
+                                j,a,eta,educ,married,kids,...
+                                welf_checks, TR, fl_max_trchk_perc_increase);
+
+                            % A2. Solve via Bisection
+                            [a_aux_bisec_frac, a_aux_bisec] = ...
+                                ff_optim_bisec_savezrone(fc_ffi_frac0t1_find_a_working);
+                        end
+                        
+                        % B. Solve via fzero
+                        if (bl_fzero)
+                            x0=agrid(a)+TR*welf_checks; % Initial guess for a
+                            
+                            [a_aux_fzero,~,it_flag_fzero]=...
+                                fsolve(@(x)find_a_working(x,j,a,eta,educ,married,kids,TR,welf_checks),x0,options2);
+                            exitflag_fsolve(j,a,eta,educ,married,kids) = it_flag_fzero;
+                        end
+                        
+                        % C. Check if Solution Answers are the Same
+                        if (bl_ff_bisec && bl_fzero)
+                            if (abs(a_aux_fzero - a_aux_bisec) >= 10e-5)
+                                st_message = ['SNW_A4CHK_WRK_BISEC: a_aux=' num2str(a_aux_fzero) ...
+                                    ', but, a_aux_bisec=' num2str(a_aux_bisec)];
+                                error(st_message)
+                            end
+                            a_aux = a_aux_bisec;
+                        elseif (bl_ff_bisec)
+                            a_aux = a_aux_bisec;
+                        else
+                            a_aux = a_aux_fzero;
+                        end
+                        
+                        % D. Error Check
+                        if a_aux<0
+                            disp(a_aux)
+                            error('Check code! Should not allow for negative welfare checks')
+                        elseif a_aux>agrid(n_agrid)
+                            a_aux=agrid(n_agrid);
+                        end
+                        
+                        % Linear interpolation
+                        ind_aux=find(agrid<=a_aux,1,'last');
+                        
+                        if a_aux==0
+                            inds(1)=1;
+                            inds(2)=1;
+                            vals(1)=1;
+                            vals(2)=0;
+                            
+                        elseif a_aux==agrid(n_agrid)
+                            inds(1)=n_agrid;
+                            inds(2)=n_agrid;
+                            vals(1)=1;
+                            vals(2)=0;
+                            
+                        else
+                            inds(1)=ind_aux;
+                            inds(2)=ind_aux+1;
+                            vals(1)=1-((a_aux-agrid(inds(1)))/(agrid(inds(2))-agrid(inds(1))));
+                            vals(2)=1-vals(1);
+                            
+                        end
+                        
+                        V_W(j,a,eta,educ,married,kids)=vals(1)*V_ss(j,inds(1),eta,educ,married,kids)+vals(2)*V_ss(j,inds(2),eta,educ,married,kids);
+                        
+                    end
+                end
+            end
+        end
+    end
+    
+    if (bl_print_a4chk)
+        disp(strcat(['SNW_A4CHK_WRK: Finished Age Group:' num2str(j) ' of ' num2str(n_jgrid)]));
+    end
+    
+end
+
+%% Timing and Profiling End
+if (bl_timer)
+    toc;
+    st_complete_a4chk = strjoin(...
+        ["Completed SNW_A4CHK_WRK", ...
+         ['welf_checks=' num2str(welf_checks)], ...
+         ['TR=' num2str(TR)], ...
+         ['SNW_MP_PARAM=' char(mp_params('mp_params_name'))], ...
+         ['SNW_MP_CONTROL=' char(mp_controls('mp_params_name'))] ...
+        ], ";");
+    disp(st_complete_a4chk);
+end
+
+
+%% Compare Difference between V_ss and V_W
+
+if (bl_print_a4chk_verbose)
+    mn_V_gain_check = V_W - V_ss;
+    mn_V_gain_frac_check = (V_W - V_ss)./V_ss;
+    mp_container_map = containers.Map('KeyType','char', 'ValueType','any');
+    mp_container_map('V_W') = V_W;
+    mp_container_map('V_ss') = V_ss;
+    mp_container_map('V_W_minus_V_ss') = mn_V_gain_check;
+    mp_container_map('V_W_minus_V_ss_divide_V_ss') = mn_V_gain_frac_check;
+    ff_container_map_display(mp_container_map);
+end
+
+end
+
+function [ar_root_zero, ar_a_aux_amz] = ...
+    ffi_frac0t1_find_a_working(...
+    ar_aux_change_frac_amz, ar_a_state_level_amz, ...
+    j_amz,a_amz,eta_amz,educ_amz,married_amz,kids_amz, ...
+    welf_checks, TR, fl_max_trchk_perc_increase)
+    
+    fl_a_aux_max = TR*welf_checks*fl_max_trchk_perc_increase;    
+    ar_a_aux_amz = ar_a_state_level_amz + ar_aux_change_frac_amz.*fl_a_aux_max;
+    
+    ar_root_zero = find_a_working(...
+        ar_a_aux_amz,...
+        j_amz,a_amz,eta_amz,educ_amz,married_amz,kids_amz,...
+        TR,welf_checks);    
+end
+##### SOURCE END #####
+--></body></html>

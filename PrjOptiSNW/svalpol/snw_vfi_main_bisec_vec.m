@@ -33,6 +33,14 @@
 %    MP_CONTROLS) invoke model with externally set parameter map MP_PARAMS
 %    as well as control mpa MP_CONTROLS.
 %
+%    [V_VFI,AP_VFI,CONS_VFI,EXITFLAG_VFI] = SNW_VFI_MAIN(MP_PARAMS,
+%    MP_CONTROLS, V_VFI_FIX) provides existing value function. Suppose
+%    there is sudden shock, but future value is preserved after one period.
+%    So now we have new value that is specific to this period, that is the
+%    output V_VFI, the input V_VFI_FIX is the value for all future periods.
+%    When this program is called with V_VFI_FIX, the resource equation will
+%    use the unemployment shock information.
+%
 %    See also SNWX_VFI_MAIN, SNW_MP_CONTROL, SNW_MP_PARAM
 %
 
@@ -47,11 +55,13 @@ if (~isempty(varargin))
         mp_controls = snw_mp_control('default_base');
     elseif (length(varargin)==2)
         [mp_params, mp_controls] = varargin{:};
+    elseif (length(varargin)==3)
+        [mp_params, mp_controls, V_VFI_POSTSHOCK] = varargin{:};
     end
 
 else
 
-    mp_params = snw_mp_param('default_dense');
+    mp_params = snw_mp_param('default_small');
     mp_controls = snw_mp_control('default_test');
 
 end
@@ -89,6 +99,12 @@ params_group = values(mp_params, {'epsilon', 'SS'});
 params_group = values(mp_params, ...
     {'n_jgrid', 'n_agrid', 'n_etagrid', 'n_educgrid', 'n_marriedgrid', 'n_kidsgrid'});
 [n_jgrid, n_agrid, n_etagrid, n_educgrid, n_marriedgrid, n_kidsgrid] = params_group{:};
+
+% unemployment parameters under covid
+if (length(varargin)==3)    
+    params_group = values(mp_params, {'xi','b'});
+    [xi, b] = params_group{:};    
+end
 
 %% Parse Model Controls
 % Profiling Controls
@@ -137,13 +153,21 @@ cons_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 
 exitflag_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 
+if (length(varargin)==3)
+    ar_j_seq = 1:n_jgrid;
+else
+    ar_j_seq = n_jgrid:(-1):1; % Age
+end
+
+
 % Solve for value function and policy functions by means of backwards induction
-for j=n_jgrid:(-1):1 % Age
+for j=ar_j_seq % Age
     
     % A1. Generate the Resources Matrix
     mn_resources = zeros(n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);    
-    mn_z_ctr = zeros(n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+    mn_z_ctr = zeros(n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);    
     mn_hh_size = zeros(n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+    
     for a=1:n_agrid % Assets
         it_z_ctr = 0;
         % order here is reverse of order of loops at L181, so that it_z_ctr
@@ -154,10 +178,19 @@ for j=n_jgrid:(-1):1 % Age
                     for eta=1:n_etagrid % Productivity
                         
                         % Resources
-                        [inc,earn]=individual_income(j,a,eta,educ);
+                        if (length(varargin)==3)
+                            % one period unemployed shock
+                            [inc,earn]=individual_income(j,a,eta,educ,xi,b);
+                            % do not earn one hundred percent
+                            fl_earn_ratio = (xi+b*(1-xi));
+                        else
+                            [inc,earn]=individual_income(j,a,eta,educ);
+                            fl_earn_ratio = 1;
+                        end
+                        
                         spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
                         resources = (1+r)*(agrid(a)+Bequests*(bequests_option-1)) ...
-                                    + epsilon(j,educ)*theta*exp(eta_H_grid(eta)) ...
+                                    + epsilon(j,educ)*theta*exp(eta_H_grid(eta))*fl_earn_ratio ...
                                     + SS(j,educ) ...
                                     + (married-1)*spouse_inc*exp(eta_S_grid(eta)) ...
                                     - max(0,Tax(inc,(married-1)*spouse_inc*exp(eta_S_grid(eta))));
@@ -190,6 +223,12 @@ for j=n_jgrid:(-1):1 % Age
     
     if (j~=n_jgrid)
         
+        if (length(varargin)==3)
+            V_VFI_FUTURE = V_VFI_POSTSHOCK;
+        else
+            V_VFI_FUTURE = V_VFI;
+        end
+        
         for eta=1:n_etagrid % Productivity
             for educ=1:n_educgrid % Educational level
                 for married=1:n_marriedgrid % Marital status
@@ -201,7 +240,7 @@ for j=n_jgrid:(-1):1 % Age
                                     mn_ev_ap_z(a,eta,educ,married,kids) = ...
                                         mn_ev_ap_z(a,eta,educ,married,kids) ...
                                         + psi(j)*pi_eta(eta,etap)*pi_kids(kids,kidsp,j,educ,married)...
-                                          *V_VFI(j+1,a,etap,educ,married,kidsp);
+                                          *V_VFI_FUTURE(j+1,a,etap,educ,married,kidsp);
                                 end
                             end
 
@@ -285,7 +324,9 @@ for j=n_jgrid:(-1):1 % Age
                                     disp([j,a,eta,educ,married,kids,cons_VFI(j,a,eta,educ,married,kids)])
                                     error('Non-positive consumption')
                                 end
+                                
                                 V_VFI(j,a,eta,educ,married,kids)=utility(cons_VFI(j,a,eta,educ,married,kids),married,kids);
+                                
                             end
                         end
                     end
@@ -304,11 +345,19 @@ end
 %% Timing and Profiling End
 if (bl_timer)
     toc;
-    st_complete_vfi = strjoin(...
-        ["Completed SNW_VFI_MAIN", ...
-         ['SNW_MP_PARAM=' char(mp_params('mp_params_name'))], ...
-         ['SNW_MP_CONTROL=' char(mp_controls('mp_params_name'))] ...
-        ], ";");
+    if (length(varargin)==3)
+        st_complete_vfi = strjoin(...
+            ["Completed SNW_VFI_MAIN 1 PERIOD UNEMP SHK", ...
+             ['SNW_MP_PARAM=' char(mp_params('mp_params_name'))], ...
+             ['SNW_MP_CONTROL=' char(mp_controls('mp_params_name'))] ...
+            ], ";");
+    else
+        st_complete_vfi = strjoin(...
+            ["Completed SNW_VFI_MAIN", ...
+             ['SNW_MP_PARAM=' char(mp_params('mp_params_name'))], ...
+             ['SNW_MP_CONTROL=' char(mp_controls('mp_params_name'))] ...
+            ], ";");
+    end
     disp(st_complete_vfi);
 end
 

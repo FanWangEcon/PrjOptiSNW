@@ -1,59 +1,45 @@
-%% SNW_VFI_MAIN Solves Policy/Value Function SNW (Loop)
-%    Given parameters, iterate over life cycle, given age, marital status,
-%    education level and child count, as well as persistent productivity
-%    shock process, solve for optimal dynamic savings choices given
-%    expectation of kid count transition and productivity shock transition.
+%% SNW_VFI_UNEMP Solves Policy/Value Function SNW (Loop)
+%    What is the value given an one period unemployment shock? We have the
+%    same value in the future after this period, but for the current
+%    period, there is a sudden bad shock. Given this sudden bad shock,
+%    current resources are reduced, current consumption as well as savigs
+%    choices are both likely to go down. This is the fmincon results
 %
-%    Pref, Technology, and prices SCALARS:
+%    % Proportional reduction in income due to unemployment (xi=0 refers to 0 labor income; xi=1 refers to no drop in labor income)
+%    mp_params('xi')=0.5; 
+%    % Unemployment insurance replacement rate (b=0 refers to no UI benefits; b=1 refers to 100 percent labor income replacement)
+%    mp_params('b')=0; 
 %
-%    * BETA discount
-%    * THETA total factor productivity normalizer
-%    * R interest rate
+%    [V_VFI,AP_VFI,CONS_VFI,EXITFLAG_VFI] = SNW_VFI_MAIN(V_SS, MP_PARAMS)
+%    invoke model with externally set parameter map MP_PARAMS, given V_SS
+%    future value solved before the shock.
 %
-%    Vectorized State Space ARRAYS:
-%
-%    * AGRID asset grid
-%    * ETA_GRID productivity shock grid
-%
-%    Transition Matrixes ARRAYS:
-%
-%    * PI_ETA shock productivity transition
-%    * PI_KIDS shock kids count transition
-%    * PSI shock survival probability
-%
-%    Permanent Education Type Heterogeneity ARRAYS:
-%
-%    * EPSILON perfect-foresight education type transition
-%    * SS Social Security
-%
-%    [V_VFI,AP_VFI,CONS_VFI,EXITFLAG_VFI] = SNW_VFI_MAIN(MP_PARAMS) invoke
-%    model with externally set parameter map MP_PARAMS.
-%
-%    [V_VFI,AP_VFI,CONS_VFI,EXITFLAG_VFI] = SNW_VFI_MAIN(MP_PARAMS,
+%    [V_VFI,AP_VFI,CONS_VFI,EXITFLAG_VFI] = SNW_VFI_MAIN(V_SS. MP_PARAMS,
 %    MP_CONTROLS) invoke model with externally set parameter map MP_PARAMS
 %    as well as control mpa MP_CONTROLS.
 %
-%    See also SNW_VFI_MAIN_BISEC_VEC SNW_VFI_UNEMP SNW_MP_CONTROL
-%    SNW_MP_PARAM
+%    See also SNW_VFI_MAIN, SNW_MP_CONTROL, SNW_MP_PARAM
 %
 
 %%
-function [V_VFI,ap_VFI,cons_VFI,exitflag_VFI]=snw_vfi_main(varargin)
+function [V_VFI,ap_VFI,cons_VFI,exitflag_VFI]=snw_vfi_unemp(varargin)
 
 %% Default and Parse 
 if (~isempty(varargin))
     
-    if (length(varargin)==1)
-        [mp_params] = varargin{:};
+    if (length(varargin)==2)
+        [V_ss, mp_params] = varargin{:};
         mp_controls = snw_mp_control('default_base');
-    elseif (length(varargin)==2)
-        [mp_params, mp_controls] = varargin{:};
+    elseif (length(varargin)==3)
+        [V_ss, mp_params, mp_controls] = varargin{:};
     end
     
 else
     
-    mp_params = snw_mp_param('default_tiny');
+    mp_params = snw_mp_param('default_small');
     mp_controls = snw_mp_control('default_test');
+    
+    [V_ss,~,~,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
     
 end
 
@@ -90,6 +76,9 @@ params_group = values(mp_params, {'epsilon', 'SS'});
 params_group = values(mp_params, ...
     {'n_jgrid', 'n_agrid', 'n_etagrid', 'n_educgrid', 'n_marriedgrid', 'n_kidsgrid'});
 [n_jgrid, n_agrid, n_etagrid, n_educgrid, n_marriedgrid, n_kidsgrid] = params_group{:};
+
+params_group = values(mp_params, {'xi','b'});
+[xi, b] = params_group{:};    
 
 %% Parse Model Controls
 % Minimizer Controls
@@ -132,51 +121,32 @@ cons_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 exitflag_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 
 % Solve for value function and policy functions by means of backwards induction
-for j=n_jgrid:(-1):1 % Age
+for j=1:n_jgrid % Age
     for a=1:n_agrid % Assets
         for eta=1:n_etagrid % Productivity
             for educ=1:n_educgrid % Educational level
                 for married=1:n_marriedgrid % Marital status
                     for kids=1:n_kidsgrid % Number of kids
                         
-                        if j==n_jgrid
-                            
-                            ap_VFI(j,a,eta,educ,married,kids)=0;
-                            cons_VFI(j,a,eta,educ,married,kids) = consumption(j,a,eta,educ,married,kids,ap_VFI(j,a,eta,educ,married,kids));
-                            
-                            if cons_VFI(j,a,eta,educ,married,kids)<=0
-                                disp([j,a,eta,educ,married,kids,cons_VFI(j,a,eta,educ,married,kids)])
-                                error('Non-positive consumption')
-                            end
-                            
-                            V_VFI(j,a,eta,educ,married,kids)=utility(cons_VFI(j,a,eta,educ,married,kids),married,kids);
-                            
-%                             if (bl_vfi_store_all)
-%                                 y_VFI(j,a,eta,educ,married,kids) = ;
-%                                 tax_VFI(j,a,eta,educ,married,kids);
-%                                 SS_VFI(j,a,eta,educ,married,kids);
-%                             end
-                            
-                        else
+                        if j<n_jgrid
                             
                             % Solve for next period's assets
                             x0=agrid(a); % Initial guess for ap
                             
                             amin=0;
-                            [inc,earn]=individual_income(j,a,eta,educ);
+                            
+                            [inc,earn]=individual_income(j,a,eta,educ,xi,b);
                             spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
                             
                             amax = min(agrid(end), ...
                                 (1+r)*(agrid(a) ...
                                 + Bequests*(bequests_option-1)) ...                                
-                                + epsilon(j,educ)*theta*exp(eta_H_grid(eta)) ...
+                                + (epsilon(j,educ)*theta*exp(eta_H_grid(eta)))*(xi+b*(1-xi)) ...
                                 + SS(j,educ) ...
                                 + (married-1)*spouse_inc*exp(eta_S_grid(eta)) ...
                                 - max(0,Tax(inc,(married-1)*spouse_inc*exp(eta_S_grid(eta)))));
                             
-                            [ap_aux,~,exitflag_VFI(j,a,eta,educ,married,kids)]=...
-                                fmincon(@(x)value_func_aux(x,j,a,eta,educ,married,kids,V_VFI), ...
-                                x0,A_aux,B_aux,Aeq,Beq,amin,amax,nonlcon,options);
+                            [ap_aux,~,exitflag_VFI(j,a,eta,educ,married,kids)]=fmincon(@(x)value_func_aux_unemp(x,j,a,eta,educ,married,kids,V_ss,xi,b),x0,A_aux,B_aux,Aeq,Beq,amin,amax,nonlcon,options);
                             
                             ind_aux=find(agrid<=ap_aux,1,'last');
                             
@@ -204,26 +174,26 @@ for j=n_jgrid:(-1):1 % Age
                             cont=0;
                             for etap=1:n_etagrid
                                 for kidsp=1:n_kidsgrid
-                                    cont=cont ...
-                                        +pi_eta(eta,etap)*pi_kids(kids,kidsp,j,educ,married)*(...
-                                            vals(1)*V_VFI(j+1,inds(1),etap,educ,married,kidsp) ...
-                                            +vals(2)*V_VFI(j+1,inds(2),etap,educ,married,kidsp));
+                                    cont=cont+pi_eta(eta,etap)*pi_kids(kids,kidsp,j,educ,married)*(vals(1)*V_ss(j+1,inds(1),etap,educ,married,kidsp)+vals(2)*V_ss(j+1,inds(2),etap,educ,married,kidsp));
                                 end
                             end
                             
-                            c_aux=consumption(j,a,eta,educ,married,kids,ap_aux);
+                            c_aux=consumption(j,a,eta,educ,married,kids,ap_aux,xi,b);
+                            %                          c_aux=(1+r)*agrid(a)+( epsilon(j,educ)*theta*exp(eta_grid(eta)) )*(xi+b*(1-xi))+SS(j,educ)+(married-1)*spouse_inc-max(0,Tax(inc,(married-1)*spouse_inc))-ap_aux;
                             
                             ap_VFI(j,a,eta,educ,married,kids)=ap_aux;
                             cons_VFI(j,a,eta,educ,married,kids)=c_aux;
                             
                             V_VFI(j,a,eta,educ,married,kids)=utility(c_aux,married,kids)+beta*psi(j)*cont;
                             
-                            c_aux3=consumption(j,a,eta,educ,married,kids,0);
+                            % Check end point of asset grid (ap=0)
+                            c_aux3=consumption(j,a,eta,educ,married,kids,0,xi,b);
+                            %                          c_aux3=(1+r)*agrid(a)+( epsilon(j,educ)*theta*exp(eta_grid(eta)) )*(xi+b*(1-xi))+SS(j,educ)+(married-1)*spouse_inc-max(0,Tax(inc,(married-1)*spouse_inc));
                             
                             cont=0;
                             for etap=1:n_etagrid
                                 for kidsp=1:n_kidsgrid
-                                    cont=cont+pi_eta(eta,etap)*pi_kids(kids,kidsp,j,educ,married)*V_VFI(j+1,1,etap,educ,married,kidsp);
+                                    cont=cont+pi_eta(eta,etap)*pi_kids(kids,kidsp,j,educ,married)*V_ss(j+1,1,etap,educ,married,kidsp);
                                 end
                             end
                             V_aux3=utility(c_aux3,married,kids)+beta*psi(j)*cont;
@@ -239,6 +209,22 @@ for j=n_jgrid:(-1):1 % Age
                                 disp([j,a,eta,educ,married,kids,cons_VFI(j,a,eta,educ,married,kids)])
                                 error('Non-positive consumption')
                             end
+                            
+                        elseif j==n_jgrid
+                            
+                            %                          inc=r*agrid(a)+( epsilon(j,educ)*theta*exp(eta_grid(eta)) )*(xi+b*(1-xi))+SS(j,educ);
+                            %                          spouse_inc=spousal_income(j,educ,kids,( epsilon(j,educ)*theta*exp(eta_grid(eta)) )*(xi+b*(1-xi)),SS(j,educ));
+                            
+                            ap_VFI(j,a,eta,educ,married,kids)=0;
+                            cons_VFI(j,a,eta,educ,married,kids)=consumption(j,a,eta,educ,married,kids,ap_VFI(j,a,eta,educ,married,kids),xi,b);
+                            %                          cons_VFI(j,a,eta,educ,married,kids)=(1+r)*agrid(a)+( epsilon(j,educ)*theta*exp(eta_grid(eta)) )*(xi+b*(1-xi))+SS(j,educ)+(married-1)*spouse_inc-max(0,Tax(inc,(married-1)*spouse_inc));
+                            
+                            if cons_VFI(j,a,eta,educ,married,kids)<=0
+                                disp([j,a,eta,educ,married,kids,cons_VFI(j,a,eta,educ,married,kids)])
+                                error('Non-positive consumption')
+                            end
+                            
+                            V_VFI(j,a,eta,educ,married,kids)=utility(cons_VFI(j,a,eta,educ,married,kids),married,kids);
                             
                         end
                         

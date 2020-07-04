@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>SNW_MP_PARAM Organizes and Sets Various Model Input Scalar and Array Parameters</title><meta name="generator" content="MATLAB 9.7"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-07-03"><meta name="DC.source" content="snw_mp_param.m"><style type="text/css">
+      --><title>SNW_MP_PARAM Organizes and Sets Various Model Input Scalar and Array Parameters</title><meta name="generator" content="MATLAB 9.7"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-07-04"><meta name="DC.source" content="snw_mp_param.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -88,7 +88,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
   MP_PARAMS_EXOTRANS, MP_PARAMS_TYPELIFE, MP_PARAMS_INTLEN] =
   SNW_MP_PARAM(ST_PARAM_GROUP) generates default parameters for the type
   ST_PARAM_GROUP, and output all parameters in one MP_PARAMS, but also
-  parameters oraganized in submaps by parameter types</pre><pre>  See also SNWX_MP_PARAM</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Parse Main Inputs and Set Defaults</a></li><li><a href="#3">Parametesr Grid Points</a></li><li><a href="#4">Preferences, Technologies, etc.</a></li><li><a href="#5">PARAM Mortality</a></li><li><a href="#6">PARAM Productivity by Education Types</a></li><li><a href="#7">PARAM Kids Transition</a></li><li><a href="#8">PARAM Specifying asset grid (use non-linear spacing with minimum value of 0)</a></li><li><a href="#9">Derive transition probabilities and stationary distribution for productivity shock</a></li><li><a href="#10">Initial conditions for marital status, college attainment, and number of kids</a></li><li><a href="#11">Population distribution</a></li><li><a href="#12">Set Parameter Maps</a></li><li><a href="#13">Combine Maps</a></li><li><a href="#14">Print</a></li><li><a href="#15">Return</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> varargout = snw_mp_param(varargin)
+  parameters oraganized in submaps by parameter types</pre><pre>  See also SNWX_MP_PARAM</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Parse Main Inputs and Set Defaults</a></li><li><a href="#3">Parametesr Grid Points</a></li><li><a href="#4">Unemployment Parameters</a></li><li><a href="#5">Preferences, Technologies, etc.</a></li><li><a href="#6">PARAM Mortality</a></li><li><a href="#7">PARAM Productivity by Education Types</a></li><li><a href="#8">PARAM Kids Transition</a></li><li><a href="#9">PARAM Specifying asset grid (use non-linear spacing with minimum value of 0)</a></li><li><a href="#10">Derive transition probabilities and stationary distribution for productivity shock</a></li><li><a href="#11">Initial conditions for marital status, college attainment, and number of kids</a></li><li><a href="#12">Population distribution</a></li><li><a href="#13">Set Parameter Maps</a></li><li><a href="#14">Combine Maps</a></li><li><a href="#15">Print</a></li><li><a href="#16">Return</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> varargout = snw_mp_param(varargin)
 </pre><h2 id="2">Parse Main Inputs and Set Defaults</h2><pre class="codeinput"><span class="keyword">if</span> (~isempty(varargin))
 
     [it_row_n_keep, it_col_n_keep] = deal(8, 8);
@@ -120,33 +120,47 @@ n_kidsgrid=5; <span class="comment">% No. of grid points for children (0 to 5+ c
     jret     =49;
     n_agrid  =251; <span class="comment">% No. of grid points for assets</span>
     n_eta_H_grid=9; <span class="comment">% 9; % No. of grid points for persistent labor productivity shocks</span>
-    n_eta_S_grid=3; <span class="comment">% 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)</span>
+    n_eta_S_grid=5; <span class="comment">% 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)</span>
     n_kidsgrid=5; <span class="comment">% No. of grid points for children (0 to 4+ children)</span>
 <span class="keyword">elseif</span>(strcmp(st_param_group, <span class="string">"default_dense"</span>))
     n_jgrid  =83; <span class="comment">% Age runs from 18 to 100 (a period is 2 years)</span>
     jret     =49;
     n_agrid  =55; <span class="comment">% No. of grid points for assets</span>
     n_eta_H_grid=7; <span class="comment">% 9; % No. of grid points for persistent labor productivity shocks</span>
-    n_eta_S_grid=1; <span class="comment">% 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)</span>
+    n_eta_S_grid=3; <span class="comment">% 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)</span>
     n_kidsgrid=5; <span class="comment">% No. of grid points for children (0 to 4+ children)</span>
 <span class="keyword">elseif</span>(strcmp(st_param_group, <span class="string">"default_base"</span>))
     n_jgrid  =42; <span class="comment">% Age runs from 18 to 100 (a period is 2 years)</span>
     jret=25;
     n_agrid  =40; <span class="comment">% No. of grid points for assets</span>
-    n_eta_H_grid=7; <span class="comment">% 9; % No. of grid points for persistent labor productivity shocks</span>
-    n_eta_S_grid=1; <span class="comment">% 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)</span>
-    n_kidsgrid=5; <span class="comment">% No. of grid points for children (0 to 4+ children)</span>
-<span class="keyword">elseif</span>(strcmp(st_param_group, <span class="string">"default_tiny"</span>))
-    n_jgrid   =7; <span class="comment">% Age runs from 18 to 100 (5 periods of 16 years + terminal)</span>
-    jret =5;
-    n_agrid   =10; <span class="comment">% No. of grid points for assets</span>
     n_eta_H_grid=5; <span class="comment">% 9; % No. of grid points for persistent labor productivity shocks</span>
-    n_eta_S_grid=1; <span class="comment">% 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)</span>
+    n_eta_S_grid=3; <span class="comment">% 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)</span>
+    n_kidsgrid=5; <span class="comment">% No. of grid points for children (0 to 4+ children)</span>
+<span class="keyword">elseif</span>(strcmp(st_param_group, <span class="string">"default_small53"</span>))
+    n_jgrid   =18; <span class="comment">% Age runs from 18 to 100 (16 periods of 5 years + terminal)</span>
+    jret      =13;
+    n_agrid   =25; <span class="comment">% No. of grid points for assets</span>
+    n_eta_H_grid=5; <span class="comment">% 9; % No. of grid points for persistent labor productivity shocks</span>
+    n_eta_S_grid=3; <span class="comment">% 3; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)</span>
     n_kidsgrid=3; <span class="comment">% No. of grid points for children (0 to 5+ children)</span>
 <span class="keyword">elseif</span>(strcmp(st_param_group, <span class="string">"default_small"</span>))
     n_jgrid   =18; <span class="comment">% Age runs from 18 to 100 (16 periods of 5 years + terminal)</span>
     jret      =13;
     n_agrid   =25; <span class="comment">% No. of grid points for assets</span>
+    n_eta_H_grid=5; <span class="comment">% 9; % No. of grid points for persistent labor productivity shocks</span>
+    n_eta_S_grid=1; <span class="comment">% 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)</span>
+    n_kidsgrid=3; <span class="comment">% No. of grid points for children (0 to 5+ children)</span>
+<span class="keyword">elseif</span>(strcmp(st_param_group, <span class="string">"default_tiny53"</span>))
+    n_jgrid   =7; <span class="comment">% Age runs from 18 to 100 (5 periods of 16 years + terminal)</span>
+    jret =5;
+    n_agrid   =10; <span class="comment">% No. of grid points for assets</span>
+    n_eta_H_grid=5; <span class="comment">% 9; % No. of grid points for persistent labor productivity shocks</span>
+    n_eta_S_grid=3; <span class="comment">% 3; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)</span>
+    n_kidsgrid=3; <span class="comment">% No. of grid points for children (0 to 5+ children)</span>
+<span class="keyword">elseif</span>(strcmp(st_param_group, <span class="string">"default_tiny"</span>))
+    n_jgrid   =7; <span class="comment">% Age runs from 18 to 100 (5 periods of 16 years + terminal)</span>
+    jret =5;
+    n_agrid   =10; <span class="comment">% No. of grid points for assets</span>
     n_eta_H_grid=5; <span class="comment">% 9; % No. of grid points for persistent labor productivity shocks</span>
     n_eta_S_grid=1; <span class="comment">% 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)</span>
     n_kidsgrid=3; <span class="comment">% No. of grid points for children (0 to 5+ children)</span>
@@ -159,20 +173,24 @@ n_etagrid=n_eta_H_grid*n_eta_S_grid; <span class="comment">% Length of productiv
 <span class="keyword">else</span>
     it_yrs_per_period = (80/(n_jgrid-2));
 <span class="keyword">end</span>
-</pre><h2 id="4">Preferences, Technologies, etc.</h2><pre class="codeinput"><span class="comment">% Non-calibrated parameters</span>
+</pre><h2 id="4">Unemployment Parameters</h2><pre class="codeinput">xi=0.5; <span class="comment">% Proportional reduction in income due to unemployment (xi=0 refers to 0 labor income; xi=1 refers to no drop in labor income)</span>
+b=0; <span class="comment">% Unemployment insurance replacement rate (b=0 refers to no UI benefits; b=1 refers to 100 percent labor income replacement)</span>
+TR=100/58056; <span class="comment">% Value of a welfare check (can receive multiple checks). TO DO: Update with alternative values</span>
+n_welfchecksgrid=51; <span class="comment">% Number of welfare checks. 0 refers to 0 dollars; 51 refers to 5000 dollars</span>
+</pre><h2 id="5">Preferences, Technologies, etc.</h2><pre class="codeinput"><span class="comment">% Non-calibrated parameters</span>
 gamma=2; <span class="comment">% Risk aversion parameter</span>
 <span class="keyword">if</span>(contains(st_param_group, <span class="string">"dense"</span>))
     rho_eta=0.98; <span class="comment">% Persistence of AR(1) productivity shocks</span>
     sigma_eta=0.018; <span class="comment">% Variance of AR(1) productivity shocks</span>
     g_n=0.01; <span class="comment">% Annual population growth of 1.1 percent</span>
     r=0.04; <span class="comment">% Annual real interest rate of 4.0 percent from McGrattan and Prescott</span>
-    beta=0.9730053; <span class="comment">% Discount factor</span>
+    beta=0.973087134454599; <span class="comment">% 0.97068903873305; % Discount factor</span>
 <span class="keyword">else</span>
     rho_eta=0.98^it_yrs_per_period;
     sigma_eta=sqrt(0.018^2*sum((0.98.^(0:(it_yrs_per_period-1))).^2));
     g_n=(1.01^it_yrs_per_period)-1;
     r=(1.04^it_yrs_per_period)-1;
-    beta=0.9730053^it_yrs_per_period;
+    beta=0.973087134454599^it_yrs_per_period;
 <span class="keyword">end</span>
 
 <span class="comment">% Spousal Shocks</span>
@@ -192,7 +210,7 @@ throw_in_ocean=1; <span class="comment">% If bequests go to the government, a va
     <span class="keyword">if</span> throw_in_ocean==0
         a2=0.7027; <span class="comment">% 1.57; % Initial guess for average income tax burden (if we use GS</span>
     <span class="keyword">elseif</span> throw_in_ocean==1
-        a2=1.55; <span class="comment">% 1.55888288714205;</span>
+        a2=1.55791088259089; <span class="comment">% 1.55888288714205;</span>
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 
@@ -201,7 +219,7 @@ throw_in_ocean=1; <span class="comment">% If bequests go to the government, a va
 g_cons=0.17575574; <span class="comment">% Government consumption expenditures to GDP (BEA: Average 2015-2019)</span>
 
 <span class="comment">% Calibrated parameters</span>
-theta=0.676557; <span class="comment">% TFP parameter to normalize units such that average household income relative to GDP per capita equals (the latter is normalized to 1): Real GDP/capita in 2019: $58,056</span>
+theta=0.67317057489809; <span class="comment">% 0.691180561033545; % TFP parameter to normalize units such that average household income relative to GDP per capita equals (the latter is normalized to 1): Real GDP/capita in 2019: $58,056</span>
 
 <span class="comment">% Consumption allocation rule (1=uniform; 2=square root)</span>
 cons_allocation_rule=2;
@@ -210,7 +228,7 @@ cons_allocation_rule=2;
 SS=zeros(n_jgrid,2);
 SS(jret:end,1)=0.24433; <span class="comment">% Average SS non-college 2005-2009 as a share of GDP per capita</span>
 SS(jret:end,2)=0.29263; <span class="comment">% Average SS college 2005-2009 as a share of GDP per capita</span>
-</pre><h2 id="5">PARAM Mortality</h2><p>Assume MORT_PROB will have 80 rows. Average based on Resulting Dataframes</p><pre class="codeinput">load(<span class="string">'Mortality_prob_by_age_18_99.mat'</span>,<span class="string">'mort_prob'</span>)
+</pre><h2 id="6">PARAM Mortality</h2><p>Assume MORT_PROB will have 80 rows. Average based on Resulting Dataframes</p><pre class="codeinput">load(<span class="string">'Mortality_prob_by_age_18_99.mat'</span>,<span class="string">'mort_prob'</span>)
 psi_full=1-mort_prob;
 psi_full=[psi_full;0]; <span class="comment">% Maximum lifespan=100 (survival probability at age 100=0)</span>
 
@@ -224,7 +242,7 @@ psi_full=[psi_full;0]; <span class="comment">% Maximum lifespan=100 (survival pr
 <span class="keyword">end</span>
 
 clear <span class="string">mort_prob</span> <span class="string">psi_full</span>
-</pre><h2 id="6">PARAM Productivity by Education Types</h2><p>Generate epsilon matrix A1. load external</p><pre class="codeinput">load(<span class="string">'Life_cycle_prod_by_educ.mat'</span>,<span class="string">'life_cycle_prod_by_educ'</span>) <span class="comment">% Life-cycle labor productivity for 20-100 year-olds by education (non-college vs. college)</span>
+</pre><h2 id="7">PARAM Productivity by Education Types</h2><p>Generate epsilon matrix A1. load external</p><pre class="codeinput">load(<span class="string">'Life_cycle_prod_by_educ.mat'</span>,<span class="string">'life_cycle_prod_by_educ'</span>) <span class="comment">% Life-cycle labor productivity for 20-100 year-olds by education (non-college vs. college)</span>
 <span class="comment">% Set Annual</span>
 epsilon_full=NaN(83,2);
 epsilon_full(3:end,:)=life_cycle_prod_by_educ(:,:);
@@ -245,7 +263,7 @@ epsilon_full(2,:)=epsilon_full(3,:);
 epsilon(jret:end,:)=0; <span class="comment">% Assume zero labor productivity for 65+ year-olds (exogenous retirement)</span>
 
 clear <span class="string">life_cycle_prod_by_educ</span> <span class="string">epsilon_aux</span>
-</pre><h2 id="7">PARAM Kids Transition</h2><p>Transition probabilities for number of children (0, 1, 2, 3, 4, or 5) (stored in the following order: Number of children in year 1, age, marital status, college attainment. Each column refers to the number of children in year 2)</p><p>PI_KIDS_TRANS_PROB has 6*2*41 = 492 rows. It is assuming strcmp(st_param_group, "default_base"). For tiny and small grid, select appropriate subset of rows to match appropriate age groups from PI_KIDS.</p><p>pi_kids_trans_prob estimation might change in the future if there are more age groups added. To make sure this code here works, use N_JGRID_PKTP as the N_JGRID count for PI_KIDS_TRANS_PROB. But assume there will always be up to 6 kids, and 2 marriage/notmarry groups.</p><pre class="codeinput">load(<span class="string">'pi_kids_trans_prob'</span>,<span class="string">'pi_kids_trans_prob'</span>)
+</pre><h2 id="8">PARAM Kids Transition</h2><p>Transition probabilities for number of children (0, 1, 2, 3, 4, or 5) (stored in the following order: Number of children in year 1, age, marital status, college attainment. Each column refers to the number of children in year 2)</p><p>PI_KIDS_TRANS_PROB has 6*2*41 = 492 rows. It is assuming strcmp(st_param_group, "default_base"). For tiny and small grid, select appropriate subset of rows to match appropriate age groups from PI_KIDS.</p><p>pi_kids_trans_prob estimation might change in the future if there are more age groups added. To make sure this code here works, use N_JGRID_PKTP as the N_JGRID count for PI_KIDS_TRANS_PROB. But assume there will always be up to 6 kids, and 2 marriage/notmarry groups.</p><pre class="codeinput">load(<span class="string">'pi_kids_trans_prob'</span>,<span class="string">'pi_kids_trans_prob'</span>)
 n_kidsgrid_kptp = 5;
 n_educgrid_kptp = 2;
 n_marriedgrid_kptp = 2;
@@ -300,7 +318,7 @@ pi_kids_pktp(:,1,n_jgrid_pktp,:,:)=1;
 
 <span class="comment">%</span>
 clear <span class="string">aux_sum</span> <span class="string">counter</span> <span class="string">pi_kids_trans_prob</span> <span class="string">pi_kids_pktp</span>
-</pre><h2 id="8">PARAM Specifying asset grid (use non-linear spacing with minimum value of 0)</h2><pre class="codeinput">curv=3; <span class="comment">% Governs how the grid points are allocated</span>
+</pre><h2 id="9">PARAM Specifying asset grid (use non-linear spacing with minimum value of 0)</h2><pre class="codeinput">curv=3; <span class="comment">% Governs how the grid points are allocated</span>
 scale_a=190; <span class="comment">% Maximum value of assets (NOTE: Verifying that it does not bind in Aggregation.m) grid=1.2451e-11</span>
 
 agrid=zeros(n_agrid,1);
@@ -308,7 +326,7 @@ agrid=zeros(n_agrid,1);
 <span class="keyword">for</span> i=2:n_agrid
 	agrid(i)=scale_a*((i-1)/(n_agrid-1))^curv;
 <span class="keyword">end</span>
-</pre><h2 id="9">Derive transition probabilities and stationary distribution for productivity shock</h2><p>Discretize process for persistent productivity shocks and derive stationary distribution</p><pre class="codeinput">[eta_H_grid_aux,pi_H_eta]=rouwenhorst(rho_eta,sqrt(sigma_eta),n_eta_H_grid);
+</pre><h2 id="10">Derive transition probabilities and stationary distribution for productivity shock</h2><p>Discretize process for persistent productivity shocks and derive stationary distribution</p><pre class="codeinput">[eta_H_grid_aux,pi_H_eta]=rouwenhorst(rho_eta,sqrt(sigma_eta),n_eta_H_grid);
 [eta_S_grid_aux,pi_S_eta]=rouwenhorst(rho_eta_spouse,sqrt(sigma_eta_spouse),n_eta_S_grid);
 
 pi_eta=NaN(n_etagrid,n_etagrid);
@@ -348,7 +366,7 @@ tol=10^-12;
 stat_distr_eta(1,:)=x0;
 
 clear <span class="string">counter</span> <span class="string">counterp</span> <span class="string">eta_H_grid_aux</span> <span class="string">eta_S_grid_aux</span>
-</pre><h2 id="10">Initial conditions for marital status, college attainment, and number of kids</h2><p>Distribution of educational attainment from PSID tab Rcollege if RAGE&gt;=18 &amp; RAGE!=. [aweight=WEIGHT]</p><pre class="codeinput">stat_distr_educ(1,1)=0.6970; <span class="comment">% No college</span>
+</pre><h2 id="11">Initial conditions for marital status, college attainment, and number of kids</h2><p>Distribution of educational attainment from PSID tab Rcollege if RAGE&gt;=18 &amp; RAGE!=. [aweight=WEIGHT]</p><pre class="codeinput">stat_distr_educ(1,1)=0.6970; <span class="comment">% No college</span>
 stat_distr_educ(1,2)=0.3030; <span class="comment">% College</span>
 
 <span class="comment">% Distribution of marital status conditional on college attainment from PSID</span>
@@ -412,13 +430,13 @@ bl_sum_onebyone = true;
     aux=sum(stat_distr_kids(2,2,:));
     stat_distr_kids(2,2,:)=stat_distr_kids(2,2,:)/aux;
 <span class="keyword">else</span>
-mt_aux = repmat(sum(stat_distr_kids, 3), <span class="keyword">...</span>
-    [1,1,size(stat_distr_kids,3)]);
+    mt_aux = repmat(sum(stat_distr_kids, 3), <span class="keyword">...</span>
+        [1,1,size(stat_distr_kids,3)]);
     stat_distr_kids(2,2,:)=stat_distr_kids./mt_aux;
 <span class="keyword">end</span>
 
 clear <span class="string">aux</span>
-</pre><h2 id="11">Population distribution</h2><p>Normalize mass of 18-year-olds to 1</p><pre class="codeinput">Pop=zeros(n_jgrid,1);
+</pre><h2 id="12">Population distribution</h2><p>Normalize mass of 18-year-olds to 1</p><pre class="codeinput">Pop=zeros(n_jgrid,1);
 Pop(1)=1;
 <span class="keyword">for</span> j=2:n_jgrid
     Pop(j)=Pop(j-1)*psi(j-1)/(1+g_n);
@@ -427,7 +445,13 @@ Pop(1)=1;
 name=<span class="string">'Old-age dependency ratio (ratio of 65+/(18-64))='</span>;
 st_old_age_depend =[name,num2str(sum(Pop(jret:end))/sum(Pop(1:(jret-1))))];
 <span class="comment">% disp(st_old_age_depend);</span>
-</pre><h2 id="12">Set Parameter Maps</h2><pre class="codeinput">mp_params_preftechpricegov = containers.Map(<span class="string">'KeyType'</span>, <span class="string">'char'</span>, <span class="string">'ValueType'</span>, <span class="string">'any'</span>);
+</pre><h2 id="13">Set Parameter Maps</h2><pre class="codeinput">mp_params_covid_unemploy = containers.Map(<span class="string">'KeyType'</span>, <span class="string">'char'</span>, <span class="string">'ValueType'</span>, <span class="string">'any'</span>);
+mp_params_covid_unemploy(<span class="string">'xi'</span>) = xi;
+mp_params_covid_unemploy(<span class="string">'b'</span>) = b;
+mp_params_covid_unemploy(<span class="string">'TR'</span>) = TR;
+mp_params_covid_unemploy(<span class="string">'n_welfchecksgrid'</span>) = n_welfchecksgrid;
+
+mp_params_preftechpricegov = containers.Map(<span class="string">'KeyType'</span>, <span class="string">'char'</span>, <span class="string">'ValueType'</span>, <span class="string">'any'</span>);
 mp_params_preftechpricegov(<span class="string">'gamma'</span>) = gamma;
 mp_params_preftechpricegov(<span class="string">'beta'</span>) = beta;
 mp_params_preftechpricegov(<span class="string">'theta'</span>) = theta;
@@ -437,6 +461,9 @@ mp_params_preftechpricegov(<span class="string">'g_n'</span>) = g_n;
 mp_params_preftechpricegov(<span class="string">'g_cons'</span>) = g_cons;
 mp_params_preftechpricegov(<span class="string">'a2'</span>) = a2;
 mp_params_preftechpricegov(<span class="string">'jret'</span>) = jret;
+mp_params_preftechpricegov(<span class="string">'Bequests'</span>) = Bequests;
+mp_params_preftechpricegov(<span class="string">'bequests_option'</span>) = bequests_option;
+mp_params_preftechpricegov(<span class="string">'throw_in_ocean'</span>) = throw_in_ocean;
 
 mp_params_statesgrid = containers.Map(<span class="string">'KeyType'</span>, <span class="string">'char'</span>, <span class="string">'ValueType'</span>, <span class="string">'any'</span>);
 mp_params_statesgrid(<span class="string">'agrid'</span>) = agrid;
@@ -471,7 +498,7 @@ mp_params_stat(<span class="string">'stat_distr_married'</span>) = stat_distr_ma
 mp_params_stat(<span class="string">'stat_distr_kids'</span>) = stat_distr_kids;
 mp_params_stat(<span class="string">'Pop'</span>) = Pop;
 mp_params_stat(<span class="string">'st_old_age_depend'</span>) = string(st_old_age_depend);
-</pre><h2 id="13">Combine Maps</h2><pre class="codeinput">mp_params = [mp_params_preftechpricegov; mp_params_statesgrid ; <span class="keyword">...</span>
+</pre><h2 id="14">Combine Maps</h2><pre class="codeinput">mp_params = [mp_params_preftechpricegov; mp_params_statesgrid ; <span class="keyword">...</span>
     mp_params_exotrans; mp_params_typelife; mp_params_intlen ; <span class="keyword">...</span>
     mp_params_stat];
 
@@ -479,7 +506,8 @@ mp_params(<span class="string">'mp_params_name'</span>) = string(st_param_group)
 
 <span class="comment">% MP_PARAMS = [MP_PARAMS_PREFTECHPRICE; MP_PARAMS_STATESGRID ; ...</span>
 <span class="comment">%     MP_PARAMS_EXOTRANS; MP_PARAMS_TYPELIFE; MP_PARAMS_INTLEN];</span>
-</pre><h2 id="14">Print</h2><pre class="codeinput"><span class="keyword">if</span> (bl_print_mp_params)
+</pre><h2 id="15">Print</h2><pre class="codeinput"><span class="keyword">if</span> (bl_print_mp_params)
+    ff_container_map_display(mp_params_covid_unemploy);
     ff_container_map_display(mp_params_preftechpricegov);
     ff_container_map_display(mp_params_intlen);
     ff_container_map_display(mp_params_statesgrid, it_row_n_keep, it_col_n_keep);
@@ -489,20 +517,35 @@ mp_params(<span class="string">'mp_params_name'</span>) = string(st_param_group)
 <span class="keyword">end</span>
 </pre><pre class="codeoutput">----------------------------------------
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+CONTAINER NAME: mp_params_covid_unemploy Scalars
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                        i    idx      value  
+                        _    ___    _________
+
+    TR                  1     1     0.0017225
+    b                   2     2             0
+    n_welfchecksgrid    3     3            51
+    xi                  4     4           0.5
+
+----------------------------------------
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 CONTAINER NAME: mp_params_preftechpricegov Scalars
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                            i    idx     value 
-                            _    ___    _______
+                            i     idx     value 
+                            __    ___    _______
 
-    a2                      1     1        1.55
-    beta                    2     2     0.97301
-    cons_allocation_rule    3     3           2
-    g_cons                  4     4     0.17576
-    g_n                     5     5        0.01
-    gamma                   6     6           2
-    jret                    7     7          49
-    r                       8     8        0.04
-    theta                   9     9     0.67656
+    Bequests                 1     1           0
+    a2                       2     2      1.5579
+    bequests_option          3     3           1
+    beta                     4     4     0.97309
+    cons_allocation_rule     5     5           2
+    g_cons                   6     6     0.17576
+    g_n                      7     7        0.01
+    gamma                    8     8           2
+    jret                     9     9          49
+    r                       10    10        0.04
+    theta                   11    11     0.67317
+    throw_in_ocean          12    12           1
 
 ----------------------------------------
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -514,8 +557,8 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     n_agrid          1     1      251 
     n_educgrid       2     2        2 
     n_eta_H_grid     3     3        9 
-    n_eta_S_grid     4     4        3 
-    n_etagrid        5     5       27 
+    n_eta_S_grid     4     4        5 
+    n_etagrid        5     5       45 
     n_jgrid          6     6       83 
     n_kidsgrid       7     7        5 
     n_marriedgrid    8     8        2 
@@ -528,8 +571,8 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                   _    ___    ____    _____    ____    ____    ___________    ___________    ______    ___________    _______    ______
 
     agrid         1     1      2       251     251      1            11970          47.69    54.279         1.1382          0       190
-    eta_H_grid    2     2      2        27      27      1      -2.2204e-16    -8.2239e-18    1.2544    -1.5253e+17    -1.9069    1.9069
-    eta_S_grid    3     3      2        27      27      1       4.4409e-16     1.6448e-17    1.2687     7.7136e+16    -1.5248    1.5248
+    eta_H_grid    2     2      2        45      45      1      -2.2204e-16    -4.9343e-18    1.2448    -2.5228e+17    -1.9069    1.9069
+    eta_S_grid    3     3      2        45      45      1       2.6645e-15     5.9212e-17     1.542     2.6042e+16    -2.1564    2.1564
 
 xxx TABLE:agrid xxxxxxxxxxxxxxxxxx
                 c1    
@@ -570,54 +613,54 @@ xxx TABLE:eta_H_grid xxxxxxxxxxxxxxxxxx
     r8       1.4302
     r9       1.9069
     r10     -1.9069
-    r18      1.9069
-    r19     -1.9069
-    r20     -1.4302
-    r21    -0.95346
-    r22    -0.47673
-    r23           0
-    r24     0.47673
-    r25     0.95346
-    r26      1.4302
-    r27      1.9069
+    r36      1.9069
+    r37     -1.9069
+    r38     -1.4302
+    r39    -0.95346
+    r40    -0.47673
+    r41           0
+    r42     0.47673
+    r43     0.95346
+    r44      1.4302
+    r45      1.9069
 
 xxx TABLE:eta_S_grid xxxxxxxxxxxxxxxxxx
              c1   
            _______
 
-    r1     -1.5248
-    r2     -1.5248
-    r3     -1.5248
-    r4     -1.5248
-    r5     -1.5248
-    r6     -1.5248
-    r7     -1.5248
-    r8     -1.5248
-    r9     -1.5248
-    r10          0
-    r18          0
-    r19     1.5248
-    r20     1.5248
-    r21     1.5248
-    r22     1.5248
-    r23     1.5248
-    r24     1.5248
-    r25     1.5248
-    r26     1.5248
-    r27     1.5248
+    r1     -2.1564
+    r2     -2.1564
+    r3     -2.1564
+    r4     -2.1564
+    r5     -2.1564
+    r6     -2.1564
+    r7     -2.1564
+    r8     -2.1564
+    r9     -2.1564
+    r10    -1.0782
+    r36     1.0782
+    r37     2.1564
+    r38     2.1564
+    r39     2.1564
+    r40     2.1564
+    r41     2.1564
+    r42     2.1564
+    r43     2.1564
+    r44     2.1564
+    r45     2.1564
 
 ----------------------------------------
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 CONTAINER NAME: mp_params_exotrans ND Array (Matrix etc)
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                i    idx    ndim    numel    rowN    colN     sum       mean        std      coefvari      min        max  
-                _    ___    ____    _____    ____    ____    _____    ________    _______    ________    _______    _______
+                i    idx    ndim    numel    rowN    colN     sum       mean        std       coefvari      min         max  
+                _    ___    ____    _____    ____    ____    _____    ________    ________    ________    ________    _______
 
-    pi_H_eta    1     1      2        81       9        9        9     0.11111    0.28968     2.6071       1e-16    0.92425
-    pi_S_eta    2     2      2         9       3        3        3     0.33333      0.125      0.375        0.25        0.5
-    pi_eta      3     3      2       729      27       27       27    0.037037    0.10269     2.7727     2.5e-17    0.46213
-    pi_kids     4     4      5      8300       5     1660     1660         0.2     0.2988      1.494           0          1
-    psi         5     5      2        83      83        1    78.16     0.94169     0.1312    0.13932           0    0.99937
+    pi_H_eta    1     1      2        81       9        9        9     0.11111     0.28968     2.6071        1e-16    0.92425
+    pi_S_eta    2     2      2        25       5        5        5         0.2     0.12369    0.61846       0.0625      0.375
+    pi_eta      3     3      2      2025      45       45       45    0.022222    0.068674     3.0903     6.25e-18    0.34659
+    pi_kids     4     4      5      8300       5     1660     1660         0.2      0.2988      1.494            0          1
+    psi         5     5      2        83      83        1    78.16     0.94169      0.1312    0.13932            0    0.99937
 
 xxx TABLE:pi_H_eta xxxxxxxxxxxxxxxxxx
               c1            c2            c3            c4            c6            c7            c8            c9    
@@ -634,37 +677,39 @@ xxx TABLE:pi_H_eta xxxxxxxxxxxxxxxxxx
     r9         1e-16      7.92e-14    2.7443e-11    5.4337e-09    5.3255e-05     0.0026361      0.074565       0.92274
 
 xxx TABLE:pi_S_eta xxxxxxxxxxxxxxxxxx
-           c1     c2      c3 
-          ____    ___    ____
+            c1       c2      c3       c4       c5  
+          ______    ____    _____    ____    ______
 
-    r1    0.25    0.5    0.25
-    r2    0.25    0.5    0.25
-    r3    0.25    0.5    0.25
+    r1    0.0625    0.25    0.375    0.25    0.0625
+    r2    0.0625    0.25    0.375    0.25    0.0625
+    r3    0.0625    0.25    0.375    0.25    0.0625
+    r4    0.0625    0.25    0.375    0.25    0.0625
+    r5    0.0625    0.25    0.375    0.25    0.0625
 
 xxx TABLE:pi_eta xxxxxxxxxxxxxxxxxx
-               c1            c2            c3            c4           c24           c25           c26           c27    
+               c1            c2            c3            c4           c42           c43           c44           c45    
            __________    __________    __________    __________    __________    __________    __________    __________
 
-    r1        0.23069      0.018641    0.00065904    1.3314e-05    1.3584e-09    6.8607e-12      1.98e-14       2.5e-17
-    r2      0.0023302       0.23085      0.016316    0.00049436    8.4057e-08    5.0942e-10    1.7152e-12     2.475e-15
-    r3     2.3537e-05     0.0046618       0.23097      0.013988    4.7557e-06    3.6025e-08    1.4555e-10    2.4503e-13
-    r4     2.3775e-07    7.0623e-05     0.0069941       0.23104    0.00023544    2.3778e-06    1.2008e-08    2.4257e-11
-    r5     2.4015e-09    9.5109e-07    0.00014126     0.0093264     0.0093264    0.00014126    9.5109e-07    2.4015e-09
-    r6     2.4257e-11    1.2008e-08    2.3778e-06    0.00023544       0.23104     0.0069941    7.0623e-05    2.3775e-07
-    r7     2.4503e-13    1.4555e-10    3.6025e-08    4.7557e-06      0.013988       0.23097     0.0046618    2.3537e-05
-    r8      2.475e-15    1.7152e-12    5.0942e-10    8.4057e-08    0.00049436      0.016316       0.23085     0.0023302
-    r9        2.5e-17      1.98e-14    6.8607e-12    1.3584e-09    1.3314e-05    0.00065904      0.018641       0.23069
-    r10       0.23069      0.018641    0.00065904    1.3314e-05    1.3584e-09    6.8607e-12      1.98e-14       2.5e-17
-    r18       2.5e-17      1.98e-14    6.8607e-12    1.3584e-09    1.3314e-05    0.00065904      0.018641       0.23069
-    r19       0.23069      0.018641    0.00065904    1.3314e-05    1.3584e-09    6.8607e-12      1.98e-14       2.5e-17
-    r20     0.0023302       0.23085      0.016316    0.00049436    8.4057e-08    5.0942e-10    1.7152e-12     2.475e-15
-    r21    2.3537e-05     0.0046618       0.23097      0.013988    4.7557e-06    3.6025e-08    1.4555e-10    2.4503e-13
-    r22    2.3775e-07    7.0623e-05     0.0069941       0.23104    0.00023544    2.3778e-06    1.2008e-08    2.4257e-11
-    r23    2.4015e-09    9.5109e-07    0.00014126     0.0093264     0.0093264    0.00014126    9.5109e-07    2.4015e-09
-    r24    2.4257e-11    1.2008e-08    2.3778e-06    0.00023544       0.23104     0.0069941    7.0623e-05    2.3775e-07
-    r25    2.4503e-13    1.4555e-10    3.6025e-08    4.7557e-06      0.013988       0.23097     0.0046618    2.3537e-05
-    r26     2.475e-15    1.7152e-12    5.0942e-10    8.4057e-08    0.00049436      0.016316       0.23085     0.0023302
-    r27       2.5e-17      1.98e-14    6.8607e-12    1.3584e-09    1.3314e-05    0.00065904      0.018641       0.23069
+    r1       0.057672     0.0046603    0.00016476    3.3285e-06     3.396e-10    1.7152e-12      4.95e-15      6.25e-18
+    r2     0.00058254      0.057713      0.004079    0.00012359    2.1014e-08    1.2736e-10     4.288e-13    6.1875e-16
+    r3     5.8843e-06     0.0011654      0.057742      0.003497    1.1889e-06    9.0063e-09    3.6387e-11    6.1256e-14
+    r4     5.9437e-08    1.7656e-05     0.0017485       0.05776    5.8861e-05    5.9446e-07     3.002e-09    6.0644e-12
+    r5     6.0037e-10    2.3777e-07    3.5315e-05     0.0023316     0.0023316    3.5315e-05    2.3777e-07    6.0037e-10
+    r6     6.0644e-12     3.002e-09    5.9446e-07    5.8861e-05       0.05776     0.0017485    1.7656e-05    5.9437e-08
+    r7     6.1256e-14    3.6387e-11    9.0063e-09    1.1889e-06      0.003497      0.057742     0.0011654    5.8843e-06
+    r8     6.1875e-16     4.288e-13    1.2736e-10    2.1014e-08    0.00012359      0.004079      0.057713    0.00058254
+    r9       6.25e-18      4.95e-15    1.7152e-12     3.396e-10    3.3285e-06    0.00016476     0.0046603      0.057672
+    r10      0.057672     0.0046603    0.00016476    3.3285e-06     3.396e-10    1.7152e-12      4.95e-15      6.25e-18
+    r36      6.25e-18      4.95e-15    1.7152e-12     3.396e-10    3.3285e-06    0.00016476     0.0046603      0.057672
+    r37      0.057672     0.0046603    0.00016476    3.3285e-06     3.396e-10    1.7152e-12      4.95e-15      6.25e-18
+    r38    0.00058254      0.057713      0.004079    0.00012359    2.1014e-08    1.2736e-10     4.288e-13    6.1875e-16
+    r39    5.8843e-06     0.0011654      0.057742      0.003497    1.1889e-06    9.0063e-09    3.6387e-11    6.1256e-14
+    r40    5.9437e-08    1.7656e-05     0.0017485       0.05776    5.8861e-05    5.9446e-07     3.002e-09    6.0644e-12
+    r41    6.0037e-10    2.3777e-07    3.5315e-05     0.0023316     0.0023316    3.5315e-05    2.3777e-07    6.0037e-10
+    r42    6.0644e-12     3.002e-09    5.9446e-07    5.8861e-05       0.05776     0.0017485    1.7656e-05    5.9437e-08
+    r43    6.1256e-14    3.6387e-11    9.0063e-09    1.1889e-06      0.003497      0.057742     0.0011654    5.8843e-06
+    r44    6.1875e-16     4.288e-13    1.2736e-10    2.1014e-08    0.00012359      0.004079      0.057713    0.00058254
+    r45      6.25e-18      4.95e-15    1.7152e-12     3.396e-10    3.3285e-06    0.00016476     0.0046603      0.057672
 
 xxx TABLE:pi_kids xxxxxxxxxxxxxxxxxx
               c1            c2            c3            c4        c1657    c1658    c1659    c1660
@@ -770,7 +815,7 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     Pop                   1     1      2       83       83       1     45.793     0.55172      0.3014    0.54629      0.0062787          1
     stat_distr_educ       2     3      2        2        1       2          1         0.5      0.2786     0.5572          0.303      0.697
-    stat_distr_eta        3     4      2       27        1      27          1    0.037037    0.037522     1.0131     0.00097656    0.13672
+    stat_distr_eta        3     4      2       45        1      45          1    0.022222    0.026746     1.2036     0.00024414    0.10254
     stat_distr_kids       4     5      3       20        2      10          4         0.2     0.29433     1.4717              0     0.9752
     stat_distr_married    5     6      2        4        2       2          2         0.5    0.073381    0.14676         0.4364     0.5636
 
@@ -806,10 +851,10 @@ xxx TABLE:stat_distr_educ xxxxxxxxxxxxxxxxxx
     r1    0.697    0.303
 
 xxx TABLE:stat_distr_eta xxxxxxxxxxxxxxxxxx
-              c1           c2           c3          c4         c24         c25          c26          c27    
-          __________    _________    ________    ________    ________    ________    _________    __________
+              c1           c2           c3           c4         c42          c43          c44          c45    
+          __________    _________    _________    ________    ________    _________    _________    __________
 
-    r1    0.00097656    0.0078125    0.027344    0.054687    0.054687    0.027344    0.0078125    0.00097656
+    r1    0.00024414    0.0019531    0.0068359    0.013672    0.013672    0.0068359    0.0019531    0.00024414
 
 xxx TABLE:stat_distr_kids xxxxxxxxxxxxxxxxxx
             c1         c2         c3         c4          c7          c8           c9         c10  
@@ -834,17 +879,18 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     st_old_age_depend    "1"    "2"    "Old-age dependency ratio (ratio of 65+/(18-64))=0.23426"
 
-</pre><h2 id="15">Return</h2><pre class="codeinput"><span class="keyword">if</span> (nargout==1)
+</pre><h2 id="16">Return</h2><pre class="codeinput"><span class="keyword">if</span> (nargout==1)
     varargout = cell(nargout,0);
     varargout{1} = mp_params;
 <span class="keyword">elseif</span> (nargout==6)
     varargout = cell(nargout,0);
     varargout{1} = mp_params;
-    varargout{2} = mp_params_preftechpricegov;
-    varargout{3} = mp_params_statesgrid;
-    varargout{4} = mp_params_exotrans;
-    varargout{5} = mp_params_typelife;
-    varargout{6} = mp_params_intlen;
+    varargout{2} = mp_params_covid_unemploy;
+    varargout{3} = mp_params_preftechpricegov;
+    varargout{4} = mp_params_statesgrid;
+    varargout{5} = mp_params_exotrans;
+    varargout{6} = mp_params_typelife;
+    varargout{7} = mp_params_intlen;
 <span class="keyword">end</span>
 </pre><pre class="codeinput"><span class="keyword">end</span>
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019b</a><br></p></div><!--
@@ -944,33 +990,47 @@ if(strcmp(st_param_group, "default_verydense"))
     jret     =49;
     n_agrid  =251; % No. of grid points for assets
     n_eta_H_grid=9; % 9; % No. of grid points for persistent labor productivity shocks
-    n_eta_S_grid=3; % 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
+    n_eta_S_grid=5; % 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
     n_kidsgrid=5; % No. of grid points for children (0 to 4+ children)
 elseif(strcmp(st_param_group, "default_dense"))
     n_jgrid  =83; % Age runs from 18 to 100 (a period is 2 years)
     jret     =49;
     n_agrid  =55; % No. of grid points for assets
     n_eta_H_grid=7; % 9; % No. of grid points for persistent labor productivity shocks
-    n_eta_S_grid=1; % 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
+    n_eta_S_grid=3; % 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
     n_kidsgrid=5; % No. of grid points for children (0 to 4+ children)
 elseif(strcmp(st_param_group, "default_base"))
     n_jgrid  =42; % Age runs from 18 to 100 (a period is 2 years)
     jret=25;
     n_agrid  =40; % No. of grid points for assets
-    n_eta_H_grid=7; % 9; % No. of grid points for persistent labor productivity shocks
-    n_eta_S_grid=1; % 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
-    n_kidsgrid=5; % No. of grid points for children (0 to 4+ children)
-elseif(strcmp(st_param_group, "default_tiny"))
-    n_jgrid   =7; % Age runs from 18 to 100 (5 periods of 16 years + terminal)
-    jret =5;
-    n_agrid   =10; % No. of grid points for assets
     n_eta_H_grid=5; % 9; % No. of grid points for persistent labor productivity shocks
-    n_eta_S_grid=1; % 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
+    n_eta_S_grid=3; % 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
+    n_kidsgrid=5; % No. of grid points for children (0 to 4+ children)
+elseif(strcmp(st_param_group, "default_small53"))
+    n_jgrid   =18; % Age runs from 18 to 100 (16 periods of 5 years + terminal)
+    jret      =13;
+    n_agrid   =25; % No. of grid points for assets
+    n_eta_H_grid=5; % 9; % No. of grid points for persistent labor productivity shocks
+    n_eta_S_grid=3; % 3; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
     n_kidsgrid=3; % No. of grid points for children (0 to 5+ children)
 elseif(strcmp(st_param_group, "default_small"))
     n_jgrid   =18; % Age runs from 18 to 100 (16 periods of 5 years + terminal)
     jret      =13;
     n_agrid   =25; % No. of grid points for assets
+    n_eta_H_grid=5; % 9; % No. of grid points for persistent labor productivity shocks
+    n_eta_S_grid=1; % 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
+    n_kidsgrid=3; % No. of grid points for children (0 to 5+ children)
+elseif(strcmp(st_param_group, "default_tiny53"))
+    n_jgrid   =7; % Age runs from 18 to 100 (5 periods of 16 years + terminal)
+    jret =5;
+    n_agrid   =10; % No. of grid points for assets
+    n_eta_H_grid=5; % 9; % No. of grid points for persistent labor productivity shocks
+    n_eta_S_grid=3; % 3; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
+    n_kidsgrid=3; % No. of grid points for children (0 to 5+ children)
+elseif(strcmp(st_param_group, "default_tiny"))
+    n_jgrid   =7; % Age runs from 18 to 100 (5 periods of 16 years + terminal)
+    jret =5;
+    n_agrid   =10; % No. of grid points for assets
     n_eta_H_grid=5; % 9; % No. of grid points for persistent labor productivity shocks
     n_eta_S_grid=1; % 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
     n_kidsgrid=3; % No. of grid points for children (0 to 5+ children)
@@ -984,6 +1044,11 @@ else
     it_yrs_per_period = (80/(n_jgrid-2));
 end
 
+%% Unemployment Parameters
+xi=0.5; % Proportional reduction in income due to unemployment (xi=0 refers to 0 labor income; xi=1 refers to no drop in labor income)
+b=0; % Unemployment insurance replacement rate (b=0 refers to no UI benefits; b=1 refers to 100 percent labor income replacement)
+TR=100/58056; % Value of a welfare check (can receive multiple checks). TO DO: Update with alternative values
+n_welfchecksgrid=51; % Number of welfare checks. 0 refers to 0 dollars; 51 refers to 5000 dollars
 
 %% Preferences, Technologies, etc.
 
@@ -994,13 +1059,13 @@ if(contains(st_param_group, "dense"))
     sigma_eta=0.018; % Variance of AR(1) productivity shocks
     g_n=0.01; % Annual population growth of 1.1 percent
     r=0.04; % Annual real interest rate of 4.0 percent from McGrattan and Prescott
-    beta=0.9730053; % Discount factor
+    beta=0.973087134454599; % 0.97068903873305; % Discount factor
 else
     rho_eta=0.98^it_yrs_per_period;
     sigma_eta=sqrt(0.018^2*sum((0.98.^(0:(it_yrs_per_period-1))).^2));
     g_n=(1.01^it_yrs_per_period)-1;
     r=(1.04^it_yrs_per_period)-1;
-    beta=0.9730053^it_yrs_per_period;
+    beta=0.973087134454599^it_yrs_per_period;
 end
 
 % Spousal Shocks
@@ -1020,7 +1085,7 @@ elseif bequests_option==1
     if throw_in_ocean==0
         a2=0.7027; % 1.57; % Initial guess for average income tax burden (if we use GS
     elseif throw_in_ocean==1
-        a2=1.55; % 1.55888288714205;
+        a2=1.55791088259089; % 1.55888288714205;
     end
 end
 
@@ -1029,7 +1094,7 @@ end
 g_cons=0.17575574; % Government consumption expenditures to GDP (BEA: Average 2015-2019)
 
 % Calibrated parameters
-theta=0.676557; % TFP parameter to normalize units such that average household income relative to GDP per capita equals (the latter is normalized to 1): Real GDP/capita in 2019: $58,056
+theta=0.67317057489809; % 0.691180561033545; % TFP parameter to normalize units such that average household income relative to GDP per capita equals (the latter is normalized to 1): Real GDP/capita in 2019: $58,056
 
 % Consumption allocation rule (1=uniform; 2=square root)
 cons_allocation_rule=2;
@@ -1272,8 +1337,8 @@ if (bl_sum_onebyone)
     aux=sum(stat_distr_kids(2,2,:));
     stat_distr_kids(2,2,:)=stat_distr_kids(2,2,:)/aux;
 else
-mt_aux = repmat(sum(stat_distr_kids, 3), ...
-    [1,1,size(stat_distr_kids,3)]);
+    mt_aux = repmat(sum(stat_distr_kids, 3), ...
+        [1,1,size(stat_distr_kids,3)]);
     stat_distr_kids(2,2,:)=stat_distr_kids./mt_aux;
 end
 
@@ -1292,6 +1357,12 @@ st_old_age_depend =[name,num2str(sum(Pop(jret:end))/sum(Pop(1:(jret-1))))];
 % disp(st_old_age_depend);
 
 %% Set Parameter Maps
+mp_params_covid_unemploy = containers.Map('KeyType', 'char', 'ValueType', 'any');
+mp_params_covid_unemploy('xi') = xi;
+mp_params_covid_unemploy('b') = b;
+mp_params_covid_unemploy('TR') = TR;
+mp_params_covid_unemploy('n_welfchecksgrid') = n_welfchecksgrid;
+
 mp_params_preftechpricegov = containers.Map('KeyType', 'char', 'ValueType', 'any');
 mp_params_preftechpricegov('gamma') = gamma;
 mp_params_preftechpricegov('beta') = beta;
@@ -1302,6 +1373,9 @@ mp_params_preftechpricegov('g_n') = g_n;
 mp_params_preftechpricegov('g_cons') = g_cons;
 mp_params_preftechpricegov('a2') = a2;
 mp_params_preftechpricegov('jret') = jret;
+mp_params_preftechpricegov('Bequests') = Bequests;
+mp_params_preftechpricegov('bequests_option') = bequests_option;
+mp_params_preftechpricegov('throw_in_ocean') = throw_in_ocean;
 
 mp_params_statesgrid = containers.Map('KeyType', 'char', 'ValueType', 'any');
 mp_params_statesgrid('agrid') = agrid;
@@ -1348,7 +1422,8 @@ mp_params('mp_params_name') = string(st_param_group);
 %     MP_PARAMS_EXOTRANS; MP_PARAMS_TYPELIFE; MP_PARAMS_INTLEN];
 
 %% Print
-if (bl_print_mp_params)
+if (bl_print_mp_params)    
+    ff_container_map_display(mp_params_covid_unemploy);
     ff_container_map_display(mp_params_preftechpricegov);
     ff_container_map_display(mp_params_intlen);
     ff_container_map_display(mp_params_statesgrid, it_row_n_keep, it_col_n_keep);
@@ -1363,12 +1438,13 @@ if (nargout==1)
     varargout{1} = mp_params;
 elseif (nargout==6)
     varargout = cell(nargout,0);
-    varargout{1} = mp_params;
-    varargout{2} = mp_params_preftechpricegov;
-    varargout{3} = mp_params_statesgrid;
-    varargout{4} = mp_params_exotrans;
-    varargout{5} = mp_params_typelife;
-    varargout{6} = mp_params_intlen;
+    varargout{1} = mp_params;    
+    varargout{2} = mp_params_covid_unemploy;
+    varargout{3} = mp_params_preftechpricegov;
+    varargout{4} = mp_params_statesgrid;
+    varargout{5} = mp_params_exotrans;
+    varargout{6} = mp_params_typelife;
+    varargout{7} = mp_params_intlen;
 end
 
 end

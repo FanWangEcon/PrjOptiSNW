@@ -147,6 +147,11 @@ else
     it_yrs_per_period = (80/(n_jgrid-2));
 end
 
+%% Unemployment Parameters
+xi=0.5; % Proportional reduction in income due to unemployment (xi=0 refers to 0 labor income; xi=1 refers to no drop in labor income)
+b=0; % Unemployment insurance replacement rate (b=0 refers to no UI benefits; b=1 refers to 100 percent labor income replacement)
+TR=100/58056; % Value of a welfare check (can receive multiple checks). TO DO: Update with alternative values
+n_welfchecksgrid=51; % Number of welfare checks. 0 refers to 0 dollars; 51 refers to 5000 dollars
 
 %% Preferences, Technologies, etc.
 
@@ -435,8 +440,8 @@ if (bl_sum_onebyone)
     aux=sum(stat_distr_kids(2,2,:));
     stat_distr_kids(2,2,:)=stat_distr_kids(2,2,:)/aux;
 else
-mt_aux = repmat(sum(stat_distr_kids, 3), ...
-    [1,1,size(stat_distr_kids,3)]);
+    mt_aux = repmat(sum(stat_distr_kids, 3), ...
+        [1,1,size(stat_distr_kids,3)]);
     stat_distr_kids(2,2,:)=stat_distr_kids./mt_aux;
 end
 
@@ -455,6 +460,12 @@ st_old_age_depend =[name,num2str(sum(Pop(jret:end))/sum(Pop(1:(jret-1))))];
 % disp(st_old_age_depend);
 
 %% Set Parameter Maps
+mp_params_covid_unemploy = containers.Map('KeyType', 'char', 'ValueType', 'any');
+mp_params_covid_unemploy('xi') = xi;
+mp_params_covid_unemploy('b') = b;
+mp_params_covid_unemploy('TR') = TR;
+mp_params_covid_unemploy('n_welfchecksgrid') = n_welfchecksgrid;
+
 mp_params_preftechpricegov = containers.Map('KeyType', 'char', 'ValueType', 'any');
 mp_params_preftechpricegov('gamma') = gamma;
 mp_params_preftechpricegov('beta') = beta;
@@ -504,8 +515,13 @@ mp_params_stat('Pop') = Pop;
 mp_params_stat('st_old_age_depend') = string(st_old_age_depend);
 
 %% Combine Maps
-mp_params = [mp_params_preftechpricegov; mp_params_statesgrid ; ...
-    mp_params_exotrans; mp_params_typelife; mp_params_intlen ; ...
+mp_params = [...
+    mp_params_covid_unemploy; ...
+    mp_params_preftechpricegov; ...
+    mp_params_statesgrid ; ...
+    mp_params_exotrans; ...
+    mp_params_typelife; ...
+    mp_params_intlen ; ...
     mp_params_stat];
 
 mp_params('mp_params_name') = string(st_param_group);
@@ -514,7 +530,8 @@ mp_params('mp_params_name') = string(st_param_group);
 %     MP_PARAMS_EXOTRANS; MP_PARAMS_TYPELIFE; MP_PARAMS_INTLEN];
 
 %% Print
-if (bl_print_mp_params)
+if (bl_print_mp_params)    
+    ff_container_map_display(mp_params_covid_unemploy);
     ff_container_map_display(mp_params_preftechpricegov);
     ff_container_map_display(mp_params_intlen);
     ff_container_map_display(mp_params_statesgrid, it_row_n_keep, it_col_n_keep);
@@ -529,12 +546,13 @@ if (nargout==1)
     varargout{1} = mp_params;
 elseif (nargout==6)
     varargout = cell(nargout,0);
-    varargout{1} = mp_params;
-    varargout{2} = mp_params_preftechpricegov;
-    varargout{3} = mp_params_statesgrid;
-    varargout{4} = mp_params_exotrans;
-    varargout{5} = mp_params_typelife;
-    varargout{6} = mp_params_intlen;
+    varargout{1} = mp_params;    
+    varargout{2} = mp_params_covid_unemploy;
+    varargout{3} = mp_params_preftechpricegov;
+    varargout{4} = mp_params_statesgrid;
+    varargout{5} = mp_params_exotrans;
+    varargout{6} = mp_params_typelife;
+    varargout{7} = mp_params_intlen;
 end
 
 end

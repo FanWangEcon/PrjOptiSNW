@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>SNW_VFI_MAIN Solves Policy/Value Function SNW (Bisection Vectorized)</title><meta name="generator" content="MATLAB 9.7"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-07-03"><meta name="DC.source" content="snw_vfi_main_bisec_vec.m"><style type="text/css">
+      --><title>SNW_VFI_MAIN Solves Policy/Value Function SNW (Bisection Vectorized)</title><meta name="generator" content="MATLAB 9.7"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-07-04"><meta name="DC.source" content="snw_vfi_main_bisec_vec.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -78,7 +78,13 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
   * SS Social Security</pre><pre>  [V_VFI,AP_VFI,CONS_VFI,EXITFLAG_VFI] = SNW_VFI_MAIN(MP_PARAMS) invoke
   model with externally set parameter map MP_PARAMS.</pre><pre>  [V_VFI,AP_VFI,CONS_VFI,EXITFLAG_VFI] = SNW_VFI_MAIN(MP_PARAMS,
   MP_CONTROLS) invoke model with externally set parameter map MP_PARAMS
-  as well as control mpa MP_CONTROLS.</pre><pre>  See also SNWX_VFI_MAIN, SNW_MP_CONTROL, SNW_MP_PARAM</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#3">Default and Parse</a></li><li><a href="#4">Reset All globals</a></li><li><a href="#5">Parse Model Parameters</a></li><li><a href="#6">Parse Model Controls</a></li><li><a href="#7">Define Functions</a></li><li><a href="#8">Timing and Profiling Start</a></li><li><a href="#9">Solve optimization problem</a></li><li><a href="#10">Timing and Profiling End</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> [V_VFI,ap_VFI,cons_VFI,exitflag_VFI]=snw_vfi_main_bisec_vec(varargin)
+  as well as control mpa MP_CONTROLS.</pre><pre>  [V_VFI,AP_VFI,CONS_VFI,EXITFLAG_VFI] = SNW_VFI_MAIN(MP_PARAMS,
+  MP_CONTROLS, V_VFI_FIX) provides existing value function. Suppose
+  there is sudden shock, but future value is preserved after one period.
+  So now we have new value that is specific to this period, that is the
+  output V_VFI, the input V_VFI_FIX is the value for all future periods.
+  When this program is called with V_VFI_FIX, the resource equation will
+  use the unemployment shock information.</pre><pre>  See also SNWX_VFI_MAIN, SNW_MP_CONTROL, SNW_MP_PARAM</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#3">Default and Parse</a></li><li><a href="#4">Reset All globals</a></li><li><a href="#5">Parse Model Parameters</a></li><li><a href="#6">Parse Model Controls</a></li><li><a href="#7">Define Functions</a></li><li><a href="#8">Timing and Profiling Start</a></li><li><a href="#9">Solve optimization problem</a></li><li><a href="#10">Timing and Profiling End</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> [V_VFI,ap_VFI,cons_VFI,exitflag_VFI]=snw_vfi_main_bisec_vec(varargin)
 </pre><h2 id="3">Default and Parse</h2><pre class="codeinput"><span class="keyword">if</span> (~isempty(varargin))
 
     <span class="keyword">if</span> (length(varargin)==1)
@@ -86,11 +92,13 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
         mp_controls = snw_mp_control(<span class="string">'default_base'</span>);
     <span class="keyword">elseif</span> (length(varargin)==2)
         [mp_params, mp_controls] = varargin{:};
+    <span class="keyword">elseif</span> (length(varargin)==3)
+        [mp_params, mp_controls, V_VFI_POSTSHOCK] = varargin{:};
     <span class="keyword">end</span>
 
 <span class="keyword">else</span>
 
-    mp_params = snw_mp_param(<span class="string">'default_tiny'</span>);
+    mp_params = snw_mp_param(<span class="string">'default_small'</span>);
     mp_controls = snw_mp_control(<span class="string">'default_test'</span>);
 
 <span class="keyword">end</span>
@@ -121,16 +129,13 @@ params_group = values(mp_params, {<span class="string">'epsilon'</span>, <span c
 params_group = values(mp_params, <span class="keyword">...</span>
     {<span class="string">'n_jgrid'</span>, <span class="string">'n_agrid'</span>, <span class="string">'n_etagrid'</span>, <span class="string">'n_educgrid'</span>, <span class="string">'n_marriedgrid'</span>, <span class="string">'n_kidsgrid'</span>});
 [n_jgrid, n_agrid, n_etagrid, n_educgrid, n_marriedgrid, n_kidsgrid] = params_group{:};
-</pre><h2 id="6">Parse Model Controls</h2><p>Minimizer Controls</p><pre class="codeinput">params_group = values(mp_controls, <span class="keyword">...</span>
-    {<span class="string">'A_aux'</span>, <span class="string">'B_aux'</span>, <span class="keyword">...</span>
-     <span class="string">'Aeq'</span>, <span class="string">'Beq'</span>,<span class="keyword">...</span>
-     <span class="string">'nonlcon'</span>, <span class="string">'options'</span>, <span class="string">'options2'</span>});
-[A_aux, B_aux, <span class="keyword">...</span>
-    Aeq, Beq, <span class="keyword">...</span>
-    nonlcon, options, options2] = params_group{:};
 
-<span class="comment">% Profiling Controls</span>
-params_group = values(mp_controls, {<span class="string">'bl_timer'</span>});
+<span class="comment">% unemployment parameters under covid</span>
+<span class="keyword">if</span> (length(varargin)==3)
+    params_group = values(mp_params, {<span class="string">'xi'</span>,<span class="string">'b'</span>});
+    [xi, b] = params_group{:};
+<span class="keyword">end</span>
+</pre><h2 id="6">Parse Model Controls</h2><p>Profiling Controls</p><pre class="codeinput">params_group = values(mp_controls, {<span class="string">'bl_timer'</span>});
 [bl_timer] = params_group{:};
 
 <span class="comment">% Display Controls</span>
@@ -184,7 +189,12 @@ exitflag_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
                     <span class="keyword">for</span> eta=1:n_etagrid <span class="comment">% Productivity</span>
 
                         <span class="comment">% Resources</span>
-                        [inc,earn]=individual_income(j,a,eta,educ);
+                        <span class="keyword">if</span> (length(varargin)==3)
+                            <span class="comment">% one period unemployed shock</span>
+                            [inc,earn]=individual_income(j,a,eta,educ,xi,b);
+                        <span class="keyword">else</span>
+                            [inc,earn]=individual_income(j,a,eta,educ);
+                        <span class="keyword">end</span>
                         spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
                         resources = (1+r)*(agrid(a)+Bequests*(bequests_option-1)) <span class="keyword">...</span>
                                     + epsilon(j,educ)*theta*exp(eta_H_grid(eta)) <span class="keyword">...</span>
@@ -220,6 +230,12 @@ exitflag_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 
     <span class="keyword">if</span> (j~=n_jgrid)
 
+        <span class="keyword">if</span> (length(varargin)==3)
+            V_VFI_FUTURE = V_VFI_POSTSHOCK;
+        <span class="keyword">else</span>
+            V_VFI_FUTURE = V_VFI;
+        <span class="keyword">end</span>
+
         <span class="keyword">for</span> eta=1:n_etagrid <span class="comment">% Productivity</span>
             <span class="keyword">for</span> educ=1:n_educgrid <span class="comment">% Educational level</span>
                 <span class="keyword">for</span> married=1:n_marriedgrid <span class="comment">% Marital status</span>
@@ -231,7 +247,7 @@ exitflag_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
                                     mn_ev_ap_z(a,eta,educ,married,kids) = <span class="keyword">...</span>
                                         mn_ev_ap_z(a,eta,educ,married,kids) <span class="keyword">...</span>
                                         + psi(j)*pi_eta(eta,etap)*pi_kids(kids,kidsp,j,educ,married)<span class="keyword">...</span>
-                                          *V_VFI(j+1,a,etap,educ,married,kidsp);
+                                          *V_VFI_FUTURE(j+1,a,etap,educ,married,kidsp);
                                 <span class="keyword">end</span>
                             <span class="keyword">end</span>
 
@@ -315,7 +331,9 @@ exitflag_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
                                     disp([j,a,eta,educ,married,kids,cons_VFI(j,a,eta,educ,married,kids)])
                                     error(<span class="string">'Non-positive consumption'</span>)
                                 <span class="keyword">end</span>
+
                                 V_VFI(j,a,eta,educ,married,kids)=utility(cons_VFI(j,a,eta,educ,married,kids),married,kids);
+
                             <span class="keyword">end</span>
                         <span class="keyword">end</span>
                     <span class="keyword">end</span>
@@ -330,24 +348,43 @@ exitflag_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
     <span class="keyword">end</span>
 
 <span class="keyword">end</span>
-</pre><pre class="codeoutput">SNW_VFI_MAIN: Finished Age Group:7 of 7
-SNW_VFI_MAIN: Finished Age Group:6 of 7
-SNW_VFI_MAIN: Finished Age Group:5 of 7
-SNW_VFI_MAIN: Finished Age Group:4 of 7
-SNW_VFI_MAIN: Finished Age Group:3 of 7
-SNW_VFI_MAIN: Finished Age Group:2 of 7
-SNW_VFI_MAIN: Finished Age Group:1 of 7
+</pre><pre class="codeoutput">SNW_VFI_MAIN: Finished Age Group:18 of 18
+SNW_VFI_MAIN: Finished Age Group:17 of 18
+SNW_VFI_MAIN: Finished Age Group:16 of 18
+SNW_VFI_MAIN: Finished Age Group:15 of 18
+SNW_VFI_MAIN: Finished Age Group:14 of 18
+SNW_VFI_MAIN: Finished Age Group:13 of 18
+SNW_VFI_MAIN: Finished Age Group:12 of 18
+SNW_VFI_MAIN: Finished Age Group:11 of 18
+SNW_VFI_MAIN: Finished Age Group:10 of 18
+SNW_VFI_MAIN: Finished Age Group:9 of 18
+SNW_VFI_MAIN: Finished Age Group:8 of 18
+SNW_VFI_MAIN: Finished Age Group:7 of 18
+SNW_VFI_MAIN: Finished Age Group:6 of 18
+SNW_VFI_MAIN: Finished Age Group:5 of 18
+SNW_VFI_MAIN: Finished Age Group:4 of 18
+SNW_VFI_MAIN: Finished Age Group:3 of 18
+SNW_VFI_MAIN: Finished Age Group:2 of 18
+SNW_VFI_MAIN: Finished Age Group:1 of 18
 </pre><h2 id="10">Timing and Profiling End</h2><pre class="codeinput"><span class="keyword">if</span> (bl_timer)
     toc;
-    st_complete_vfi = strjoin(<span class="keyword">...</span>
-        [<span class="string">"Completed SNW_VFI_MAIN"</span>, <span class="keyword">...</span>
-         [<span class="string">'SNW_MP_PARAM='</span> mp_params(<span class="string">'mp_params_name'</span>)], <span class="keyword">...</span>
-         [<span class="string">'SNW_MP_CONTROL='</span> mp_controls(<span class="string">'mp_params_name'</span>)] <span class="keyword">...</span>
-        ], <span class="string">";"</span>);
+    <span class="keyword">if</span> (length(varargin)==3)
+        st_complete_vfi = strjoin(<span class="keyword">...</span>
+            [<span class="string">"Completed SNW_VFI_MAIN 1 PERIOD UNEMP SHK"</span>, <span class="keyword">...</span>
+             [<span class="string">'SNW_MP_PARAM='</span> char(mp_params(<span class="string">'mp_params_name'</span>))], <span class="keyword">...</span>
+             [<span class="string">'SNW_MP_CONTROL='</span> char(mp_controls(<span class="string">'mp_params_name'</span>))] <span class="keyword">...</span>
+            ], <span class="string">";"</span>);
+    <span class="keyword">else</span>
+        st_complete_vfi = strjoin(<span class="keyword">...</span>
+            [<span class="string">"Completed SNW_VFI_MAIN"</span>, <span class="keyword">...</span>
+             [<span class="string">'SNW_MP_PARAM='</span> char(mp_params(<span class="string">'mp_params_name'</span>))], <span class="keyword">...</span>
+             [<span class="string">'SNW_MP_CONTROL='</span> char(mp_controls(<span class="string">'mp_params_name'</span>))] <span class="keyword">...</span>
+            ], <span class="string">";"</span>);
+    <span class="keyword">end</span>
     disp(st_complete_vfi);
 <span class="keyword">end</span>
-</pre><pre class="codeoutput">Elapsed time is 0.327235 seconds.
-Completed SNW_VFI_MAIN;SNW_MP_PARAM=;default_tiny;SNW_MP_CONTROL=;default_test
+</pre><pre class="codeoutput">Elapsed time is 1.045049 seconds.
+Completed SNW_VFI_MAIN;SNW_MP_PARAM=default_small;SNW_MP_CONTROL=default_test
 </pre><pre class="codeinput"><span class="keyword">end</span>
 
 <span class="comment">% Utility Maximization First Order Conditions</span>
@@ -411,1386 +448,6 @@ ar_ev_aprime_z = ar_ev_ap_lower_idx + (ar_aprime - ar_a(ar_it_ap_near_lower_idx)
 <span class="comment">% overall utility at choice</span>
 ar_val = f_U(ar_u_of_ap, ar_ev_aprime_z);
 <span class="keyword">end</span>
-</pre><pre class="codeoutput">
-ans(:,:,1,1,1,1) =
-
-  Columns 1 through 7
-
-   -2.2268   -0.9982    1.2069    2.0176    2.2842    2.3890    2.4370
-   -1.7994   -0.7548    1.1684    1.8952    2.1348    2.2291    2.2722
-   -1.6677   -0.6570    1.0668    1.7115    1.9211    2.0032    2.0405
-   -1.8995   -0.7178    0.8987    1.4522    1.6230    1.6889    1.7182
-   -2.1624   -0.7498    0.7189    1.1479    1.2651    1.3073    1.3247
-   -1.6349   -0.2404    0.7189    0.9153    0.9769    0.9980    1.0076
-   -1.6013   -0.2067    0.7419    0.9171    0.9642    0.9815    0.9893
-
-  Columns 8 through 10
-
-    2.4618    2.4758    2.4845
-    2.2943    2.3068    2.3145
-    2.0595    2.0702    2.0766
-    1.7328    1.7409    1.7458
-    1.3336    1.3386    1.3417
-    1.0126    1.0153    1.0170
-    0.9932    0.9955    0.9968
-
-
-ans(:,:,2,1,1,1) =
-
-  Columns 1 through 7
-
-   -1.4572   -0.5774    1.2698    2.0270    2.2862    2.3895    2.4372
-   -1.1017   -0.3638    1.2320    1.9049    2.1368    2.2297    2.2724
-   -1.0378   -0.3209    1.1250    1.7205    1.9229    2.0037    2.0406
-   -1.3701   -0.4839    0.9376    1.4581    1.6241    1.6892    1.7183
-   -2.1624   -0.7498    0.7189    1.1479    1.2651    1.3073    1.3247
-   -1.6349   -0.2404    0.7189    0.9153    0.9769    0.9980    1.0076
-   -1.6013   -0.2067    0.7419    0.9171    0.9642    0.9815    0.9893
-
-  Columns 8 through 10
-
-    2.4618    2.4758    2.4845
-    2.2944    2.3069    2.3145
-    2.0595    2.0702    2.0766
-    1.7328    1.7409    1.7458
-    1.3336    1.3386    1.3417
-    1.0126    1.0153    1.0170
-    0.9932    0.9955    0.9968
-
-
-ans(:,:,3,1,1,1) =
-
-  Columns 1 through 7
-
-   -0.7736   -0.1629    1.3440    2.0387    2.2887    2.3902    2.4374
-   -0.4867    0.0082    1.3064    1.9172    2.1395    2.2304    2.2726
-   -0.4542   -0.0088    1.1929    1.7321    1.9254    2.0044    2.0409
-   -0.7538   -0.2672    0.9838    1.4659    1.6257    1.6895    1.7184
-   -2.1624   -0.7498    0.7189    1.1479    1.2651    1.3073    1.3247
-   -1.6349   -0.2404    0.7189    0.9153    0.9769    0.9980    1.0076
-   -1.6013   -0.2067    0.7419    0.9171    0.9642    0.9815    0.9893
-
-  Columns 8 through 10
-
-    2.4619    2.4758    2.4846
-    2.2945    2.3069    2.3145
-    2.0596    2.0702    2.0767
-    1.7329    1.7410    1.7458
-    1.3336    1.3386    1.3417
-    1.0126    1.0153    1.0170
-    0.9932    0.9955    0.9968
-
-
-ans(:,:,4,1,1,1) =
-
-  Columns 1 through 7
-
-   -0.1870    0.2260    1.4290    2.0535    2.2920    2.3912    2.4377
-    0.0305    0.3487    1.3904    1.9327    2.1430    2.2314    2.2730
-    0.0223    0.2704    1.2686    1.7469    1.9288    2.0053    2.0412
-   -0.3340   -0.0766    1.0361    1.4760    1.6280    1.6900    1.7185
-   -2.1624   -0.7498    0.7189    1.1479    1.2651    1.3073    1.3247
-   -1.6349   -0.2404    0.7189    0.9153    0.9769    0.9980    1.0076
-   -1.6013   -0.2067    0.7419    0.9171    0.9642    0.9815    0.9893
-
-  Columns 8 through 10
-
-    2.4620    2.4759    2.4846
-    2.2946    2.3070    2.3145
-    2.0597    2.0703    2.0767
-    1.7329    1.7410    1.7458
-    1.3336    1.3386    1.3417
-    1.0126    1.0153    1.0170
-    0.9932    0.9955    0.9968
-
-
-ans(:,:,5,1,1,1) =
-
-  Columns 1 through 7
-
-    0.3089    0.5782    1.5232    2.0718    2.2962    2.3924    2.4382
-    0.4648    0.6565    1.4813    1.9518    2.1475    2.2327    2.2734
-    0.3948    0.5485    1.3488    1.7650    1.9333    2.0065    2.0416
-   -0.0488    0.1471    1.0917    1.4887    1.6312    1.6908    1.7187
-   -2.1624   -0.7498    0.7189    1.1479    1.2651    1.3073    1.3247
-   -1.6349   -0.2404    0.7189    0.9153    0.9769    0.9980    1.0076
-   -1.6013   -0.2067    0.7419    0.9171    0.9642    0.9815    0.9893
-
-  Columns 8 through 10
-
-    2.4622    2.4760    2.4846
-    2.2948    2.3071    2.3146
-    2.0599    2.0703    2.0767
-    1.7330    1.7410    1.7459
-    1.3336    1.3386    1.3417
-    1.0126    1.0153    1.0170
-    0.9932    0.9955    0.9968
-
-
-ans(:,:,1,2,1,1) =
-
-  Columns 1 through 7
-
-   -1.7825   -0.6745    1.2514    2.0237    2.2850    2.3890    2.4369
-   -1.0725   -0.3412    1.2355    1.9052    2.1367    2.2295    2.2723
-   -0.9392   -0.2624    1.1322    1.7213    1.9230    2.0037    2.0406
-   -1.3154   -0.4349    0.9407    1.4581    1.6241    1.6892    1.7183
-   -1.8353   -0.6202    0.7326    1.1494    1.2653    1.3074    1.3247
-   -1.3873   -0.1820    0.7228    0.9157    0.9770    0.9980    1.0076
-   -1.3587   -0.1534    0.7443    0.9173    0.9643    0.9815    0.9893
-
-  Columns 8 through 10
-
-    2.4616    2.4757    2.4845
-    2.2943    2.3068    2.3145
-    2.0595    2.0702    2.0766
-    1.7328    1.7409    1.7458
-    1.3336    1.3386    1.3417
-    1.0126    1.0153    1.0170
-    0.9932    0.9955    0.9968
-
-
-ans(:,:,2,2,1,1) =
-
-  Columns 1 through 7
-
-   -1.0539   -0.2773    1.3190    2.0344    2.2873    2.3896    2.4371
-   -0.4581    0.0270    1.3088    1.9174    2.1394    2.2303    2.2725
-   -0.3822    0.0494    1.2004    1.7330    1.9256    2.0044    2.0408
-   -0.7350   -0.2159    0.9862    1.4657    1.6256    1.6895    1.7184
-   -1.8353   -0.6202    0.7326    1.1494    1.2653    1.3074    1.3247
-   -1.3873   -0.1820    0.7228    0.9157    0.9770    0.9980    1.0076
-   -1.3587   -0.1534    0.7443    0.9173    0.9643    0.9815    0.9893
-
-  Columns 8 through 10
-
-    2.4617    2.4757    2.4845
-    2.2944    2.3069    2.3145
-    2.0596    2.0702    2.0766
-    1.7329    1.7410    1.7458
-    1.3336    1.3386    1.3417
-    1.0126    1.0153    1.0170
-    0.9932    0.9955    0.9968
-
-
-ans(:,:,3,2,1,1) =
-
-  Columns 1 through 7
-
-   -0.4144    0.1040    1.3973    2.0476    2.2902    2.3904    2.4374
-    0.0598    0.3707    1.3917    1.9327    2.1428    2.2312    2.2729
-    0.0766    0.3291    1.2763    1.7479    1.9290    2.0053    2.0411
-   -0.2973   -0.0229    1.0380    1.4756    1.6279    1.6900    1.7185
-   -1.8353   -0.6202    0.7326    1.1494    1.2653    1.3074    1.3247
-   -1.3873   -0.1820    0.7228    0.9157    0.9770    0.9980    1.0076
-   -1.3587   -0.1534    0.7443    0.9173    0.9643    0.9815    0.9893
-
-  Columns 8 through 10
-
-    2.4618    2.4757    2.4845
-    2.2946    2.3069    2.3145
-    2.0597    2.0703    2.0767
-    1.7329    1.7410    1.7458
-    1.3336    1.3386    1.3417
-    1.0126    1.0153    1.0170
-    0.9932    0.9955    0.9968
-
-
-ans(:,:,4,2,1,1) =
-
-  Columns 1 through 7
-
-    0.1300    0.4617    1.4857    2.0640    2.2939    2.3915    2.4377
-    0.4872    0.6848    1.4819    1.9515    2.1473    2.2325    2.2733
-    0.4487    0.5939    1.3567    1.7661    1.9334    2.0065    2.0416
-   -0.0040    0.1766    1.0934    1.4880    1.6309    1.6907    1.7187
-   -1.8353   -0.6202    0.7326    1.1494    1.2653    1.3074    1.3247
-   -1.3873   -0.1820    0.7228    0.9157    0.9770    0.9980    1.0076
-   -1.3587   -0.1534    0.7443    0.9173    0.9643    0.9815    0.9893
-
-  Columns 8 through 10
-
-    2.4620    2.4758    2.4845
-    2.2947    2.3070    2.3145
-    2.0599    2.0703    2.0767
-    1.7330    1.7410    1.7459
-    1.3336    1.3386    1.3417
-    1.0126    1.0153    1.0170
-    0.9932    0.9955    0.9968
-
-
-ans(:,:,5,2,1,1) =
-
-  Columns 1 through 7
-
-    0.5853    0.7933    1.5821    2.0840    2.2987    2.3929    2.4382
-    0.8511    0.9747    1.5755    1.9739    2.1530    2.2342    2.2739
-    0.7747    0.8939    1.4374    1.7876    1.9392    2.0082    2.0421
-    0.2802    0.4604    1.1491    1.5030    1.6349    1.6917    1.7190
-   -1.8353   -0.6202    0.7326    1.1494    1.2653    1.3074    1.3247
-   -1.3873   -0.1820    0.7228    0.9157    0.9770    0.9980    1.0076
-   -1.3587   -0.1534    0.7443    0.9173    0.9643    0.9815    0.9893
-
-  Columns 8 through 10
-
-    2.4622    2.4759    2.4846
-    2.2950    2.3071    2.3146
-    2.0601    2.0704    2.0768
-    1.7331    1.7410    1.7459
-    1.3336    1.3386    1.3417
-    1.0126    1.0153    1.0170
-    0.9932    0.9955    0.9968
-
-
-ans(:,:,1,1,2,1) =
-
-  Columns 1 through 7
-
-   -2.5304   -1.4493    0.8227    1.8410    2.1994    2.3435    2.4101
-   -1.9225   -1.0612    0.8384    1.7374    2.0585    2.1880    2.2479
-   -1.5080   -0.7973    0.8004    1.5775    1.8559    1.9681    2.0198
-   -1.2548   -0.5967    0.7135    1.3501    1.5733    1.6624    1.7026
-   -0.7781   -0.2668    0.6557    1.0919    1.2358    1.2911    1.3150
-   -0.6079   -0.0824    0.6620    0.8830    0.9604    0.9889    1.0023
-   -0.6207   -0.0808    0.6740    0.8870    0.9502    0.9741    0.9849
-
-  Columns 8 through 10
-
-    2.4446    2.4642    2.4765
-    2.2789    2.2964    2.3071
-    2.0463    2.0613    2.0704
-    1.7229    1.7343    1.7411
-    1.3273    1.3343    1.3387
-    1.0092    1.0130    1.0154
-    0.9905    0.9936    0.9955
-
-
-ans(:,:,2,1,2,1) =
-
-  Columns 1 through 7
-
-   -1.8420   -1.0310    0.9030    1.8539    2.2022    2.3442    2.4103
-   -1.3189   -0.6816    0.9189    1.7508    2.0613    2.1888    2.2482
-   -1.0097   -0.4714    0.8732    1.5899    1.8584    1.9688    2.0200
-   -0.9168   -0.4012    0.7614    1.3582    1.5748    1.6627    1.7027
-   -0.7781   -0.2668    0.6557    1.0919    1.2358    1.2911    1.3150
-   -0.6079   -0.0824    0.6620    0.8830    0.9604    0.9889    1.0023
-   -0.6207   -0.0808    0.6740    0.8870    0.9502    0.9741    0.9849
-
-  Columns 8 through 10
-
-    2.4447    2.4643    2.4765
-    2.2790    2.2965    2.3072
-    2.0464    2.0613    2.0704
-    1.7229    1.7343    1.7411
-    1.3273    1.3343    1.3387
-    1.0092    1.0130    1.0154
-    0.9905    0.9936    0.9955
-
-
-ans(:,:,3,1,2,1) =
-
-  Columns 1 through 7
-
-   -1.1919   -0.6029    0.9972    1.8701    2.2057    2.3452    2.4107
-   -0.7566   -0.2938    1.0128    1.7677    2.0650    2.1899    2.2485
-   -0.5491   -0.1427    0.9583    1.6058    1.8619    1.9698    2.0203
-   -0.6051   -0.1759    0.8190    1.3689    1.5768    1.6632    1.7028
-   -0.7781   -0.2668    0.6557    1.0919    1.2358    1.2911    1.3150
-   -0.6079   -0.0824    0.6620    0.8830    0.9604    0.9889    1.0023
-   -0.6207   -0.0808    0.6740    0.8870    0.9502    0.9741    0.9849
-
-  Columns 8 through 10
-
-    2.4449    2.4643    2.4765
-    2.2791    2.2965    2.3072
-    2.0465    2.0614    2.0704
-    1.7230    1.7343    1.7411
-    1.3273    1.3343    1.3387
-    1.0092    1.0130    1.0154
-    0.9905    0.9936    0.9955
-
-
-ans(:,:,4,1,2,1) =
-
-  Columns 1 through 7
-
-   -0.5983   -0.1786    1.1052    1.8903    2.2103    2.3465    2.4111
-   -0.2446    0.0790    1.1189    1.7889    2.0699    2.1912    2.2490
-   -0.1037    0.1629    1.0534    1.6258    1.8665    1.9710    2.0207
-   -0.2388    0.0321    0.8842    1.3826    1.5797    1.6638    1.7030
-   -0.7781   -0.2668    0.6557    1.0919    1.2358    1.2911    1.3150
-   -0.6079   -0.0824    0.6620    0.8830    0.9604    0.9889    1.0023
-   -0.6207   -0.0808    0.6740    0.8870    0.9502    0.9741    0.9849
-
-  Columns 8 through 10
-
-    2.4450    2.4644    2.4766
-    2.2793    2.2966    2.3072
-    2.0467    2.0615    2.0705
-    1.7230    1.7343    1.7412
-    1.3273    1.3343    1.3387
-    1.0092    1.0130    1.0154
-    0.9905    0.9936    0.9955
-
-
-ans(:,:,5,1,2,1) =
-
-  Columns 1 through 7
-
-   -0.0731    0.2178    1.2250    1.9151    2.2161    2.3482    2.4117
-    0.2067    0.4176    1.2342    1.8148    2.0762    2.1931    2.2496
-    0.2850    0.4342    1.1550    1.6503    1.8725    1.9728    2.0213
-    0.0633    0.2147    0.9542    1.3997    1.5839    1.6648    1.7033
-   -0.7781   -0.2668    0.6557    1.0919    1.2358    1.2911    1.3150
-   -0.6079   -0.0824    0.6620    0.8830    0.9604    0.9889    1.0023
-   -0.6207   -0.0808    0.6740    0.8870    0.9502    0.9741    0.9849
-
-  Columns 8 through 10
-
-    2.4453    2.4645    2.4766
-    2.2796    2.2967    2.3073
-    2.0469    2.0616    2.0705
-    1.7231    1.7344    1.7412
-    1.3273    1.3343    1.3387
-    1.0092    1.0130    1.0154
-    0.9905    0.9936    0.9955
-
-
-ans(:,:,1,2,2,1) =
-
-  Columns 1 through 7
-
-   -1.9166   -0.9749    0.9075    1.8546    2.2019    2.3439    2.4101
-   -1.1392   -0.5207    0.9499    1.7561    2.0624    2.1890    2.2482
-   -0.7888   -0.3195    0.9078    1.5957    1.8598    1.9692    2.0201
-   -0.7177   -0.2651    0.7897    1.3628    1.5761    1.6631    1.7028
-   -0.4930   -0.0928    0.6941    1.0982    1.2373    1.2914    1.3150
-   -0.3902    0.0217    0.6761    0.8863    0.9609    0.9890    1.0023
-   -0.4048    0.0190    0.6835    0.8882    0.9505    0.9742    0.9849
-
-  Columns 8 through 10
-
-    2.4445    2.4641    2.4764
-    2.2789    2.2965    2.3071
-    2.0464    2.0613    2.0704
-    1.7230    1.7343    1.7411
-    1.3273    1.3343    1.3388
-    1.0092    1.0130    1.0154
-    0.9905    0.9936    0.9955
-
-
-ans(:,:,2,2,2,1) =
-
-  Columns 1 through 7
-
-   -1.3037   -0.5964    0.9916    1.8692    2.2051    2.3448    2.4104
-   -0.6175   -0.1774    1.0400    1.7727    2.0661    2.1901    2.2485
-   -0.3662   -0.0149    0.9907    1.6116    1.8633    1.9701    2.0204
-   -0.4325   -0.0646    0.8444    1.3731    1.5781    1.6635    1.7029
-   -0.4930   -0.0928    0.6941    1.0982    1.2373    1.2914    1.3150
-   -0.3902    0.0217    0.6761    0.8863    0.9609    0.9890    1.0023
-   -0.4048    0.0190    0.6835    0.8882    0.9505    0.9742    0.9849
-
-  Columns 8 through 10
-
-    2.4447    2.4642    2.4764
-    2.2791    2.2965    2.3072
-    2.0465    2.0614    2.0704
-    1.7230    1.7343    1.7412
-    1.3273    1.3343    1.3388
-    1.0092    1.0130    1.0154
-    0.9905    0.9936    0.9955
-
-
-ans(:,:,3,2,2,1) =
-
-  Columns 1 through 7
-
-   -0.7229   -0.2184    1.0887    1.8872    2.2092    2.3460    2.4108
-   -0.1384    0.1629    1.1420    1.7934    2.0708    2.1914    2.2490
-    0.0262    0.2737    1.0834    1.6316    1.8679    1.9714    2.0208
-   -0.1344    0.1335    0.9070    1.3864    1.5808    1.6642    1.7031
-   -0.4930   -0.0928    0.6941    1.0982    1.2373    1.2914    1.3150
-   -0.3902    0.0217    0.6761    0.8863    0.9609    0.9890    1.0023
-   -0.4048    0.0190    0.6835    0.8882    0.9505    0.9742    0.9849
-
-  Columns 8 through 10
-
-    2.4448    2.4643    2.4765
-    2.2793    2.2966    2.3072
-    2.0467    2.0615    2.0705
-    1.7231    1.7343    1.7412
-    1.3273    1.3343    1.3388
-    1.0092    1.0130    1.0154
-    0.9905    0.9936    0.9955
-
-
-ans(:,:,4,2,2,1) =
-
-  Columns 1 through 7
-
-   -0.1921    0.1493    1.1984    1.9093    2.2144    2.3475    2.4113
-    0.2881    0.4872    1.2535    1.8186    2.0770    2.1932    2.2496
-    0.3873    0.5329    1.1826    1.6559    1.8740    1.9732    2.0214
-    0.1575    0.3101    0.9747    1.4029    1.5847    1.6651    1.7034
-   -0.4930   -0.0928    0.6941    1.0982    1.2373    1.2914    1.3150
-   -0.3902    0.0217    0.6761    0.8863    0.9609    0.9890    1.0023
-   -0.4048    0.0190    0.6835    0.8882    0.9505    0.9742    0.9849
-
-  Columns 8 through 10
-
-    2.4450    2.4644    2.4765
-    2.2795    2.2967    2.3073
-    2.0469    2.0616    2.0705
-    1.7232    1.7344    1.7412
-    1.3273    1.3343    1.3388
-    1.0092    1.0130    1.0154
-    0.9905    0.9936    0.9955
-
-
-ans(:,:,5,2,2,1) =
-
-  Columns 1 through 7
-
-    0.2755    0.4972    1.3184    1.9361    2.2209    2.3494    2.4120
-    0.6509    0.7814    1.3703    1.8487    2.0849    2.1956    2.2505
-    0.6813    0.7730    1.2833    1.6847    1.8818    1.9755    2.0222
-    0.3765    0.4812    1.0438    1.4228    1.5901    1.6664    1.7038
-   -0.4930   -0.0928    0.6941    1.0982    1.2373    1.2914    1.3150
-   -0.3902    0.0217    0.6761    0.8863    0.9609    0.9890    1.0023
-   -0.4048    0.0190    0.6835    0.8882    0.9505    0.9742    0.9849
-
-  Columns 8 through 10
-
-    2.4453    2.4645    2.4766
-    2.2799    2.2969    2.3074
-    2.0472    2.0617    2.0706
-    1.7233    1.7344    1.7412
-    1.3273    1.3343    1.3388
-    1.0092    1.0130    1.0154
-    0.9905    0.9936    0.9955
-
-
-ans(:,:,1,1,1,2) =
-
-  Columns 1 through 7
-
-   -4.0479   -2.3350    0.7084    1.8304    2.1996    2.3447    2.4111
-   -3.2642   -1.8447    0.7518    1.7379    2.0638    2.1921    2.2507
-   -2.8847   -1.5511    0.7225    1.5823    1.8633    1.9734    2.0233
-   -3.0364   -1.4954    0.6165    1.3508    1.5794    1.6673    1.7061
-   -3.4098   -1.4362    0.5099    1.0857    1.2387    1.2936    1.3165
-   -2.7201   -0.7479    0.6007    0.8736    0.9601    0.9890    1.0026
-   -2.6788   -0.7066    0.6350    0.8827    0.9494    0.9739    0.9848
-
-  Columns 8 through 10
-
-    2.4454    2.4648    2.4768
-    2.2808    2.2978    2.3081
-    2.0488    2.0631    2.0717
-    1.7252    1.7359    1.7423
-    1.3283    1.3351    1.3394
-    1.0093    1.0132    1.0155
-    0.9904    0.9936    0.9955
-
-
-ans(:,:,2,1,1,2) =
-
-  Columns 1 through 7
-
-   -2.9712   -1.7467    0.7965    1.8434    2.2023    2.3454    2.4114
-   -2.3063   -1.3017    0.8400    1.7513    2.0666    2.1928    2.2509
-   -2.0457   -1.0850    0.8031    1.5947    1.8657    1.9741    2.0235
-   -2.3755   -1.1646    0.6714    1.3590    1.5807    1.6676    1.7062
-   -3.4098   -1.4362    0.5099    1.0857    1.2387    1.2936    1.3165
-   -2.7201   -0.7479    0.6007    0.8736    0.9601    0.9890    1.0026
-   -2.6788   -0.7066    0.6350    0.8827    0.9494    0.9739    0.9848
-
-  Columns 8 through 10
-
-    2.4455    2.4649    2.4769
-    2.2809    2.2978    2.3081
-    2.0488    2.0631    2.0717
-    1.7253    1.7359    1.7423
-    1.3283    1.3351    1.3394
-    1.0093    1.0132    1.0155
-    0.9904    0.9936    0.9955
-
-
-ans(:,:,3,1,1,2) =
-
-  Columns 1 through 7
-
-   -2.0150   -1.1659    0.9006    1.8599    2.2058    2.3464    2.4117
-   -1.4617   -0.7844    0.9434    1.7684    2.0702    2.1938    2.2512
-   -1.2643   -0.6525    0.8972    1.6108    1.8691    1.9749    2.0238
-   -1.5463   -0.8582    0.7368    1.3701    1.5827    1.6680    1.7063
-   -3.4098   -1.4362    0.5099    1.0857    1.2387    1.2936    1.3165
-   -2.7201   -0.7479    0.6007    0.8736    0.9601    0.9890    1.0026
-   -2.6788   -0.7066    0.6350    0.8827    0.9494    0.9739    0.9848
-
-  Columns 8 through 10
-
-    2.4457    2.4649    2.4769
-    2.2810    2.2979    2.3081
-    2.0489    2.0631    2.0717
-    1.7253    1.7359    1.7423
-    1.3283    1.3351    1.3394
-    1.0093    1.0132    1.0155
-    0.9904    0.9936    0.9955
-
-
-ans(:,:,4,1,1,2) =
-
-  Columns 1 through 7
-
-   -1.1948   -0.6203    1.0200    1.8806    2.2103    2.3477    2.4122
-   -0.7506   -0.3126    1.0602    1.7900    2.0750    2.1952    2.2517
-   -0.6179   -0.2676    1.0023    1.6313    1.8736    1.9762    2.0242
-   -0.9527   -0.5895    0.8107    1.3844    1.5854    1.6686    1.7065
-   -3.4098   -1.4362    0.5099    1.0857    1.2387    1.2936    1.3165
-   -2.7201   -0.7479    0.6007    0.8736    0.9601    0.9890    1.0026
-   -2.6788   -0.7066    0.6350    0.8827    0.9494    0.9739    0.9848
-
-  Columns 8 through 10
-
-    2.4458    2.4650    2.4769
-    2.2812    2.2980    2.3082
-    2.0491    2.0632    2.0718
-    1.7254    1.7359    1.7423
-    1.3283    1.3351    1.3394
-    1.0093    1.0132    1.0155
-    0.9904    0.9936    0.9955
-
-
-ans(:,:,5,1,1,2) =
-
-  Columns 1 through 7
-
-   -0.5051   -0.1282    1.1522    1.9063    2.2162    2.3494    2.4128
-   -0.1602    0.1066    1.1865    1.8165    2.0813    2.1970    2.2523
-   -0.1099    0.0856    1.1135    1.6564    1.8796    1.9779    2.0248
-   -0.5541   -0.3183    0.8893    1.4024    1.5894    1.6695    1.7067
-   -3.4098   -1.4362    0.5099    1.0857    1.2387    1.2936    1.3165
-   -2.7201   -0.7479    0.6007    0.8736    0.9601    0.9890    1.0026
-   -2.6788   -0.7066    0.6350    0.8827    0.9494    0.9739    0.9848
-
-  Columns 8 through 10
-
-    2.4461    2.4651    2.4770
-    2.2814    2.2981    2.3082
-    2.0493    2.0633    2.0718
-    1.7255    1.7360    1.7424
-    1.3283    1.3351    1.3394
-    1.0093    1.0132    1.0155
-    0.9904    0.9936    0.9955
-
-
-ans(:,:,1,2,1,2) =
-
-  Columns 1 through 7
-
-   -3.4593   -1.8956    0.7645    1.8367    2.1997    2.3442    2.4107
-   -2.3044   -1.2907    0.8362    1.7488    2.0651    2.1920    2.2504
-   -1.9412   -1.0335    0.8052    1.5933    1.8647    1.9735    2.0231
-   -2.3126   -1.1259    0.6694    1.3573    1.5800    1.6672    1.7059
-   -2.9781   -1.2734    0.5252    1.0863    1.2385    1.2935    1.3164
-   -2.3719   -0.6673    0.6056    0.8744    0.9602    0.9890    1.0026
-   -2.3357   -0.6312    0.6384    0.8831    0.9495    0.9739    0.9848
-
-  Columns 8 through 10
-
-    2.4451    2.4645    2.4767
-    2.2805    2.2976    2.3080
-    2.0486    2.0629    2.0716
-    1.7251    1.7358    1.7422
-    1.3282    1.3351    1.3393
-    1.0093    1.0132    1.0155
-    0.9904    0.9936    0.9955
-
-
-ans(:,:,2,2,1,2) =
-
-  Columns 1 through 7
-
-   -2.4365   -1.3403    0.8593    1.8517    2.2029    2.3450    2.4110
-   -1.4552   -0.7828    0.9382    1.7658    2.0687    2.1930    2.2507
-   -1.1910   -0.6006    0.8999    1.6096    1.8681    1.9744    2.0234
-   -1.5504   -0.8163    0.7338    1.3681    1.5818    1.6676    1.7060
-   -2.9781   -1.2734    0.5252    1.0863    1.2385    1.2935    1.3164
-   -2.3719   -0.6673    0.6056    0.8744    0.9602    0.9890    1.0026
-   -2.3357   -0.6312    0.6384    0.8831    0.9495    0.9739    0.9848
-
-  Columns 8 through 10
-
-    2.4452    2.4646    2.4767
-    2.2807    2.2977    2.3080
-    2.0487    2.0630    2.0716
-    1.7251    1.7358    1.7422
-    1.3282    1.3351    1.3393
-    1.0093    1.0132    1.0155
-    0.9904    0.9936    0.9955
-
-
-ans(:,:,3,2,1,2) =
-
-  Columns 1 through 7
-
-   -1.5388   -0.8073    0.9693    1.8703    2.2070    2.3462    2.4114
-   -0.7388   -0.3092    1.0537    1.7870    2.0735    2.1943    2.2512
-   -0.5665   -0.2146    1.0054    1.6302    1.8727    1.9756    2.0238
-   -0.9314   -0.5434    0.8070    1.3820    1.5845    1.6682    1.7062
-   -2.9781   -1.2734    0.5252    1.0863    1.2385    1.2935    1.3164
-   -2.3719   -0.6673    0.6056    0.8744    0.9602    0.9890    1.0026
-   -2.3357   -0.6312    0.6384    0.8831    0.9495    0.9739    0.9848
-
-  Columns 8 through 10
-
-    2.4453    2.4647    2.4767
-    2.2808    2.2977    2.3080
-    2.0488    2.0630    2.0716
-    1.7252    1.7358    1.7422
-    1.3282    1.3351    1.3393
-    1.0093    1.0132    1.0155
-    0.9904    0.9936    0.9955
-
-
-ans(:,:,4,2,1,2) =
-
-  Columns 1 through 7
-
-   -0.7757   -0.3090    1.0936    1.8933    2.2122    2.3477    2.4119
-   -0.1491    0.1204    1.1794    1.8132    2.0796    2.1961    2.2518
-   -0.0615    0.1308    1.1172    1.6555    1.8788    1.9773    2.0244
-   -0.5166   -0.2910    0.8853    1.3996    1.5883    1.6690    1.7064
-   -2.9781   -1.2734    0.5252    1.0863    1.2385    1.2935    1.3164
-   -2.3719   -0.6673    0.6056    0.8744    0.9602    0.9890    1.0026
-   -2.3357   -0.6312    0.6384    0.8831    0.9495    0.9739    0.9848
-
-  Columns 8 through 10
-
-    2.4455    2.4648    2.4768
-    2.2811    2.2978    2.3081
-    2.0490    2.0631    2.0717
-    1.7253    1.7358    1.7423
-    1.3282    1.3351    1.3393
-    1.0093    1.0132    1.0155
-    0.9904    0.9936    0.9955
-
-
-ans(:,:,5,2,1,2) =
-
-  Columns 1 through 7
-
-   -0.1414    0.1500    1.2292    1.9213    2.2188    2.3496    2.4125
-    0.3384    0.5107    1.3099    1.8445    2.0875    2.1984    2.2526
-    0.3591    0.5081    1.2293    1.6855    1.8867    1.9796    2.0252
-   -0.1649    0.0545    0.9641    1.4207    1.5938    1.6702    1.7068
-   -2.9781   -1.2734    0.5252    1.0863    1.2385    1.2935    1.3164
-   -2.3719   -0.6673    0.6056    0.8744    0.9602    0.9890    1.0026
-   -2.3357   -0.6312    0.6384    0.8831    0.9495    0.9739    0.9848
-
-  Columns 8 through 10
-
-    2.4458    2.4649    2.4768
-    2.2814    2.2980    2.3082
-    2.0493    2.0632    2.0717
-    1.7254    1.7359    1.7423
-    1.3282    1.3351    1.3393
-    1.0093    1.0132    1.0155
-    0.9904    0.9936    0.9955
-
-
-ans(:,:,1,1,2,2) =
-
-  Columns 1 through 7
-
-   -3.8588   -2.4493    0.4282    1.6905    2.1312    2.3077    2.3892
-   -2.9717   -1.8597    0.5087    1.6104    2.0010    2.1579    2.2303
-   -2.3324   -1.4259    0.5330    1.4741    1.8094    1.9440    2.0057
-   -1.9173   -1.0686    0.5077    1.2711    1.5391    1.6450    1.6927
-   -1.2000   -0.5738    0.5262    1.0461    1.2155    1.2803    1.3084
-   -0.9697   -0.3261    0.5856    0.8549    0.9477    0.9820    0.9984
-   -0.9849   -0.3237    0.6007    0.8616    0.9390    0.9683    0.9815
-
-  Columns 8 through 10
-
-    2.4314    2.4553    2.4703
-    2.2678    2.2890    2.3019
-    2.0375    2.0555    2.0663
-    1.7167    1.7301    1.7382
-    1.3231    1.3315    1.3368
-    1.0067    1.0113    1.0142
-    0.9883    0.9922    0.9945
-
-
-ans(:,:,2,1,2,2) =
-
-  Columns 1 through 7
-
-   -2.9611   -1.9124    0.5281    1.7064    2.1346    2.3086    2.3895
-   -2.1922   -1.3800    0.6081    1.6267    2.0044    2.1589    2.2307
-   -1.6924   -1.0233    0.6222    1.4891    1.8125    1.9448    2.0060
-   -1.4765   -0.8429    0.5635    1.2808    1.5407    1.6453    1.6928
-   -1.2000   -0.5738    0.5262    1.0461    1.2155    1.2803    1.3084
-   -0.9697   -0.3261    0.5856    0.8549    0.9477    0.9820    0.9984
-   -0.9849   -0.3237    0.6007    0.8616    0.9390    0.9683    0.9815
-
-  Columns 8 through 10
-
-    2.4315    2.4554    2.4703
-    2.2679    2.2891    2.3020
-    2.0376    2.0555    2.0663
-    1.7167    1.7301    1.7382
-    1.3231    1.3315    1.3368
-    1.0067    1.0113    1.0142
-    0.9883    0.9922    0.9945
-
-
-ans(:,:,3,1,2,2) =
-
-  Columns 1 through 7
-
-   -2.1208   -1.3657    0.6457    1.7264    2.1389    2.3098    2.3899
-   -1.4739   -0.8919    0.7245    1.6475    2.0089    2.1601    2.2311
-   -1.1095   -0.6095    0.7272    1.5085    1.8166    1.9459    2.0064
-   -1.0810   -0.5586    0.6353    1.2939    1.5430    1.6459    1.6929
-   -1.2000   -0.5738    0.5262    1.0461    1.2155    1.2803    1.3084
-   -0.9697   -0.3261    0.5856    0.8549    0.9477    0.9820    0.9984
-   -0.9849   -0.3237    0.6007    0.8616    0.9390    0.9683    0.9815
-
-  Columns 8 through 10
-
-    2.4317    2.4555    2.4704
-    2.2681    2.2892    2.3020
-    2.0377    2.0556    2.0664
-    1.7168    1.7301    1.7382
-    1.3231    1.3315    1.3368
-    1.0067    1.0113    1.0142
-    0.9883    0.9922    0.9945
-
-
-ans(:,:,4,1,2,2) =
-
-  Columns 1 through 7
-
-   -1.3604   -0.8257    0.7805    1.7513    2.1445    2.3114    2.3904
-   -0.8279   -0.4212    0.8561    1.6734    2.0148    2.1618    2.2317
-   -0.5618   -0.2257    0.8448    1.5330    1.8221    1.9475    2.0069
-   -0.6403   -0.2942    0.7167    1.3108    1.5462    1.6466    1.6932
-   -1.2000   -0.5738    0.5262    1.0461    1.2155    1.2803    1.3084
-   -0.9697   -0.3261    0.5856    0.8549    0.9477    0.9820    0.9984
-   -0.9849   -0.3237    0.6007    0.8616    0.9390    0.9683    0.9815
-
-  Columns 8 through 10
-
-    2.4319    2.4556    2.4704
-    2.2683    2.2893    2.3021
-    2.0379    2.0556    2.0664
-    1.7168    1.7302    1.7383
-    1.3231    1.3315    1.3368
-    1.0067    1.0113    1.0142
-    0.9883    0.9922    0.9945
-
-
-ans(:,:,5,1,2,2) =
-
-  Columns 1 through 7
-
-   -0.6926   -0.3232    0.9299    1.7819    2.1517    2.3135    2.3912
-   -0.2612    0.0043    0.9990    1.7052    2.0224    2.1640    2.2324
-   -0.0748    0.1134    0.9703    1.5629    1.8294    1.9496    2.0076
-   -0.2554   -0.0638    0.8039    1.3319    1.5509    1.6477    1.6935
-   -1.2000   -0.5738    0.5262    1.0461    1.2155    1.2803    1.3084
-   -0.9697   -0.3261    0.5856    0.8549    0.9477    0.9820    0.9984
-   -0.9849   -0.3237    0.6007    0.8616    0.9390    0.9683    0.9815
-
-  Columns 8 through 10
-
-    2.4322    2.4557    2.4705
-    2.2686    2.2894    2.3021
-    2.0382    2.0558    2.0665
-    1.7170    1.7302    1.7383
-    1.3231    1.3315    1.3368
-    1.0067    1.0113    1.0142
-    0.9883    0.9922    0.9945
-
-
-ans(:,:,1,2,2,2) =
-
-  Columns 1 through 7
-
-   -3.1137   -1.8770    0.5261    1.7053    2.1336    2.3079    2.3890
-   -2.0120   -1.2069    0.6368    1.6304    2.0046    2.1586    2.2304
-   -1.4551   -0.8568    0.6565    1.4938    1.8132    1.9448    2.0059
-   -1.2642   -0.6851    0.5942    1.2848    1.5417    1.6455    1.6927
-   -0.8622   -0.3720    0.5701    1.0525    1.2169    1.2804    1.3085
-   -0.7038   -0.1993    0.6022    0.8585    0.9482    0.9821    0.9984
-   -0.7205   -0.2015    0.6124    0.8630    0.9393    0.9684    0.9815
-
-  Columns 8 through 10
-
-    2.4312    2.4552    2.4702
-    2.2677    2.2889    2.3019
-    2.0375    2.0554    2.0663
-    1.7166    1.7301    1.7382
-    1.3231    1.3315    1.3368
-    1.0067    1.0113    1.0142
-    0.9883    0.9922    0.9945
-
-
-ans(:,:,2,2,2,2) =
-
-  Columns 1 through 7
-
-   -2.3082   -1.3875    0.6314    1.7233    2.1375    2.3090    2.3894
-   -1.3368   -0.7701    0.7489    1.6508    2.0090    2.1598    2.2308
-   -0.9137   -0.4755    0.7588    1.5132    1.8173    1.9459    2.0062
-   -0.8920   -0.4438    0.6598    1.2972    1.5439    1.6460    1.6928
-   -0.8622   -0.3720    0.5701    1.0525    1.2169    1.2804    1.3085
-   -0.7038   -0.1993    0.6022    0.8585    0.9482    0.9821    0.9984
-   -0.7205   -0.2015    0.6124    0.8630    0.9393    0.9684    0.9815
-
-  Columns 8 through 10
-
-    2.4313    2.4552    2.4702
-    2.2679    2.2890    2.3019
-    2.0376    2.0554    2.0663
-    1.7167    1.7301    1.7382
-    1.3231    1.3315    1.3368
-    1.0067    1.0113    1.0142
-    0.9883    0.9922    0.9945
-
-
-ans(:,:,3,2,2,2) =
-
-  Columns 1 through 7
-
-   -1.5522   -0.9010    0.7531    1.7456    2.1425    2.3104    2.3899
-   -0.7239   -0.3394    0.8760    1.6762    2.0148    2.1615    2.2314
-   -0.4229   -0.1102    0.8740    1.5376    1.8228    1.9475    2.0068
-   -0.5345   -0.1898    0.7383    1.3136    1.5470    1.6467    1.6931
-   -0.8622   -0.3720    0.5701    1.0525    1.2169    1.2804    1.3085
-   -0.7038   -0.1993    0.6022    0.8585    0.9482    0.9821    0.9984
-   -0.7205   -0.2015    0.6124    0.8630    0.9393    0.9684    0.9815
-
-  Columns 8 through 10
-
-    2.4315    2.4553    2.4702
-    2.2681    2.2891    2.3019
-    2.0378    2.0555    2.0663
-    1.7167    1.7301    1.7382
-    1.3231    1.3315    1.3368
-    1.0067    1.0113    1.0142
-    0.9883    0.9922    0.9945
-
-
-ans(:,:,4,2,2,2) =
-
-  Columns 1 through 7
-
-   -0.8673   -0.4300    0.8906    1.7730    2.1488    2.3122    2.3905
-   -0.1822    0.0704    1.0149    1.7072    2.0223    2.1636    2.2321
-    0.0307    0.2157    0.9970    1.5675    1.8301    1.9495    2.0075
-   -0.1600    0.0347    0.8231    1.3340    1.5514    1.6478    1.6934
-   -0.8622   -0.3720    0.5701    1.0525    1.2169    1.2804    1.3085
-   -0.7038   -0.1993    0.6022    0.8585    0.9482    0.9821    0.9984
-   -0.7205   -0.2015    0.6124    0.8630    0.9393    0.9684    0.9815
-
-  Columns 8 through 10
-
-    2.4318    2.4554    2.4703
-    2.2684    2.2892    2.3020
-    2.0381    2.0557    2.0664
-    1.7169    1.7302    1.7382
-    1.3231    1.3315    1.3368
-    1.0067    1.0113    1.0142
-    0.9883    0.9922    0.9945
-
-
-ans(:,:,5,2,2,2) =
-
-  Columns 1 through 7
-
-   -0.2689    0.0132    1.0410    1.8062    2.1569    2.3146    2.3913
-    0.2754    0.4384    1.1603    1.7443    2.0319    2.1665    2.2331
-    0.3978    0.5066    1.1218    1.6028    1.8396    1.9523    2.0085
-    0.1177    0.2382    0.9094    1.3586    1.5577    1.6492    1.6938
-   -0.8622   -0.3720    0.5701    1.0525    1.2169    1.2804    1.3085
-   -0.7038   -0.1993    0.6022    0.8585    0.9482    0.9821    0.9984
-   -0.7205   -0.2015    0.6124    0.8630    0.9393    0.9684    0.9815
-
-  Columns 8 through 10
-
-    2.4321    2.4556    2.4704
-    2.2688    2.2894    2.3021
-    2.0385    2.0558    2.0665
-    1.7170    1.7302    1.7383
-    1.3231    1.3315    1.3368
-    1.0067    1.0113    1.0142
-    0.9883    0.9922    0.9945
-
-
-ans(:,:,1,1,1,3) =
-
-  Columns 1 through 7
-
-   -5.2343   -3.1896    0.3908    1.7118    2.1461    2.3167    2.3948
-   -4.4295   -2.7106    0.4229    1.6143    2.0080    2.1629    2.2337
-   -4.0061   -2.3681    0.4143    1.4679    1.8120    1.9469    2.0079
-   -4.1879   -2.2657    0.3483    1.2562    1.5378    1.6462    1.6940
-   -4.5491   -2.1270    0.3038    1.0199    1.2113    1.2801    1.3086
-   -3.5662   -1.1507    0.5038    0.8394    0.9459    0.9816    0.9983
-   -3.5055   -1.0901    0.5529    0.8563    0.9380    0.9680    0.9814
-
-  Columns 8 through 10
-
-    2.4351    2.4579    2.4719
-    2.2701    2.2906    2.3031
-    2.0391    2.0566    2.0672
-    1.7176    1.7308    1.7387
-    1.3233    1.3317    1.3370
-    1.0066    1.0113    1.0142
-    0.9883    0.9921    0.9945
-
-
-ans(:,:,2,1,1,3) =
-
-  Columns 1 through 7
-
-   -3.9511   -2.4959    0.4950    1.7272    2.1492    2.3175    2.3951
-   -3.2674   -2.0525    0.5300    1.6306    2.0113    2.1638    2.2340
-   -2.9771   -1.7963    0.5132    1.4831    1.8150    1.9476    2.0082
-   -3.3566   -1.8606    0.4155    1.2664    1.5394    1.6465    1.6941
-   -4.5491   -2.1270    0.3038    1.0199    1.2113    1.2801    1.3086
-   -3.5662   -1.1507    0.5038    0.8394    0.9459    0.9816    0.9983
-   -3.5055   -1.0901    0.5529    0.8563    0.9380    0.9680    0.9814
-
-  Columns 8 through 10
-
-    2.4352    2.4579    2.4719
-    2.2702    2.2907    2.3031
-    2.0392    2.0566    2.0672
-    1.7176    1.7308    1.7388
-    1.3233    1.3317    1.3370
-    1.0066    1.0113    1.0142
-    0.9883    0.9921    0.9945
-
-
-ans(:,:,3,1,1,3) =
-
-  Columns 1 through 7
-
-   -2.8122   -1.8108    0.6184    1.7467    2.1534    2.3187    2.3955
-   -2.2429   -1.4241    0.6555    1.6513    2.0157    2.1650    2.2344
-   -2.0168   -1.2658    0.6288    1.5029    1.8191    1.9487    2.0085
-   -2.3280   -1.4853    0.4956    1.2799    1.5418    1.6470    1.6942
-   -4.5491   -2.1270    0.3038    1.0199    1.2113    1.2801    1.3086
-   -3.5662   -1.1507    0.5038    0.8394    0.9459    0.9816    0.9983
-   -3.5055   -1.0901    0.5529    0.8563    0.9380    0.9680    0.9814
-
-  Columns 8 through 10
-
-    2.4353    2.4580    2.4719
-    2.2704    2.2907    2.3031
-    2.0393    2.0567    2.0672
-    1.7177    1.7308    1.7388
-    1.3233    1.3317    1.3370
-    1.0066    1.0113    1.0142
-    0.9883    0.9921    0.9945
-
-
-ans(:,:,4,1,1,3) =
-
-  Columns 1 through 7
-
-   -1.8363   -1.1612    0.7603    1.7713    2.1587    2.3202    2.3960
-   -1.3804   -0.8513    0.7972    1.6775    2.0215    2.1667    2.2350
-   -1.2230   -0.7938    0.7576    1.5280    1.8246    1.9502    2.0090
-   -1.6010   -1.1563    0.5862    1.2975    1.5453    1.6478    1.6945
-   -4.5491   -2.1270    0.3038    1.0199    1.2113    1.2801    1.3086
-   -3.5662   -1.1507    0.5038    0.8394    0.9459    0.9816    0.9983
-   -3.5055   -1.0901    0.5529    0.8563    0.9380    0.9680    0.9814
-
-  Columns 8 through 10
-
-    2.4356    2.4581    2.4720
-    2.2706    2.2908    2.3032
-    2.0395    2.0568    2.0673
-    1.7178    1.7309    1.7388
-    1.3233    1.3317    1.3370
-    1.0066    1.0113    1.0142
-    0.9883    0.9921    0.9945
-
-
-ans(:,:,5,1,1,3) =
-
-  Columns 1 through 7
-
-   -1.0208   -0.5758    0.9175    1.8017    2.1657    2.3222    2.3967
-   -0.6678   -0.3437    0.9506    1.7097    2.0291    2.1689    2.2357
-   -0.6012   -0.3622    0.8941    1.5588    1.8320    1.9523    2.0097
-   -1.1129   -0.8177    0.6825    1.3194    1.5502    1.6489    1.6948
-   -4.5491   -2.1270    0.3038    1.0199    1.2113    1.2801    1.3086
-   -3.5662   -1.1507    0.5038    0.8394    0.9459    0.9816    0.9983
-   -3.5055   -1.0901    0.5529    0.8563    0.9380    0.9680    0.9814
-
-  Columns 8 through 10
-
-    2.4358    2.4582    2.4720
-    2.2709    2.2910    2.3032
-    2.0398    2.0569    2.0673
-    1.7179    1.7309    1.7388
-    1.3233    1.3317    1.3370
-    1.0066    1.0113    1.0142
-    0.9883    0.9921    0.9945
-
-
-ans(:,:,1,2,1,3) =
-
-  Columns 1 through 7
-
-   -4.5394   -2.6385    0.4629    1.7224    2.1477    2.3168    2.3947
-   -3.2573   -2.0262    0.5296    1.6293    2.0104    2.1633    2.2336
-   -2.8412   -1.7284    0.5181    1.4822    1.8141    1.9471    2.0078
-   -3.2771   -1.8074    0.4144    1.2645    1.5387    1.6461    1.6938
-   -4.0091   -1.9194    0.3241    1.0212    1.2113    1.2800    1.3085
-   -3.1390   -1.0513    0.5100    0.8403    0.9460    0.9816    0.9983
-   -3.0854   -0.9978    0.5571    0.8568    0.9381    0.9680    0.9814
-
-  Columns 8 through 10
-
-    2.4350    2.4578    2.4718
-    2.2699    2.2905    2.3030
-    2.0389    2.0565    2.0671
-    1.7175    1.7307    1.7387
-    1.3232    1.3317    1.3370
-    1.0066    1.0113    1.0142
-    0.9883    0.9921    0.9945
-
-
-ans(:,:,2,2,1,3) =
-
-  Columns 1 through 7
-
-   -3.3210   -1.9859    0.5744    1.7398    2.1514    2.3179    2.3950
-   -2.2285   -1.4132    0.6529    1.6498    2.0148    2.1645    2.2340
-   -1.9216   -1.1981    0.6341    1.5022    1.8183    1.9482    2.0082
-   -2.3273   -1.4282    0.4933    1.2777    1.5410    1.6466    1.6940
-   -4.0091   -1.9194    0.3241    1.0212    1.2113    1.2800    1.3085
-   -3.1390   -1.0513    0.5100    0.8403    0.9460    0.9816    0.9983
-   -3.0854   -0.9978    0.5571    0.8568    0.9381    0.9680    0.9814
-
-  Columns 8 through 10
-
-    2.4351    2.4578    2.4718
-    2.2701    2.2906    2.3030
-    2.0391    2.0565    2.0671
-    1.7175    1.7307    1.7387
-    1.3232    1.3317    1.3370
-    1.0066    1.0113    1.0142
-    0.9883    0.9921    0.9945
-
-
-ans(:,:,3,2,1,3) =
-
-  Columns 1 through 7
-
-   -2.2518   -1.3608    0.7042    1.7617    2.1562    2.3192    2.3955
-   -1.3609   -0.8418    0.7928    1.6755    2.0205    2.1660    2.2346
-   -1.1564   -0.7254    0.7634    1.5274    1.8239    1.9497    2.0087
-   -1.5691   -1.0940    0.5829    1.2948    1.5443    1.6473    1.6942
-   -4.0091   -1.9194    0.3241    1.0212    1.2113    1.2800    1.3085
-   -3.1390   -1.0513    0.5100    0.8403    0.9460    0.9816    0.9983
-   -3.0854   -0.9978    0.5571    0.8568    0.9381    0.9680    0.9814
-
-  Columns 8 through 10
-
-    2.4353    2.4579    2.4719
-    2.2703    2.2907    2.3030
-    2.0393    2.0566    2.0671
-    1.7176    1.7307    1.7387
-    1.3232    1.3317    1.3370
-    1.0066    1.0113    1.0142
-    0.9883    0.9921    0.9945
-
-
-ans(:,:,4,2,1,3) =
-
-  Columns 1 through 7
-
-   -1.3438   -0.7777    0.8511    1.7888    2.1623    2.3209    2.3961
-   -0.6475   -0.3233    0.9451    1.7072    2.0279    2.1682    2.2353
-   -0.5388   -0.3036    0.9004    1.5584    1.8313    1.9518    2.0094
-   -1.0611   -0.7810    0.6789    1.3163    1.5491    1.6484    1.6944
-   -4.0091   -1.9194    0.3241    1.0212    1.2113    1.2800    1.3085
-   -3.1390   -1.0513    0.5100    0.8403    0.9460    0.9816    0.9983
-   -3.0854   -0.9978    0.5571    0.8568    0.9381    0.9680    0.9814
-
-  Columns 8 through 10
-
-    2.4355    2.4580    2.4719
-    2.2706    2.2908    2.3031
-    2.0395    2.0567    2.0672
-    1.7177    1.7308    1.7387
-    1.3232    1.3317    1.3370
-    1.0066    1.0113    1.0142
-    0.9883    0.9921    0.9945
-
-
-ans(:,:,5,2,1,3) =
-
-  Columns 1 through 7
-
-   -0.5909   -0.2427    1.0116    1.8218    2.1701    2.3232    2.3969
-   -0.0619    0.1471    1.1033    1.7452    2.0375    2.1710    2.2363
-   -0.0254    0.1563    1.0377    1.5951    1.8410    1.9546    2.0103
-   -0.6234   -0.3493    0.7754    1.3422    1.5558    1.6499    1.6949
-   -4.0091   -1.9194    0.3241    1.0212    1.2113    1.2800    1.3085
-   -3.1390   -1.0513    0.5100    0.8403    0.9460    0.9816    0.9983
-   -3.0854   -0.9978    0.5571    0.8568    0.9381    0.9680    0.9814
-
-  Columns 8 through 10
-
-    2.4358    2.4582    2.4720
-    2.2710    2.2910    2.3032
-    2.0399    2.0569    2.0673
-    1.7179    1.7308    1.7388
-    1.3232    1.3317    1.3370
-    1.0066    1.0113    1.0142
-    0.9883    0.9921    0.9945
-
-
-ans(:,:,1,1,2,3) =
-
-  Columns 1 through 7
-
-   -4.7584   -3.0838    0.1811    1.5982    2.0896    2.2858    2.3764
-   -3.8384   -2.5012    0.2477    1.5111    1.9561    2.1344    2.2166
-   -3.1039   -2.0102    0.2900    1.3811    1.7677    1.9223    1.9931
-   -2.5730   -1.5405    0.3068    1.1951    1.5055    1.6278    1.6827
-   -1.6036   -0.8805    0.3948    0.9977    1.1943    1.2694    1.3020
-   -1.2785   -0.5353    0.5174    0.8286    0.9362    0.9759    0.9948
-   -1.2920   -0.5285    0.5389    0.8402    0.9296    0.9634    0.9787
-
-  Columns 8 through 10
-
-    2.4233    2.4499    2.4664
-    2.2591    2.2832    2.2979
-    2.0296    2.0502    2.0626
-    1.7104    1.7259    1.7353
-    1.3190    1.3288    1.3349
-    1.0044    1.0098    1.0132
-    0.9865    0.9909    0.9936
-
-
-ans(:,:,2,1,2,3) =
-
-  Columns 1 through 7
-
-   -3.7041   -2.4700    0.2938    1.6159    2.0933    2.2869    2.3767
-   -2.9060   -1.9402    0.3623    1.5298    1.9600    2.1355    2.2170
-   -2.3302   -1.5351    0.3936    1.3984    1.7711    1.9232    1.9934
-   -2.0351   -1.2802    0.3708    1.2062    1.5074    1.6282    1.6829
-   -1.6036   -0.8805    0.3948    0.9977    1.1943    1.2694    1.3020
-   -1.2785   -0.5353    0.5174    0.8286    0.9362    0.9759    0.9948
-   -1.2920   -0.5285    0.5389    0.8402    0.9296    0.9634    0.9787
-
-  Columns 8 through 10
-
-    2.4235    2.4500    2.4664
-    2.2593    2.2833    2.2979
-    2.0297    2.0502    2.0626
-    1.7104    1.7259    1.7353
-    1.3190    1.3288    1.3349
-    1.0044    1.0098    1.0132
-    0.9865    0.9909    0.9936
-
-
-ans(:,:,3,1,2,3) =
-
-  Columns 1 through 7
-
-   -2.7235   -1.8484    0.4268    1.6382    2.0981    2.2882    2.3772
-   -2.0539   -1.3725    0.4966    1.5535    1.9651    2.1369    2.2175
-   -1.6327   -1.0440    0.5162    1.4209    1.7758    1.9245    1.9938
-   -1.5576   -0.9435    0.4550    1.2214    1.5100    1.6288    1.6831
-   -1.6036   -0.8805    0.3948    0.9977    1.1943    1.2694    1.3020
-   -1.2785   -0.5353    0.5174    0.8286    0.9362    0.9759    0.9948
-   -1.2920   -0.5285    0.5389    0.8402    0.9296    0.9634    0.9787
-
-  Columns 8 through 10
-
-    2.4236    2.4501    2.4664
-    2.2595    2.2834    2.2979
-    2.0298    2.0503    2.0627
-    1.7105    1.7260    1.7353
-    1.3190    1.3288    1.3349
-    1.0044    1.0098    1.0132
-    0.9865    0.9909    0.9936
-
-
-ans(:,:,4,1,2,3) =
-
-  Columns 1 through 7
-
-   -1.8425   -1.2336    0.5795    1.6662    2.1044    2.2900    2.3778
-   -1.2945   -0.8212    0.6487    1.5831    1.9718    2.1388    2.2181
-   -0.9883   -0.5894    0.6536    1.4492    1.7822    1.9262    1.9944
-   -1.0429   -0.6284    0.5504    1.2411    1.5137    1.6297    1.6833
-   -1.6036   -0.8805    0.3948    0.9977    1.1943    1.2694    1.3020
-   -1.2785   -0.5353    0.5174    0.8286    0.9362    0.9759    0.9948
-   -1.2920   -0.5285    0.5389    0.8402    0.9296    0.9634    0.9787
-
-  Columns 8 through 10
-
-    2.4239    2.4502    2.4665
-    2.2597    2.2835    2.2980
-    2.0301    2.0504    2.0627
-    1.7106    1.7260    1.7354
-    1.3190    1.3288    1.3349
-    1.0044    1.0098    1.0132
-    0.9865    0.9909    0.9936
-
-
-ans(:,:,5,1,2,3) =
-
-  Columns 1 through 7
-
-   -1.0750   -0.6569    0.7490    1.7007    2.1124    2.2923    2.3786
-   -0.6343   -0.3243    0.8138    1.6196    1.9805    2.1414    2.2190
-   -0.4125   -0.1896    0.8000    1.4839    1.7905    1.9286    1.9953
-   -0.5828   -0.3553    0.6527    1.2656    1.5191    1.6309    1.6837
-   -1.6036   -0.8805    0.3948    0.9977    1.1943    1.2694    1.3020
-   -1.2785   -0.5353    0.5174    0.8286    0.9362    0.9759    0.9948
-   -1.2920   -0.5285    0.5389    0.8402    0.9296    0.9634    0.9787
-
-  Columns 8 through 10
-
-    2.4242    2.4503    2.4666
-    2.2601    2.2836    2.2981
-    2.0304    2.0505    2.0628
-    1.7107    1.7261    1.7354
-    1.3190    1.3288    1.3349
-    1.0044    1.0098    1.0132
-    0.9865    0.9909    0.9936
-
-
-ans(:,:,1,2,2,3) =
-
-  Columns 1 through 7
-
-   -3.9333   -2.4243    0.2919    1.6165    2.0933    2.2867    2.3766
-   -2.7183   -1.7397    0.3950    1.5349    1.9608    2.1355    2.2169
-   -2.0665   -1.3458    0.4323    1.4040    1.7722    1.9233    1.9933
-   -1.7998   -1.0961    0.4063    1.2108    1.5085    1.6284    1.6828
-   -1.2111   -0.6451    0.4462    1.0053    1.1960    1.2696    1.3020
-   -0.9713   -0.3888    0.5367    0.8329    0.9368    0.9760    0.9949
-   -0.9867   -0.3874    0.5524    0.8418    0.9299    0.9635    0.9787
-
-  Columns 8 through 10
-
-    2.4233    2.4499    2.4663
-    2.2592    2.2832    2.2978
-    2.0296    2.0501    2.0626
-    1.7104    1.7259    1.7353
-    1.3190    1.3287    1.3349
-    1.0044    1.0098    1.0132
-    0.9865    0.9909    0.9936
-
-
-ans(:,:,2,2,2,3) =
-
-  Columns 1 through 7
-
-   -2.9822   -1.8640    0.4102    1.6365    2.0976    2.2879    2.3770
-   -1.9108   -1.2299    0.5243    1.5581    1.9659    2.1370    2.2174
-   -1.4140   -0.8948    0.5517    1.4263    1.7769    1.9246    1.9937
-   -1.3454   -0.8162    0.4820    1.2250    1.5110    1.6290    1.6830
-   -1.2111   -0.6451    0.4462    1.0053    1.1960    1.2696    1.3020
-   -0.9713   -0.3888    0.5367    0.8329    0.9368    0.9760    0.9949
-   -0.9867   -0.3874    0.5524    0.8418    0.9299    0.9635    0.9787
-
-  Columns 8 through 10
-
-    2.4235    2.4500    2.4664
-    2.2594    2.2833    2.2979
-    2.0297    2.0502    2.0626
-    1.7104    1.7259    1.7353
-    1.3190    1.3287    1.3349
-    1.0044    1.0098    1.0132
-    0.9865    0.9909    0.9936
-
-
-ans(:,:,3,2,2,3) =
-
-  Columns 1 through 7
-
-   -2.0955   -1.3100    0.5475    1.6613    2.1031    2.2895    2.3775
-   -1.1846   -0.7294    0.6713    1.5871    1.9725    2.1388    2.2180
-   -0.8315   -0.4601    0.6865    1.4546    1.7832    1.9263    1.9943
-   -0.9246   -0.5113    0.5744    1.2440    1.5146    1.6298    1.6832
-   -1.2111   -0.6451    0.4462    1.0053    1.1960    1.2696    1.3020
-   -0.9713   -0.3888    0.5367    0.8329    0.9368    0.9760    0.9949
-   -0.9867   -0.3874    0.5524    0.8418    0.9299    0.9635    0.9787
-
-  Columns 8 through 10
-
-    2.4237    2.4501    2.4664
-    2.2596    2.2834    2.2979
-    2.0299    2.0503    2.0627
-    1.7105    1.7260    1.7353
-    1.3190    1.3287    1.3349
-    1.0044    1.0098    1.0132
-    0.9865    0.9909    0.9936
-
-
-ans(:,:,4,2,2,3) =
-
-  Columns 1 through 7
-
-   -1.2979   -0.7755    0.7030    1.6919    2.1102    2.2915    2.3783
-   -0.5476   -0.2531    0.8319    1.6227    1.9810    2.1413    2.2189
-   -0.2947   -0.0743    0.8304    1.4892    1.7916    1.9287    1.9952
-   -0.4763   -0.2435    0.6742    1.2678    1.5196    1.6310    1.6836
-   -1.2111   -0.6451    0.4462    1.0053    1.1960    1.2696    1.3020
-   -0.9713   -0.3888    0.5367    0.8329    0.9368    0.9760    0.9949
-   -0.9867   -0.3874    0.5524    0.8418    0.9299    0.9635    0.9787
-
-  Columns 8 through 10
-
-    2.4240    2.4502    2.4665
-    2.2600    2.2836    2.2980
-    2.0303    2.0504    2.0627
-    1.7107    1.7260    1.7353
-    1.3190    1.3287    1.3349
-    1.0044    1.0098    1.0132
-    0.9865    0.9909    0.9936
-
-
-ans(:,:,5,2,2,3) =
-
-  Columns 1 through 7
-
-   -0.6060   -0.2753    0.8733    1.7290    2.1192    2.2942    2.3792
-   -0.0129    0.1753    0.9999    1.6652    1.9919    2.1446    2.2200
-    0.1386    0.2644    0.9762    1.5301    1.8025    1.9319    1.9963
-   -0.1451   -0.0056    0.7755    1.2965    1.5268    1.6327    1.6841
-   -1.2111   -0.6451    0.4462    1.0053    1.1960    1.2696    1.3020
-   -0.9713   -0.3888    0.5367    0.8329    0.9368    0.9760    0.9949
-   -0.9867   -0.3874    0.5524    0.8418    0.9299    0.9635    0.9787
-
-  Columns 8 through 10
-
-    2.4244    2.4504    2.4665
-    2.2604    2.2838    2.2981
-    2.0307    2.0506    2.0628
-    1.7108    1.7261    1.7354
-    1.3190    1.3287    1.3349
-    1.0044    1.0098    1.0132
-    0.9865    0.9909    0.9936
-
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% SNW_VFI_MAIN Solves Policy/Value Function SNW (Bisection Vectorized)
@@ -1828,6 +485,14 @@ ans(:,:,5,2,2,3) =
 %    MP_CONTROLS) invoke model with externally set parameter map MP_PARAMS
 %    as well as control mpa MP_CONTROLS.
 %
+%    [V_VFI,AP_VFI,CONS_VFI,EXITFLAG_VFI] = SNW_VFI_MAIN(MP_PARAMS,
+%    MP_CONTROLS, V_VFI_FIX) provides existing value function. Suppose
+%    there is sudden shock, but future value is preserved after one period.
+%    So now we have new value that is specific to this period, that is the
+%    output V_VFI, the input V_VFI_FIX is the value for all future periods.
+%    When this program is called with V_VFI_FIX, the resource equation will
+%    use the unemployment shock information.
+%
 %    See also SNWX_VFI_MAIN, SNW_MP_CONTROL, SNW_MP_PARAM
 %
 
@@ -1842,11 +507,13 @@ if (~isempty(varargin))
         mp_controls = snw_mp_control('default_base');
     elseif (length(varargin)==2)
         [mp_params, mp_controls] = varargin{:};
+    elseif (length(varargin)==3)
+        [mp_params, mp_controls, V_VFI_POSTSHOCK] = varargin{:};
     end
 
 else
 
-    mp_params = snw_mp_param('default_tiny');
+    mp_params = snw_mp_param('default_small');
     mp_controls = snw_mp_control('default_test');
 
 end
@@ -1885,16 +552,13 @@ params_group = values(mp_params, ...
     {'n_jgrid', 'n_agrid', 'n_etagrid', 'n_educgrid', 'n_marriedgrid', 'n_kidsgrid'});
 [n_jgrid, n_agrid, n_etagrid, n_educgrid, n_marriedgrid, n_kidsgrid] = params_group{:};
 
-%% Parse Model Controls
-% Minimizer Controls
-params_group = values(mp_controls, ...
-    {'A_aux', 'B_aux', ...
-     'Aeq', 'Beq',...
-     'nonlcon', 'options', 'options2'});
-[A_aux, B_aux, ...
-    Aeq, Beq, ...
-    nonlcon, options, options2] = params_group{:};
+% unemployment parameters under covid
+if (length(varargin)==3)    
+    params_group = values(mp_params, {'xi','b'});
+    [xi, b] = params_group{:};    
+end
 
+%% Parse Model Controls
 % Profiling Controls
 params_group = values(mp_controls, {'bl_timer'});
 [bl_timer] = params_group{:};
@@ -1958,7 +622,12 @@ for j=n_jgrid:(-1):1 % Age
                     for eta=1:n_etagrid % Productivity
                         
                         % Resources
-                        [inc,earn]=individual_income(j,a,eta,educ);
+                        if (length(varargin)==3)
+                            % one period unemployed shock
+                            [inc,earn]=individual_income(j,a,eta,educ,xi,b);
+                        else
+                            [inc,earn]=individual_income(j,a,eta,educ);
+                        end
                         spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
                         resources = (1+r)*(agrid(a)+Bequests*(bequests_option-1)) ...
                                     + epsilon(j,educ)*theta*exp(eta_H_grid(eta)) ...
@@ -1994,6 +663,12 @@ for j=n_jgrid:(-1):1 % Age
     
     if (j~=n_jgrid)
         
+        if (length(varargin)==3)
+            V_VFI_FUTURE = V_VFI_POSTSHOCK;
+        else
+            V_VFI_FUTURE = V_VFI;
+        end
+        
         for eta=1:n_etagrid % Productivity
             for educ=1:n_educgrid % Educational level
                 for married=1:n_marriedgrid % Marital status
@@ -2005,7 +680,7 @@ for j=n_jgrid:(-1):1 % Age
                                     mn_ev_ap_z(a,eta,educ,married,kids) = ...
                                         mn_ev_ap_z(a,eta,educ,married,kids) ...
                                         + psi(j)*pi_eta(eta,etap)*pi_kids(kids,kidsp,j,educ,married)...
-                                          *V_VFI(j+1,a,etap,educ,married,kidsp);
+                                          *V_VFI_FUTURE(j+1,a,etap,educ,married,kidsp);
                                 end
                             end
 
@@ -2089,7 +764,9 @@ for j=n_jgrid:(-1):1 % Age
                                     disp([j,a,eta,educ,married,kids,cons_VFI(j,a,eta,educ,married,kids)])
                                     error('Non-positive consumption')
                                 end
+                                
                                 V_VFI(j,a,eta,educ,married,kids)=utility(cons_VFI(j,a,eta,educ,married,kids),married,kids);
+                                
                             end
                         end
                     end
@@ -2108,11 +785,19 @@ end
 %% Timing and Profiling End
 if (bl_timer)
     toc;
-    st_complete_vfi = strjoin(...
-        ["Completed SNW_VFI_MAIN", ...
-         ['SNW_MP_PARAM=' mp_params('mp_params_name')], ...
-         ['SNW_MP_CONTROL=' mp_controls('mp_params_name')] ...
-        ], ";");
+    if (length(varargin)==3)
+        st_complete_vfi = strjoin(...
+            ["Completed SNW_VFI_MAIN 1 PERIOD UNEMP SHK", ...
+             ['SNW_MP_PARAM=' char(mp_params('mp_params_name'))], ...
+             ['SNW_MP_CONTROL=' char(mp_controls('mp_params_name'))] ...
+            ], ";");
+    else
+        st_complete_vfi = strjoin(...
+            ["Completed SNW_VFI_MAIN", ...
+             ['SNW_MP_PARAM=' char(mp_params('mp_params_name'))], ...
+             ['SNW_MP_CONTROL=' char(mp_controls('mp_params_name'))] ...
+            ], ";");
+    end
     disp(st_complete_vfi);
 end
 

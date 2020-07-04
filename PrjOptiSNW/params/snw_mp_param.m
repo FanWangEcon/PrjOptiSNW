@@ -109,12 +109,26 @@ elseif(strcmp(st_param_group, "default_base"))
     n_eta_H_grid=5; % 9; % No. of grid points for persistent labor productivity shocks
     n_eta_S_grid=3; % 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
     n_kidsgrid=5; % No. of grid points for children (0 to 4+ children)
+elseif(strcmp(st_param_group, "default_small53"))
+    n_jgrid   =18; % Age runs from 18 to 100 (16 periods of 5 years + terminal)
+    jret      =13;
+    n_agrid   =25; % No. of grid points for assets
+    n_eta_H_grid=5; % 9; % No. of grid points for persistent labor productivity shocks
+    n_eta_S_grid=3; % 3; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
+    n_kidsgrid=3; % No. of grid points for children (0 to 5+ children)
 elseif(strcmp(st_param_group, "default_small"))
     n_jgrid   =18; % Age runs from 18 to 100 (16 periods of 5 years + terminal)
     jret      =13;
     n_agrid   =25; % No. of grid points for assets
-    n_eta_H_grid=3; % 9; % No. of grid points for persistent labor productivity shocks
-    n_eta_S_grid=3; % 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
+    n_eta_H_grid=5; % 9; % No. of grid points for persistent labor productivity shocks
+    n_eta_S_grid=1; % 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
+    n_kidsgrid=3; % No. of grid points for children (0 to 5+ children)
+elseif(strcmp(st_param_group, "default_tiny53"))
+    n_jgrid   =7; % Age runs from 18 to 100 (5 periods of 16 years + terminal)
+    jret =5;
+    n_agrid   =10; % No. of grid points for assets
+    n_eta_H_grid=5; % 9; % No. of grid points for persistent labor productivity shocks
+    n_eta_S_grid=3; % 3; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
     n_kidsgrid=3; % No. of grid points for children (0 to 5+ children)
 elseif(strcmp(st_param_group, "default_tiny"))
     n_jgrid   =7; % Age runs from 18 to 100 (5 periods of 16 years + terminal)
@@ -143,13 +157,13 @@ if(contains(st_param_group, "dense"))
     sigma_eta=0.018; % Variance of AR(1) productivity shocks
     g_n=0.01; % Annual population growth of 1.1 percent
     r=0.04; % Annual real interest rate of 4.0 percent from McGrattan and Prescott
-    beta=0.9730053; % Discount factor
+    beta=0.973087134454599; % 0.97068903873305; % Discount factor
 else
     rho_eta=0.98^it_yrs_per_period;
     sigma_eta=sqrt(0.018^2*sum((0.98.^(0:(it_yrs_per_period-1))).^2));
     g_n=(1.01^it_yrs_per_period)-1;
     r=(1.04^it_yrs_per_period)-1;
-    beta=0.9730053^it_yrs_per_period;
+    beta=0.973087134454599^it_yrs_per_period;
 end
 
 % Spousal Shocks
@@ -169,7 +183,7 @@ elseif bequests_option==1
     if throw_in_ocean==0
         a2=0.7027; % 1.57; % Initial guess for average income tax burden (if we use GS
     elseif throw_in_ocean==1
-        a2=1.55; % 1.55888288714205;
+        a2=1.55791088259089; % 1.55888288714205;
     end
 end
 
@@ -178,7 +192,7 @@ end
 g_cons=0.17575574; % Government consumption expenditures to GDP (BEA: Average 2015-2019)
 
 % Calibrated parameters
-theta=0.676557; % TFP parameter to normalize units such that average household income relative to GDP per capita equals (the latter is normalized to 1): Real GDP/capita in 2019: $58,056
+theta=0.67317057489809; % 0.691180561033545; % TFP parameter to normalize units such that average household income relative to GDP per capita equals (the latter is normalized to 1): Real GDP/capita in 2019: $58,056
 
 % Consumption allocation rule (1=uniform; 2=square root)
 cons_allocation_rule=2;
@@ -451,9 +465,9 @@ mp_params_preftechpricegov('g_n') = g_n;
 mp_params_preftechpricegov('g_cons') = g_cons;
 mp_params_preftechpricegov('a2') = a2;
 mp_params_preftechpricegov('jret') = jret;
-mp_params_preftechpricegov('Bequests') = g_cons;
-mp_params_preftechpricegov('bequests_option') = a2;
-mp_params_preftechpricegov('throw_in_ocean') = jret;
+mp_params_preftechpricegov('Bequests') = Bequests;
+mp_params_preftechpricegov('bequests_option') = bequests_option;
+mp_params_preftechpricegov('throw_in_ocean') = throw_in_ocean;
 
 mp_params_statesgrid = containers.Map('KeyType', 'char', 'ValueType', 'any');
 mp_params_statesgrid('agrid') = agrid;

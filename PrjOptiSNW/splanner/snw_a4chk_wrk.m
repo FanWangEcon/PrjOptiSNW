@@ -1,4 +1,4 @@
-%% SNW_A4CHK_WRK solves for Asset Position Corresponding to Check Level
+%% SNW_A4CHK_WRK (loop fzero) Asset Position Corresponding to Check Level
 %    What is the value of a check? From the perspective of the value
 %    function? We have Asset as a state variable, in a cash-on-hand sense,
 %    how much must the asset (or think cash-on-hand) increase by, so that
@@ -15,7 +15,7 @@
 %    * MP_PARAMS map with model parameters
 %    * MP_CONTROLS map with control parameters
 %
-%    [V_W, EXITFLAG_FSOLVE] = SNW_A4CHK_WRK(WELF_CHECKS, TR, V_SS,
+%    [V_W, EXITFLAG_FSOLVE] = SNW_A4CHK_WRK(WELF_CHECKS, V_SS,
 %    MP_PARAMS, MP_CONTROLS) solves for working value given V_SS value
 %    function results, for number of check WELF_CHECKS, and given the value
 %    of each check equal to TR.
@@ -30,22 +30,27 @@ function [V_W, exitflag_fsolve]=snw_a4chk_wrk(varargin)
 %% Default and Parse
 if (~isempty(varargin))
     
-    if (length(varargin)==3)
-        [welf_checks, TR, V_ss] = varargin{:};
+    if (length(varargin)==2)
+        [welf_checks, V_ss] = varargin{:};
         mp_controls = snw_mp_control('default_base');
-    elseif (length(varargin)==5)
-        [welf_checks, TR, V_ss, mp_params, mp_controls] = varargin{:};
+    elseif (length(varargin)==4)
+        [welf_checks, V_ss, mp_params, mp_controls] = varargin{:};
     end
     
 else
+    
     close all;
     
     % Solve the VFI Problem and get Value Function
-    mp_params = snw_mp_param('default_small');
+    mp_params = snw_mp_param('default_tiny');
     mp_controls = snw_mp_control('default_test');
     [V_ss,~,~,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
-    welf_checks = 2;
+           
+    % Solve for Value of One Period Unemployment Shock
+    welf_checks = 2;    
     TR = 100/58056;
+    mp_params('TR') = TR;
+    
 end
 
 %% Reset All globals
@@ -72,6 +77,9 @@ params_group = values(mp_params, {'epsilon', 'SS'});
 params_group = values(mp_params, ...
     {'n_jgrid', 'n_agrid', 'n_etagrid', 'n_educgrid', 'n_marriedgrid', 'n_kidsgrid'});
 [n_jgrid, n_agrid, n_etagrid, n_educgrid, n_marriedgrid, n_kidsgrid] = params_group{:};
+
+params_group = values(mp_params, {'TR'});
+[TR] = params_group{:};    
 
 %% Parse Model Controls
 % Minimizer Controls

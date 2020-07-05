@@ -92,17 +92,17 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
   mp_controls('bl_fzero') = false;
   $ bl_ff_bisec is true is solve via ff_optim_bisec_savezrone, if both
   true solve both and return error message if answers do not match up.
-  mp_controls('bl_ff_bisec') = true;</pre><pre>  [V_W, EXITFLAG_FSOLVE] = SNW_A4CHK_WRK_BISEC(WELF_CHECKS, TR,
+  mp_controls('bl_ff_bisec') = true;</pre><pre>  [V_W, EXITFLAG_FSOLVE] = SNW_A4CHK_WRK_BISEC(WELF_CHECKS,
   V_SS, MP_PARAMS, MP_CONTROLS) solves for working value given V_SS
   value function results, for number of check WELF_CHECKS, and given the
   value of each check equal to TR.</pre><pre>  See also SNW_A4CHK_WRK_BISEC_VEC, SNW_A4CHK_WRK, FIND_A_WORKING</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#3">Default and Parse</a></li><li><a href="#4">Reset All globals</a></li><li><a href="#5">Parse Model Parameters</a></li><li><a href="#6">Control Map Function Specific Local Defaults</a></li><li><a href="#7">Parse Model Controls</a></li><li><a href="#8">Timing and Profiling Start</a></li><li><a href="#9">Loop over states and find A state for a Particular Check Level</a></li><li><a href="#10">Timing and Profiling End</a></li><li><a href="#11">Compare Difference between V_ss and V_W</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> [V_W, exitflag_fsolve]=snw_a4chk_wrk_bisec(varargin)
 </pre><h2 id="3">Default and Parse</h2><pre class="codeinput"><span class="keyword">if</span> (~isempty(varargin))
 
-    <span class="keyword">if</span> (length(varargin)==3)
-        [welf_checks, TR, V_ss] = varargin{:};
+    <span class="keyword">if</span> (length(varargin)==2)
+        [welf_checks, V_ss] = varargin{:};
         mp_controls_ext = snw_mp_control(<span class="string">'default_base'</span>);
-    <span class="keyword">elseif</span> (length(varargin)==5)
-        [welf_checks, TR, V_ss, mp_params, mp_controls_ext] = varargin{:};
+    <span class="keyword">elseif</span> (length(varargin)==4)
+        [welf_checks, V_ss, mp_params, mp_controls_ext] = varargin{:};
     <span class="keyword">end</span>
 
 <span class="keyword">else</span>
@@ -113,7 +113,6 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     mp_controls_ext = snw_mp_control(<span class="string">'default_test'</span>);
     [V_ss,~,~,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls_ext);
     welf_checks = 2;
-    TR = 100/58056;
 
     <span class="comment">% run fzero</span>
     mp_controls_ext(<span class="string">'bl_fzero'</span>) = true;
@@ -128,7 +127,7 @@ SNW_VFI_MAIN: Finished Age Group:4 of 7
 SNW_VFI_MAIN: Finished Age Group:3 of 7
 SNW_VFI_MAIN: Finished Age Group:2 of 7
 SNW_VFI_MAIN: Finished Age Group:1 of 7
-Elapsed time is 0.206634 seconds.
+Elapsed time is 0.208383 seconds.
 Completed SNW_VFI_MAIN;SNW_MP_PARAM=default_tiny;SNW_MP_CONTROL=default_test
 </pre><h2 id="4">Reset All globals</h2><p>globals = who('global'); clear(globals{:}); Parameters used in this code directly</p><pre class="codeinput"><span class="keyword">global</span> agrid n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
 <span class="comment">% Used in find_a_working function</span>
@@ -148,6 +147,9 @@ params_group = values(mp_params, {<span class="string">'epsilon'</span>, <span c
 params_group = values(mp_params, <span class="keyword">...</span>
     {<span class="string">'n_jgrid'</span>, <span class="string">'n_agrid'</span>, <span class="string">'n_etagrid'</span>, <span class="string">'n_educgrid'</span>, <span class="string">'n_marriedgrid'</span>, <span class="string">'n_kidsgrid'</span>});
 [n_jgrid, n_agrid, n_etagrid, n_educgrid, n_marriedgrid, n_kidsgrid] = params_group{:};
+
+params_group = values(mp_params, {<span class="string">'TR'</span>});
+[TR] = params_group{:};
 </pre><h2 id="6">Control Map Function Specific Local Defaults</h2><pre class="codeinput">mp_controls = containers.Map(<span class="string">'KeyType'</span>, <span class="string">'char'</span>, <span class="string">'ValueType'</span>, <span class="string">'any'</span>);
 mp_controls(<span class="string">'bl_fzero'</span>) = false;
 mp_controls(<span class="string">'bl_ff_bisec'</span>) = true;
@@ -280,7 +282,7 @@ SNW_A4CHK_WRK: Finished Age Group:7 of 7
         ], <span class="string">";"</span>);
     disp(st_complete_a4chk);
 <span class="keyword">end</span>
-</pre><pre class="codeoutput">Elapsed time is 10.271937 seconds.
+</pre><pre class="codeoutput">Elapsed time is 10.098343 seconds.
 Completed SNW_A4CHK_WRK;welf_checks=2;TR=0.0017225;SNW_MP_PARAM=default_tiny;SNW_MP_CONTROL=default_test
 </pre><h2 id="11">Compare Difference between V_ss and V_W</h2><pre class="codeinput"><span class="keyword">if</span> (bl_print_a4chk_verbose)
     mn_V_gain_check = V_W - V_ss;
@@ -359,7 +361,7 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 %    true solve both and return error message if answers do not match up.
 %    mp_controls('bl_ff_bisec') = true;
 %
-%    [V_W, EXITFLAG_FSOLVE] = SNW_A4CHK_WRK_BISEC(WELF_CHECKS, TR,
+%    [V_W, EXITFLAG_FSOLVE] = SNW_A4CHK_WRK_BISEC(WELF_CHECKS,
 %    V_SS, MP_PARAMS, MP_CONTROLS) solves for working value given V_SS
 %    value function results, for number of check WELF_CHECKS, and given the
 %    value of each check equal to TR.
@@ -373,11 +375,11 @@ function [V_W, exitflag_fsolve]=snw_a4chk_wrk_bisec(varargin)
 %% Default and Parse
 if (~isempty(varargin))
     
-    if (length(varargin)==3)
-        [welf_checks, TR, V_ss] = varargin{:};
+    if (length(varargin)==2)
+        [welf_checks, V_ss] = varargin{:};
         mp_controls_ext = snw_mp_control('default_base');
-    elseif (length(varargin)==5)
-        [welf_checks, TR, V_ss, mp_params, mp_controls_ext] = varargin{:};
+    elseif (length(varargin)==4)
+        [welf_checks, V_ss, mp_params, mp_controls_ext] = varargin{:};
     end
     
 else
@@ -388,7 +390,6 @@ else
     mp_controls_ext = snw_mp_control('default_test');
     [V_ss,~,~,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls_ext);
     welf_checks = 2;
-    TR = 100/58056;
     
     % run fzero
     mp_controls_ext('bl_fzero') = true;    
@@ -421,6 +422,9 @@ params_group = values(mp_params, {'epsilon', 'SS'});
 params_group = values(mp_params, ...
     {'n_jgrid', 'n_agrid', 'n_etagrid', 'n_educgrid', 'n_marriedgrid', 'n_kidsgrid'});
 [n_jgrid, n_agrid, n_etagrid, n_educgrid, n_marriedgrid, n_kidsgrid] = params_group{:};
+
+params_group = values(mp_params, {'TR'});
+[TR] = params_group{:};    
 
 %% Control Map Function Specific Local Defaults
 mp_controls = containers.Map('KeyType', 'char', 'ValueType', 'any');

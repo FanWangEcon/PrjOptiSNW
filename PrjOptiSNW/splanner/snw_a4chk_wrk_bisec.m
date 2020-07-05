@@ -1,4 +1,4 @@
-%% SNW_A4CHK_WRK_BISEC (loop) solves for Asset Position Corresponding to Check Level
+%% SNW_A4CHK_WRK_BISEC (loop bisec) Asset Position Corresponding to Check Level
 %    What is the value of a check? From the perspective of the value
 %    function? We have Asset as a state variable, in a cash-on-hand sense,
 %    how much must the asset (or think cash-on-hand) increase by, so that
@@ -35,7 +35,7 @@
 %    true solve both and return error message if answers do not match up.
 %    mp_controls('bl_ff_bisec') = true;
 %
-%    [V_W, EXITFLAG_FSOLVE] = SNW_A4CHK_WRK_BISEC(WELF_CHECKS, TR,
+%    [V_W, EXITFLAG_FSOLVE] = SNW_A4CHK_WRK_BISEC(WELF_CHECKS,
 %    V_SS, MP_PARAMS, MP_CONTROLS) solves for working value given V_SS
 %    value function results, for number of check WELF_CHECKS, and given the
 %    value of each check equal to TR.
@@ -49,11 +49,11 @@ function [V_W, exitflag_fsolve]=snw_a4chk_wrk_bisec(varargin)
 %% Default and Parse
 if (~isempty(varargin))
     
-    if (length(varargin)==3)
-        [welf_checks, TR, V_ss] = varargin{:};
+    if (length(varargin)==2)
+        [welf_checks, V_ss] = varargin{:};
         mp_controls_ext = snw_mp_control('default_base');
-    elseif (length(varargin)==5)
-        [welf_checks, TR, V_ss, mp_params, mp_controls_ext] = varargin{:};
+    elseif (length(varargin)==4)
+        [welf_checks, V_ss, mp_params, mp_controls_ext] = varargin{:};
     end
     
 else
@@ -63,8 +63,11 @@ else
     mp_params = snw_mp_param('default_tiny');
     mp_controls_ext = snw_mp_control('default_test');
     [V_ss,~,~,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls_ext);
-    welf_checks = 2;
+    
+    % Solve for Value of One Period Unemployment Shock
+    welf_checks = 2;    
     TR = 100/58056;
+    mp_params('TR') = TR;
     
     % run fzero
     mp_controls_ext('bl_fzero') = true;    
@@ -97,6 +100,9 @@ params_group = values(mp_params, {'epsilon', 'SS'});
 params_group = values(mp_params, ...
     {'n_jgrid', 'n_agrid', 'n_etagrid', 'n_educgrid', 'n_marriedgrid', 'n_kidsgrid'});
 [n_jgrid, n_agrid, n_etagrid, n_educgrid, n_marriedgrid, n_kidsgrid] = params_group{:};
+
+params_group = values(mp_params, {'TR'});
+[TR] = params_group{:};    
 
 %% Control Map Function Specific Local Defaults
 mp_controls = containers.Map('KeyType', 'char', 'ValueType', 'any');

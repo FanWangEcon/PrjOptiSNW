@@ -41,6 +41,13 @@ else
     
     [V_ss,~,~,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
     
+    % Solve for Value of One Period Unemployment Shock
+    xi=0.5; % Proportional reduction in income due to unemployment (xi=0 refers to 0 labor income; xi=1 refers to no drop in labor income)
+    b=0; % Unemployment insurance replacement rate (b=0 refers to no UI benefits; b=1 refers to 100 percent labor income replacement)
+
+    mp_params('xi') = xi;
+    mp_params('b') = b;
+    
 end
 
 %% Reset All globals

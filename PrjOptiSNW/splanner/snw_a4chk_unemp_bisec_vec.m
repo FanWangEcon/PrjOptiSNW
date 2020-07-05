@@ -1,4 +1,4 @@
-%% SNW_A4CHK_UNEMP (loop fzero) Asset Position Corresponding to Check Level
+%% SNW_A4CHK_UNEMP_BISEC_VEC (Exact Vectorized) Asset Position for Check
 %    What is the value of a check? From the perspective of the value
 %    function? We have Asset as a state variable, in a cash-on-hand sense,
 %    how much must the asset (or think cash-on-hand) increase by, so that
@@ -13,37 +13,28 @@
 %    shock. Here, we have the unemployment shock. This is the slower looped
 %    code fzero version.
 %
+%    This is the faster vectorized solution. It takes as given pre-computed
+%    household head and spousal income that is state-space specific, which
+%    does not need to be recomputed.
+%
 %    * WELF_CHECKS integer the number of checks
-%    * V_UNEMP ndarray the value matrix along standard state-space
-%    dimensions:
-%    (n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid) for
-%    value with associated one period unemployment shock
+%    * TR float the value of each check
+%    * V_SS ndarray the value matrix along standard state-space dimensions:
+%    (n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid)
 %    * MP_PARAMS map with model parameters
 %    * MP_CONTROLS map with control parameters
 %
-%    [V_U, EXITFLAG_FSOLVE] = SNW_A4CHK_UNEMP(WELF_CHECKS, V_UNEMP)
-%    solves for working value given V_UNEMP value function results, value
-%    function given one period unemployment shock. WELF_CHECKS is the
-%    number of checks. TR, the value of each check, XI, intensity of 
-%    of check WELF_CHECKS, and given the value of each check equal to TR.
-%    Unemployment XI and B variable will be automatically grabbed out from the , XI is the intensity of
-%    unemployment proportional earning shock, B is the replacement rate.
-%
-%    [V_U, EXITFLAG_FSOLVE] = SNW_A4CHK_UNEMP(WELF_CHECKS, TR, V_SS, XI, B)
-%    solves for working value given V_SS value function results, for number
-%    of check WELF_CHECKS, and given the value of each check equal to TR,
-%    with unemployment XI and B variable, XI is the intensity of
-%    unemployment proportional earning shock, B is the replacement rate.
-%
-%    [V_W, EXITFLAG_FSOLVE] = SNW_A4CHK_UNEMP(WELF_CHECKS, TR, V_SS, XI, B,
-%    MP_PARAMS, MP_CONTROLS) control parameters and controls.
+%    [V_W, EXITFLAG_FSOLVE] = SNW_A4CHK_UNEMP(WELF_CHECKS, TR, V_SS,
+%    MP_PARAMS, MP_CONTROLS) solves for working value given V_SS value
+%    function results, for number of check WELF_CHECKS, and given the value
+%    of each check equal to TR.
 %
 %    See also SNWX_A4CHK_WRK_SMALL, SNWX_A4CHK_WRK_DENSE,
 %    SNW_A4CHK_UNEMP_BISEC, SNW_A4CHK_UNEMP_BISEC_VEC, FIND_A_WORKING
 %
 
 %%
-function [V_U, exitflag_fsolve]=snw_a4chk_unemp(varargin)
+function [V_U, exitflag_fsolve]=snw_a4chk_unemp_bisec_vec(varargin)
 
 %% Default and Parse
 if (~isempty(varargin))
@@ -53,6 +44,11 @@ if (~isempty(varargin))
         mp_controls = snw_mp_control('default_base');
     elseif (length(varargin)==4)
         [welf_checks, V_unemp, mp_params, mp_controls] = varargin{:};
+    elseif (length(varargin)==7)
+        [welf_checks, V_unemp, mp_params, mp_controls, ...
+            ar_a_amz, ar_inc_unemp_amz, ar_spouse_inc_unemp_amz] = varargin{:};        
+    else
+        error('Need to provide 2/4/7 parameter inputs');
     end
     
 else
@@ -82,8 +78,6 @@ else
 end
 
 %% Reset All globals
-% globals = who('global');
-% clear(globals{:});
 % Parameters used in this code directly
 global agrid n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
 % Used in find_a_working function
@@ -111,6 +105,8 @@ params_group = values(mp_params, {'TR', 'xi','b'});
 
 %% Parse Model Controls
 % Minimizer Controls
+params_group = values(mp_controls, {'fl_max_trchk_perc_increase'});
+[fl_max_trchk_perc_increase] = params_group{:};
 params_group = values(mp_controls, {'options2'});
 [options2] = params_group{:};
 
@@ -128,11 +124,67 @@ if (bl_timer)
     tic
 end
 
-%% Loop over states and find A state for a Particular Check Level
+%% A. Compute Household-Head and Spousal Income
 
+% this is only called when the function is called without mn_inc_plus_spouse_inc
+if ~exist('mn_inc_plus_spouse_inc','var')
+    
+    % initialize
+    mn_inc_unemp = NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+    mn_spouse_inc_unemp = NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+    mn_a = NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+    
+    % Txable Income at all state-space points
+    for j=1:n_jgrid % Age
+        for a=1:n_agrid % Assets
+            for eta=1:n_etagrid % Productivity
+                for educ=1:n_educgrid % Educational level
+                    for married=1:n_marriedgrid % Marital status
+                        for kids=1:n_kidsgrid % Number of kids
+
+                            [inc,earn]=individual_income(j,a,eta,educ,xi,b);
+                            spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
+
+                            mn_inc_unemp(j,a,eta,educ,married,kids) = inc;
+                            mn_spouse_inc_unemp(j,a,eta,educ,married,kids) = (married-1)*spouse_inc*exp(eta_S_grid(eta));
+                            mn_a(j,a,eta,educ,married,kids) = agrid(a);
+                            
+                        end
+                    end
+                end
+            end
+        end
+    end
+    
+    % flatten the nd dimensional array
+    ar_inc_unemp_amz = mn_inc_unemp(:);
+    ar_spouse_inc_unemp_amz = mn_spouse_inc_unemp(:);
+    ar_a_amz = mn_a(:);
+    
+end
+
+%% B. Vectorized Solution for Optimal Check Adjustments
+
+% B1. Anonymous Function where X is fraction of addition given bounds
+fc_ffi_frac0t1_find_a_working = @(x) ffi_frac0t1_find_a_unemp_vec(...
+    x, ...
+    ar_a_amz, ar_inc_unemp_amz, ar_spouse_inc_unemp_amz, ...
+    welf_checks, TR, r, fl_max_trchk_perc_increase);
+
+% B2. Solve with Bisection
+[~, ar_a_aux_unemp_bisec_amz] = ...
+    ff_optim_bisec_savezrone(fc_ffi_frac0t1_find_a_working);
+
+% B3. Reshape
+mn_a_aux_unemp_bisec = reshape(ar_a_aux_unemp_bisec_amz, [n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid]);
+
+%% C. Loop over all States, Interpolate given Bisec A_AUX_UMEMP results
+
+% C1. Initialize
 V_U=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 exitflag_fsolve=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 
+% C2. Loop
 for j=1:n_jgrid % Age
     for a=1:n_agrid % Assets
         for eta=1:n_etagrid % Productivity
@@ -140,11 +192,10 @@ for j=1:n_jgrid % Age
                 for married=1:n_marriedgrid % Marital status
                     for kids=1:n_kidsgrid % Number of kids
                         
-                        % Find value of assets that approximates the value of the welfare checks
-                        x0=agrid(a)+TR*welf_checks; % Initial guess for a
+                        % C3. Get the Vectorize Solved Solution
+                        a_aux = mn_a_aux_unemp_bisec(j,a,eta,educ,married,kids);
                         
-                        [a_aux,~,exitflag_fsolve(j,a,eta,educ,married,kids)]=fsolve(@(x)find_a_unemp(x,j,a,eta,educ,married,kids,TR,xi,b,welf_checks),x0,options2);
-                        
+                        % C4. Error Check
                         if a_aux<0
                             disp(a_aux)
                             error('Check code! Should not allow for negative welfare checks')
@@ -152,29 +203,27 @@ for j=1:n_jgrid % Age
                             a_aux=agrid(n_agrid);
                         end
                         
-                        % Linear interpolation
+                        % C5. Linear interpolation
                         ind_aux=find(agrid<=a_aux,1,'last');
                         
                         if a_aux==0
                             inds(1)=1;
                             inds(2)=1;
                             vals(1)=1;
-                            vals(2)=0;
-                            
+                            vals(2)=0;                            
                         elseif a_aux==agrid(n_agrid)
                             inds(1)=n_agrid;
                             inds(2)=n_agrid;
                             vals(1)=1;
-                            vals(2)=0;
-                            
+                            vals(2)=0;                            
                         else
                             inds(1)=ind_aux;
                             inds(2)=ind_aux+1;
                             vals(1)=1-((a_aux-agrid(inds(1)))/(agrid(inds(2))-agrid(inds(1))));
-                            vals(2)=1-vals(1);
-                            
+                            vals(2)=1-vals(1);                            
                         end
                         
+                        % C6. Weight
                         V_U(j,a,eta,educ,married,kids)=vals(1)*V_unemp(j,inds(1),eta,educ,married,kids)+vals(2)*V_unemp(j,inds(2),eta,educ,married,kids);
                         
                     end
@@ -184,20 +233,21 @@ for j=1:n_jgrid % Age
     end
     
     if (bl_print_a4chk)
-        disp(strcat(['SNW_A4CHK_UNEMP: Finished Age Group:' num2str(j) ' of ' num2str(n_jgrid)]));
+        disp(strcat(['SNW_A4CHK_UNEMP_BISEC_VEC: Finished Age Group:' ...
+            num2str(j) ' of ' num2str(n_jgrid)]));
     end
     
 end
 
-%% Timing and Profiling End
+%% D. Timing and Profiling End
 if (bl_timer)
     toc;
     st_complete_a4chk = strjoin(...
-        ["Completed SNW_A4CHK_UNEMP", ...
+        ["Completed SNW_A4CHK_UNEMP_BISEC_VEC", ...
          ['welf_checks=' num2str(welf_checks)], ...
          ['TR=' num2str(TR)], ...
          ['xi=' num2str(xi)], ...
-         ['b=' num2str(b)], ...         
+         ['b=' num2str(b)], ...
          ['SNW_MP_PARAM=' char(mp_params('mp_params_name'))], ...
          ['SNW_MP_CONTROL=' char(mp_controls('mp_params_name'))] ...
         ], ";");
@@ -218,4 +268,30 @@ if (bl_print_a4chk_verbose)
     ff_container_map_display(mp_container_map);
 end
 
+end
+
+% this function is in fact identical to ffi_frac0t1_find_a_working_vec from
+% snw_a4chk_wrk_bisec_vec.m
+function [ar_root_zero, ar_a_aux_amz] = ...
+    ffi_frac0t1_find_a_unemp_vec(...
+    ar_aux_change_frac_amz, ...
+    ar_a_amz, ar_inc_unemp_amz, ar_spouse_unemp_amz, ...
+    welf_checks, TR, r, fl_max_trchk_perc_increase)
+    
+    % Max A change to account for check
+    fl_a_aux_max = TR*welf_checks*fl_max_trchk_perc_increase;    
+    
+    % Level of A change
+    ar_a_aux_amz = ar_a_amz + ar_aux_change_frac_amz.*fl_a_aux_max;
+    
+    % Account for Interest Rates
+    ar_r_gap = (1+r).*(ar_a_amz - ar_a_aux_amz);
+    
+    % Account for tax, inc changes by r
+    ar_tax_gap = ...
+          max(0, Tax(ar_inc_unemp_amz, ar_spouse_unemp_amz)) ...
+        - max(0, Tax(ar_inc_unemp_amz - ar_a_amz*r + ar_a_aux_amz*r, ar_spouse_unemp_amz));
+    
+    % difference equation f(a4chkchange)=0
+    ar_root_zero = TR*welf_checks + ar_r_gap - ar_tax_gap;
 end

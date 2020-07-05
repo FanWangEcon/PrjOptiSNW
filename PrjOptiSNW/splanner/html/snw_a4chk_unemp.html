@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>SNW_A4CHK_UNEMP solves for Asset Position Corresponding to Check Level</title><meta name="generator" content="MATLAB 9.7"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-07-04"><meta name="DC.source" content="snw_a4chk_unemp.m"><style type="text/css">
+      --><title>SNW_A4CHK_UNEMP (loop fzero) Asset Position Corresponding to Check Level</title><meta name="generator" content="MATLAB 9.7"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-07-04"><meta name="DC.source" content="snw_a4chk_unemp.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,93 +66,87 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>SNW_A4CHK_UNEMP solves for Asset Position Corresponding to Check Level</h1><!--introduction--><pre>  What is the value of a check? From the perspective of the value
+  </style></head><body><div class="content"><h1>SNW_A4CHK_UNEMP (loop fzero) Asset Position Corresponding to Check Level</h1><!--introduction--><pre>  What is the value of a check? From the perspective of the value
   function? We have Asset as a state variable, in a cash-on-hand sense,
   how much must the asset (or think cash-on-hand) increase by, so that
   it is equivalent to providing the household with a check? This is not
   the same as the check amount because of tax as well as interest rates.
   Interest rates means that you might need to offer a smaller a than the
   check amount. The tax rate means that we might need to shift a by
-  larger than the check amount.</pre><pre>  * WELF_CHECKS integer the number of checks
-  * TR float the value of each check
-  * V_SS ndarray the value matrix along standard state-space dimensions:
-  (n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid)
+  larger than the check amount.</pre><pre>  This function is slightly different from SNW_A4CHK_WRK. There we solve
+  the problem for working individuals who do not have an unemployment
+  shock. Here, we have the unemployment shock. This is the slower looped
+  code fzero version.</pre><pre>  * WELF_CHECKS integer the number of checks
+  * V_UNEMP ndarray the value matrix along standard state-space
+  dimensions:
+  (n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid) for
+  value with associated one period unemployment shock
   * MP_PARAMS map with model parameters
-  * MP_CONTROLS map with control parameters</pre><pre>  [V_W, EXITFLAG_FSOLVE] = SNW_A4CHK_UNEMP(WELF_CHECKS, TR, V_SS,
-  MP_PARAMS, MP_CONTROLS) solves for working value given V_SS value
-  function results, for number of check WELF_CHECKS, and given the value
-  of each check equal to TR.</pre><pre>  See also SNWX_A4CHK_WRK_SMALL, SNWX_A4CHK_WRK_DENSE,
+  * MP_CONTROLS map with control parameters</pre><pre>  [V_U, EXITFLAG_FSOLVE] = SNW_A4CHK_UNEMP(WELF_CHECKS, V_UNEMP)
+  solves for working value given V_UNEMP value function results, value
+  function given one period unemployment shock. WELF_CHECKS is the
+  number of checks. TR, the value of each check, XI, intensity of
+  of check WELF_CHECKS, and given the value of each check equal to TR.
+  Unemployment XI and B variable will be automatically grabbed out from the , XI is the intensity of
+  unemployment proportional earning shock, B is the replacement rate.</pre><pre>  [V_U, EXITFLAG_FSOLVE] = SNW_A4CHK_UNEMP(WELF_CHECKS, TR, V_SS, XI, B)
+  solves for working value given V_SS value function results, for number
+  of check WELF_CHECKS, and given the value of each check equal to TR,
+  with unemployment XI and B variable, XI is the intensity of
+  unemployment proportional earning shock, B is the replacement rate.</pre><pre>  [V_W, EXITFLAG_FSOLVE] = SNW_A4CHK_UNEMP(WELF_CHECKS, TR, V_SS, XI, B,
+  MP_PARAMS, MP_CONTROLS) control parameters and controls.</pre><pre>  See also SNWX_A4CHK_WRK_SMALL, SNWX_A4CHK_WRK_DENSE,
   SNW_A4CHK_UNEMP_BISEC, SNW_A4CHK_UNEMP_BISEC_VEC, FIND_A_WORKING</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#3">Default and Parse</a></li><li><a href="#4">Reset All globals</a></li><li><a href="#5">Parse Model Parameters</a></li><li><a href="#6">Parse Model Controls</a></li><li><a href="#7">Timing and Profiling Start</a></li><li><a href="#8">Loop over states and find A state for a Particular Check Level</a></li><li><a href="#9">Timing and Profiling End</a></li><li><a href="#10">Compare Difference between V_ss and V_W</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> [V_U, exitflag_fsolve]=snw_a4chk_unemp(varargin)
 </pre><h2 id="3">Default and Parse</h2><pre class="codeinput"><span class="keyword">if</span> (~isempty(varargin))
 
-    <span class="keyword">if</span> (length(varargin)==3)
-        [welf_checks, TR, xi, b, V_unemp] = varargin{:};
+    <span class="keyword">if</span> (length(varargin)==2)
+        [welf_checks, V_unemp] = varargin{:};
         mp_controls = snw_mp_control(<span class="string">'default_base'</span>);
-    <span class="keyword">elseif</span> (length(varargin)==5)
-        [welf_checks, TR, xi, b, V_unemp, mp_params, mp_controls] = varargin{:};
+    <span class="keyword">elseif</span> (length(varargin)==4)
+        [welf_checks, V_unemp, mp_params, mp_controls] = varargin{:};
     <span class="keyword">end</span>
 
 <span class="keyword">else</span>
     close <span class="string">all</span>;
 
-    welf_checks = 2;
-    TR = 100/58056;
-
     <span class="comment">% Solve the VFI Problem and get Value Function</span>
-    mp_params = snw_mp_param(<span class="string">'default_small'</span>);
+    mp_params = snw_mp_param(<span class="string">'default_tiny'</span>);
     mp_controls = snw_mp_control(<span class="string">'default_test'</span>);
 
     <span class="comment">% Solve for Value Function, Without One Period Unemployment Shock</span>
     [V_ss,~,~,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
 
+    <span class="comment">% The number of checks</span>
+    welf_checks = 2;
+
     <span class="comment">% Solve for Value of One Period Unemployment Shock</span>
     xi=0.5; <span class="comment">% Proportional reduction in income due to unemployment (xi=0 refers to 0 labor income; xi=1 refers to no drop in labor income)</span>
     b=0; <span class="comment">% Unemployment insurance replacement rate (b=0 refers to no UI benefits; b=1 refers to 100 percent labor income replacement)</span>
+    TR = 100/58056;
+
+    mp_params(<span class="string">'TR'</span>) = TR;
     mp_params(<span class="string">'xi'</span>) = xi;
     mp_params(<span class="string">'b'</span>) = b;
+
     [V_unemp,~,~,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls, V_ss);
 
 <span class="keyword">end</span>
-</pre><pre class="codeoutput">SNW_VFI_MAIN: Finished Age Group:18 of 18
-SNW_VFI_MAIN: Finished Age Group:17 of 18
-SNW_VFI_MAIN: Finished Age Group:16 of 18
-SNW_VFI_MAIN: Finished Age Group:15 of 18
-SNW_VFI_MAIN: Finished Age Group:14 of 18
-SNW_VFI_MAIN: Finished Age Group:13 of 18
-SNW_VFI_MAIN: Finished Age Group:12 of 18
-SNW_VFI_MAIN: Finished Age Group:11 of 18
-SNW_VFI_MAIN: Finished Age Group:10 of 18
-SNW_VFI_MAIN: Finished Age Group:9 of 18
-SNW_VFI_MAIN: Finished Age Group:8 of 18
-SNW_VFI_MAIN: Finished Age Group:7 of 18
-SNW_VFI_MAIN: Finished Age Group:6 of 18
-SNW_VFI_MAIN: Finished Age Group:5 of 18
-SNW_VFI_MAIN: Finished Age Group:4 of 18
-SNW_VFI_MAIN: Finished Age Group:3 of 18
-SNW_VFI_MAIN: Finished Age Group:2 of 18
-SNW_VFI_MAIN: Finished Age Group:1 of 18
-Elapsed time is 1.029922 seconds.
-Completed SNW_VFI_MAIN;SNW_MP_PARAM=default_small;SNW_MP_CONTROL=default_test
-SNW_VFI_MAIN: Finished Age Group:1 of 18
-SNW_VFI_MAIN: Finished Age Group:2 of 18
-SNW_VFI_MAIN: Finished Age Group:3 of 18
-SNW_VFI_MAIN: Finished Age Group:4 of 18
-SNW_VFI_MAIN: Finished Age Group:5 of 18
-SNW_VFI_MAIN: Finished Age Group:6 of 18
-SNW_VFI_MAIN: Finished Age Group:7 of 18
-SNW_VFI_MAIN: Finished Age Group:8 of 18
-SNW_VFI_MAIN: Finished Age Group:9 of 18
-SNW_VFI_MAIN: Finished Age Group:10 of 18
-SNW_VFI_MAIN: Finished Age Group:11 of 18
-SNW_VFI_MAIN: Finished Age Group:12 of 18
-SNW_VFI_MAIN: Finished Age Group:13 of 18
-SNW_VFI_MAIN: Finished Age Group:14 of 18
-SNW_VFI_MAIN: Finished Age Group:15 of 18
-SNW_VFI_MAIN: Finished Age Group:16 of 18
-SNW_VFI_MAIN: Finished Age Group:17 of 18
-SNW_VFI_MAIN: Finished Age Group:18 of 18
-Elapsed time is 0.934240 seconds.
-Completed SNW_VFI_MAIN 1 PERIOD UNEMP SHK;SNW_MP_PARAM=default_small;SNW_MP_CONTROL=default_test
+</pre><pre class="codeoutput">SNW_VFI_MAIN: Finished Age Group:7 of 7
+SNW_VFI_MAIN: Finished Age Group:6 of 7
+SNW_VFI_MAIN: Finished Age Group:5 of 7
+SNW_VFI_MAIN: Finished Age Group:4 of 7
+SNW_VFI_MAIN: Finished Age Group:3 of 7
+SNW_VFI_MAIN: Finished Age Group:2 of 7
+SNW_VFI_MAIN: Finished Age Group:1 of 7
+Elapsed time is 0.177191 seconds.
+Completed SNW_VFI_MAIN;SNW_MP_PARAM=default_tiny;SNW_MP_CONTROL=default_test
+SNW_VFI_MAIN: Finished Age Group:1 of 7
+SNW_VFI_MAIN: Finished Age Group:2 of 7
+SNW_VFI_MAIN: Finished Age Group:3 of 7
+SNW_VFI_MAIN: Finished Age Group:4 of 7
+SNW_VFI_MAIN: Finished Age Group:5 of 7
+SNW_VFI_MAIN: Finished Age Group:6 of 7
+SNW_VFI_MAIN: Finished Age Group:7 of 7
+Elapsed time is 0.168984 seconds.
+Completed SNW_VFI_MAIN 1 PERIOD UNEMP SHK;SNW_MP_PARAM=default_tiny;SNW_MP_CONTROL=default_test
 </pre><h2 id="4">Reset All globals</h2><p>globals = who('global'); clear(globals{:}); Parameters used in this code directly</p><pre class="codeinput"><span class="keyword">global</span> agrid n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
 <span class="comment">% Used in find_a_working function</span>
 <span class="keyword">global</span> theta r agrid epsilon eta_H_grid eta_S_grid SS Bequests bequests_option throw_in_ocean
@@ -171,6 +165,9 @@ params_group = values(mp_params, {<span class="string">'epsilon'</span>, <span c
 params_group = values(mp_params, <span class="keyword">...</span>
     {<span class="string">'n_jgrid'</span>, <span class="string">'n_agrid'</span>, <span class="string">'n_etagrid'</span>, <span class="string">'n_educgrid'</span>, <span class="string">'n_marriedgrid'</span>, <span class="string">'n_kidsgrid'</span>});
 [n_jgrid, n_agrid, n_etagrid, n_educgrid, n_marriedgrid, n_kidsgrid] = params_group{:};
+
+params_group = values(mp_params, {<span class="string">'TR'</span>, <span class="string">'xi'</span>,<span class="string">'b'</span>});
+[TR, xi, b] = params_group{:};
 </pre><h2 id="6">Parse Model Controls</h2><p>Minimizer Controls</p><pre class="codeinput">params_group = values(mp_controls, {<span class="string">'options2'</span>});
 [options2] = params_group{:};
 
@@ -242,37 +239,28 @@ exitflag_fsolve=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgri
     <span class="keyword">end</span>
 
 <span class="keyword">end</span>
-</pre><pre class="codeoutput">SNW_A4CHK_UNEMP: Finished Age Group:1 of 18
-SNW_A4CHK_UNEMP: Finished Age Group:2 of 18
-SNW_A4CHK_UNEMP: Finished Age Group:3 of 18
-SNW_A4CHK_UNEMP: Finished Age Group:4 of 18
-SNW_A4CHK_UNEMP: Finished Age Group:5 of 18
-SNW_A4CHK_UNEMP: Finished Age Group:6 of 18
-SNW_A4CHK_UNEMP: Finished Age Group:7 of 18
-SNW_A4CHK_UNEMP: Finished Age Group:8 of 18
-SNW_A4CHK_UNEMP: Finished Age Group:9 of 18
-SNW_A4CHK_UNEMP: Finished Age Group:10 of 18
-SNW_A4CHK_UNEMP: Finished Age Group:11 of 18
-SNW_A4CHK_UNEMP: Finished Age Group:12 of 18
-SNW_A4CHK_UNEMP: Finished Age Group:13 of 18
-SNW_A4CHK_UNEMP: Finished Age Group:14 of 18
-SNW_A4CHK_UNEMP: Finished Age Group:15 of 18
-SNW_A4CHK_UNEMP: Finished Age Group:16 of 18
-SNW_A4CHK_UNEMP: Finished Age Group:17 of 18
-SNW_A4CHK_UNEMP: Finished Age Group:18 of 18
+</pre><pre class="codeoutput">SNW_A4CHK_UNEMP: Finished Age Group:1 of 7
+SNW_A4CHK_UNEMP: Finished Age Group:2 of 7
+SNW_A4CHK_UNEMP: Finished Age Group:3 of 7
+SNW_A4CHK_UNEMP: Finished Age Group:4 of 7
+SNW_A4CHK_UNEMP: Finished Age Group:5 of 7
+SNW_A4CHK_UNEMP: Finished Age Group:6 of 7
+SNW_A4CHK_UNEMP: Finished Age Group:7 of 7
 </pre><h2 id="9">Timing and Profiling End</h2><pre class="codeinput"><span class="keyword">if</span> (bl_timer)
     toc;
     st_complete_a4chk = strjoin(<span class="keyword">...</span>
         [<span class="string">"Completed SNW_A4CHK_UNEMP"</span>, <span class="keyword">...</span>
          [<span class="string">'welf_checks='</span> num2str(welf_checks)], <span class="keyword">...</span>
          [<span class="string">'TR='</span> num2str(TR)], <span class="keyword">...</span>
+         [<span class="string">'xi='</span> num2str(xi)], <span class="keyword">...</span>
+         [<span class="string">'b='</span> num2str(b)], <span class="keyword">...</span>
          [<span class="string">'SNW_MP_PARAM='</span> char(mp_params(<span class="string">'mp_params_name'</span>))], <span class="keyword">...</span>
          [<span class="string">'SNW_MP_CONTROL='</span> char(mp_controls(<span class="string">'mp_params_name'</span>))] <span class="keyword">...</span>
         ], <span class="string">";"</span>);
     disp(st_complete_a4chk);
 <span class="keyword">end</span>
-</pre><pre class="codeoutput">Elapsed time is 34.168492 seconds.
-Completed SNW_A4CHK_UNEMP;welf_checks=2;TR=0.0017225;SNW_MP_PARAM=default_small;SNW_MP_CONTROL=default_test
+</pre><pre class="codeoutput">Elapsed time is 5.247516 seconds.
+Completed SNW_A4CHK_UNEMP;welf_checks=2;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_tiny;SNW_MP_CONTROL=default_test
 </pre><h2 id="10">Compare Difference between V_ss and V_W</h2><pre class="codeinput"><span class="keyword">if</span> (bl_print_a4chk_verbose)
     mn_V_gain_check = V_U - V_unemp;
     mn_V_gain_frac_check = (V_U - V_unemp)./V_unemp;
@@ -287,18 +275,18 @@ Completed SNW_A4CHK_UNEMP;welf_checks=2;TR=0.0017225;SNW_MP_PARAM=default_small;
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 CONTAINER NAME: mp_container_map ND Array (Matrix etc)
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                                        i    idx    ndim    numel    rowN    colN      sum         mean          std       coefvari      min        max  
-                                        _    ___    ____    _____    ____    ____    _______    ___________    ________    ________    _______    _______
+                                        i    idx    ndim    numel    rowN    colN      sum         mean           std       coefvari      min         max   
+                                        _    ___    ____    _____    ____    ____    _______    ___________    _________    ________    ________    ________
 
-    V_U                                 1     1      6      27000     18     1500      36839         1.3644       3.551     2.6026     -28.743     6.2606
-    V_U_minus_V_unemp                   2     2      6      27000     18     1500     98.982       0.003666    0.013524      3.689           0    0.34619
-    V_U_minus_V_unemp_divide_V_unemp    3     3      6      27000     18     1500    -21.561    -0.00079855    0.040058    -50.163     -3.0746     4.4638
-    V_unemp                             4     4      6      27000     18     1500      36740         1.3607      3.5604     2.6165     -29.089     6.2606
+    V_U                                 1     1      6      4200      7      600      2847.3        0.67793       1.9639     2.8969      -14.566      2.4886
+    V_U_minus_V_unemp                   2     2      6      4200      7      600      8.0173      0.0019089    0.0062602     3.2795            0    0.066578
+    V_U_minus_V_unemp_divide_V_unemp    3     3      6      4200      7      600     -3.0225    -0.00071964     0.013283    -18.458     -0.79974     0.28191
+    V_unemp                             4     4      6      4200      7      600      2839.3        0.67602       1.9693      2.913      -14.632      2.4886
 
 </pre><pre class="codeinput"><span class="keyword">end</span>
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-%% SNW_A4CHK_UNEMP solves for Asset Position Corresponding to Check Level
+%% SNW_A4CHK_UNEMP (loop fzero) Asset Position Corresponding to Check Level
 %    What is the value of a check? From the perspective of the value
 %    function? We have Asset as a state variable, in a cash-on-hand sense,
 %    how much must the asset (or think cash-on-hand) increase by, so that
@@ -308,17 +296,35 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 %    check amount. The tax rate means that we might need to shift a by
 %    larger than the check amount.
 %
+%    This function is slightly different from SNW_A4CHK_WRK. There we solve
+%    the problem for working individuals who do not have an unemployment
+%    shock. Here, we have the unemployment shock. This is the slower looped
+%    code fzero version.
+%
 %    * WELF_CHECKS integer the number of checks
-%    * TR float the value of each check
-%    * V_SS ndarray the value matrix along standard state-space dimensions:
-%    (n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid)
+%    * V_UNEMP ndarray the value matrix along standard state-space
+%    dimensions:
+%    (n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid) for
+%    value with associated one period unemployment shock
 %    * MP_PARAMS map with model parameters
 %    * MP_CONTROLS map with control parameters
 %
-%    [V_W, EXITFLAG_FSOLVE] = SNW_A4CHK_UNEMP(WELF_CHECKS, TR, V_SS,
-%    MP_PARAMS, MP_CONTROLS) solves for working value given V_SS value
-%    function results, for number of check WELF_CHECKS, and given the value
-%    of each check equal to TR.
+%    [V_U, EXITFLAG_FSOLVE] = SNW_A4CHK_UNEMP(WELF_CHECKS, V_UNEMP)
+%    solves for working value given V_UNEMP value function results, value
+%    function given one period unemployment shock. WELF_CHECKS is the
+%    number of checks. TR, the value of each check, XI, intensity of 
+%    of check WELF_CHECKS, and given the value of each check equal to TR.
+%    Unemployment XI and B variable will be automatically grabbed out from the , XI is the intensity of
+%    unemployment proportional earning shock, B is the replacement rate.
+%
+%    [V_U, EXITFLAG_FSOLVE] = SNW_A4CHK_UNEMP(WELF_CHECKS, TR, V_SS, XI, B)
+%    solves for working value given V_SS value function results, for number
+%    of check WELF_CHECKS, and given the value of each check equal to TR,
+%    with unemployment XI and B variable, XI is the intensity of
+%    unemployment proportional earning shock, B is the replacement rate.
+%
+%    [V_W, EXITFLAG_FSOLVE] = SNW_A4CHK_UNEMP(WELF_CHECKS, TR, V_SS, XI, B,
+%    MP_PARAMS, MP_CONTROLS) control parameters and controls.
 %
 %    See also SNWX_A4CHK_WRK_SMALL, SNWX_A4CHK_WRK_DENSE,
 %    SNW_A4CHK_UNEMP_BISEC, SNW_A4CHK_UNEMP_BISEC_VEC, FIND_A_WORKING
@@ -330,31 +336,35 @@ function [V_U, exitflag_fsolve]=snw_a4chk_unemp(varargin)
 %% Default and Parse
 if (~isempty(varargin))
     
-    if (length(varargin)==3)
-        [welf_checks, TR, xi, b, V_unemp] = varargin{:};
+    if (length(varargin)==2)
+        [welf_checks, V_unemp] = varargin{:};
         mp_controls = snw_mp_control('default_base');
-    elseif (length(varargin)==5)
-        [welf_checks, TR, xi, b, V_unemp, mp_params, mp_controls] = varargin{:};
+    elseif (length(varargin)==4)
+        [welf_checks, V_unemp, mp_params, mp_controls] = varargin{:};
     end
     
 else
     close all;
-            
-    welf_checks = 2;
-    TR = 100/58056;
-    
+                
     % Solve the VFI Problem and get Value Function
-    mp_params = snw_mp_param('default_small');
+    mp_params = snw_mp_param('default_tiny');
     mp_controls = snw_mp_control('default_test');
     
     % Solve for Value Function, Without One Period Unemployment Shock
     [V_ss,~,~,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
     
+    % The number of checks
+    welf_checks = 2;
+    
     % Solve for Value of One Period Unemployment Shock
     xi=0.5; % Proportional reduction in income due to unemployment (xi=0 refers to 0 labor income; xi=1 refers to no drop in labor income)
     b=0; % Unemployment insurance replacement rate (b=0 refers to no UI benefits; b=1 refers to 100 percent labor income replacement)
+    TR = 100/58056;
+
+    mp_params('TR') = TR;
     mp_params('xi') = xi;
     mp_params('b') = b;
+    
     [V_unemp,~,~,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls, V_ss);    
     
 end
@@ -383,6 +393,9 @@ params_group = values(mp_params, {'epsilon', 'SS'});
 params_group = values(mp_params, ...
     {'n_jgrid', 'n_agrid', 'n_etagrid', 'n_educgrid', 'n_marriedgrid', 'n_kidsgrid'});
 [n_jgrid, n_agrid, n_etagrid, n_educgrid, n_marriedgrid, n_kidsgrid] = params_group{:};
+
+params_group = values(mp_params, {'TR', 'xi','b'});
+[TR, xi, b] = params_group{:};    
 
 %% Parse Model Controls
 % Minimizer Controls
@@ -471,6 +484,8 @@ if (bl_timer)
         ["Completed SNW_A4CHK_UNEMP", ...
          ['welf_checks=' num2str(welf_checks)], ...
          ['TR=' num2str(TR)], ...
+         ['xi=' num2str(xi)], ...
+         ['b=' num2str(b)], ...         
          ['SNW_MP_PARAM=' char(mp_params('mp_params_name'))], ...
          ['SNW_MP_CONTROL=' char(mp_controls('mp_params_name'))] ...
         ], ";");

@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>SNW_A4CHK_WRK solves for Asset Position Corresponding to Check Level</title><meta name="generator" content="MATLAB 9.7"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-07-04"><meta name="DC.source" content="snw_a4chk_wrk.m"><style type="text/css">
+      --><title>SNW_A4CHK_WRK (loop fzero) Asset Position Corresponding to Check Level</title><meta name="generator" content="MATLAB 9.7"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-07-04"><meta name="DC.source" content="snw_a4chk_wrk.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>SNW_A4CHK_WRK solves for Asset Position Corresponding to Check Level</h1><!--introduction--><pre>  What is the value of a check? From the perspective of the value
+  </style></head><body><div class="content"><h1>SNW_A4CHK_WRK (loop fzero) Asset Position Corresponding to Check Level</h1><!--introduction--><pre>  What is the value of a check? From the perspective of the value
   function? We have Asset as a state variable, in a cash-on-hand sense,
   how much must the asset (or think cash-on-hand) increase by, so that
   it is equivalent to providing the household with a check? This is not
@@ -78,50 +78,40 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
   * V_SS ndarray the value matrix along standard state-space dimensions:
   (n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid)
   * MP_PARAMS map with model parameters
-  * MP_CONTROLS map with control parameters</pre><pre>  [V_W, EXITFLAG_FSOLVE] = SNW_A4CHK_WRK(WELF_CHECKS, TR, V_SS,
+  * MP_CONTROLS map with control parameters</pre><pre>  [V_W, EXITFLAG_FSOLVE] = SNW_A4CHK_WRK(WELF_CHECKS, V_SS,
   MP_PARAMS, MP_CONTROLS) solves for working value given V_SS value
   function results, for number of check WELF_CHECKS, and given the value
   of each check equal to TR.</pre><pre>  See also SNWX_A4CHK_WRK_SMALL, SNWX_A4CHK_WRK_DENSE,
   SNW_A4CHK_WRK_BISEC, SNW_A4CHK_WRK_BISEC_VEC, FIND_A_WORKING</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#3">Default and Parse</a></li><li><a href="#4">Reset All globals</a></li><li><a href="#5">Parse Model Parameters</a></li><li><a href="#6">Parse Model Controls</a></li><li><a href="#7">Timing and Profiling Start</a></li><li><a href="#8">Loop over states and find A state for a Particular Check Level</a></li><li><a href="#9">Timing and Profiling End</a></li><li><a href="#10">Compare Difference between V_ss and V_W</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> [V_W, exitflag_fsolve]=snw_a4chk_wrk(varargin)
 </pre><h2 id="3">Default and Parse</h2><pre class="codeinput"><span class="keyword">if</span> (~isempty(varargin))
 
-    <span class="keyword">if</span> (length(varargin)==3)
-        [welf_checks, TR, V_ss] = varargin{:};
+    <span class="keyword">if</span> (length(varargin)==2)
+        [welf_checks, V_ss] = varargin{:};
         mp_controls = snw_mp_control(<span class="string">'default_base'</span>);
-    <span class="keyword">elseif</span> (length(varargin)==5)
-        [welf_checks, TR, V_ss, mp_params, mp_controls] = varargin{:};
+    <span class="keyword">elseif</span> (length(varargin)==4)
+        [welf_checks, V_ss, mp_params, mp_controls] = varargin{:};
     <span class="keyword">end</span>
 
 <span class="keyword">else</span>
+
     close <span class="string">all</span>;
 
     <span class="comment">% Solve the VFI Problem and get Value Function</span>
-    mp_params = snw_mp_param(<span class="string">'default_small'</span>);
+    mp_params = snw_mp_param(<span class="string">'default_tiny'</span>);
     mp_controls = snw_mp_control(<span class="string">'default_test'</span>);
     [V_ss,~,~,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
     welf_checks = 2;
-    TR = 100/58056;
+
 <span class="keyword">end</span>
-</pre><pre class="codeoutput">SNW_VFI_MAIN: Finished Age Group:18 of 18
-SNW_VFI_MAIN: Finished Age Group:17 of 18
-SNW_VFI_MAIN: Finished Age Group:16 of 18
-SNW_VFI_MAIN: Finished Age Group:15 of 18
-SNW_VFI_MAIN: Finished Age Group:14 of 18
-SNW_VFI_MAIN: Finished Age Group:13 of 18
-SNW_VFI_MAIN: Finished Age Group:12 of 18
-SNW_VFI_MAIN: Finished Age Group:11 of 18
-SNW_VFI_MAIN: Finished Age Group:10 of 18
-SNW_VFI_MAIN: Finished Age Group:9 of 18
-SNW_VFI_MAIN: Finished Age Group:8 of 18
-SNW_VFI_MAIN: Finished Age Group:7 of 18
-SNW_VFI_MAIN: Finished Age Group:6 of 18
-SNW_VFI_MAIN: Finished Age Group:5 of 18
-SNW_VFI_MAIN: Finished Age Group:4 of 18
-SNW_VFI_MAIN: Finished Age Group:3 of 18
-SNW_VFI_MAIN: Finished Age Group:2 of 18
-SNW_VFI_MAIN: Finished Age Group:1 of 18
-Elapsed time is 0.904721 seconds.
-Completed SNW_VFI_MAIN;SNW_MP_PARAM=default_small;SNW_MP_CONTROL=default_test
+</pre><pre class="codeoutput">SNW_VFI_MAIN: Finished Age Group:7 of 7
+SNW_VFI_MAIN: Finished Age Group:6 of 7
+SNW_VFI_MAIN: Finished Age Group:5 of 7
+SNW_VFI_MAIN: Finished Age Group:4 of 7
+SNW_VFI_MAIN: Finished Age Group:3 of 7
+SNW_VFI_MAIN: Finished Age Group:2 of 7
+SNW_VFI_MAIN: Finished Age Group:1 of 7
+Elapsed time is 0.193273 seconds.
+Completed SNW_VFI_MAIN;SNW_MP_PARAM=default_tiny;SNW_MP_CONTROL=default_test
 </pre><h2 id="4">Reset All globals</h2><p>globals = who('global'); clear(globals{:}); Parameters used in this code directly</p><pre class="codeinput"><span class="keyword">global</span> agrid n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
 <span class="comment">% Used in find_a_working function</span>
 <span class="keyword">global</span> theta r agrid epsilon eta_H_grid eta_S_grid SS Bequests bequests_option throw_in_ocean
@@ -140,6 +130,9 @@ params_group = values(mp_params, {<span class="string">'epsilon'</span>, <span c
 params_group = values(mp_params, <span class="keyword">...</span>
     {<span class="string">'n_jgrid'</span>, <span class="string">'n_agrid'</span>, <span class="string">'n_etagrid'</span>, <span class="string">'n_educgrid'</span>, <span class="string">'n_marriedgrid'</span>, <span class="string">'n_kidsgrid'</span>});
 [n_jgrid, n_agrid, n_etagrid, n_educgrid, n_marriedgrid, n_kidsgrid] = params_group{:};
+
+params_group = values(mp_params, {<span class="string">'TR'</span>});
+[TR] = params_group{:};
 </pre><h2 id="6">Parse Model Controls</h2><p>Minimizer Controls</p><pre class="codeinput">params_group = values(mp_controls, {<span class="string">'options2'</span>});
 [options2] = params_group{:};
 
@@ -211,24 +204,13 @@ exitflag_fsolve=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgri
     <span class="keyword">end</span>
 
 <span class="keyword">end</span>
-</pre><pre class="codeoutput">SNW_A4CHK_WRK: Finished Age Group:1 of 18
-SNW_A4CHK_WRK: Finished Age Group:2 of 18
-SNW_A4CHK_WRK: Finished Age Group:3 of 18
-SNW_A4CHK_WRK: Finished Age Group:4 of 18
-SNW_A4CHK_WRK: Finished Age Group:5 of 18
-SNW_A4CHK_WRK: Finished Age Group:6 of 18
-SNW_A4CHK_WRK: Finished Age Group:7 of 18
-SNW_A4CHK_WRK: Finished Age Group:8 of 18
-SNW_A4CHK_WRK: Finished Age Group:9 of 18
-SNW_A4CHK_WRK: Finished Age Group:10 of 18
-SNW_A4CHK_WRK: Finished Age Group:11 of 18
-SNW_A4CHK_WRK: Finished Age Group:12 of 18
-SNW_A4CHK_WRK: Finished Age Group:13 of 18
-SNW_A4CHK_WRK: Finished Age Group:14 of 18
-SNW_A4CHK_WRK: Finished Age Group:15 of 18
-SNW_A4CHK_WRK: Finished Age Group:16 of 18
-SNW_A4CHK_WRK: Finished Age Group:17 of 18
-SNW_A4CHK_WRK: Finished Age Group:18 of 18
+</pre><pre class="codeoutput">SNW_A4CHK_WRK: Finished Age Group:1 of 7
+SNW_A4CHK_WRK: Finished Age Group:2 of 7
+SNW_A4CHK_WRK: Finished Age Group:3 of 7
+SNW_A4CHK_WRK: Finished Age Group:4 of 7
+SNW_A4CHK_WRK: Finished Age Group:5 of 7
+SNW_A4CHK_WRK: Finished Age Group:6 of 7
+SNW_A4CHK_WRK: Finished Age Group:7 of 7
 </pre><h2 id="9">Timing and Profiling End</h2><pre class="codeinput"><span class="keyword">if</span> (bl_timer)
     toc;
     st_complete_a4chk = strjoin(<span class="keyword">...</span>
@@ -240,8 +222,8 @@ SNW_A4CHK_WRK: Finished Age Group:18 of 18
         ], <span class="string">";"</span>);
     disp(st_complete_a4chk);
 <span class="keyword">end</span>
-</pre><pre class="codeoutput">Elapsed time is 34.198669 seconds.
-Completed SNW_A4CHK_WRK;welf_checks=2;TR=0.0017225;SNW_MP_PARAM=default_small;SNW_MP_CONTROL=default_test
+</pre><pre class="codeoutput">Elapsed time is 5.129821 seconds.
+Completed SNW_A4CHK_WRK;welf_checks=2;TR=0.0017225;SNW_MP_PARAM=default_tiny;SNW_MP_CONTROL=default_test
 </pre><h2 id="10">Compare Difference between V_ss and V_W</h2><pre class="codeinput"><span class="keyword">if</span> (bl_print_a4chk_verbose)
     mn_V_gain_check = V_W - V_ss;
     mn_V_gain_frac_check = (V_W - V_ss)./V_ss;
@@ -256,18 +238,18 @@ Completed SNW_A4CHK_WRK;welf_checks=2;TR=0.0017225;SNW_MP_PARAM=default_small;SN
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 CONTAINER NAME: mp_container_map ND Array (Matrix etc)
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                                  i    idx    ndim    numel    rowN    colN      sum         mean          std       coefvari      min        max  
-                                  _    ___    ____    _____    ____    ____    _______    __________    _________    ________    _______    _______
+                                  i    idx    ndim    numel    rowN    colN      sum         mean           std       coefvari      min         max   
+                                  _    ___    ____    _____    ____    ____    _______    ___________    _________    ________    ________    ________
 
-    V_W                           1     1      6      27000     18     1500      41329        1.5307       3.2505     2.1236     -22.237     6.2612
-    V_W_minus_V_ss                2     2      6      27000     18     1500     70.486     0.0026106    0.0092496     3.5431           0    0.11726
-    V_W_minus_V_ss_divide_V_ss    3     3      6      27000     18     1500    -53.557    -0.0019836      0.21065     -106.2     -34.368     1.9891
-    V_ss                          4     4      6      27000     18     1500      41258        1.5281       3.2565     2.1311     -22.336     6.2612
+    V_W                           1     1      6      4200      7      600      3427.2          0.816       1.6657     2.0413       -9.032      2.4887
+    V_W_minus_V_ss                2     2      6      4200      7      600       5.994      0.0014271    0.0049535     3.4709            0    0.042205
+    V_W_minus_V_ss_divide_V_ss    3     3      6      4200      7      600     -2.9465    -0.00070155     0.014971    -21.341     -0.92068     0.21545
+    V_ss                          4     4      6      4200      7      600      3421.2        0.81457       1.6698     2.0499      -9.0742      2.4887
 
 </pre><pre class="codeinput"><span class="keyword">end</span>
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-%% SNW_A4CHK_WRK solves for Asset Position Corresponding to Check Level
+%% SNW_A4CHK_WRK (loop fzero) Asset Position Corresponding to Check Level
 %    What is the value of a check? From the perspective of the value
 %    function? We have Asset as a state variable, in a cash-on-hand sense,
 %    how much must the asset (or think cash-on-hand) increase by, so that
@@ -284,7 +266,7 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 %    * MP_PARAMS map with model parameters
 %    * MP_CONTROLS map with control parameters
 %
-%    [V_W, EXITFLAG_FSOLVE] = SNW_A4CHK_WRK(WELF_CHECKS, TR, V_SS,
+%    [V_W, EXITFLAG_FSOLVE] = SNW_A4CHK_WRK(WELF_CHECKS, V_SS,
 %    MP_PARAMS, MP_CONTROLS) solves for working value given V_SS value
 %    function results, for number of check WELF_CHECKS, and given the value
 %    of each check equal to TR.
@@ -299,22 +281,23 @@ function [V_W, exitflag_fsolve]=snw_a4chk_wrk(varargin)
 %% Default and Parse
 if (~isempty(varargin))
     
-    if (length(varargin)==3)
-        [welf_checks, TR, V_ss] = varargin{:};
+    if (length(varargin)==2)
+        [welf_checks, V_ss] = varargin{:};
         mp_controls = snw_mp_control('default_base');
-    elseif (length(varargin)==5)
-        [welf_checks, TR, V_ss, mp_params, mp_controls] = varargin{:};
+    elseif (length(varargin)==4)
+        [welf_checks, V_ss, mp_params, mp_controls] = varargin{:};
     end
     
 else
+    
     close all;
     
     % Solve the VFI Problem and get Value Function
-    mp_params = snw_mp_param('default_small');
+    mp_params = snw_mp_param('default_tiny');
     mp_controls = snw_mp_control('default_test');
     [V_ss,~,~,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
     welf_checks = 2;
-    TR = 100/58056;
+    
 end
 
 %% Reset All globals
@@ -341,6 +324,9 @@ params_group = values(mp_params, {'epsilon', 'SS'});
 params_group = values(mp_params, ...
     {'n_jgrid', 'n_agrid', 'n_etagrid', 'n_educgrid', 'n_marriedgrid', 'n_kidsgrid'});
 [n_jgrid, n_agrid, n_etagrid, n_educgrid, n_marriedgrid, n_kidsgrid] = params_group{:};
+
+params_group = values(mp_params, {'TR'});
+[TR] = params_group{:};    
 
 %% Parse Model Controls
 % Minimizer Controls

@@ -1,4 +1,4 @@
-%% SNW_A4CHK_WRK_BISEC_VEC (vectorized) solves for Asset Position Corresponding to Check Level
+%% SNW_A4CHK_WRK_BISEC_VEC (Exact Vectorized) Asset Position Corresponding to Check Level
 %    What is the value of a check? From the perspective of the value
 %    function? We have Asset as a state variable, in a cash-on-hand sense,
 %    how much must the asset (or think cash-on-hand) increase by, so that
@@ -54,13 +54,15 @@ function [V_W, exitflag_fsolve]=snw_a4chk_wrk_bisec_vec(varargin)
 %% Default and Parse
 if (~isempty(varargin))
     
-    if (length(varargin)==5)
-        [welf_checks, TR, V_ss, mp_params, mp_controls_ext] = varargin{:};
-    elseif (length(varargin)==8)
-        [welf_checks, TR, V_ss, mp_params, mp_controls_ext, ...
+    if (length(varargin)==2)
+        [welf_checks, V_ss] = varargin{:};
+    elseif (length(varargin)==4)
+        [welf_checks, V_ss, mp_params, mp_controls] = varargin{:};
+    elseif (length(varargin)==7)
+        [welf_checks, V_ss, mp_params, mp_controls, ...
             ar_a_amz, ar_inc_amz, ar_spouse_inc_amz] = varargin{:};
     else
-        error('Need to provide 6 parameter inputs');
+        error('Need to provide 2/4/7 parameter inputs');
     end
     
 else
@@ -68,21 +70,17 @@ else
     
     % A1. Solve the VFI Problem and get Value Function
     mp_params = snw_mp_param('default_tiny');
-    mp_controls_ext = snw_mp_control('default_test');
-    [V_ss,~,~,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls_ext);
-    welf_checks = 2;
+    mp_controls = snw_mp_control('default_test');
+    [V_ss,~,~,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
+    
+    % Solve for Value of One Period Unemployment Shock
+    welf_checks = 2;    
     TR = 100/58056;
-    
-    % run fzero
-    mp_controls_ext('bl_fzero') = true;    
-    % run ff_optim_bisec_savezrone bisect as well to compare results
-    mp_controls_ext('bl_ff_bisec') = false;
-    
+    mp_params('TR') = TR;
+        
 end
 
 %% Reset All globals
-% globals = who('global');
-% clear(globals{:});
 % Parameters used in this code directly
 global agrid n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
 % Used in find_a_working function
@@ -105,14 +103,8 @@ params_group = values(mp_params, ...
     {'n_jgrid', 'n_agrid', 'n_etagrid', 'n_educgrid', 'n_marriedgrid', 'n_kidsgrid'});
 [n_jgrid, n_agrid, n_etagrid, n_educgrid, n_marriedgrid, n_kidsgrid] = params_group{:};
 
-%% Control Map Function Specific Local Defaults
-mp_controls = containers.Map('KeyType', 'char', 'ValueType', 'any');
-mp_controls('bl_fzero') = false;
-mp_controls('bl_ff_bisec') = true;
-
-if (length(varargin)>=2 || isempty(varargin))
-    mp_controls = [mp_controls; mp_controls_ext];
-end
+params_group = values(mp_params, {'TR'});
+[TR] = params_group{:};    
 
 %% Parse Model Controls
 % Minimizer Controls
@@ -201,10 +193,10 @@ for j=1:n_jgrid % Age
                 for married=1:n_marriedgrid % Marital status
                     for kids=1:n_kidsgrid % Number of kids
                         
-                        % Get the Vectorize Solved Solution
+                        % C3. Get the Vectorize Solved Solution
                         a_aux = mn_a_aux_bisec(j,a,eta,educ,married,kids);
                         
-                        % C3. Error Check
+                        % C4. Error Check
                         if a_aux<0
                             disp(a_aux)
                             error('Check code! Should not allow for negative welfare checks')
@@ -212,30 +204,27 @@ for j=1:n_jgrid % Age
                             a_aux=agrid(n_agrid);
                         end
                         
-                        % C4. Linear interpolation
+                        % C5. Linear interpolation
                         ind_aux=find(agrid<=a_aux,1,'last');
                         
                         if a_aux==0
                             inds(1)=1;
                             inds(2)=1;
                             vals(1)=1;
-                            vals(2)=0;
-                            
+                            vals(2)=0;                            
                         elseif a_aux==agrid(n_agrid)
                             inds(1)=n_agrid;
                             inds(2)=n_agrid;
                             vals(1)=1;
-                            vals(2)=0;
-                            
+                            vals(2)=0;                            
                         else
                             inds(1)=ind_aux;
                             inds(2)=ind_aux+1;
                             vals(1)=1-((a_aux-agrid(inds(1)))/(agrid(inds(2))-agrid(inds(1))));
-                            vals(2)=1-vals(1);
-                            
+                            vals(2)=1-vals(1);                            
                         end
                         
-                        % C5. Weight
+                        % C6. Weight
                         V_W(j,a,eta,educ,married,kids)=vals(1)*V_ss(j,inds(1),eta,educ,married,kids)+vals(2)*V_ss(j,inds(2),eta,educ,married,kids);
                         
                     end
@@ -245,17 +234,17 @@ for j=1:n_jgrid % Age
     end
     
     if (bl_print_a4chk)
-        disp(strcat(['SNW_A4CHK_WRK: Finished Age Group:' num2str(j) ' of ' num2str(n_jgrid)]));
+        disp(strcat(['SNW_A4CHK_WRK_BISEC_VEC: Finished Age Group:' ...
+            num2str(j) ' of ' num2str(n_jgrid)]));
     end
     
 end
 
 %% D. Timing and Profiling End
-
 if (bl_timer)
     toc;
     st_complete_a4chk = strjoin(...
-        ["Completed SNW_A4CHK_WRK", ...
+        ["Completed SNW_A4CHK_WRK_BISEC_VEC", ...
          ['welf_checks=' num2str(welf_checks)], ...
          ['TR=' num2str(TR)], ...
          ['SNW_MP_PARAM=' char(mp_params('mp_params_name'))], ...

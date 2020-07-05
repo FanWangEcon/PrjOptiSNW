@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>SNW_A4CHK_WRK_BISEC (loop) solves for Asset Position Corresponding to Check Level</title><meta name="generator" content="MATLAB 9.7"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-07-04"><meta name="DC.source" content="snw_a4chk_wrk_bisec.m"><style type="text/css">
+      --><title>SNW_A4CHK_WRK_BISEC (loop bisec) Asset Position Corresponding to Check Level</title><meta name="generator" content="MATLAB 9.7"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-07-05"><meta name="DC.source" content="snw_a4chk_wrk_bisec.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>SNW_A4CHK_WRK_BISEC (loop) solves for Asset Position Corresponding to Check Level</h1><!--introduction--><pre>  What is the value of a check? From the perspective of the value
+  </style></head><body><div class="content"><h1>SNW_A4CHK_WRK_BISEC (loop bisec) Asset Position Corresponding to Check Level</h1><!--introduction--><pre>  What is the value of a check? From the perspective of the value
   function? We have Asset as a state variable, in a cash-on-hand sense,
   how much must the asset (or think cash-on-hand) increase by, so that
   it is equivalent to providing the household with a check? This is not
@@ -112,7 +112,11 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     mp_params = snw_mp_param(<span class="string">'default_tiny'</span>);
     mp_controls_ext = snw_mp_control(<span class="string">'default_test'</span>);
     [V_ss,~,~,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls_ext);
+
+    <span class="comment">% Solve for Value of One Period Unemployment Shock</span>
     welf_checks = 2;
+    TR = 100/58056;
+    mp_params(<span class="string">'TR'</span>) = TR;
 
     <span class="comment">% run fzero</span>
     mp_controls_ext(<span class="string">'bl_fzero'</span>) = true;
@@ -127,7 +131,7 @@ SNW_VFI_MAIN: Finished Age Group:4 of 7
 SNW_VFI_MAIN: Finished Age Group:3 of 7
 SNW_VFI_MAIN: Finished Age Group:2 of 7
 SNW_VFI_MAIN: Finished Age Group:1 of 7
-Elapsed time is 0.208383 seconds.
+Elapsed time is 0.273013 seconds.
 Completed SNW_VFI_MAIN;SNW_MP_PARAM=default_tiny;SNW_MP_CONTROL=default_test
 </pre><h2 id="4">Reset All globals</h2><p>globals = who('global'); clear(globals{:}); Parameters used in this code directly</p><pre class="codeinput"><span class="keyword">global</span> agrid n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
 <span class="comment">% Used in find_a_working function</span>
@@ -282,7 +286,7 @@ SNW_A4CHK_WRK: Finished Age Group:7 of 7
         ], <span class="string">";"</span>);
     disp(st_complete_a4chk);
 <span class="keyword">end</span>
-</pre><pre class="codeoutput">Elapsed time is 10.098343 seconds.
+</pre><pre class="codeoutput">Elapsed time is 10.505350 seconds.
 Completed SNW_A4CHK_WRK;welf_checks=2;TR=0.0017225;SNW_MP_PARAM=default_tiny;SNW_MP_CONTROL=default_test
 </pre><h2 id="11">Compare Difference between V_ss and V_W</h2><pre class="codeinput"><span class="keyword">if</span> (bl_print_a4chk_verbose)
     mn_V_gain_check = V_W - V_ss;
@@ -324,7 +328,7 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 <span class="keyword">end</span>
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-%% SNW_A4CHK_WRK_BISEC (loop) solves for Asset Position Corresponding to Check Level
+%% SNW_A4CHK_WRK_BISEC (loop bisec) Asset Position Corresponding to Check Level
 %    What is the value of a check? From the perspective of the value
 %    function? We have Asset as a state variable, in a cash-on-hand sense,
 %    how much must the asset (or think cash-on-hand) increase by, so that
@@ -389,7 +393,11 @@ else
     mp_params = snw_mp_param('default_tiny');
     mp_controls_ext = snw_mp_control('default_test');
     [V_ss,~,~,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls_ext);
-    welf_checks = 2;
+    
+    % Solve for Value of One Period Unemployment Shock
+    welf_checks = 2;    
+    TR = 100/58056;
+    mp_params('TR') = TR;
     
     % run fzero
     mp_controls_ext('bl_fzero') = true;    

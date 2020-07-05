@@ -61,7 +61,7 @@ if (~isempty(varargin))
 
 else
 
-    mp_params = snw_mp_param('default_small');
+    mp_params = snw_mp_param('default_tiny');
     mp_controls = snw_mp_control('default_test');
 
 end
@@ -141,6 +141,11 @@ if (bl_timer)
 end
 
 %% Solve optimization problem
+% 1. resources (savings choices are shares of these)
+% 2. Ev(ap,z)
+% 3. derivatives: du/dap, dev/dap (linear spline)
+% 4. Exact solution given derivatives
+% 5. If resource max ap > agrid bound, extrapolate based on final spline
 
 V_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 ap_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
@@ -158,7 +163,6 @@ if (length(varargin)==3)
 else
     ar_j_seq = n_jgrid:(-1):1; % Age
 end
-
 
 % Solve for value function and policy functions by means of backwards induction
 for j=ar_j_seq % Age

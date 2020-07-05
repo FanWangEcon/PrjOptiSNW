@@ -34,7 +34,7 @@
 %
 
 %%
-function [V_U, exitflag_fsolve]=snw_a4chk_unemp_bisec_vec(varargin)
+function [V_U]=snw_a4chk_unemp_bisec_vec(varargin)
 
 %% Default and Parse
 if (~isempty(varargin))
@@ -127,7 +127,7 @@ end
 %% A. Compute Household-Head and Spousal Income
 
 % this is only called when the function is called without mn_inc_plus_spouse_inc
-if ~exist('mn_inc_plus_spouse_inc','var')
+if ~exist('ar_inc_unemp_amz','var')
     
     % initialize
     mn_inc_unemp = NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
@@ -178,66 +178,42 @@ fc_ffi_frac0t1_find_a_working = @(x) ffi_frac0t1_find_a_unemp_vec(...
 % B3. Reshape
 mn_a_aux_unemp_bisec = reshape(ar_a_aux_unemp_bisec_amz, [n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid]);
 
-%% C. Loop over all States, Interpolate given Bisec A_AUX_UMEMP results
+%% C. Interpolate and Extrapolate All Age Check Values
+% mn = nd dimensional array, mt = 2d
+% ad1 = a is dimension 1
 
-% C1. Initialize
-V_U=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
-exitflag_fsolve=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+% C1. Change matrix order so asset becomes the first dimension
+mn_v_ad1 = permute(V_unemp, [2,1,3,4,5,6]);
+mn_a_aux_bisec_ad1 = permute(mn_a_aux_unemp_bisec, [2,1,3,4,5,6]);
 
-% C2. Loop
-for j=1:n_jgrid % Age
-    for a=1:n_agrid % Assets
-        for eta=1:n_etagrid % Productivity
-            for educ=1:n_educgrid % Educational level
-                for married=1:n_marriedgrid % Marital status
-                    for kids=1:n_kidsgrid % Number of kids
-                        
-                        % C3. Get the Vectorize Solved Solution
-                        a_aux = mn_a_aux_unemp_bisec(j,a,eta,educ,married,kids);
-                        
-                        % C4. Error Check
-                        if a_aux<0
-                            disp(a_aux)
-                            error('Check code! Should not allow for negative welfare checks')
-                        elseif a_aux>agrid(n_agrid)
-                            a_aux=agrid(n_agrid);
-                        end
-                        
-                        % C5. Linear interpolation
-                        ind_aux=find(agrid<=a_aux,1,'last');
-                        
-                        if a_aux==0
-                            inds(1)=1;
-                            inds(2)=1;
-                            vals(1)=1;
-                            vals(2)=0;                            
-                        elseif a_aux==agrid(n_agrid)
-                            inds(1)=n_agrid;
-                            inds(2)=n_agrid;
-                            vals(1)=1;
-                            vals(2)=0;                            
-                        else
-                            inds(1)=ind_aux;
-                            inds(2)=ind_aux+1;
-                            vals(1)=1-((a_aux-agrid(inds(1)))/(agrid(inds(2))-agrid(inds(1))));
-                            vals(2)=1-vals(1);                            
-                        end
-                        
-                        % C6. Weight
-                        V_U(j,a,eta,educ,married,kids)=vals(1)*V_unemp(j,inds(1),eta,educ,married,kids)+vals(2)*V_unemp(j,inds(2),eta,educ,married,kids);
-                        
-                    end
-                end
-            end
-        end
-    end
-    
-    if (bl_print_a4chk)
-        disp(strcat(['SNW_A4CHK_UNEMP_BISEC_VEC: Finished Age Group:' ...
-            num2str(j) ' of ' num2str(n_jgrid)]));
-    end
-    
-end
+% C2. Reshape so that asset is dim 1, all other dim 2
+mt_v_ad1 = reshape(mn_v_ad1, n_agrid, []);
+mt_a_aux_bisec_ad1 = reshape(mn_a_aux_bisec_ad1, n_agrid, []);
+
+% C3. Derivative dv/da
+mt_dv_da_ad1 = diff(mt_v_ad1, 1)./diff(agrid);    
+
+% C4. Optimal aux and closest a index
+ar_a_aux_bisec = mt_a_aux_bisec_ad1(:);
+ar_it_a_near_lower_idx = sum(agrid' <= ar_a_aux_bisec, 2);
+ar_it_a_near_lower_idx(ar_it_a_near_lower_idx == length(agrid)) = length(agrid) - 1;
+
+% C5. Z index
+mt_z_ctr = repmat((1:size(mt_v_ad1, 2)), size(mt_v_ad1, 1), 1);
+ar_z_ctr = mt_z_ctr(:);
+
+% C6. the marginal effects of additional asset is determined by the slope
+ar_deri_lin_idx = sub2ind(size(mt_dv_da_ad1), ar_it_a_near_lower_idx, ar_z_ctr);
+ar_v_lin_idx = sub2ind(size(mt_v_ad1), ar_it_a_near_lower_idx, ar_z_ctr);
+ar_deri_dev_dap = mt_dv_da_ad1(ar_deri_lin_idx);
+ar_v_a_lower_idx = mt_v_ad1(ar_v_lin_idx);
+
+% C7. v(a_lower_idx,z) + slope*(fl_a_aux - fl_a)
+ar_v_w_a_aux_j = ar_v_a_lower_idx + (ar_a_aux_bisec - agrid(ar_it_a_near_lower_idx)).*ar_deri_dev_dap;
+mn_v_w_a_aux_ad1 = reshape(ar_v_w_a_aux_j, n_agrid, n_jgrid, n_etagrid, n_educgrid, n_marriedgrid, n_kidsgrid);
+
+% C8. Permute age as dim 1
+V_U = permute(mn_v_w_a_aux_ad1, [2,1,3,4,5,6]);
 
 %% D. Timing and Profiling End
 if (bl_timer)

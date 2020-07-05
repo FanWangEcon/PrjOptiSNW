@@ -1,4 +1,4 @@
-%% SNW_VFI_MAIN Solves Policy/Value Function SNW (Loop)
+%% SNW_VFI_MAIN Solves Policy/Value Function SNW (Fmincon Loop)
 %    Given parameters, iterate over life cycle, given age, marital status,
 %    education level and child count, as well as persistent productivity
 %    shock process, solve for optimal dynamic savings choices given

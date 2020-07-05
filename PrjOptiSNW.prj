@@ -7,7 +7,7 @@
     <param.summary>Dynamic Life Cycle US Simulation and Welfare Checks COVID-19</param.summary>
     <param.description>Dynamic Life Cycle US Simulation and Welfare Checks COVID-19</param.description>
     <param.screenshot>${PROJECT_ROOT}\img\toolboxlogo.png</param.screenshot>
-    <param.version>0.1.3</param.version>
+    <param.version>0.1.4</param.version>
     <param.output>${PROJECT_ROOT}\PrjOptiSNW.mltbx</param.output>
     <param.products.name />
     <param.products.id />
@@ -100,6 +100,11 @@ htmlpdfm/*
          &lt;file type="main"&gt;/PrjOptiSNW/svalpol/snw_vfi_main_bisec_vec.m&lt;/file&gt;
          &lt;file type="thumbnail"/&gt;
       &lt;/example&gt;
+      &lt;example name="snw_vfi_main_grid_search" type="html"&gt;
+         &lt;file type="source"&gt;/PrjOptiSNW/svalpol/html/snw_vfi_main_grid_search.html&lt;/file&gt;
+         &lt;file type="main"&gt;/PrjOptiSNW/svalpol/snw_vfi_main_grid_search.m&lt;/file&gt;
+         &lt;file type="thumbnail"/&gt;
+      &lt;/example&gt;
    &lt;/exampleCategory&gt;
 &lt;/examples&gt;</param.examples>
     <param.demosxml />
@@ -174,6 +179,7 @@ htmlpdfm/*
       <file>${PROJECT_ROOT}\LICENSE</file>
       <file>${PROJECT_ROOT}\PrjOptiSNW</file>
       <file>${PROJECT_ROOT}\README.md</file>
+      <file>${PROJECT_ROOT}\snw_vfi_unemp_grid_search.m</file>
     </fileset.rootfiles>
     <fileset.depfun.included />
     <fileset.depfun.excluded />

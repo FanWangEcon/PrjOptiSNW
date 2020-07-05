@@ -34,7 +34,7 @@ else
     
     mp_params = snw_mp_param('default_tiny');
     mp_controls = snw_mp_control('default_test');
-    [v_ss, ap_ss, c_ss, exitflag_VFI] = snw_vfi_main(mp_params, mp_controls);
+    [v_ss, ap_ss, c_ss, exitflag_VFI] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
 end
 
 %% Reset All globals

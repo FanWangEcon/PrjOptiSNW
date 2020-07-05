@@ -60,15 +60,18 @@ bl_timer = true;
 bl_print_vfi = true;
 bl_print_ds = true;
 bl_print_a4chk = true;
+bl_print_vu_vw = true;
 
 if (strcmp(st_param_group, 'default_test')) 
     bl_print_ds_verbose = true;
     bl_print_vfi_verbose = true;
     bl_print_a4chk_verbose = true;
+    bl_print_vu_vw_verbose = true;
 else
     bl_print_ds_verbose = false;
     bl_print_vfi_verbose = false;
     bl_print_a4chk_verbose = false;
+    bl_print_vu_vw_verbose = false;
 end
 
 %% Control Storage
@@ -113,6 +116,9 @@ mp_display('bl_print_ds_verbose') = bl_print_ds_verbose;
 
 mp_display('bl_print_a4chk') = bl_print_a4chk;
 mp_display('bl_print_a4chk_verbose') = bl_print_a4chk_verbose;
+
+mp_display('bl_print_vu_vw') = bl_print_vu_vw;
+mp_display('bl_print_vu_vw_verbose') = bl_print_vu_vw_verbose;
 
 mp_store = containers.Map('KeyType', 'char', 'ValueType', 'any');
 mp_store('bl_ds_store_all') = bl_ds_store_all;

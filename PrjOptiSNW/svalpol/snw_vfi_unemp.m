@@ -1,24 +1,27 @@
-%% SNW_VFI_UNEMP Solves Policy/Value Function SNW (Loop)
+%% SNW_VFI_UNEMP Solves Policy/Value Function SNW (fmincon Loop)
 %    What is the value given an one period unemployment shock? We have the
 %    same value in the future after this period, but for the current
 %    period, there is a sudden bad shock. Given this sudden bad shock,
 %    current resources are reduced, current consumption as well as savigs
-%    choices are both likely to go down. This is the fmincon results
+%    choices are both likely to go down. This is the looped fmincon results.
 %
-%    % Proportional reduction in income due to unemployment (xi=0 refers to 0 labor income; xi=1 refers to no drop in labor income)
+%    % Proportional reduction in income due to unemployment
+%    % xi=0 refers to 0 labor income; xi=1 refers to no drop in labor income
 %    mp_params('xi')=0.5; 
-%    % Unemployment insurance replacement rate (b=0 refers to no UI benefits; b=1 refers to 100 percent labor income replacement)
+%    % Unemployment insurance replacement rate
+%    % b=0 refers to no UI benefits; b=1 refers to 100 percent labor income replacement
 %    mp_params('b')=0; 
 %
-%    [V_VFI,AP_VFI,CONS_VFI,EXITFLAG_VFI] = SNW_VFI_MAIN(V_SS, MP_PARAMS)
+%    [V_VFI,AP_VFI,CONS_VFI,EXITFLAG_VFI] = SNW_VFI_UNEMP(V_SS, MP_PARAMS)
 %    invoke model with externally set parameter map MP_PARAMS, given V_SS
 %    future value solved before the shock.
 %
-%    [V_VFI,AP_VFI,CONS_VFI,EXITFLAG_VFI] = SNW_VFI_MAIN(V_SS. MP_PARAMS,
+%    [V_VFI,AP_VFI,CONS_VFI,EXITFLAG_VFI] = SNW_VFI_UNEMP(V_SS, MP_PARAMS,
 %    MP_CONTROLS) invoke model with externally set parameter map MP_PARAMS
 %    as well as control mpa MP_CONTROLS.
 %
-%    See also SNW_VFI_MAIN, SNW_MP_CONTROL, SNW_MP_PARAM
+%    See also SNW_VFI_MAIN, SNW_VFI_UNEMP_GRID_SEARCH, SNW_MP_CONTROL,
+%    SNW_MP_PARAM
 %
 
 %%
@@ -36,7 +39,7 @@ if (~isempty(varargin))
     
 else
     
-    mp_params = snw_mp_param('default_small');
+    mp_params = snw_mp_param('default_tiny');
     mp_controls = snw_mp_control('default_test');
     
     [V_ss,~,~,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls);

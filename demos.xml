@@ -4,7 +4,7 @@
    <type>toolbox</type>
    <icon>HelpIcon.DEMOS</icon>
    <website/>
-   <description/>
+   <description>Dynamic Life Cycle US Simulation and Welfare Checks COVID-19</description>
    <demosection>
       <label>splanner</label>
       <demoitem>
@@ -75,6 +75,12 @@
          <type>other</type>
          <source>snw_vfi_main_bisec_vec</source>
          <file>PrjOptiSNW/svalpol/html/snw_vfi_main_bisec_vec.html</file>
+      </demoitem>
+      <demoitem>
+         <label>snw_vfi_main_grid_search</label>
+         <type>other</type>
+         <source>snw_vfi_main_grid_search</source>
+         <file>PrjOptiSNW/svalpol/html/snw_vfi_main_grid_search.html</file>
       </demoitem>
    </demosection>
 </demos>

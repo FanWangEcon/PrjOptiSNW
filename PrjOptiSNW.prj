@@ -5,19 +5,71 @@
     <param.email>fanwangecon@gmail.com</param.email>
     <param.company>Univerity of Houston</param.company>
     <param.summary>Dynamic Life Cycle US Simulation and Welfare Checks COVID-19</param.summary>
-    <param.description />
+    <param.description>Dynamic Life Cycle US Simulation and Welfare Checks COVID-19</param.description>
     <param.screenshot>${PROJECT_ROOT}\img\toolboxlogo.png</param.screenshot>
-    <param.version>0.1.2</param.version>
+    <param.version>0.1.3</param.version>
     <param.output>${PROJECT_ROOT}\PrjOptiSNW.mltbx</param.output>
     <param.products.name />
     <param.products.id />
     <param.products.version />
     <param.platforms />
     <param.guid>d9a13da5-51af-451d-ba99-90a71091f57e</param.guid>
-    <param.exclude.filters />
+    <param.exclude.filters>% List files contained in your toolbox folder that you would like to exclude
+% from packaging.  Excludes should be listed relative to the toolbox folder.
+% Some examples of how to specify excludes are provided below:
+%
+% A single file in the toolbox folder:
+% .svn
+%
+% A single file in a subfolder of the toolbox folder:
+% example/.svn
+%
+% All files in a subfolder of the toolbox folder:
+% example/*
+%
+% All files of a certain name in all subfolders of the toolbox folder:
+% **/.svn
+%
+% All files matching a pattern in all subfolders of the toolbox folder:
+% **/*.bak
+%
+.git/*
+*/htmlpdfm/*
+*htmlpdfm/*
+htmlpdfm/*
+**/*htmlpdfm*
+**/*.Rmd
+**/*fx*.html</param.exclude.filters>
     <param.exclude.pcodedmfiles>true</param.exclude.pcodedmfiles>
     <param.examples>&lt;?xml version="1.0" encoding="utf-8"?&gt;
 &lt;examples&gt;
+   &lt;exampleCategory name="splanner"&gt;
+      &lt;example name="snw_a4chk_unemp" type="html"&gt;
+         &lt;file type="source"&gt;/PrjOptiSNW/splanner/html/snw_a4chk_unemp.html&lt;/file&gt;
+         &lt;file type="main"&gt;/PrjOptiSNW/splanner/snw_a4chk_unemp.m&lt;/file&gt;
+         &lt;file type="thumbnail"/&gt;
+      &lt;/example&gt;
+      &lt;example name="snw_a4chk_unemp_bisec_vec" type="html"&gt;
+         &lt;file type="source"&gt;/PrjOptiSNW/splanner/html/snw_a4chk_unemp_bisec_vec.html&lt;/file&gt;
+         &lt;file type="main"&gt;/PrjOptiSNW/splanner/snw_a4chk_unemp_bisec_vec.m&lt;/file&gt;
+         &lt;file type="thumbnail"/&gt;
+      &lt;/example&gt;
+      &lt;example name="snw_a4chk_wrk" type="html"&gt;
+         &lt;file type="source"&gt;/PrjOptiSNW/splanner/html/snw_a4chk_wrk.html&lt;/file&gt;
+         &lt;file type="main"&gt;/PrjOptiSNW/splanner/snw_a4chk_wrk.m&lt;/file&gt;
+         &lt;file type="thumbnail"/&gt;
+      &lt;/example&gt;
+      &lt;example name="snw_a4chk_wrk_bisec" type="html"&gt;
+         &lt;file type="source"&gt;/PrjOptiSNW/splanner/html/snw_a4chk_wrk_bisec.html&lt;/file&gt;
+         &lt;file type="main"&gt;/PrjOptiSNW/splanner/snw_a4chk_wrk_bisec.m&lt;/file&gt;
+         &lt;file type="thumbnail"/&gt;
+      &lt;/example&gt;
+      &lt;example name="snw_a4chk_wrk_bisec_vec" type="html"&gt;
+         &lt;file type="source"&gt;/PrjOptiSNW/splanner/html/snw_a4chk_wrk_bisec_vec.html&lt;/file&gt;
+         &lt;file type="main"&gt;/PrjOptiSNW/splanner/snw_a4chk_wrk_bisec_vec.m&lt;/file&gt;
+         &lt;file type="thumbnail"/&gt;
+      &lt;/example&gt;
+   &lt;/exampleCategory&gt;
    &lt;exampleCategory name="sdist"&gt;
       &lt;example name="snw_ds_main" type="html"&gt;
          &lt;file type="source"&gt;/PrjOptiSNW/sdist/html/snw_ds_main.html&lt;/file&gt;
@@ -79,13 +131,11 @@
     <param.additional.sw.mac.url />
     <param.additional.sw.linux.url />
     <unset>
-      <param.description />
       <param.output />
       <param.products.name />
       <param.products.id />
       <param.products.version />
       <param.platforms />
-      <param.exclude.filters />
       <param.exclude.pcodedmfiles />
       <param.demosxml />
       <param.apps />

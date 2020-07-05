@@ -6,6 +6,39 @@
    <website/>
    <description/>
    <demosection>
+      <label>splanner</label>
+      <demoitem>
+         <label>snw_a4chk_unemp</label>
+         <type>other</type>
+         <source>snw_a4chk_unemp</source>
+         <file>PrjOptiSNW/splanner/html/snw_a4chk_unemp.html</file>
+      </demoitem>
+      <demoitem>
+         <label>snw_a4chk_unemp_bisec_vec</label>
+         <type>other</type>
+         <source>snw_a4chk_unemp_bisec_vec</source>
+         <file>PrjOptiSNW/splanner/html/snw_a4chk_unemp_bisec_vec.html</file>
+      </demoitem>
+      <demoitem>
+         <label>snw_a4chk_wrk</label>
+         <type>other</type>
+         <source>snw_a4chk_wrk</source>
+         <file>PrjOptiSNW/splanner/html/snw_a4chk_wrk.html</file>
+      </demoitem>
+      <demoitem>
+         <label>snw_a4chk_wrk_bisec</label>
+         <type>other</type>
+         <source>snw_a4chk_wrk_bisec</source>
+         <file>PrjOptiSNW/splanner/html/snw_a4chk_wrk_bisec.html</file>
+      </demoitem>
+      <demoitem>
+         <label>snw_a4chk_wrk_bisec_vec</label>
+         <type>other</type>
+         <source>snw_a4chk_wrk_bisec_vec</source>
+         <file>PrjOptiSNW/splanner/html/snw_a4chk_wrk_bisec_vec.html</file>
+      </demoitem>
+   </demosection>
+   <demosection>
       <label>sdist</label>
       <demoitem>
          <label>snw_ds_main</label>

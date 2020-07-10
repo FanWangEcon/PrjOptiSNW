@@ -7,9 +7,9 @@ if nargin==4
     earnings=epsilon(j,educ)*theta*exp(eta_H_grid(eta));
 elseif nargin==6
     income=r*(agrid(a)+Bequests*(bequests_option-1))+( epsilon(j,educ)*theta*exp(eta_H_grid(eta)) )*(xi+b*(1-xi))+SS(j,educ);
-    earnings=( epsilon(j,educ)*theta*exp(eta_H_grid(eta)) )*(xi+b*(1-xi));
+    earnings=epsilon(j,educ)*theta*exp(eta_H_grid(eta)); % What earnings are before we account for the drop in earnings due to unemployment
 else
-   error('Inccorect number of function inputs') 
+   error('Incorrect number of function inputs') 
 end
 
 end

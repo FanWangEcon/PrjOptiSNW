@@ -134,7 +134,7 @@ end
 % Update guess for a2 (determines average level of income taxation)
 % Assuming government balances its budget period-by-period
 
-tol=10^-4;
+tol=5*10^-4; % 10^-4;
 err=abs((Tax_revenues/(SS_spend+g_cons*Y_inc_agg))-1);
 
 a2_update=a2;
@@ -177,7 +177,7 @@ while err>tol
     
 end
 
-a2=a2*0.5+a2_update*0.5;
+a2=a2*0.75+a2_update*0.25;
 
 name='Number of a2-adjustments (for taxation) used to balance the government budget= ';
 name2=[name,num2str(it)];

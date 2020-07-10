@@ -1,10 +1,11 @@
-function [V_W,exitflag_fsolve]=V_working_proxy(welf_checks,TR,V_ss,options2)
+function [V_W,C_W,exitflag_fsolve]=V_working_proxy(welf_checks,TR,V_ss,cons_ss,options2)
 
 %% Solve optimization problem
 
 global agrid n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
 
 V_W=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+C_W=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 exitflag_fsolve=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 
 for j=1:n_jgrid % Age
@@ -50,14 +51,15 @@ for j=1:n_jgrid % Age
                        end
                        
                        V_W(j,a,eta,educ,married,kids)=vals(1)*V_ss(j,inds(1),eta,educ,married,kids)+vals(2)*V_ss(j,inds(2),eta,educ,married,kids);
-   
+                       C_W(j,a,eta,educ,married,kids)=vals(1)*cons_ss(j,inds(1),eta,educ,married,kids)+vals(2)*cons_ss(j,inds(2),eta,educ,married,kids);
+                       
                    end
                end
            end
        end
    end
    
-%  disp(j)
+   disp(j)
    
 end
 

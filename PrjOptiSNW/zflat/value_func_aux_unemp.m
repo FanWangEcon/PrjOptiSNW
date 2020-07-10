@@ -1,12 +1,6 @@
 function F=value_func_aux_unemp(ap_aux,j,a,eta,educ,married,kids,V_ss,xi,b)
 
-%global beta theta r agrid epsilon eta_grid SS pi_eta pi_kids psi n_etagrid n_kidsgrid
 global beta agrid pi_eta pi_kids psi n_etagrid n_kidsgrid
-
-% inc=r*agrid(a)+( epsilon(j,educ)*theta*exp(eta_grid(eta)) )*(xi+b*(1-xi))+SS(j,educ);
-% spouse_inc=spousal_income(j,educ,kids,( epsilon(j,educ)*theta*exp(eta_grid(eta)) )*(xi+b*(1-xi)),SS(j,educ));
-% 
-% c_aux=(1+r)*agrid(a)+( epsilon(j,educ)*theta*exp(eta_grid(eta)) )*(xi+b*(1-xi))+SS(j,educ)+(married-1)*spouse_inc-max(0,Tax(inc,(married-1)*spouse_inc))-ap_aux;
 
 c_aux=consumption(j,a,eta,educ,married,kids,ap_aux,xi,b);
 

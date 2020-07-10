@@ -20,13 +20,6 @@ for j=1:n_jgrid % Age
                        if j<n_jgrid
                            
                            c_aux=consumption_grid_search(j,a,eta,educ,married,kids,1:n_agrid,xi,b);
-
-%						   cont=0;
-%						   for etap=1:n_etagrid
-%                               for kidsp=1:n_kidsgrid
-%                                   cont=cont+pi_eta(eta,etap)*pi_kids(kids,kidsp,j,educ,married)*V_ss(j+1,1:n_agrid,etap,educ,married,kidsp);
-%                               end
-%						   end
 								   
 		                   cont=zeros(n_agrid,n_etagrid);
 		                   for kidsp=1:n_kidsgrid

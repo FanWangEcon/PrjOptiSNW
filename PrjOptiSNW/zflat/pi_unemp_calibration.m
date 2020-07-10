@@ -1,6 +1,6 @@
 function [factor, cutoffs]=pi_unemp_calibration(Phi_true,pi_j,pi_w)
 
-global theta epsilon eta_grid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
+global theta epsilon eta_H_grid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
 
 Phi=zeros(24*n_agrid*n_etagrid*n_educgrid*n_marriedgrid*n_kidsgrid,2);
 counter=0;
@@ -14,7 +14,7 @@ for j=1:24 % Age
                        
                        counter=counter+1;
                                               
-                       Phi(counter,1)=epsilon(j,educ)*theta*exp(eta_grid(eta));
+                       Phi(counter,1)=epsilon(j,educ)*theta*exp(eta_H_grid(eta));
                        Phi(counter,2)=Phi_true(j,a,eta,educ,married,kids);
                        
                    end
@@ -65,7 +65,7 @@ for j=1:24 % Age
                for married=1:n_marriedgrid % Marital status
                    for kids=1:n_kidsgrid % No. of kids
                        
-                       wages=epsilon(j,educ)*theta*exp(eta_grid(eta));
+                       wages=epsilon(j,educ)*theta*exp(eta_H_grid(eta));
                        if wages<=cutoffs(1)
                            Phi_aux(j,a,eta,educ,married,kids,1)=Phi_aux(j,a,eta,educ,married,kids,1)+Phi_true(j,a,eta,educ,married,kids);
                        elseif wages>cutoffs(1) && wages<=cutoffs(2)

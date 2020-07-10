@@ -34,7 +34,7 @@ for j=1:(n_jgrid-1) % Age
                            vals(1)=1;
                            vals(2)=0;
 
-                       elseif ap_ss(j,a,eta,educ,married,kids)==agrid(n_agrid)
+                       elseif ap_ss(j,a,eta,educ,married,kids)>=agrid(n_agrid)
                            inds(1)=n_agrid;
                            inds(2)=n_agrid;
                            vals(1)=1;
@@ -160,7 +160,7 @@ end
 % Update guess for a2 (determines average level of income taxation)
 % Assuming government balances its budget period-by-period
 
-tol=10^-3; %10^-4; %5*10^-4;
+tol=10^-4; %10^-3; %5*10^-4;
 err=abs((Tax_revenues/(SS_spend+g_cons*Y_inc_agg))-1);
 
 a2_update=a2;

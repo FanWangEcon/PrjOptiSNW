@@ -1,9 +1,7 @@
 function [V_W,exitflag_fsolve]=V_working_proxy_tax(welf_checks,TR,V_working_tax,a2_COVID,options2)
-%function [V_W,exitflag_fsolve]=V_working_proxy_tax(welf_checks,TR,V_ss,cons_ss,ap_ss,a2_COVID,options2)
 
 %% Solve optimization problem
 
-%global beta agrid pi_eta pi_kids psi n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
 global agrid n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
 
 V_W=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
@@ -22,7 +20,8 @@ for j=1:n_jgrid % Age
                        [a_aux,~,exitflag_fsolve(j,a,eta,educ,married,kids)]=fsolve(@(x)find_a_working_tax(x,j,a,eta,educ,married,kids,TR,welf_checks,a2_COVID),x0,options2);
 
                        if a_aux<0
-                           a_aux=0;
+						   disp(a_aux)
+                           error('Check code! Should not allow for negative welfare checks')
                        elseif a_aux>agrid(n_agrid)
                            a_aux=agrid(n_agrid);
                        end

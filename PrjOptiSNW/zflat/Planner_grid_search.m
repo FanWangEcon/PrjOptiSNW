@@ -1,8 +1,8 @@
-function [V_planner,Phi_mass]=Planner(Phi_true,j,married,kids,welf_checks,ymin,ymax,V_U,V_W,ap_ss,cutoffs)
+function [V_planner,Phi_mass]=Planner_grid_search(Phi_true,j,married,kids,welf_checks,ymin,ymax,V_U,V_W,ap_ss,cutoffs)
 
 %% Value function of planner
 
-global SS pi_eta pi_kids pi_unemp agrid n_agrid n_etagrid n_educgrid n_kidsgrid
+global SS pi_eta pi_kids pi_unemp n_agrid n_etagrid n_educgrid n_kidsgrid
 
 Phi_norm=zeros(n_agrid,n_etagrid,n_educgrid);
 
@@ -39,36 +39,10 @@ clear aux_sum
 for a=1:n_agrid % Assets
    for eta=1:n_etagrid % Productivity
        for educ=1:n_educgrid % Educational level
-           
-           if ap_ss(j,a,eta,educ,married,kids)==0
-               inds(1)=1;
-               inds(2)=1;
-               vals(1)=1;
-               vals(2)=0;
 
-           elseif ap_ss(j,a,eta,educ,married,kids)>=agrid(n_agrid)
-               inds(1)=n_agrid;
-               inds(2)=n_agrid;
-               vals(1)=1;
-               vals(2)=0;
-
-           else
-
-               ind_aux=find(agrid<=ap_ss(j,a,eta,educ,married,kids),1,'last');
-
-               inds(1)=ind_aux;
-               inds(2)=ind_aux+1;
-
-               % Linear interpolation
-               vals(1)=1-((ap_ss(j,a,eta,educ,married,kids)-agrid(inds(1)))/(agrid(inds(2))-agrid(inds(1))));
-               vals(2)=1-vals(1);
-
-           end
-           
            for etap=1:n_etagrid
                for kidsp=1:n_kidsgrid
-                   Phi_p(inds(1),etap,educ,kidsp)=Phi_p(inds(1),etap,educ,kidsp)+vals(1)*Phi_norm(a,eta,educ)*pi_eta(eta,etap)*pi_kids(kids,kidsp,j,educ,married);
-                   Phi_p(inds(2),etap,educ,kidsp)=Phi_p(inds(2),etap,educ,kidsp)+vals(2)*Phi_norm(a,eta,educ)*pi_eta(eta,etap)*pi_kids(kids,kidsp,j,educ,married);
+                   Phi_p(ap_ss(j,a,eta,educ,married,kids),etap,educ,kidsp)=Phi_p(ap_ss(j,a,eta,educ,married,kids),etap,educ,kidsp)+Phi_norm(a,eta,educ)*pi_eta(eta,etap)*pi_kids(kids,kidsp,j,educ,married);
                end
            end
 

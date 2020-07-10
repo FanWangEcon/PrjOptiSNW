@@ -95,6 +95,13 @@ if(strcmp(st_param_group, "default_verydense"))
     n_eta_H_grid=9; % 9; % No. of grid points for persistent labor productivity shocks
     n_eta_S_grid=5; % 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
     n_kidsgrid=5; % No. of grid points for children (0 to 4+ children)
+elseif(strcmp(st_param_group, "default_moredense"))
+    n_jgrid  =83; % Age runs from 18 to 100 (a period is 2 years)
+    jret     =49;
+    n_agrid  =151; % No. of grid points for assets
+    n_eta_H_grid=9; % 9; % No. of grid points for persistent labor productivity shocks
+    n_eta_S_grid=5; % 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
+    n_kidsgrid=5; % No. of grid points for children (0 to 4+ children)
 elseif(strcmp(st_param_group, "default_dense"))
     n_jgrid  =83; % Age runs from 18 to 100 (a period is 2 years)
     jret     =49;
@@ -112,10 +119,10 @@ elseif(strcmp(st_param_group, "default_base"))
 elseif(strcmp(st_param_group, "default_small53"))
     n_jgrid   =18; % Age runs from 18 to 100 (16 periods of 5 years + terminal)
     jret      =13;
-    n_agrid   =25; % No. of grid points for assets
-    n_eta_H_grid=5; % 9; % No. of grid points for persistent labor productivity shocks
-    n_eta_S_grid=3; % 3; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
-    n_kidsgrid=3; % No. of grid points for children (0 to 5+ children)
+    n_agrid   =25;
+    n_eta_H_grid=5;
+    n_eta_S_grid=3;
+    n_kidsgrid=3;
 elseif(strcmp(st_param_group, "default_small"))
     n_jgrid   =18; % Age runs from 18 to 100 (16 periods of 5 years + terminal)
     jret      =13;

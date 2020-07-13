@@ -1,0 +1,583 @@
+---
+title: "This file Analysizes the Value Function of the Planner from Simulated Results"
+output: 
+  html_notebook:
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(fig.width=12, fig.height=8)
+
+library(tidyverse)
+library(REconTools)
+```
+
+# Analyze Planner Value
+
+## Import Data
+
+```{r}
+mt_plan_v_tilde <- read.csv('C:/Users/fan/Documents/Dropbox (UH-ECON)/PrjNygaardSorensenWang/Output/snwx_v_planner_small.csv', header=FALSE)
+ar_st_varnames <- c('age', 'marital', 'kids', 'checks',	'ymin', 'ymax', 'mass', 'survive', 'vtilde', 'ctilde')
+tb_plan_v_tilde <- as_tibble(mt_plan_v_tilde) %>%
+  rename_all(~c(ar_st_varnames)) %>%
+  rowid_to_column(var = "id") %>%
+  filter(vtilde != 0)
+
+# Column 1: Age (in year before COVID)
+# Column 2: Marital status (0 if not married; 1 if married)
+# Column 3: Nr of kids (0, 1, ..., 5) where 5 means 5 or more
+# Column 4: Number of welfare checks (here either equal to 0 or 1)
+# Column 5 and column 6 give income range
+# So the individual's income is at least as large as the value in column 5 but strictly less than the value in column 6
+# Column 7: Population weight Of that particular group (in the stationary distribution)
+# Column 8: Survival probability of that particular age (since the planner knows that some of the individuals will die before next period, so wasn't sure how you wanted me to include that. I did not already include it in V^tilde)
+# Column 9: Value of planner as in the slides (with the exception that I didn't multiply by the survival probability
+```
+
+## Generate A and alpha file version
+
+```{r}
+tb_plan_v_tilde_a_alpha <- tb_plan_v_tilde %>% 
+  arrange(age, marital, kids, ymin, checks, vtilde, ctilde) %>%
+  group_by(age, marital, kids, ymin) %>%
+  mutate(vtilde_lead = lead(vtilde), 
+         ctilde_lead = lead(ctilde)) %>%
+  filter(checks != max(tb_plan_v_tilde$checks)) %>%
+  rename(V_A_i = vtilde, C_A_i = ctilde) %>%
+  mutate(V_alpha_i = vtilde_lead - V_A_i, 
+         C_alpha_i = ctilde_lead - C_A_i) %>%
+  mutate(checks = checks + 1) %>%
+  ungroup()
+print(tb_plan_v_tilde_a_alpha)
+```
+
+#### Summarize All Columns Unconditional
+
+```{r}
+REconTools::ff_summ_percentiles(tb_plan_v_tilde_a_alpha, bl_statsasrows = FALSE)
+```
+
+#### Summarize All Columns by Checks
+
+Will summarize all varaibles by 4 different check amounts, the four check increments are (each is worth 200 dollars):
+
+```{r}
+# Unique Checks:
+ar_checks <- sort(unique(tb_plan_v_tilde_a_alpha %>% pull(checks)))
+ar_checks_4 <- ar_checks[seq(1, length(ar_checks), length.out=4)]
+mt_checks_4 <- ar_checks_4
+dim(mt_checks_4) <- c(length(ar_checks_4), 1)
+mt_checks*200
+```
+
+Now summarize by these check amounts:
+
+```{r}
+# Summarize all Variables Each Check:
+ls_stats_by_checks = suppressWarnings(
+  apply(mt_checks_4, 1,
+        function(row) {
+          fl_check = row[1]
+          REconTools::ff_summ_percentiles(
+            tb_plan_v_tilde_a_alpha %>% 
+              filter(checks == fl_check), 
+            bl_statsasrows = FALSE)
+        }))
+
+# Print Stats
+print(ls_stats_by_checks)
+```
+
+#### Joint distribution of A and alpha by Check (Show Only for Four Checks)
+
+##### Joint Distribution of Effects on Consumption 
+
+```{r}
+# Generate Gap Variable
+dft_graph <- tb_plan_v_tilde_a_alpha %>%
+  filter(checks %in% ar_checks_4) %>%
+  mutate(marital = as.factor(marital),
+         kids = as.factor(kids))
+
+# Titling
+st_title <- sprintf("2020 Consumption without Binary Check and Marginal Effects of Checks")
+title_line1 <- sprintf("Each circle (cross) represents an Age/Marriage/Child/Income/Check Type")
+title <- expression('The joint distribution of'~A[i]~'and'~alpha[i]~', Checks, SNW 2020')
+caption <- paste0('Life Cycle Simulation.')
+# Labels
+st_x_label <- expression('Cons 2020 without the Next Increment of Checks')
+st_y_label <- expression('Marginal C from An Additional Check')
+
+# Binary Marginal Effects and Prediction without Binary
+plt_A_alpha <- dft_graph %>% ggplot(aes(x=C_A_i)) +
+      geom_point(aes(y=C_alpha_i,
+                     color=factor(checks))) +
+      geom_abline(intercept = 0, slope = 1) + # 45 degree line
+      labs(title = st_title,
+           subtitle = paste0(title_line1),
+           x = st_x_label,
+           y = st_y_label,
+           caption = caption) 
+# Labeling
+plt_A_alpha$labels$color <- "checks"
+
+print(plt_A_alpha)
+```
+
+##### Joint Distribution of Effects on Value 
+
+```{r}
+# Generate Gap Variable
+dft_graph <- tb_plan_v_tilde_a_alpha %>%
+  filter(checks %in% ar_checks_4) %>%
+  mutate(marital = as.factor(marital),
+         kids = as.factor(kids))
+
+# Titling
+st_title <- sprintf("Value (Life-Time) without Binary Check and Marginal Effects of Checks")
+title_line1 <- sprintf("Each circle (cross) represents an Age/Marriage/Child/Income/Check Type")
+title <- expression('The joint distribution of'~A[i]~'and'~alpha[i]~', Checks, SNW 2020')
+caption <- paste0('Life Cycle Simulation.')
+# Labels
+st_x_label <- expression('Life-time Utility without the Next Increment of Checks')
+st_y_label <- expression('Marginal V from An Additional Check')
+
+# Binary Marginal Effects and Prediction without Binary
+plt_A_alpha <- dft_graph %>% ggplot(aes(x=V_A_i)) +
+      geom_point(aes(y=V_alpha_i,
+                     color=factor(checks))) +
+      geom_abline(intercept = 0, slope = 1) + # 45 degree line
+      labs(title = st_title,
+           subtitle = paste0(title_line1),
+           x = st_x_label,
+           y = st_y_label,
+           caption = caption) 
+# Labeling
+plt_A_alpha$labels$color <- "checks"
+
+print(plt_A_alpha)
+```
+
+#### Joint distribution of A and alpha by Income Groups
+
+```{r}
+# Select 4 Y groups Levels
+ar_ymin <- sort(unique(tb_plan_v_tilde_a_alpha %>% pull(ymin)))
+ar_ymin <- ar_ymin[seq(1, length(ar_ymin), length.out=4)]
+
+dft_graph_subset <- dft_graph %>% filter(checks %in% ar_checks_4) %>% filter(ymin %in% ar_ymin) 
+
+# Binary Marginal Effects and Prediction without Binary
+st_title <- sprintf("BY FOUR Y GROUPS: Expected C without Binary Check and Marginal C Effects of Checks")
+plt_A_alpha_grp <- dft_graph_subset %>% ggplot(aes(x=V_A_i)) +
+      geom_point(aes(y=V_alpha_i,
+                     color=factor(checks))) +
+      geom_abline(intercept = 0, slope = 1) + # 45 degree line
+      facet_wrap(~ ymin, nrow=2) +
+      labs(title = st_title,
+           subtitle = paste0(title_line1),
+           x = st_x_label,
+           y = st_y_label,
+           caption = caption) 
+
+# Labeling
+plt_A_alpha_grp$labels$color <- "checks"
+
+print(plt_A_alpha_grp)
+```
+
+#### f(A,alpha), color=age, panel=ymin
+
+```{r}
+# Select 4 Y groups Levels
+ar_age <- sort(unique(dft_graph %>% pull(age)))
+ar_age <- ar_age[seq(1, 30, length.out=4)]
+ar_ymin <- sort(unique(dft_graph %>% pull(ymin)))
+ar_ymin <- ar_ymin[c(15, 20, 25, 30)]
+
+dft_graph_subset <- dft_graph %>% 
+  filter(ymin %in% ar_ymin) %>%
+  filter(checks == 1) %>%
+  filter(marital == 0) %>%
+  filter(kids == 1)
+
+# Binary Marginal Effects and Prediction without Binary
+st_title <- sprintf("Color=Age, Panel=Y ; Married + 1 Kid + First Check")
+plt_A_alpha_grp <- dft_graph_subset %>% ggplot(aes(x=A_i)) +
+      geom_point(aes(y=alpha_i,
+                     color=factor(age)), size=4) +
+      geom_abline(intercept = 0, slope = 1) + # 45 degree line
+      facet_wrap(~ ymin, nrow=2) +
+      labs(title = st_title,
+           subtitle = paste0(title_line1),
+           x = st_x_label,
+           y = st_y_label,
+           caption = caption) 
+
+# Labeling
+plt_A_alpha_grp$labels$color <- "age"
+
+print(plt_A_alpha_grp)
+```
+
+#### f(A,alpha), color=checks, panel=ymin
+
+```{r}
+# Select 4 Y groups Levels
+ar_checks <- sort(unique(tb_plan_v_tilde_a_alpha %>% pull(checks)))
+ar_checks <- ar_checks[seq(1, length(ar_checks), length.out=4)]
+ar_age <- sort(unique(dft_graph %>% pull(age)))
+ar_age <- ar_age[seq(1, 30, length.out=4)]
+ar_ymin <- sort(unique(dft_graph %>% pull(ymin)))
+ar_ymin <- ar_ymin[c(30)]
+
+dft_graph_subset <- dft_graph %>% 
+  filter(ymin %in% ar_ymin) %>%
+  filter(marital == 0) %>%
+  filter(age == 50) %>%
+  filter(kids %in% c(1))
+
+# Binary Marginal Effects and Prediction without Binary
+st_title <- sprintf("Color=Age, Panel=Y ; Married + 1 Kid + First Check")
+plt_A_alpha_grp <- dft_graph_subset %>% ggplot(aes(x=A_i)) +
+      geom_point(aes(y=alpha_i,
+                     color=factor(checks)), size=4) +
+      geom_abline(intercept = 0, slope = 1) + # 45 degree line
+      facet_wrap(~ kids, nrow=2) +
+      labs(title = st_title,
+           subtitle = paste0(title_line1),
+           x = st_x_label,
+           y = st_y_label,
+           caption = caption) 
+
+# Labeling
+plt_A_alpha_grp$labels$color <- "age"
+
+print(plt_A_alpha_grp)
+```
+## Value Summarize and Tabulate (Both Check no Check)
+
+Aggregate Statistics:
+
+```{r}
+REconTools::ff_summ_percentiles(tb_plan_v_tilde, bl_statsasrows = FALSE)
+```
+
+### Group Stats by Income 
+
+```{r}
+df <- tb_plan_v_tilde
+vars.group <- c('ymin','age')
+var.numeric <- 'vtilde'
+str.stats.group <- 'allperc'
+ar.perc <- c(0.05, 0.25, 0.5, 0.75, 0.95)
+ls_summ_by_group <- REconTools::ff_summ_bygroup(df, vars.group, var.numeric, str.stats.group, ar.perc)
+ls_summ_by_group$df_table_grp_stats
+```
+
+### Group Stats by Age 
+
+```{r}
+df <- tb_plan_v_tilde
+vars.group <- c('age')
+var.numeric <- 'vtilde'
+str.stats.group <- 'allperc'
+ar.perc <- c(0.05, 0.25, 0.5, 0.75, 0.95)
+ls_summ_by_group <- REconTools::ff_summ_bygroup(df, vars.group, var.numeric, str.stats.group, ar.perc)
+ls_summ_by_group$df_table_grp_stats
+```
+
+### Group Stats by Kids
+
+```{r}
+df <- tb_plan_v_tilde
+vars.group <- c('kids')
+var.numeric <- 'vtilde'
+str.stats.group <- 'allperc'
+ar.perc <- c(0.05, 0.25, 0.5, 0.75, 0.95)
+ls_summ_by_group <- REconTools::ff_summ_bygroup(df, vars.group, var.numeric, str.stats.group, ar.perc)
+ls_summ_by_group$df_table_grp_stats
+```
+
+### Group Stats by Marital Status
+
+
+```{r}
+df <- tb_plan_v_tilde
+vars.group <- c('marital')
+var.numeric <- 'vtilde'
+str.stats.group <- 'allperc'
+ar.perc <- c(0.05, 0.25, 0.5, 0.75, 0.95)
+ls_summ_by_group <- REconTools::ff_summ_bygroup(df, vars.group, var.numeric, str.stats.group, ar.perc)
+ls_summ_by_group$df_table_grp_stats
+```
+### Group Stats by Age and Marital Status
+
+```{r}
+df <- tb_plan_v_tilde
+vars.group <- c('age', 'marital')
+var.numeric <- 'vtilde'
+str.stats.group <- 'allperc'
+ar.perc <- c(0.05, 0.25, 0.5, 0.75, 0.95)
+ls_summ_by_group <- REconTools::ff_summ_bygroup(df, vars.group, var.numeric, str.stats.group, ar.perc)
+ls_summ_by_group$df_table_grp_stats
+```
+
+### Group Stats by Age and Marital Status and Kids
+
+```{r}
+df <- tb_plan_v_tilde
+vars.group <- c('age', 'marital', 'kids')
+var.numeric <- 'vtilde'
+str.stats.group <- 'allperc'
+ar.perc <- c(0.05, 0.25, 0.5, 0.75, 0.95)
+ls_summ_by_group <- REconTools::ff_summ_bygroup(df, vars.group, var.numeric, str.stats.group, ar.perc)
+ls_summ_by_group$df_table_grp_stats
+```
+
+## Summarize and Tabulate (Compare Check no Check)
+
+### Group Stats by Income and Checks
+
+alpha statistics: 
+
+```{r}
+df <- tb_plan_v_tilde_a_alpha
+vars.group <- c('ymin')
+var.numeric <- 'alpha_i'
+str.stats.group <- 'allperc'
+ar.perc <- c(0.05, 0.25, 0.5, 0.75, 0.95)
+ls_summ_by_group <- REconTools::ff_summ_bygroup(df, vars.group, var.numeric, str.stats.group, ar.perc)
+ls_summ_by_group$df_table_grp_stats
+```
+
+A1 and A0 stats: 
+
+```{r}
+df <- tb_plan_v_tilde
+vars.group <- c('ymin', 'checks')
+var.numeric <- 'vtilde'
+str.stats.group <- 'allperc'
+ar.perc <- c(0.05, 0.25, 0.5, 0.75, 0.95)
+ls_summ_by_group <- REconTools::ff_summ_bygroup(df, vars.group, var.numeric, str.stats.group, ar.perc)
+ls_summ_by_group$df_table_grp_stats
+```
+### Group Stats by Age and Checks
+
+alpha statistics: 
+
+```{r}
+df <- tb_plan_v_tilde_a_alpha
+vars.group <- c('age')
+var.numeric <- 'alpha_i'
+str.stats.group <- 'allperc'
+ar.perc <- c(0.05, 0.25, 0.5, 0.75, 0.95)
+ls_summ_by_group <- REconTools::ff_summ_bygroup(df, vars.group, var.numeric, str.stats.group, ar.perc)
+ls_summ_by_group$df_table_grp_stats
+```
+
+A1 and A0 stats: 
+
+```{r}
+df <- tb_plan_v_tilde
+vars.group <- c('age', 'checks')
+var.numeric <- 'vtilde'
+str.stats.group <- 'allperc'
+ar.perc <- c(0.05, 0.25, 0.5, 0.75, 0.95)
+ls_summ_by_group <- REconTools::ff_summ_bygroup(df, vars.group, var.numeric, str.stats.group, ar.perc)
+ls_summ_by_group$df_table_grp_stats
+```
+
+### Group Stats by Kids Checks
+
+alpha statistics: 
+
+```{r}
+df <- tb_plan_v_tilde_a_alpha
+vars.group <- c('kids')
+var.numeric <- 'alpha_i'
+str.stats.group <- 'allperc'
+ar.perc <- c(0.05, 0.25, 0.5, 0.75, 0.95)
+ls_summ_by_group <- REconTools::ff_summ_bygroup(df, vars.group, var.numeric, str.stats.group, ar.perc)
+ls_summ_by_group$df_table_grp_stats
+```
+
+V with check and V without Check Statistics:
+
+```{r}
+df <- tb_plan_v_tilde
+vars.group <- c('kids', 'checks')
+var.numeric <- 'vtilde'
+str.stats.group <- 'allperc'
+ar.perc <- c(0.05, 0.25, 0.5, 0.75, 0.95)
+ls_summ_by_group <- REconTools::ff_summ_bygroup(df, vars.group, var.numeric, str.stats.group, ar.perc)
+ls_summ_by_group$df_table_grp_stats
+```
+
+### Group Stats by Marital Status and CHecks
+
+alpha statistics: 
+
+```{r}
+df <- tb_plan_v_tilde_a_alpha
+vars.group <- c('marital')
+var.numeric <- 'alpha_i'
+str.stats.group <- 'allperc'
+ar.perc <- c(0.05, 0.25, 0.5, 0.75, 0.95)
+ls_summ_by_group <- REconTools::ff_summ_bygroup(df, vars.group, var.numeric, str.stats.group, ar.perc)
+ls_summ_by_group$df_table_grp_stats
+```
+
+A1 and A0 stats: 
+
+```{r}
+df <- tb_plan_v_tilde
+vars.group <- c('marital', 'checks')
+var.numeric <- 'vtilde'
+str.stats.group <- 'allperc'
+ar.perc <- c(0.05, 0.25, 0.5, 0.75, 0.95)
+ls_summ_by_group <- REconTools::ff_summ_bygroup(df, vars.group, var.numeric, str.stats.group, ar.perc)
+ls_summ_by_group$df_table_grp_stats
+```
+
+### Group Stats by Age and Marital Status and CHecks
+
+alpha statistics: 
+
+```{r}
+df <- tb_plan_v_tilde_a_alpha
+vars.group <- c('age', 'marital' )
+var.numeric <- 'alpha_i'
+str.stats.group <- 'allperc'
+ar.perc <- c(0.05, 0.25, 0.5, 0.75, 0.95)
+ls_summ_by_group <- REconTools::ff_summ_bygroup(df, vars.group, var.numeric, str.stats.group, ar.perc)
+ls_summ_by_group$df_table_grp_stats
+```
+
+A1 and A0 stats: 
+
+```{r}
+df <- tb_plan_v_tilde
+vars.group <- c('age', 'marital', 'checks')
+var.numeric <- 'vtilde'
+str.stats.group <- 'allperc'
+ar.perc <- c(0.05, 0.25, 0.5, 0.75, 0.95)
+ls_summ_by_group <- REconTools::ff_summ_bygroup(df, vars.group, var.numeric, str.stats.group, ar.perc)
+ls_summ_by_group$df_table_grp_stats
+```
+
+### Group Stats by Marital Status and kids and CHecks
+
+alpha statistics: 
+
+```{r}
+df <- tb_plan_v_tilde_a_alpha
+vars.group <- c('marital', 'kids' )
+var.numeric <- 'alpha_i'
+str.stats.group <- 'allperc'
+ar.perc <- c(0.05, 0.25, 0.5, 0.75, 0.95)
+ls_summ_by_group <- REconTools::ff_summ_bygroup(df, vars.group, var.numeric, str.stats.group, ar.perc)
+ls_summ_by_group$df_table_grp_stats
+```
+
+A1 and A0 stats: 
+
+```{r}
+df <- tb_plan_v_tilde
+vars.group <- c('marital', 'kids', 'checks')
+var.numeric <- 'vtilde'
+str.stats.group <- 'allperc'
+ar.perc <- c(0.05, 0.25, 0.5, 0.75, 0.95)
+ls_summ_by_group <- REconTools::ff_summ_bygroup(df, vars.group, var.numeric, str.stats.group, ar.perc)
+ls_summ_by_group$df_table_grp_stats
+```
+
+
+### Group Stats by Age and Marital Status and Kids and Checks
+
+alpha statistics: 
+
+```{r}
+df <- tb_plan_v_tilde_a_alpha
+vars.group <- c('age', 'marital', 'kids')
+var.numeric <- 'alpha_i'
+str.stats.group <- 'allperc'
+ar.perc <- c(0.05, 0.25, 0.5, 0.75, 0.95)
+ls_summ_by_group <- REconTools::ff_summ_bygroup(df, vars.group, var.numeric, str.stats.group, ar.perc)
+ls_summ_by_group$df_table_grp_stats
+```
+
+A1 and A0 stats: 
+
+```{r}
+df <- tb_plan_v_tilde
+vars.group <- c('age', 'marital', 'kids', 'checks')
+var.numeric <- 'vtilde'
+str.stats.group <- 'allperc'
+ar.perc <- c(0.05, 0.25, 0.5, 0.75, 0.95)
+ls_summ_by_group <- REconTools::ff_summ_bygroup(df, vars.group, var.numeric, str.stats.group, ar.perc)
+ls_summ_by_group$df_table_grp_stats
+```
+
+## Graphs
+
+### Graph Probability Mass 
+
+```{r}
+# select variables
+tb_graph <- tb_plan_v_tilde %>% 
+  select(mass, age, marital, kids, checks) %>%
+  mutate(marital = as.factor(marital),
+         kids = as.factor(kids),
+         checks = as.factor(checks))
+
+# graph
+lineplot <- tb_graph %>%
+  group_by(checks, age, marital, kids) %>%
+  summarise(mean_mass = sum(mass)) %>%
+  gather(variable, value, -checks, -age, -marital, -kids) %>%
+  ggplot(aes(x=age, y=value,
+             colour=checks, linetype=checks, shape=checks)) +
+  facet_wrap( ~ marital + kids, nrow=2) +
+  geom_line() +
+  geom_point() +
+  labs(title = paste0('Mass at States'),
+       x = 'Age',
+       y = 'Mass',
+       caption = 'SVW 2020')
+# graph
+print(lineplot)
+
+```
+
+### Graph Value Statistics By Various Statistics
+
+```{r}
+# select variables
+tb_graph <- tb_plan_v_tilde %>% 
+  select(vtilde, age, mass, marital, kids, checks) %>%
+  mutate(marital = as.factor(marital),
+         kids = as.factor(kids),
+         checks = as.factor(checks))
+
+# graph
+lineplot <- tb_graph %>%
+  group_by(checks, age, marital, kids) %>%
+  summarise(mean_vtilde = mean(vtilde*(mass/sum(mass)))) %>%
+  gather(variable, value, -checks, -age, -marital, -kids) %>%
+  ggplot(aes(x=age, y=value,
+             colour=checks, linetype=checks, shape=checks)) +
+  facet_wrap( ~ marital + kids, nrow=2) +
+  geom_line() +
+  geom_point() +
+  labs(title = paste0('Planner Value by Checks'),
+       x = 'Age',
+       y = 'Planner Exp Value',
+       caption = 'SVW 2020')
+# graph
+print(lineplot)
+
+```
+

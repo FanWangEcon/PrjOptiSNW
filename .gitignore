@@ -9,7 +9,7 @@
 ###################
 
 _img/
-*.Rmd
+PrjOptiSNW/*.Rmd
 !index.Rmd
 !title.Rmd
 !main.Rmd

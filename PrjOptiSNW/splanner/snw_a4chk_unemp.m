@@ -43,16 +43,18 @@
 %
 
 %%
-function [V_U, exitflag_fsolve]=snw_a4chk_unemp(varargin)
+function [V_U, C_U]=snw_a4chk_unemp(varargin)
 
 %% Default and Parse
 if (~isempty(varargin))
     
-    if (length(varargin)==2)
-        [welf_checks, V_unemp] = varargin{:};
+    if (length(varargin)==3)
+        [welf_checks, V_unemp, cons_unemp] = varargin{:};
         mp_controls = snw_mp_control('default_base');
-    elseif (length(varargin)==4)
-        [welf_checks, V_unemp, mp_params, mp_controls] = varargin{:};
+    elseif (length(varargin)==5)
+        [welf_checks, V_unemp, cons_unemp, mp_params, mp_controls] = varargin{:};
+    else
+        error('Need to provide 3/5 parameter inputs');
     end
     
 else
@@ -63,7 +65,7 @@ else
     mp_controls = snw_mp_control('default_test');
     
     % Solve for Value Function, Without One Period Unemployment Shock
-    [V_ss,~,~,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
+    [V_ss,~,cons_unemp,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
     
     % The number of checks
     welf_checks = 2;
@@ -176,6 +178,7 @@ for j=1:n_jgrid % Age
                         end
                         
                         V_U(j,a,eta,educ,married,kids)=vals(1)*V_unemp(j,inds(1),eta,educ,married,kids)+vals(2)*V_unemp(j,inds(2),eta,educ,married,kids);
+                        C_U(j,a,eta,educ,married,kids)=vals(1)*cons_unemp(j,inds(1),eta,educ,married,kids)+vals(2)*cons_unemp(j,inds(2),eta,educ,married,kids);
                         
                     end
                 end
@@ -208,14 +211,18 @@ end
 %% Compare Difference between V_ss and V_W
 
 if (bl_print_a4chk_verbose)
+
     mn_V_gain_check = V_U - V_unemp;
-    mn_V_gain_frac_check = (V_U - V_unemp)./V_unemp;
+    mn_C_gain_check = C_U - cons_unemp;
+    mn_MPC = (C_U - cons_unemp)./(welf_checks*TR);    
     mp_container_map = containers.Map('KeyType','char', 'ValueType','any');
     mp_container_map('V_U') = V_U;
-    mp_container_map('V_unemp') = V_unemp;
+    mp_container_map('C_U') = C_U;
     mp_container_map('V_U_minus_V_unemp') = mn_V_gain_check;
-    mp_container_map('V_U_minus_V_unemp_divide_V_unemp') = mn_V_gain_frac_check;
+    mp_container_map('C_U_minus_C_unemp') = mn_C_gain_check;    
+    mp_container_map('mn_MPC_unemp') = mn_MPC;    
     ff_container_map_display(mp_container_map);
+    
 end
 
 end

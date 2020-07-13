@@ -1,0 +1,816 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>SNW_VU_VW_CHECKS Solve for V, Vumpe, and VU(check) VW(check)</title><meta name="generator" content="MATLAB 9.7"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-07-12"><meta name="DC.source" content="snw_vu_vw_checks.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>SNW_VU_VW_CHECKS Solve for V, Vumpe, and VU(check) VW(check)</h1><!--introduction--><pre>  What are the V and V_unemploy at all state space points?</pre><pre>  For unemployed and employed individuals in 2020, what is the value of
+  of the check? Solve for V(s,check|working), V(s,check|unemployed).</pre><pre>  * ST_SOLU_TYPE: 'matlab_minimizer', 'grid_search', 'bisec_vec', three
+  alternative solution methods</pre><pre>  [V_VFI, ap_VFI, cons_VFI] = SNW_VU_VW_CHECKS(ST_SOLU_TYPE) Solves
+  given solution method for value function, policy functions. Using
+  default parameters.</pre><pre>  [V_VFI, ap_VFI, cons_VFI, V_VFI_unemp, ap_VFI_unemp, cons_VFI_unemp] =
+  SNW_VU_VW_CHECKS(ST_SOLU_TYPE, MP_PARAMS, MP_CONTROLS) Solves given
+  solution method for value function, policy functions under both
+  employed and unemployed situations, using default parameters. Change
+  model parameters through MP_PARAMS.</pre><pre>  [V_VFI, ap_VFI, cons_VFI, V_VFI_unemp, ap_VFI_unemp, cons_VFI_unemp,
+  V_W_allchecks, C_W_allchecks, V_U_allchecks, C_U_allchecks] =
+  SNW_VU_VW_CHECKS(ST_SOLU_TYPE, MP_PARAMS, MP_CONTROLS) Solves the
+  model for some number of checks for employed and unemployed. The
+  number of checks is set through the 'n_welfchecksgrid' parameters in
+  MP_PARAMS.</pre><pre>  [V_W_allchecks, C_W_allchecks, V_U_allchecks, C_U_allchecks] =
+  SNW_VU_VW_CHECKS(ST_SOLU_TYPE, MP_PARAMS, MP_CONTROLS, V_SS, V_UNEMP)
+  provide V_SS and V_UNEMP solved out elsewhere, and only get two
+  outputs out.</pre><pre>  See also SNWX_A4CHK_WRK_BISEC_VEC_DENSE,
+  SNWX_A4CHK_WRK_BISEC_VEC_SMALL, SNW_A4CHK_WRK, SNW_A4CHK_WRK_BISEC</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#3">Default and Parse</a></li><li><a href="#4">Reset All globals</a></li><li><a href="#5">Parse Model Parameters</a></li><li><a href="#6">Parse Model Controls</a></li><li><a href="#7">Timing and Profiling Start</a></li><li><a href="#8">Compute V_ss If not Provided as a Parameter</a></li><li><a href="#9">Compute V_unemp If not Provided as a Parameter</a></li><li><a href="#10">A1. Compute EMPLOYED Household-Head and Spousal Income</a></li><li><a href="#11">A2. Compute UNEMPLOYED Household-Head and Spousal Income</a></li><li><a href="#12">Compute Check V_W and check V_U Values</a></li><li><a href="#13">Return</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> [varargout]=snw_vu_vw_checks(varargin)
+</pre><h2 id="3">Default and Parse</h2><pre class="codeinput"><span class="keyword">if</span> (~isempty(varargin))
+
+    <span class="keyword">if</span> (length(varargin)==1)
+        [st_solu_type] = varargin{:};
+        mp_params = snw_mp_param(<span class="string">'default_tiny'</span>);
+        mp_controls = snw_mp_control(<span class="string">'default_test'</span>);
+    <span class="keyword">elseif</span> (length(varargin)==3)
+        [st_solu_type, mp_params, mp_controls] = varargin{:};
+    <span class="keyword">elseif</span> (length(varargin)==5)
+        [st_solu_type, mp_params, mp_controls, V_ss, C_ss] = varargin{:};
+    <span class="keyword">elseif</span> (length(varargin)==6)
+        [st_solu_type, mp_params, mp_controls, V_ss, V_unemp, C_unemp] = varargin{:};
+    <span class="keyword">else</span>
+        error(<span class="string">'Need to provide 1/3/5/6 parameter inputs'</span>);
+    <span class="keyword">end</span>
+
+<span class="keyword">else</span>
+    close <span class="string">all</span>;
+
+<span class="comment">%     st_solu_type = 'matlab_minimizer';</span>
+    st_solu_type = <span class="string">'bisec_vec'</span>;
+<span class="comment">%     st_solu_type = 'grid_search';</span>
+
+    <span class="comment">% Solve the VFI Problem and get Value Function</span>
+    mp_params = snw_mp_param(<span class="string">'default_tiny'</span>);
+    mp_controls = snw_mp_control(<span class="string">'default_test'</span>);
+
+    <span class="comment">% set Unemployment Related Variables</span>
+    xi=0.5; <span class="comment">% Proportional reduction in income due to unemployment (xi=0 refers to 0 labor income; xi=1 refers to no drop in labor income)</span>
+    b=0; <span class="comment">% Unemployment insurance replacement rate (b=0 refers to no UI benefits; b=1 refers to 100 percent labor income replacement)</span>
+    TR=100/58056; <span class="comment">% Value of a welfare check (can receive multiple checks). TO DO: Update with alternative values</span>
+    n_welfchecksgrid=3; <span class="comment">% Number of welfare checks. 0 refers to 0 dollars; 51 refers to 5000 dollars</span>
+
+    mp_params(<span class="string">'xi'</span>) = xi;
+    mp_params(<span class="string">'b'</span>) = b;
+    mp_params(<span class="string">'TR'</span>) = TR;
+    mp_params(<span class="string">'n_welfchecksgrid'</span>) = n_welfchecksgrid;
+
+    <span class="comment">% Solve for Unemployment Values</span>
+    mp_controls(<span class="string">'bl_print_a4chk'</span>) = false;
+
+<span class="keyword">end</span>
+</pre><h2 id="4">Reset All globals</h2><p>Parameters used in this code directly</p><pre class="codeinput"><span class="keyword">global</span> agrid n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
+<span class="comment">% Used in find_a_working function</span>
+<span class="keyword">global</span> theta r agrid epsilon eta_H_grid eta_S_grid SS Bequests bequests_option throw_in_ocean
+</pre><h2 id="5">Parse Model Parameters</h2><pre class="codeinput">params_group = values(mp_params, {<span class="string">'theta'</span>, <span class="string">'r'</span>});
+[theta,  r] = params_group{:};
+
+params_group = values(mp_params, {<span class="string">'Bequests'</span>, <span class="string">'bequests_option'</span>, <span class="string">'throw_in_ocean'</span>});
+[Bequests, bequests_option, throw_in_ocean] = params_group{:};
+
+params_group = values(mp_params, {<span class="string">'agrid'</span>, <span class="string">'eta_H_grid'</span>, <span class="string">'eta_S_grid'</span>});
+[agrid, eta_H_grid, eta_S_grid] = params_group{:};
+
+params_group = values(mp_params, {<span class="string">'epsilon'</span>, <span class="string">'SS'</span>});
+[epsilon, SS] = params_group{:};
+
+params_group = values(mp_params, <span class="keyword">...</span>
+    {<span class="string">'n_jgrid'</span>, <span class="string">'n_agrid'</span>, <span class="string">'n_etagrid'</span>, <span class="string">'n_educgrid'</span>, <span class="string">'n_marriedgrid'</span>, <span class="string">'n_kidsgrid'</span>});
+[n_jgrid, n_agrid, n_etagrid, n_educgrid, n_marriedgrid, n_kidsgrid] = params_group{:};
+
+params_group = values(mp_params, {<span class="string">'n_welfchecksgrid'</span>, <span class="string">'xi'</span>,<span class="string">'b'</span>});
+[n_welfchecksgrid, xi, b] = params_group{:};
+</pre><h2 id="6">Parse Model Controls</h2><p>Profiling Controls</p><pre class="codeinput">params_group = values(mp_controls, {<span class="string">'bl_timer'</span>});
+[bl_timer] = params_group{:};
+
+<span class="comment">% Display Controls</span>
+params_group = values(mp_controls, {<span class="string">'bl_print_vu_vw'</span>, <span class="string">'bl_print_vu_vw_verbose'</span>});
+[bl_print_vu_vw, bl_print_vu_vw_verbose] = params_group{:};
+</pre><h2 id="7">Timing and Profiling Start</h2><pre class="codeinput"><span class="keyword">if</span> (bl_timer)
+    tic
+<span class="keyword">end</span>
+</pre><h2 id="8">Compute V_ss If not Provided as a Parameter</h2><pre class="codeinput"><span class="comment">% Compute policy functions in the event of unemployment. Required to compute V_U in the Planner's problem</span>
+<span class="keyword">if</span> ~exist(<span class="string">'V_ss'</span>,<span class="string">'var'</span>)
+    <span class="keyword">if</span> (bl_print_vu_vw)
+        disp(<span class="string">'Compute value function and policy functions: V_ss'</span>)
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> (strcmp(st_solu_type, <span class="string">'matlab_minimizer'</span>))
+        [V_ss,ap_ss,cons_ss,~] = snw_vfi_main(mp_params, mp_controls);
+    <span class="keyword">elseif</span> (strcmp(st_solu_type, <span class="string">'grid_search'</span>))
+        [V_ss,ap_idx_VFI,cons_ss,~] = snw_vfi_main_grid_search(mp_params, mp_controls);
+        ap_ss = ap_idx_VFI;
+    <span class="keyword">elseif</span> (strcmp(st_solu_type, <span class="string">'bisec_vec'</span>))
+        [V_ss,ap_ss,cons_ss,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
+    <span class="keyword">else</span>
+        error([<span class="string">'SNW_VU_VW_CHECKS V, st_solu_type='</span> st_solu_type <span class="string">' is not known'</span>])
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">Compute value function and policy functions: V_ss
+SNW_VFI_MAIN: Finished Age Group:7 of 7
+SNW_VFI_MAIN: Finished Age Group:6 of 7
+SNW_VFI_MAIN: Finished Age Group:5 of 7
+SNW_VFI_MAIN: Finished Age Group:4 of 7
+SNW_VFI_MAIN: Finished Age Group:3 of 7
+SNW_VFI_MAIN: Finished Age Group:2 of 7
+SNW_VFI_MAIN: Finished Age Group:1 of 7
+Elapsed time is 0.264820 seconds.
+Completed SNW_VFI_MAIN;SNW_MP_PARAM=default_tiny;SNW_MP_CONTROL=default_test
+</pre><h2 id="9">Compute V_unemp If not Provided as a Parameter</h2><pre class="codeinput"><span class="keyword">if</span> (nargout ~= 3)
+
+    <span class="comment">% Compute policy functions in the event of unemployment. Required to compute V_U in the Planner's problem</span>
+    <span class="keyword">if</span> ~exist(<span class="string">'V_unemp'</span>,<span class="string">'var'</span>)
+        <span class="keyword">if</span> (bl_print_vu_vw)
+            disp(<span class="string">'Compute value function and policy functions in the event of unemployment: V_unemp (given V_ss)'</span>)
+        <span class="keyword">end</span>
+
+        <span class="keyword">if</span> (strcmp(st_solu_type, <span class="string">'matlab_minimizer'</span>))
+            [V_unemp,ap_unemp,cons_unemp,~] = snw_vfi_unemp(mp_params, mp_controls, V_ss);
+        <span class="keyword">elseif</span> (strcmp(st_solu_type, <span class="string">'grid_search'</span>))
+            [V_unemp,ap_idx_VFI_unemp,cons_unemp,~]= snw_vfi_main_grid_search(mp_params, mp_controls, V_ss);
+            ap_unemp = ap_idx_VFI_unemp;
+        <span class="keyword">elseif</span> (strcmp(st_solu_type, <span class="string">'bisec_vec'</span>))
+            [V_unemp,ap_unemp,cons_unemp,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls, V_ss);
+        <span class="keyword">else</span>
+            error([<span class="string">'SNW_VU_VW_CHECKS V_unemp, st_solu_type='</span> st_solu_type <span class="string">' is not known'</span>])
+        <span class="keyword">end</span>
+
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">Compute value function and policy functions in the event of unemployment: V_unemp (given V_ss)
+SNW_VFI_MAIN: Finished Age Group:1 of 7
+SNW_VFI_MAIN: Finished Age Group:2 of 7
+SNW_VFI_MAIN: Finished Age Group:3 of 7
+SNW_VFI_MAIN: Finished Age Group:4 of 7
+SNW_VFI_MAIN: Finished Age Group:5 of 7
+SNW_VFI_MAIN: Finished Age Group:6 of 7
+SNW_VFI_MAIN: Finished Age Group:7 of 7
+Elapsed time is 0.260803 seconds.
+Completed SNW_VFI_MAIN 1 PERIOD UNEMP SHK;SNW_MP_PARAM=default_tiny;SNW_MP_CONTROL=default_test
+</pre><h2 id="10">A1. Compute EMPLOYED Household-Head and Spousal Income</h2><pre class="codeinput"><span class="keyword">if</span> (nargout ~= 3 &amp;&amp; nargout ~= 6)
+    <span class="comment">% initialize</span>
+    mn_inc = NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+    mn_spouse_inc = NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+    mn_a = NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+
+    <span class="comment">% Txable Income at all state-space points</span>
+    <span class="keyword">for</span> j=1:n_jgrid <span class="comment">% Age</span>
+        <span class="keyword">for</span> a=1:n_agrid <span class="comment">% Assets</span>
+            <span class="keyword">for</span> eta=1:n_etagrid <span class="comment">% Productivity</span>
+                <span class="keyword">for</span> educ=1:n_educgrid <span class="comment">% Educational level</span>
+                    <span class="keyword">for</span> married=1:n_marriedgrid <span class="comment">% Marital status</span>
+                        <span class="keyword">for</span> kids=1:n_kidsgrid <span class="comment">% Number of kids</span>
+
+                            [inc,earn]=individual_income(j,a,eta,educ);
+                            spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
+
+                            mn_inc(j,a,eta,educ,married,kids) = inc;
+                            mn_spouse_inc(j,a,eta,educ,married,kids) = (married-1)*spouse_inc*exp(eta_S_grid(eta));
+                            mn_a(j,a,eta,educ,married,kids) = agrid(a);
+
+                        <span class="keyword">end</span>
+                    <span class="keyword">end</span>
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+    <span class="comment">% flatten the nd dimensional array</span>
+    ar_inc_amz = mn_inc(:);
+    ar_spouse_inc_amz = mn_spouse_inc(:);
+    ar_a_amz = mn_a(:);
+
+    <span class="comment">% Print</span>
+    <span class="keyword">if</span> (bl_print_vu_vw)
+        disp([<span class="string">'SNW_VU_VW_CHECKS: Finished Employed income AMZ'</span>]);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">SNW_VU_VW_CHECKS: Finished Employed income AMZ
+</pre><h2 id="11">A2. Compute UNEMPLOYED Household-Head and Spousal Income</h2><pre class="codeinput"><span class="keyword">if</span> (nargout ~= 3 &amp;&amp; nargout ~= 6)
+    <span class="comment">% initialize</span>
+    mn_inc_unemp = NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+    mn_spouse_inc_unemp = NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+
+    <span class="comment">% Txable Income at all state-space points</span>
+    <span class="keyword">for</span> j=1:n_jgrid <span class="comment">% Age</span>
+        <span class="keyword">for</span> a=1:n_agrid <span class="comment">% Assets</span>
+            <span class="keyword">for</span> eta=1:n_etagrid <span class="comment">% Productivity</span>
+                <span class="keyword">for</span> educ=1:n_educgrid <span class="comment">% Educational level</span>
+                    <span class="keyword">for</span> married=1:n_marriedgrid <span class="comment">% Marital status</span>
+                        <span class="keyword">for</span> kids=1:n_kidsgrid <span class="comment">% Number of kids</span>
+
+                            [inc,earn]=individual_income(j,a,eta,educ,xi,b);
+                            spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
+
+                            mn_inc_unemp(j,a,eta,educ,married,kids) = inc;
+                            mn_spouse_inc_unemp(j,a,eta,educ,married,kids) = (married-1)*spouse_inc*exp(eta_S_grid(eta));
+
+                        <span class="keyword">end</span>
+                    <span class="keyword">end</span>
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+    <span class="comment">% flatten the nd dimensional array</span>
+    ar_inc_unemp_amz = mn_inc_unemp(:);
+    ar_spouse_inc_unemp_amz = mn_spouse_inc_unemp(:);
+
+    <span class="comment">% Print</span>
+    <span class="keyword">if</span> (bl_print_vu_vw)
+        disp([<span class="string">'SNW_VU_VW_CHECKS: Finished Unemployed income AMZ'</span>]);
+    <span class="keyword">end</span>
+
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">SNW_VU_VW_CHECKS: Finished Unemployed income AMZ
+</pre><h2 id="12">Compute Check V_W and check V_U Values</h2><pre class="codeinput"><span class="keyword">if</span> (nargout ~= 3 &amp;&amp; nargout ~= 6)
+
+    V_W_allchecks=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid,n_welfchecksgrid);
+    V_U_allchecks=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid,n_welfchecksgrid);
+
+    C_W_allchecks=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid,n_welfchecksgrid);
+    C_U_allchecks=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid,n_welfchecksgrid);
+
+    <span class="keyword">if</span> (bl_print_vu_vw)
+        disp(<span class="string">'Solve for V_W and V_U for different number of welfare checks'</span>)
+    <span class="keyword">end</span>
+
+    <span class="keyword">for</span> welf_checks=0:(n_welfchecksgrid-1)
+
+        <span class="keyword">if</span> (strcmp(st_solu_type, <span class="string">'matlab_minimizer'</span>))
+            [V_W,C_W]=snw_a4chk_wrk(<span class="keyword">...</span>
+                welf_checks, V_ss, cons_ss, mp_params, mp_controls);
+            [V_U,C_U]=snw_a4chk_unemp(<span class="keyword">...</span>
+                welf_checks, V_unemp, cons_unemp, mp_params, mp_controls);
+        <span class="keyword">else</span>
+            <span class="comment">% always use bisec_vec unless specified to use matlab_minimizer, no</span>
+            <span class="comment">% grid_search option for this</span>
+            [V_W,C_W]=snw_a4chk_wrk_bisec_vec( <span class="keyword">...</span>
+                welf_checks, V_ss, cons_ss, mp_params, mp_controls, <span class="keyword">...</span>
+                ar_a_amz, ar_inc_amz, ar_spouse_inc_amz);
+            [V_U,C_U]=snw_a4chk_unemp_bisec_vec( <span class="keyword">...</span>
+                welf_checks, V_unemp, cons_unemp, mp_params, mp_controls, <span class="keyword">...</span>
+                ar_a_amz, ar_inc_unemp_amz, ar_spouse_inc_unemp_amz);
+        <span class="keyword">end</span>
+
+        <span class="comment">% Update Collection:</span>
+        V_W_allchecks(:,:,:,:,:,:,welf_checks+1) = V_W;
+        V_U_allchecks(:,:,:,:,:,:,welf_checks+1) = V_U;
+        C_W_allchecks(:,:,:,:,:,:,welf_checks+1) = C_W;
+        C_U_allchecks(:,:,:,:,:,:,welf_checks+1) = C_U;
+
+        <span class="comment">% Print</span>
+        <span class="keyword">if</span> (bl_print_vu_vw)
+            disp(strcat([<span class="string">'SNW_VU_VW_CHECKS: Finished checks:'</span> <span class="keyword">...</span>
+                num2str(welf_checks) <span class="string">' of '</span> num2str(n_welfchecksgrid-1)]));
+        <span class="keyword">end</span>
+
+    <span class="keyword">end</span>
+
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">Solve for V_W and V_U for different number of welfare checks
+Elapsed time is 0.018596 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=0;TR=0.0017225;SNW_MP_PARAM=default_tiny;SNW_MP_CONTROL=default_test
+----------------------------------------
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+CONTAINER NAME: mp_container_map ND Array (Matrix etc)
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                      i    idx    ndim    numel    rowN    colN       sum         mean       std      coefvari      min       max  
+                      _    ___    ____    _____    ____    ____    __________    _______    ______    ________    _______    ______
+
+    C_W               1     1      6      4200      7      600     1.6573e+05      39.46    50.881     1.2894     0.21707    223.07
+    C_W_minus_C_ss    2     2      6      4200      7      600              0          0         0        NaN           0         0
+    V_W               3     3      6      4200      7      600         2665.1    0.63456    1.7207     2.7116     -8.9593    2.2937
+    V_W_minus_V_ss    4     4      6      4200      7      600              0          0         0        NaN           0         0
+    mn_MPC            5     5      6      4200      7      600            NaN        NaN       NaN        NaN         NaN       NaN
+
+Elapsed time is 0.016798 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=0;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_tiny;SNW_MP_CONTROL=default_test
+----------------------------------------
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+CONTAINER NAME: mp_container_map ND Array (Matrix etc)
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                         i    idx    ndim    numel    rowN    colN       sum         mean       std      coefvari      min       max  
+                         _    ___    ____    _____    ____    ____    __________    _______    ______    ________    _______    ______
+
+    C_U                  1     1      6      4200      7      600     1.6507e+05     39.303     50.94     1.2961     0.14747    223.07
+    C_U_minus_C_unemp    2     2      6      4200      7      600              0          0         0        NaN           0         0
+    V_U                  3     3      6      4200      7      600         2076.4    0.49439    1.9893     4.0237     -14.241    2.2936
+    V_U_minus_V_unemp    4     4      6      4200      7      600              0          0         0        NaN           0         0
+    mn_MPC_unemp         5     5      6      4200      7      600            NaN        NaN       NaN        NaN         NaN       NaN
+
+SNW_VU_VW_CHECKS: Finished checks:0 of 2
+Elapsed time is 0.019444 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=1;TR=0.0017225;SNW_MP_PARAM=default_tiny;SNW_MP_CONTROL=default_test
+----------------------------------------
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+CONTAINER NAME: mp_container_map ND Array (Matrix etc)
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                      i    idx    ndim    numel    rowN    colN       sum           mean          std        coefvari        min           max   
+                      _    ___    ____    _____    ____    ____    __________    __________    __________    ________    ___________    _________
+
+    C_W               1     1      6      4200      7      600     1.6574e+05        39.461        50.881     1.2894         0.21837       223.07
+    C_W_minus_C_ss    2     2      6      4200      7      600         4.6031      0.001096    0.00043658    0.39834     -1.9107e-11    0.0017225
+    V_W               3     3      6      4200      7      600         2669.2       0.63552        1.7181     2.7034         -8.9336       2.2937
+    V_W_minus_V_ss    4     4      6      4200      7      600          4.046    0.00096334      0.003131     3.2501      4.9372e-08     0.025652
+    mn_MPC            5     5      6      4200      7      600         2672.4       0.63629       0.25346    0.39834     -1.1093e-08            1
+
+Elapsed time is 0.017643 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=1;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_tiny;SNW_MP_CONTROL=default_test
+----------------------------------------
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+CONTAINER NAME: mp_container_map ND Array (Matrix etc)
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                         i    idx    ndim    numel    rowN    colN       sum          mean          std        coefvari       min           max   
+                         _    ___    ____    _____    ____    ____    __________    _________    __________    ________    __________    _________
+
+    C_U                  1     1      6      4200      7      600     1.6508e+05       39.304         50.94      1.296        0.14917       223.07
+    C_U_minus_C_unemp    2     2      6      4200      7      600         4.6909    0.0011169    0.00043721    0.39145     0.00046584    0.0017225
+    V_U                  3     3      6      4200      7      600         2081.7      0.49564         1.986      4.007        -14.198       2.2936
+    V_U_minus_V_unemp    4     4      6      4200      7      600          5.231    0.0012455      0.003852     3.0928     4.9372e-08     0.042724
+    mn_MPC_unemp         5     5      6      4200      7      600         2723.4      0.64842       0.25383    0.39145        0.27045            1
+
+SNW_VU_VW_CHECKS: Finished checks:1 of 2
+Elapsed time is 0.019115 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=2;TR=0.0017225;SNW_MP_PARAM=default_tiny;SNW_MP_CONTROL=default_test
+----------------------------------------
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+CONTAINER NAME: mp_container_map ND Array (Matrix etc)
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                      i    idx    ndim    numel    rowN    colN       sum          mean          std        coefvari        min          max   
+                      _    ___    ____    _____    ____    ____    __________    _________    __________    ________    ___________    ________
+
+    C_W               1     1      6      4200      7      600     1.6574e+05       39.462        50.881     1.2894         0.21968      223.07
+    C_W_minus_C_ss    2     2      6      4200      7      600         9.2063     0.002192    0.00087316    0.39834     -3.8213e-11    0.003445
+    V_W               3     3      6      4200      7      600         2673.2      0.63648        1.7155     2.6953          -8.908      2.2937
+    V_W_minus_V_ss    4     4      6      4200      7      600         8.0924    0.0019268     0.0062622     3.2502      9.8743e-08    0.051304
+    mn_MPC            5     5      6      4200      7      600         2672.4      0.63629       0.25346    0.39834     -1.1093e-08           1
+
+Elapsed time is 0.020153 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=2;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_tiny;SNW_MP_CONTROL=default_test
+----------------------------------------
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+CONTAINER NAME: mp_container_map ND Array (Matrix etc)
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                         i    idx    ndim    numel    rowN    colN       sum          mean          std        coefvari       min          max   
+                         _    ___    ____    _____    ____    ____    __________    _________    __________    ________    __________    ________
+
+    C_U                  1     1      6      4200      7      600     1.6508e+05       39.305         50.94      1.296        0.15087      223.07
+    C_U_minus_C_unemp    2     2      6      4200      7      600         9.3819    0.0022338    0.00087443    0.39145     0.00093169    0.003445
+    V_U                  3     3      6      4200      7      600         2086.9      0.49688        1.9828     3.9904        -14.155      2.2936
+    V_U_minus_V_unemp    4     4      6      4200      7      600         10.462     0.002491     0.0077043     3.0928     9.8743e-08    0.085447
+    mn_MPC_unemp         5     5      6      4200      7      600         2723.4      0.64843       0.25383    0.39145        0.27045           1
+
+SNW_VU_VW_CHECKS: Finished checks:2 of 2
+</pre><h2 id="13">Return</h2><pre class="codeinput"><span class="keyword">if</span> (length(varargin)==5)
+    varargout = cell(nargout,0);
+    <span class="keyword">for</span> it_k = 1:nargout
+        <span class="keyword">if</span> (it_k==1)
+            ob_out_cur = V_W_allchecks;
+        <span class="keyword">elseif</span> (it_k==2)
+            ob_out_cur = C_W_allchecks;
+        <span class="keyword">elseif</span> (it_k==3)
+            ob_out_cur = V_U_allchecks;
+        <span class="keyword">elseif</span> (it_k==4)
+            ob_out_cur = C_U_allchecks;
+        <span class="keyword">end</span>
+        varargout{it_k} = ob_out_cur;
+    <span class="keyword">end</span>
+<span class="keyword">else</span>
+    varargout = cell(nargout,0);
+    <span class="keyword">for</span> it_k = 1:nargout
+        <span class="keyword">if</span> (it_k==1)
+            ob_out_cur = V_ss;
+        <span class="keyword">elseif</span> (it_k==2)
+            ob_out_cur = ap_ss;
+        <span class="keyword">elseif</span> (it_k==3)
+            ob_out_cur = cons_ss;
+        <span class="keyword">elseif</span> (it_k==4)
+            ob_out_cur = V_unemp;
+        <span class="keyword">elseif</span> (it_k==5)
+            ob_out_cur = ap_unemp;
+        <span class="keyword">elseif</span> (it_k==6)
+            ob_out_cur = cons_unemp;
+        <span class="keyword">elseif</span> (it_k==7)
+            ob_out_cur = V_W_allchecks;
+        <span class="keyword">elseif</span> (it_k==8)
+            ob_out_cur = C_W_allchecks;
+        <span class="keyword">elseif</span> (it_k==9)
+            ob_out_cur = V_U_allchecks;
+        <span class="keyword">elseif</span> (it_k==10)
+            ob_out_cur = C_U_allchecks;
+        <span class="keyword">end</span>
+        varargout{it_k} = ob_out_cur;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><pre class="codeinput"><span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% SNW_VU_VW_CHECKS Solve for V, Vumpe, and VU(check) VW(check)
+%    What are the V and V_unemploy at all state space points?
+%
+%    For unemployed and employed individuals in 2020, what is the value of
+%    of the check? Solve for V(s,check|working), V(s,check|unemployed). 
+%
+%    * ST_SOLU_TYPE: 'matlab_minimizer', 'grid_search', 'bisec_vec', three
+%    alternative solution methods
+%
+%    [V_VFI, ap_VFI, cons_VFI] = SNW_VU_VW_CHECKS(ST_SOLU_TYPE) Solves
+%    given solution method for value function, policy functions. Using
+%    default parameters.
+%
+%    [V_VFI, ap_VFI, cons_VFI, V_VFI_unemp, ap_VFI_unemp, cons_VFI_unemp] =
+%    SNW_VU_VW_CHECKS(ST_SOLU_TYPE, MP_PARAMS, MP_CONTROLS) Solves given
+%    solution method for value function, policy functions under both
+%    employed and unemployed situations, using default parameters. Change
+%    model parameters through MP_PARAMS.
+%
+%    [V_VFI, ap_VFI, cons_VFI, V_VFI_unemp, ap_VFI_unemp, cons_VFI_unemp,
+%    V_W_allchecks, C_W_allchecks, V_U_allchecks, C_U_allchecks] =
+%    SNW_VU_VW_CHECKS(ST_SOLU_TYPE, MP_PARAMS, MP_CONTROLS) Solves the
+%    model for some number of checks for employed and unemployed. The
+%    number of checks is set through the 'n_welfchecksgrid' parameters in
+%    MP_PARAMS.
+%
+%    [V_W_allchecks, C_W_allchecks, V_U_allchecks, C_U_allchecks] =
+%    SNW_VU_VW_CHECKS(ST_SOLU_TYPE, MP_PARAMS, MP_CONTROLS, V_SS, V_UNEMP)
+%    provide V_SS and V_UNEMP solved out elsewhere, and only get two
+%    outputs out.
+%
+%    See also SNWX_A4CHK_WRK_BISEC_VEC_DENSE,
+%    SNWX_A4CHK_WRK_BISEC_VEC_SMALL, SNW_A4CHK_WRK, SNW_A4CHK_WRK_BISEC
+%
+
+%%
+function [varargout]=snw_vu_vw_checks(varargin)
+
+%% Default and Parse
+if (~isempty(varargin))
+    
+    if (length(varargin)==1)
+        [st_solu_type] = varargin{:};
+        mp_params = snw_mp_param('default_tiny');
+        mp_controls = snw_mp_control('default_test');        
+    elseif (length(varargin)==3)
+        [st_solu_type, mp_params, mp_controls] = varargin{:};
+    elseif (length(varargin)==5)
+        [st_solu_type, mp_params, mp_controls, V_ss, C_ss] = varargin{:};
+    elseif (length(varargin)==6)
+        [st_solu_type, mp_params, mp_controls, V_ss, V_unemp, C_unemp] = varargin{:};
+    else
+        error('Need to provide 1/3/5/6 parameter inputs');
+    end
+    
+else
+    close all;
+    
+%     st_solu_type = 'matlab_minimizer';
+    st_solu_type = 'bisec_vec';
+%     st_solu_type = 'grid_search';
+    
+    % Solve the VFI Problem and get Value Function
+    mp_params = snw_mp_param('default_tiny');
+    mp_controls = snw_mp_control('default_test');
+    
+    % set Unemployment Related Variables
+    xi=0.5; % Proportional reduction in income due to unemployment (xi=0 refers to 0 labor income; xi=1 refers to no drop in labor income)
+    b=0; % Unemployment insurance replacement rate (b=0 refers to no UI benefits; b=1 refers to 100 percent labor income replacement)
+    TR=100/58056; % Value of a welfare check (can receive multiple checks). TO DO: Update with alternative values
+    n_welfchecksgrid=3; % Number of welfare checks. 0 refers to 0 dollars; 51 refers to 5000 dollars
+    
+    mp_params('xi') = xi;
+    mp_params('b') = b;
+    mp_params('TR') = TR;
+    mp_params('n_welfchecksgrid') = n_welfchecksgrid;
+    
+    % Solve for Unemployment Values
+    mp_controls('bl_print_a4chk') = false;
+        
+end
+
+%% Reset All globals
+% Parameters used in this code directly
+global agrid n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
+% Used in find_a_working function
+global theta r agrid epsilon eta_H_grid eta_S_grid SS Bequests bequests_option throw_in_ocean
+
+%% Parse Model Parameters
+params_group = values(mp_params, {'theta', 'r'});
+[theta,  r] = params_group{:};
+
+params_group = values(mp_params, {'Bequests', 'bequests_option', 'throw_in_ocean'});
+[Bequests, bequests_option, throw_in_ocean] = params_group{:};
+
+params_group = values(mp_params, {'agrid', 'eta_H_grid', 'eta_S_grid'});
+[agrid, eta_H_grid, eta_S_grid] = params_group{:};
+
+params_group = values(mp_params, {'epsilon', 'SS'});
+[epsilon, SS] = params_group{:};
+
+params_group = values(mp_params, ...
+    {'n_jgrid', 'n_agrid', 'n_etagrid', 'n_educgrid', 'n_marriedgrid', 'n_kidsgrid'});
+[n_jgrid, n_agrid, n_etagrid, n_educgrid, n_marriedgrid, n_kidsgrid] = params_group{:};
+
+params_group = values(mp_params, {'n_welfchecksgrid', 'xi','b'});
+[n_welfchecksgrid, xi, b] = params_group{:};  
+
+%% Parse Model Controls
+% Profiling Controls
+params_group = values(mp_controls, {'bl_timer'});
+[bl_timer] = params_group{:};
+
+% Display Controls
+params_group = values(mp_controls, {'bl_print_vu_vw', 'bl_print_vu_vw_verbose'});
+[bl_print_vu_vw, bl_print_vu_vw_verbose] = params_group{:};
+
+%% Timing and Profiling Start
+
+if (bl_timer)
+    tic
+end
+
+%% Compute V_ss If not Provided as a Parameter
+
+% Compute policy functions in the event of unemployment. Required to compute V_U in the Planner's problem
+if ~exist('V_ss','var')
+    if (bl_print_vu_vw)
+        disp('Compute value function and policy functions: V_ss')
+    end
+    if (strcmp(st_solu_type, 'matlab_minimizer')) 
+        [V_ss,ap_ss,cons_ss,~] = snw_vfi_main(mp_params, mp_controls);
+    elseif (strcmp(st_solu_type, 'grid_search'))
+        [V_ss,ap_idx_VFI,cons_ss,~] = snw_vfi_main_grid_search(mp_params, mp_controls);
+        ap_ss = ap_idx_VFI;
+    elseif (strcmp(st_solu_type, 'bisec_vec'))
+        [V_ss,ap_ss,cons_ss,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
+    else
+        error(['SNW_VU_VW_CHECKS V, st_solu_type=' st_solu_type ' is not known'])
+    end    
+end
+
+%% Compute V_unemp If not Provided as a Parameter
+
+if (nargout ~= 3)
+    
+    % Compute policy functions in the event of unemployment. Required to compute V_U in the Planner's problem
+    if ~exist('V_unemp','var')
+        if (bl_print_vu_vw)
+            disp('Compute value function and policy functions in the event of unemployment: V_unemp (given V_ss)')
+        end
+        
+        if (strcmp(st_solu_type, 'matlab_minimizer'))
+            [V_unemp,ap_unemp,cons_unemp,~] = snw_vfi_unemp(mp_params, mp_controls, V_ss);
+        elseif (strcmp(st_solu_type, 'grid_search'))
+            [V_unemp,ap_idx_VFI_unemp,cons_unemp,~]= snw_vfi_main_grid_search(mp_params, mp_controls, V_ss);
+            ap_unemp = ap_idx_VFI_unemp;
+        elseif (strcmp(st_solu_type, 'bisec_vec'))
+            [V_unemp,ap_unemp,cons_unemp,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls, V_ss);
+        else
+            error(['SNW_VU_VW_CHECKS V_unemp, st_solu_type=' st_solu_type ' is not known'])
+        end
+        
+    end
+end
+
+%% A1. Compute EMPLOYED Household-Head and Spousal Income
+
+if (nargout ~= 3 && nargout ~= 6)
+    % initialize
+    mn_inc = NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+    mn_spouse_inc = NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+    mn_a = NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+    
+    % Txable Income at all state-space points
+    for j=1:n_jgrid % Age
+        for a=1:n_agrid % Assets
+            for eta=1:n_etagrid % Productivity
+                for educ=1:n_educgrid % Educational level
+                    for married=1:n_marriedgrid % Marital status
+                        for kids=1:n_kidsgrid % Number of kids
+                            
+                            [inc,earn]=individual_income(j,a,eta,educ);
+                            spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
+                            
+                            mn_inc(j,a,eta,educ,married,kids) = inc;
+                            mn_spouse_inc(j,a,eta,educ,married,kids) = (married-1)*spouse_inc*exp(eta_S_grid(eta));
+                            mn_a(j,a,eta,educ,married,kids) = agrid(a);
+                            
+                        end
+                    end
+                end
+            end
+        end
+    end
+    
+    % flatten the nd dimensional array
+    ar_inc_amz = mn_inc(:);
+    ar_spouse_inc_amz = mn_spouse_inc(:);
+    ar_a_amz = mn_a(:);
+    
+    % Print
+    if (bl_print_vu_vw)
+        disp(['SNW_VU_VW_CHECKS: Finished Employed income AMZ']);
+    end
+end
+
+%% A2. Compute UNEMPLOYED Household-Head and Spousal Income 
+
+if (nargout ~= 3 && nargout ~= 6)
+    % initialize
+    mn_inc_unemp = NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+    mn_spouse_inc_unemp = NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+    
+    % Txable Income at all state-space points
+    for j=1:n_jgrid % Age
+        for a=1:n_agrid % Assets
+            for eta=1:n_etagrid % Productivity
+                for educ=1:n_educgrid % Educational level
+                    for married=1:n_marriedgrid % Marital status
+                        for kids=1:n_kidsgrid % Number of kids
+                            
+                            [inc,earn]=individual_income(j,a,eta,educ,xi,b);
+                            spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
+                            
+                            mn_inc_unemp(j,a,eta,educ,married,kids) = inc;
+                            mn_spouse_inc_unemp(j,a,eta,educ,married,kids) = (married-1)*spouse_inc*exp(eta_S_grid(eta));
+                            
+                        end
+                    end
+                end
+            end
+        end
+    end
+    
+    % flatten the nd dimensional array
+    ar_inc_unemp_amz = mn_inc_unemp(:);
+    ar_spouse_inc_unemp_amz = mn_spouse_inc_unemp(:);
+    
+    % Print
+    if (bl_print_vu_vw)
+        disp(['SNW_VU_VW_CHECKS: Finished Unemployed income AMZ']);
+    end
+    
+end
+
+%% Compute Check V_W and check V_U Values
+
+if (nargout ~= 3 && nargout ~= 6)
+    
+    V_W_allchecks=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid,n_welfchecksgrid);
+    V_U_allchecks=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid,n_welfchecksgrid);
+    
+    C_W_allchecks=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid,n_welfchecksgrid);
+    C_U_allchecks=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid,n_welfchecksgrid);
+    
+    if (bl_print_vu_vw)
+        disp('Solve for V_W and V_U for different number of welfare checks')
+    end
+    
+    for welf_checks=0:(n_welfchecksgrid-1)
+        
+        if (strcmp(st_solu_type, 'matlab_minimizer'))
+            [V_W,C_W]=snw_a4chk_wrk(...
+                welf_checks, V_ss, cons_ss, mp_params, mp_controls);
+            [V_U,C_U]=snw_a4chk_unemp(...
+                welf_checks, V_unemp, cons_unemp, mp_params, mp_controls);
+        else
+            % always use bisec_vec unless specified to use matlab_minimizer, no
+            % grid_search option for this
+            [V_W,C_W]=snw_a4chk_wrk_bisec_vec( ...
+                welf_checks, V_ss, cons_ss, mp_params, mp_controls, ...
+                ar_a_amz, ar_inc_amz, ar_spouse_inc_amz);
+            [V_U,C_U]=snw_a4chk_unemp_bisec_vec( ...
+                welf_checks, V_unemp, cons_unemp, mp_params, mp_controls, ...
+                ar_a_amz, ar_inc_unemp_amz, ar_spouse_inc_unemp_amz);
+        end
+        
+        % Update Collection:
+        V_W_allchecks(:,:,:,:,:,:,welf_checks+1) = V_W;
+        V_U_allchecks(:,:,:,:,:,:,welf_checks+1) = V_U;
+        C_W_allchecks(:,:,:,:,:,:,welf_checks+1) = C_W;
+        C_U_allchecks(:,:,:,:,:,:,welf_checks+1) = C_U;
+        
+        % Print
+        if (bl_print_vu_vw)
+            disp(strcat(['SNW_VU_VW_CHECKS: Finished checks:' ...
+                num2str(welf_checks) ' of ' num2str(n_welfchecksgrid-1)]));
+        end
+        
+    end
+    
+end
+
+%% Return
+
+if (length(varargin)==5)
+    varargout = cell(nargout,0);
+    for it_k = 1:nargout
+        if (it_k==1)
+            ob_out_cur = V_W_allchecks;
+        elseif (it_k==2)
+            ob_out_cur = C_W_allchecks;
+        elseif (it_k==3)
+            ob_out_cur = V_U_allchecks;
+        elseif (it_k==4)
+            ob_out_cur = C_U_allchecks;
+        end
+        varargout{it_k} = ob_out_cur;
+    end    
+else
+    varargout = cell(nargout,0);
+    for it_k = 1:nargout
+        if (it_k==1)
+            ob_out_cur = V_ss;
+        elseif (it_k==2)
+            ob_out_cur = ap_ss;
+        elseif (it_k==3)
+            ob_out_cur = cons_ss;
+        elseif (it_k==4)
+            ob_out_cur = V_unemp;
+        elseif (it_k==5)
+            ob_out_cur = ap_unemp;
+        elseif (it_k==6)
+            ob_out_cur = cons_unemp;
+        elseif (it_k==7)
+            ob_out_cur = V_W_allchecks;
+        elseif (it_k==8)
+            ob_out_cur = C_W_allchecks;
+        elseif (it_k==9)
+            ob_out_cur = V_U_allchecks;
+        elseif (it_k==10)
+            ob_out_cur = C_U_allchecks;
+        end
+        varargout{it_k} = ob_out_cur;
+    end
+end
+
+end
+
+##### SOURCE END #####
+--></body></html>

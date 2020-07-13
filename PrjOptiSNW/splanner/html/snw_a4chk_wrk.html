@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>SNW_A4CHK_WRK (loop fzero) Asset Position Corresponding to Check Level</title><meta name="generator" content="MATLAB 9.7"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-07-04"><meta name="DC.source" content="snw_a4chk_wrk.m"><style type="text/css">
+      --><title>SNW_A4CHK_WRK (loop fzero) Asset Position Corresponding to Check Level</title><meta name="generator" content="MATLAB 9.7"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-07-12"><meta name="DC.source" content="snw_a4chk_wrk.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -82,14 +82,14 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
   MP_PARAMS, MP_CONTROLS) solves for working value given V_SS value
   function results, for number of check WELF_CHECKS, and given the value
   of each check equal to TR.</pre><pre>  See also SNWX_A4CHK_WRK_SMALL, SNWX_A4CHK_WRK_DENSE,
-  SNW_A4CHK_WRK_BISEC, SNW_A4CHK_WRK_BISEC_VEC, FIND_A_WORKING</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#3">Default and Parse</a></li><li><a href="#4">Reset All globals</a></li><li><a href="#5">Parse Model Parameters</a></li><li><a href="#6">Parse Model Controls</a></li><li><a href="#7">Timing and Profiling Start</a></li><li><a href="#8">Loop over states and find A state for a Particular Check Level</a></li><li><a href="#9">Timing and Profiling End</a></li><li><a href="#10">Compare Difference between V_ss and V_W</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> [V_W, exitflag_fsolve]=snw_a4chk_wrk(varargin)
+  SNW_A4CHK_WRK_BISEC, SNW_A4CHK_WRK_BISEC_VEC, FIND_A_WORKING</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#3">Default and Parse</a></li><li><a href="#4">Reset All globals</a></li><li><a href="#5">Parse Model Parameters</a></li><li><a href="#6">Parse Model Controls</a></li><li><a href="#7">Timing and Profiling Start</a></li><li><a href="#8">Loop over states and find A state for a Particular Check Level</a></li><li><a href="#9">Timing and Profiling End</a></li><li><a href="#10">Compare Difference between V_ss and V_W</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> [V_W, C_W, exitflag_fsolve]=snw_a4chk_wrk(varargin)
 </pre><h2 id="3">Default and Parse</h2><pre class="codeinput"><span class="keyword">if</span> (~isempty(varargin))
 
-    <span class="keyword">if</span> (length(varargin)==2)
-        [welf_checks, V_ss] = varargin{:};
+    <span class="keyword">if</span> (length(varargin)==3)
+        [welf_checks, V_ss, cons_ss] = varargin{:};
         mp_controls = snw_mp_control(<span class="string">'default_base'</span>);
-    <span class="keyword">elseif</span> (length(varargin)==4)
-        [welf_checks, V_ss, mp_params, mp_controls] = varargin{:};
+    <span class="keyword">elseif</span> (length(varargin)==5)
+        [welf_checks, V_ss, cons_ss, mp_params, mp_controls] = varargin{:};
     <span class="keyword">end</span>
 
 <span class="keyword">else</span>
@@ -99,8 +99,12 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     <span class="comment">% Solve the VFI Problem and get Value Function</span>
     mp_params = snw_mp_param(<span class="string">'default_tiny'</span>);
     mp_controls = snw_mp_control(<span class="string">'default_test'</span>);
-    [V_ss,~,~,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
-    welf_checks = 2;
+    [V_ss,~,cons_ss,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
+
+    <span class="comment">% Solve for Value of One Period Unemployment Shock</span>
+    welf_checks = 10;
+    TR = 100/58056;
+    mp_params(<span class="string">'TR'</span>) = TR;
 
 <span class="keyword">end</span>
 </pre><pre class="codeoutput">SNW_VFI_MAIN: Finished Age Group:7 of 7
@@ -110,7 +114,7 @@ SNW_VFI_MAIN: Finished Age Group:4 of 7
 SNW_VFI_MAIN: Finished Age Group:3 of 7
 SNW_VFI_MAIN: Finished Age Group:2 of 7
 SNW_VFI_MAIN: Finished Age Group:1 of 7
-Elapsed time is 0.193273 seconds.
+Elapsed time is 0.315349 seconds.
 Completed SNW_VFI_MAIN;SNW_MP_PARAM=default_tiny;SNW_MP_CONTROL=default_test
 </pre><h2 id="4">Reset All globals</h2><p>globals = who('global'); clear(globals{:}); Parameters used in this code directly</p><pre class="codeinput"><span class="keyword">global</span> agrid n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
 <span class="comment">% Used in find_a_working function</span>
@@ -147,6 +151,7 @@ params_group = values(mp_controls, {<span class="string">'bl_print_a4chk'</span>
     tic
 <span class="keyword">end</span>
 </pre><h2 id="8">Loop over states and find A state for a Particular Check Level</h2><pre class="codeinput">V_W=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+C_W=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 exitflag_fsolve=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 
 <span class="keyword">for</span> j=1:n_jgrid <span class="comment">% Age</span>
@@ -192,6 +197,7 @@ exitflag_fsolve=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgri
                         <span class="keyword">end</span>
 
                         V_W(j,a,eta,educ,married,kids)=vals(1)*V_ss(j,inds(1),eta,educ,married,kids)+vals(2)*V_ss(j,inds(2),eta,educ,married,kids);
+                        C_W(j,a,eta,educ,married,kids)=vals(1)*cons_ss(j,inds(1),eta,educ,married,kids)+vals(2)*cons_ss(j,inds(2),eta,educ,married,kids);
 
                     <span class="keyword">end</span>
                 <span class="keyword">end</span>
@@ -222,29 +228,34 @@ SNW_A4CHK_WRK: Finished Age Group:7 of 7
         ], <span class="string">";"</span>);
     disp(st_complete_a4chk);
 <span class="keyword">end</span>
-</pre><pre class="codeoutput">Elapsed time is 5.129821 seconds.
-Completed SNW_A4CHK_WRK;welf_checks=2;TR=0.0017225;SNW_MP_PARAM=default_tiny;SNW_MP_CONTROL=default_test
+</pre><pre class="codeoutput">Elapsed time is 8.767620 seconds.
+Completed SNW_A4CHK_WRK;welf_checks=10;TR=0.0017225;SNW_MP_PARAM=default_tiny;SNW_MP_CONTROL=default_test
 </pre><h2 id="10">Compare Difference between V_ss and V_W</h2><pre class="codeinput"><span class="keyword">if</span> (bl_print_a4chk_verbose)
+
     mn_V_gain_check = V_W - V_ss;
-    mn_V_gain_frac_check = (V_W - V_ss)./V_ss;
+    mn_C_gain_check = C_W - cons_ss;
+    mn_MPC = (C_W - cons_ss)./(welf_checks*TR);
     mp_container_map = containers.Map(<span class="string">'KeyType'</span>,<span class="string">'char'</span>, <span class="string">'ValueType'</span>,<span class="string">'any'</span>);
     mp_container_map(<span class="string">'V_W'</span>) = V_W;
-    mp_container_map(<span class="string">'V_ss'</span>) = V_ss;
+    mp_container_map(<span class="string">'C_W'</span>) = C_W;
     mp_container_map(<span class="string">'V_W_minus_V_ss'</span>) = mn_V_gain_check;
-    mp_container_map(<span class="string">'V_W_minus_V_ss_divide_V_ss'</span>) = mn_V_gain_frac_check;
+    mp_container_map(<span class="string">'C_W_minus_C_ss'</span>) = mn_C_gain_check;
+    mp_container_map(<span class="string">'mn_MPC'</span>) = mn_MPC;
     ff_container_map_display(mp_container_map);
+
 <span class="keyword">end</span>
 </pre><pre class="codeoutput">----------------------------------------
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 CONTAINER NAME: mp_container_map ND Array (Matrix etc)
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                                  i    idx    ndim    numel    rowN    colN      sum         mean           std       coefvari      min         max   
-                                  _    ___    ____    _____    ____    ____    _______    ___________    _________    ________    ________    ________
+                      i    idx    ndim    numel    rowN    colN       sum          mean          std       coefvari        min          max   
+                      _    ___    ____    _____    ____    ____    __________    _________    _________    ________    ___________    ________
 
-    V_W                           1     1      6      4200      7      600      3427.2          0.816       1.6657     2.0413       -9.032      2.4887
-    V_W_minus_V_ss                2     2      6      4200      7      600       5.994      0.0014271    0.0049535     3.4709            0    0.042205
-    V_W_minus_V_ss_divide_V_ss    3     3      6      4200      7      600     -2.9465    -0.00070155     0.014971    -21.341     -0.92068     0.21545
-    V_ss                          4     4      6      4200      7      600      3421.2        0.81457       1.6698     2.0499      -9.0742      2.4887
+    C_W               1     1      6      4200      7      600     1.6577e+05        39.47       50.879     1.2891         0.23009      223.07
+    C_W_minus_C_ss    2     2      6      4200      7      600         41.538      0.00989    0.0053187    0.53779     -1.9107e-10    0.017225
+    V_W               3     3      6      4200      7      600         2705.6      0.64419       1.6951     2.6313         -8.7027      2.2937
+    V_W_minus_V_ss    4     4      6      4200      7      600         40.469    0.0096355     0.031321     3.2506               0     0.25663
+    mn_MPC            5     5      6      4200      7      600         2411.5      0.57417      0.30879    0.53779     -1.1093e-08           1
 
 </pre><pre class="codeinput"><span class="keyword">end</span>
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019b</a><br></p></div><!--
@@ -276,16 +287,16 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 %
 
 %%
-function [V_W, exitflag_fsolve]=snw_a4chk_wrk(varargin)
+function [V_W, C_W, exitflag_fsolve]=snw_a4chk_wrk(varargin)
 
 %% Default and Parse
 if (~isempty(varargin))
     
-    if (length(varargin)==2)
-        [welf_checks, V_ss] = varargin{:};
+    if (length(varargin)==3)
+        [welf_checks, V_ss, cons_ss] = varargin{:};
         mp_controls = snw_mp_control('default_base');
-    elseif (length(varargin)==4)
-        [welf_checks, V_ss, mp_params, mp_controls] = varargin{:};
+    elseif (length(varargin)==5)
+        [welf_checks, V_ss, cons_ss, mp_params, mp_controls] = varargin{:};
     end
     
 else
@@ -295,8 +306,12 @@ else
     % Solve the VFI Problem and get Value Function
     mp_params = snw_mp_param('default_tiny');
     mp_controls = snw_mp_control('default_test');
-    [V_ss,~,~,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
-    welf_checks = 2;
+    [V_ss,~,cons_ss,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
+           
+    % Solve for Value of One Period Unemployment Shock
+    welf_checks = 10;    
+    TR = 100/58056;
+    mp_params('TR') = TR;
     
 end
 
@@ -350,6 +365,7 @@ end
 %% Loop over states and find A state for a Particular Check Level
 
 V_W=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+C_W=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 exitflag_fsolve=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 
 for j=1:n_jgrid % Age
@@ -394,7 +410,8 @@ for j=1:n_jgrid % Age
                             
                         end
                         
-                        V_W(j,a,eta,educ,married,kids)=vals(1)*V_ss(j,inds(1),eta,educ,married,kids)+vals(2)*V_ss(j,inds(2),eta,educ,married,kids);
+                        V_W(j,a,eta,educ,married,kids)=vals(1)*V_ss(j,inds(1),eta,educ,married,kids)+vals(2)*V_ss(j,inds(2),eta,educ,married,kids);                        
+                        C_W(j,a,eta,educ,married,kids)=vals(1)*cons_ss(j,inds(1),eta,educ,married,kids)+vals(2)*cons_ss(j,inds(2),eta,educ,married,kids);                        
                         
                     end
                 end
@@ -425,14 +442,18 @@ end
 %% Compare Difference between V_ss and V_W
 
 if (bl_print_a4chk_verbose)
+    
     mn_V_gain_check = V_W - V_ss;
-    mn_V_gain_frac_check = (V_W - V_ss)./V_ss;
+    mn_C_gain_check = C_W - cons_ss;
+    mn_MPC = (C_W - cons_ss)./(welf_checks*TR);    
     mp_container_map = containers.Map('KeyType','char', 'ValueType','any');
     mp_container_map('V_W') = V_W;
-    mp_container_map('V_ss') = V_ss;
+    mp_container_map('C_W') = C_W;
     mp_container_map('V_W_minus_V_ss') = mn_V_gain_check;
-    mp_container_map('V_W_minus_V_ss_divide_V_ss') = mn_V_gain_frac_check;
+    mp_container_map('C_W_minus_C_ss') = mn_C_gain_check;    
+    mp_container_map('mn_MPC') = mn_MPC;    
     ff_container_map_display(mp_container_map);
+    
 end
 
 end

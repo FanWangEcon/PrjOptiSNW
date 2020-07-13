@@ -4,6 +4,10 @@
 %    shock process, solve for optimal dynamic savings choices given
 %    expectation of kid count transition and productivity shock transition.
 %
+%    Note that the solution algorithm is exact given the discrete asset
+%    grid, but not exact with respect to the underlying continuous
+%    state/choice problem we are trying to approximate.
+%
 %    Pref, Technology, and prices SCALARS:
 %
 %    * BETA discount
@@ -45,7 +49,7 @@
 %
 
 %%
-function [V_VFI,ap_VFI,cons_VFI,exitflag_VFI]=snw_vfi_main_bisec_vec(varargin)
+function [varargout]=snw_vfi_main_bisec_vec(varargin)
 
 %% Default and Parse
 if (~isempty(varargin))
@@ -101,9 +105,9 @@ params_group = values(mp_params, ...
 [n_jgrid, n_agrid, n_etagrid, n_educgrid, n_marriedgrid, n_kidsgrid] = params_group{:};
 
 % unemployment parameters under covid
-if (length(varargin)==3)    
+if (length(varargin)==3)
     params_group = values(mp_params, {'xi','b'});
-    [xi, b] = params_group{:};    
+    [xi, b] = params_group{:};
 end
 
 %% Parse Model Controls
@@ -116,14 +120,16 @@ params_group = values(mp_controls, {'bl_print_vfi', 'bl_print_vfi_verbose'});
 [bl_print_vfi, bl_print_vfi_verbose] = params_group{:};
 
 % Store Controls
-params_group = values(mp_controls, {'bl_vfi_store_all'});
-[bl_vfi_store_all] = params_group{:};
+bl_vfi_store_all = false;
+if (nargout >= 4)
+    bl_vfi_store_all = true;
+end
 
 %% Define Functions
 
 % Current Function and their Derivatives
 hh_power=1/cons_allocation_rule;
-if(gamma == 1)     
+if(gamma == 1)
     f_util = @(c,hh_size) log(c./(hh_size.^hh_power));
     f_du_da = @(c,hh_size) (-1)./(c);
 else
@@ -131,7 +137,7 @@ else
     f_du_da = @(c,hh_size) (-(hh_size.^(hh_power.*(gamma-1))))./(c.^gamma);
 end
 
-% Utility 
+% Utility
 f_U = @(u, Ev) (u + beta.*Ev);
 f_FOC = @(duda, devda) (duda + beta.*devda);
 
@@ -150,13 +156,13 @@ end
 V_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 ap_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 cons_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
-% if (bl_vfi_store_all)
-%     y_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
-%     tax_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
-%     SS_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
-% end
-
-exitflag_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+if (bl_vfi_store_all)
+    inc_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+    earn_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+    spouse_inc_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+    SS_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+    tax_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+end
 
 if (length(varargin)==3)
     ar_j_seq = 1:n_jgrid;
@@ -166,12 +172,12 @@ end
 
 % Solve for value function and policy functions by means of backwards induction
 for j=ar_j_seq % Age
-    
+
     % A1. Generate the Resources Matrix
-    mn_resources = zeros(n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);    
-    mn_z_ctr = zeros(n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);    
+    mn_resources = zeros(n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+    mn_z_ctr = zeros(n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
     mn_hh_size = zeros(n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
-    
+
     for a=1:n_agrid % Assets
         it_z_ctr = 0;
         % order here is reverse of order of loops at L181, so that it_z_ctr
@@ -180,7 +186,7 @@ for j=ar_j_seq % Age
             for married=1:n_marriedgrid % Marital status
                 for educ=1:n_educgrid % Educational level
                     for eta=1:n_etagrid % Productivity
-                        
+
                         % Resources
                         if (length(varargin)==3)
                             % one period unemployed shock
@@ -191,7 +197,7 @@ for j=ar_j_seq % Age
                             [inc,earn]=individual_income(j,a,eta,educ);
                             fl_earn_ratio = 1;
                         end
-                        
+
                         spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
                         resources = (1+r)*(agrid(a)+Bequests*(bequests_option-1)) ...
                                     + epsilon(j,educ)*theta*exp(eta_H_grid(eta))*fl_earn_ratio ...
@@ -199,40 +205,49 @@ for j=ar_j_seq % Age
                                     + (married-1)*spouse_inc*exp(eta_S_grid(eta)) ...
                                     - max(0,Tax(inc,(married-1)*spouse_inc*exp(eta_S_grid(eta))));
                         mn_resources(a, eta, educ, married, kids) = resources;
-                        
+
                         % Non-asset position Counter
                         it_z_ctr = it_z_ctr + 1;
                         mn_z_ctr(a, eta, educ, married, kids) = it_z_ctr;
-                        
+
                         % Household Size: 1 kid married, hh_size = 2 + 2 -
                         % 1 = 3. 0 kid and unmarried hh_size = 1 + 1 - 1 =
                         % 1
                         hh_size = married + kids - 1; % m=1 if single; m=2 if married; k=1 if 0 children
                         mn_hh_size(a, eta, educ, married, kids) = hh_size;
-                        
+
+                        % Store More Information for Analysis
+                        if (bl_vfi_store_all)
+                            inc_VFI(j,a,eta,educ,married,kids) = inc;
+                            earn_VFI(j,a,eta,educ,married,kids) = earn*fl_earn_ratio;
+                            spouse_inc_VFI(j,a,eta,educ,married,kids) = (married-1)*spouse_inc*exp(eta_S_grid(eta));
+                            SS_VFI(j,a,eta,educ,married,kids) = SS(j,educ);
+                            tax_VFI(j,a,eta,educ,married,kids) = max(0,Tax(inc,(married-1)*spouse_inc*exp(eta_S_grid(eta))));                            
+                        end
+
                     end
                 end
             end
         end
     end
-    
+
     % array states/shocks all
     ar_resources_amz = mn_resources(:);
     ar_z_ctr_amz = mn_z_ctr(:);
     ar_hh_size_amz = mn_hh_size(:);
-    
+
     % A2. Solve For EV(ap,z) = EV(ap,zp|z)f(zp|z) for all possible ap points
     % ev = 0 in final decision period.
     mn_ev_ap_z = zeros(n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
-    
+
     if (j~=n_jgrid)
-        
+           
         if (length(varargin)==3)
             V_VFI_FUTURE = V_VFI_POSTSHOCK;
         else
             V_VFI_FUTURE = V_VFI;
         end
-        
+
         for eta=1:n_etagrid % Productivity
             for educ=1:n_educgrid % Educational level
                 for married=1:n_marriedgrid % Marital status
@@ -240,7 +255,7 @@ for j=ar_j_seq % Age
                         for a=1:n_agrid
                             % Add to each cell of mt_ev_ap_z, integrating over f(zp|z)
                             for etap=1:n_etagrid
-                                for kidsp=1:n_kidsgrid                                    
+                                for kidsp=1:n_kidsgrid
                                     mn_ev_ap_z(a,eta,educ,married,kids) = ...
                                         mn_ev_ap_z(a,eta,educ,married,kids) ...
                                         + psi(j)*pi_eta(eta,etap)*pi_kids(kids,kidsp,j,educ,married)...
@@ -255,7 +270,7 @@ for j=ar_j_seq % Age
         end
 
         % B1. z specific EV Slope: EV(ap,z)/d(ap)
-        mn_deri_dev_dap = diff(mn_ev_ap_z, 1)./diff(agrid);    
+        mn_deri_dev_dap = diff(mn_ev_ap_z, 1)./diff(agrid);
         % B2. ND dimensional Array to 2D dimensional Array:
         mt_ev_ap_z = reshape(mn_ev_ap_z, n_agrid, []);
         mt_deri_dev_dap = reshape(mn_deri_dev_dap, n_agrid-1, []);
@@ -268,8 +283,8 @@ for j=ar_j_seq % Age
             ar_resources_amz, ar_z_ctr_amz, ar_hh_size_amz, ...
             mt_deri_dev_dap, ...
             f_du_da, f_FOC);
-        
-        % D. Solve via Bisection 
+
+        % D. Solve via Bisection
         mp_bisec_ctrlinfo = containers.Map('KeyType','char', 'ValueType','any');
         mp_bisec_ctrlinfo('it_bisect_max_iter') = 30;
         mp_bisec_ctrlinfo('fl_x_left_start') = 10e-6;
@@ -280,7 +295,7 @@ for j=ar_j_seq % Age
             false, false, mp_bisec_ctrlinfo);
 
         % E. Evaluate at Bounds
-        ar_nan_idx = isnan(ar_opti_saveborr_frac_amz);    
+        ar_nan_idx = isnan(ar_opti_saveborr_frac_amz);
         if(sum(ar_nan_idx)>0)
             ar_min_max = [0, 1-1E-5];
             mt_val_min_max = zeros(sum(ar_nan_idx), length(ar_min_max));
@@ -295,23 +310,23 @@ for j=ar_j_seq % Age
             ar_opti_saveborr_frac_amz(ar_nan_idx) = ar_min_max(it_max);
         end
 
-        % F. Evaluate 
+        % F. Evaluate
         [ar_aprime_amz, ar_val_opti_amz, ar_c_opti_amz] = ffi_vec_u_v_ap(...
             ar_opti_saveborr_frac_amz, agrid', ...
             ar_resources_amz, ar_z_ctr_amz, ar_hh_size_amz, ...
             mt_ev_ap_z, mt_deri_dev_dap, ...
             f_util, f_U);
 
-        % G. Record Results    
+        % G. Record Results
         mn_val_cur = reshape(ar_val_opti_amz, size(mn_ev_ap_z));
         mn_aprime_cur = reshape(ar_aprime_amz, size(mn_ev_ap_z));
         mn_c_opti_amz = reshape(ar_c_opti_amz, size(mn_ev_ap_z));
-        
+
         % H. To main store:
         V_VFI(j,:,:,:,:,:) = mn_val_cur;
         ap_VFI(j,:,:,:,:,:) = mn_aprime_cur;
         cons_VFI(j,:,:,:,:,:) = mn_c_opti_amz;
-        
+
     else
 
         for a=1:n_agrid % Assets
@@ -320,7 +335,7 @@ for j=ar_j_seq % Age
                     for married=1:n_marriedgrid % Marital status
                         for kids=1:n_kidsgrid % Number of kids
                             if j==n_jgrid
-                                
+
                                 ap_VFI(j,a,eta,educ,married,kids)=0;
                                 cons_VFI(j,a,eta,educ,married,kids) = consumption(j,a,eta,educ,married,kids,ap_VFI(j,a,eta,educ,married,kids));
 
@@ -328,18 +343,18 @@ for j=ar_j_seq % Age
                                     disp([j,a,eta,educ,married,kids,cons_VFI(j,a,eta,educ,married,kids)])
                                     error('Non-positive consumption')
                                 end
-                                
+
                                 V_VFI(j,a,eta,educ,married,kids)=utility(cons_VFI(j,a,eta,educ,married,kids),married,kids);
-                                
+
                             end
                         end
                     end
                 end
             end
         end
-        
+
     end
-    
+
     if (bl_print_vfi)
         disp(strcat(['SNW_VFI_MAIN: Finished Age Group:' num2str(j) ' of ' num2str(n_jgrid)]));
     end
@@ -363,6 +378,29 @@ if (bl_timer)
             ], ";");
     end
     disp(st_complete_vfi);
+end
+
+%% UnitTests
+
+%% Return 
+varargout = cell(nargout,0);
+for it_k = 1:nargout
+    if (it_k==1)
+        ob_out_cur = V_VFI;
+    elseif (it_k==2)
+        ob_out_cur = ap_VFI;
+    elseif (it_k==3)
+        ob_out_cur = cons_VFI;
+    elseif (it_k==4)
+        mp_valpol_more = containers.Map('KeyType','char', 'ValueType','any');        
+        mp_valpol_more('inc_VFI') = inc_VFI;
+        mp_valpol_more('earn_VFI') = earn_VFI;
+        mp_valpol_more('spouse_inc_VFI') = spouse_inc_VFI;
+        mp_valpol_more('SS_VFI') = SS_VFI;
+        mp_valpol_more('tax_VFI') = tax_VFI;
+        ob_out_cur = mp_valpol_more;
+    end
+    varargout{it_k} = ob_out_cur;
 end
 
 end

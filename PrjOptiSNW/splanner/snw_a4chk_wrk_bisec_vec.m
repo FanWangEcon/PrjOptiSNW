@@ -49,17 +49,17 @@
 %
 
 %%
-function [V_W]=snw_a4chk_wrk_bisec_vec(varargin)
+function [V_W, C_W]=snw_a4chk_wrk_bisec_vec(varargin)
 
 %% Default and Parse
 if (~isempty(varargin))
     
-    if (length(varargin)==2)
-        [welf_checks, V_ss] = varargin{:};
-    elseif (length(varargin)==4)
-        [welf_checks, V_ss, mp_params, mp_controls] = varargin{:};
-    elseif (length(varargin)==7)
-        [welf_checks, V_ss, mp_params, mp_controls, ...
+    if (length(varargin)==3)
+        [welf_checks, V_ss, cons_ss] = varargin{:};
+    elseif (length(varargin)==5)
+        [welf_checks, V_ss, cons_ss, mp_params, mp_controls] = varargin{:};
+    elseif (length(varargin)==8)
+        [welf_checks, V_ss, cons_ss, mp_params, mp_controls, ...
             ar_a_amz, ar_inc_amz, ar_spouse_inc_amz] = varargin{:};
     else
         error('Need to provide 2/4/7 parameter inputs');
@@ -71,10 +71,10 @@ else
     % A1. Solve the VFI Problem and get Value Function
     mp_params = snw_mp_param('default_tiny');
     mp_controls = snw_mp_control('default_test');
-    [V_ss,~,~,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
+    [V_ss,~,cons_ss,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
     
     % Solve for Value of One Period Unemployment Shock
-    welf_checks = 2;    
+    welf_checks = 10;    
     TR = 100/58056;
     mp_params('TR') = TR;
         
@@ -185,14 +185,17 @@ mn_a_aux_bisec = reshape(ar_a_aux_bisec_amz, [n_jgrid,n_agrid,n_etagrid,n_educgr
 
 % C1. Change matrix order so asset becomes the first dimension
 mn_v_ad1 = permute(V_ss, [2,1,3,4,5,6]);
+mn_c_ad1 = permute(cons_ss, [2,1,3,4,5,6]);
 mn_a_aux_bisec_ad1 = permute(mn_a_aux_bisec, [2,1,3,4,5,6]);
 
 % C2. Reshape so that asset is dim 1, all other dim 2
 mt_v_ad1 = reshape(mn_v_ad1, n_agrid, []);
+mt_c_ad1 = reshape(mn_c_ad1, n_agrid, []);
 mt_a_aux_bisec_ad1 = reshape(mn_a_aux_bisec_ad1, n_agrid, []);
 
 % C3. Derivative dv/da
-mt_dv_da_ad1 = diff(mt_v_ad1, 1)./diff(agrid);    
+mt_dv_da_ad1 = diff(mt_v_ad1, 1)./diff(agrid);
+mt_dc_da_ad1 = diff(mt_c_ad1, 1)./diff(agrid);
 
 % C4. Optimal aux and closest a index
 ar_a_aux_bisec = mt_a_aux_bisec_ad1(:);
@@ -206,15 +209,20 @@ ar_z_ctr = mt_z_ctr(:);
 % C6. the marginal effects of additional asset is determined by the slope
 ar_deri_lin_idx = sub2ind(size(mt_dv_da_ad1), ar_it_a_near_lower_idx, ar_z_ctr);
 ar_v_lin_idx = sub2ind(size(mt_v_ad1), ar_it_a_near_lower_idx, ar_z_ctr);
-ar_deri_dev_dap = mt_dv_da_ad1(ar_deri_lin_idx);
+ar_deri_dev_da = mt_dv_da_ad1(ar_deri_lin_idx);
 ar_v_a_lower_idx = mt_v_ad1(ar_v_lin_idx);
+ar_deri_dc_da = mt_dc_da_ad1(ar_deri_lin_idx);
+ar_c_a_lower_idx = mt_c_ad1(ar_v_lin_idx);
 
 % C7. v(a_lower_idx,z) + slope*(fl_a_aux - fl_a)
-ar_v_w_a_aux_j = ar_v_a_lower_idx + (ar_a_aux_bisec - agrid(ar_it_a_near_lower_idx)).*ar_deri_dev_dap;
+ar_v_w_a_aux_j = ar_v_a_lower_idx + (ar_a_aux_bisec - agrid(ar_it_a_near_lower_idx)).*ar_deri_dev_da;
+ar_c_w_a_aux_j = ar_c_a_lower_idx + (ar_a_aux_bisec - agrid(ar_it_a_near_lower_idx)).*ar_deri_dc_da;
 mn_v_w_a_aux_ad1 = reshape(ar_v_w_a_aux_j, n_agrid, n_jgrid, n_etagrid, n_educgrid, n_marriedgrid, n_kidsgrid);
+mn_c_w_a_aux_ad1 = reshape(ar_c_w_a_aux_j, n_agrid, n_jgrid, n_etagrid, n_educgrid, n_marriedgrid, n_kidsgrid);
 
 % C8. Permute age as dim 1
 V_W = permute(mn_v_w_a_aux_ad1, [2,1,3,4,5,6]);
+C_W = permute(mn_c_w_a_aux_ad1, [2,1,3,4,5,6]);
 
 %% D. Timing and Profiling End
 if (bl_timer)
@@ -233,12 +241,14 @@ end
 
 if (bl_print_a4chk_verbose)
     mn_V_gain_check = V_W - V_ss;
-    mn_V_gain_frac_check = (V_W - V_ss)./V_ss;
+    mn_C_gain_check = C_W - cons_ss;
+    mn_MPC = (C_W - cons_ss)./(welf_checks*TR);    
     mp_container_map = containers.Map('KeyType','char', 'ValueType','any');
     mp_container_map('V_W') = V_W;
-    mp_container_map('V_ss') = V_ss;
+    mp_container_map('C_W') = C_W;
     mp_container_map('V_W_minus_V_ss') = mn_V_gain_check;
-    mp_container_map('V_W_minus_V_ss_divide_V_ss') = mn_V_gain_frac_check;
+    mp_container_map('C_W_minus_C_ss') = mn_C_gain_check;    
+    mp_container_map('mn_MPC') = mn_MPC;    
     ff_container_map_display(mp_container_map);
 end
 

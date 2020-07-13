@@ -34,21 +34,21 @@
 %
 
 %%
-function [V_U]=snw_a4chk_unemp_bisec_vec(varargin)
+function [V_U, C_U]=snw_a4chk_unemp_bisec_vec(varargin)
 
 %% Default and Parse
 if (~isempty(varargin))
     
-    if (length(varargin)==2)
-        [welf_checks, V_unemp] = varargin{:};
+    if (length(varargin)==3)
+        [welf_checks, V_unemp, cons_unemp] = varargin{:};
         mp_controls = snw_mp_control('default_base');
-    elseif (length(varargin)==4)
-        [welf_checks, V_unemp, mp_params, mp_controls] = varargin{:};
-    elseif (length(varargin)==7)
-        [welf_checks, V_unemp, mp_params, mp_controls, ...
+    elseif (length(varargin)==5)
+        [welf_checks, V_unemp, cons_unemp, mp_params, mp_controls] = varargin{:};
+    elseif (length(varargin)==8)
+        [welf_checks, V_unemp, cons_unemp, mp_params, mp_controls, ...
             ar_a_amz, ar_inc_unemp_amz, ar_spouse_inc_unemp_amz] = varargin{:};        
     else
-        error('Need to provide 2/4/7 parameter inputs');
+        error('Need to provide 3/5/8 parameter inputs');
     end
     
 else
@@ -59,7 +59,7 @@ else
     mp_controls = snw_mp_control('default_test');
     
     % Solve for Value Function, Without One Period Unemployment Shock
-    [V_ss,~,~,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
+    [V_ss,~,cons_unemp,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
     
     % The number of checks
     welf_checks = 2;
@@ -184,14 +184,17 @@ mn_a_aux_unemp_bisec = reshape(ar_a_aux_unemp_bisec_amz, [n_jgrid,n_agrid,n_etag
 
 % C1. Change matrix order so asset becomes the first dimension
 mn_v_ad1 = permute(V_unemp, [2,1,3,4,5,6]);
+mn_c_ad1 = permute(cons_unemp, [2,1,3,4,5,6]);
 mn_a_aux_bisec_ad1 = permute(mn_a_aux_unemp_bisec, [2,1,3,4,5,6]);
 
 % C2. Reshape so that asset is dim 1, all other dim 2
 mt_v_ad1 = reshape(mn_v_ad1, n_agrid, []);
+mt_c_ad1 = reshape(mn_c_ad1, n_agrid, []);
 mt_a_aux_bisec_ad1 = reshape(mn_a_aux_bisec_ad1, n_agrid, []);
 
 % C3. Derivative dv/da
 mt_dv_da_ad1 = diff(mt_v_ad1, 1)./diff(agrid);    
+mt_dc_da_ad1 = diff(mt_c_ad1, 1)./diff(agrid);
 
 % C4. Optimal aux and closest a index
 ar_a_aux_bisec = mt_a_aux_bisec_ad1(:);
@@ -207,13 +210,18 @@ ar_deri_lin_idx = sub2ind(size(mt_dv_da_ad1), ar_it_a_near_lower_idx, ar_z_ctr);
 ar_v_lin_idx = sub2ind(size(mt_v_ad1), ar_it_a_near_lower_idx, ar_z_ctr);
 ar_deri_dev_dap = mt_dv_da_ad1(ar_deri_lin_idx);
 ar_v_a_lower_idx = mt_v_ad1(ar_v_lin_idx);
+ar_deri_dc_da = mt_dc_da_ad1(ar_deri_lin_idx);
+ar_c_a_lower_idx = mt_c_ad1(ar_v_lin_idx);
 
 % C7. v(a_lower_idx,z) + slope*(fl_a_aux - fl_a)
-ar_v_w_a_aux_j = ar_v_a_lower_idx + (ar_a_aux_bisec - agrid(ar_it_a_near_lower_idx)).*ar_deri_dev_dap;
-mn_v_w_a_aux_ad1 = reshape(ar_v_w_a_aux_j, n_agrid, n_jgrid, n_etagrid, n_educgrid, n_marriedgrid, n_kidsgrid);
+ar_v_u_a_aux_j = ar_v_a_lower_idx + (ar_a_aux_bisec - agrid(ar_it_a_near_lower_idx)).*ar_deri_dev_dap;
+ar_c_u_a_aux_j = ar_c_a_lower_idx + (ar_a_aux_bisec - agrid(ar_it_a_near_lower_idx)).*ar_deri_dc_da;
+mn_v_u_a_aux_ad1 = reshape(ar_v_u_a_aux_j, n_agrid, n_jgrid, n_etagrid, n_educgrid, n_marriedgrid, n_kidsgrid);
+mn_c_u_a_aux_ad1 = reshape(ar_c_u_a_aux_j, n_agrid, n_jgrid, n_etagrid, n_educgrid, n_marriedgrid, n_kidsgrid);
 
 % C8. Permute age as dim 1
-V_U = permute(mn_v_w_a_aux_ad1, [2,1,3,4,5,6]);
+V_U = permute(mn_v_u_a_aux_ad1, [2,1,3,4,5,6]);
+C_U = permute(mn_c_u_a_aux_ad1, [2,1,3,4,5,6]);
 
 %% D. Timing and Profiling End
 if (bl_timer)
@@ -234,14 +242,18 @@ end
 %% Compare Difference between V_ss and V_W
 
 if (bl_print_a4chk_verbose)
+    
     mn_V_gain_check = V_U - V_unemp;
-    mn_V_gain_frac_check = (V_U - V_unemp)./V_unemp;
+    mn_C_gain_check = C_U - cons_unemp;
+    mn_MPC = (C_U - cons_unemp)./(welf_checks*TR);    
     mp_container_map = containers.Map('KeyType','char', 'ValueType','any');
     mp_container_map('V_U') = V_U;
-    mp_container_map('V_unemp') = V_unemp;
+    mp_container_map('C_U') = C_U;
     mp_container_map('V_U_minus_V_unemp') = mn_V_gain_check;
-    mp_container_map('V_U_minus_V_unemp_divide_V_unemp') = mn_V_gain_frac_check;
+    mp_container_map('C_U_minus_C_unemp') = mn_C_gain_check;    
+    mp_container_map('mn_MPC_unemp') = mn_MPC;    
     ff_container_map_display(mp_container_map);
+    
 end
 
 end

@@ -96,7 +96,7 @@ for eta=1:n_etagrid % Productivity in next period
            elseif wages>cutoffs(4)
                wage_ind=5;
            end
-
+            
            V_planner=V_planner+Phi_p(1:n_agrid,eta,educ,kids)'*( pi_unemp(j+1,wage_ind)*V_U(j+1,1:n_agrid,eta,educ,married,kids,welf_checks+1)'+(1-pi_unemp(j+1,wage_ind))*V_W(j+1,1:n_agrid,eta,educ,married,kids,welf_checks+1)' );
 
        end

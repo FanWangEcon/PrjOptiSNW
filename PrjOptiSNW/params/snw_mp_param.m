@@ -90,21 +90,21 @@ n_marriedgrid=2; % No. of grid points for marital status
 n_kidsgrid=5; % No. of grid points for children (0 to 5+ children)
 if(strcmp(st_param_group, "default_verydense"))
     n_jgrid  =83; % Age runs from 18 to 100 (a period is 2 years)
-    jret     =49;
+    jret     =48;
     n_agrid  =251; % No. of grid points for assets
     n_eta_H_grid=9; % 9; % No. of grid points for persistent labor productivity shocks
     n_eta_S_grid=5; % 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
     n_kidsgrid=5; % No. of grid points for children (0 to 4+ children)
 elseif(strcmp(st_param_group, "default_moredense"))
     n_jgrid  =83; % Age runs from 18 to 100 (a period is 2 years)
-    jret     =49;
+    jret     =48;
     n_agrid  =151; % No. of grid points for assets
     n_eta_H_grid=9; % 9; % No. of grid points for persistent labor productivity shocks
     n_eta_S_grid=5; % 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
     n_kidsgrid=5; % No. of grid points for children (0 to 4+ children)
 elseif(strcmp(st_param_group, "default_dense"))
     n_jgrid  =83; % Age runs from 18 to 100 (a period is 2 years)
-    jret     =49;
+    jret     =48;
     n_agrid  =55; % No. of grid points for assets
     n_eta_H_grid=7; % 9; % No. of grid points for persistent labor productivity shocks
     n_eta_S_grid=3; % 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
@@ -123,6 +123,13 @@ elseif(strcmp(st_param_group, "default_small53"))
     n_eta_H_grid=5;
     n_eta_S_grid=3;
     n_kidsgrid=3;
+elseif(strcmp(st_param_group, "default_smalla151"))
+    n_jgrid   =18; % Age runs from 18 to 100 (16 periods of 5 years + terminal)
+    jret      =13;
+    n_agrid   =151; % No. of grid points for assets
+    n_eta_H_grid=5; % 9; % No. of grid points for persistent labor productivity shocks
+    n_eta_S_grid=1; % 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
+    n_kidsgrid=3; % No. of grid points for children (0 to 5+ children)
 elseif(strcmp(st_param_group, "default_small"))
     n_jgrid   =18; % Age runs from 18 to 100 (16 periods of 5 years + terminal)
     jret      =13;
@@ -154,11 +161,49 @@ else
     it_yrs_per_period = (80/(n_jgrid-2));
 end
 
-%% Unemployment Parameters
-xi=0.5; % Proportional reduction in income due to unemployment (xi=0 refers to 0 labor income; xi=1 refers to no drop in labor income)
-b=0; % Unemployment insurance replacement rate (b=0 refers to no UI benefits; b=1 refers to 100 percent labor income replacement)
-TR=100/58056; % Value of a welfare check (can receive multiple checks). TO DO: Update with alternative values
+%% Planning and Unemployment Parameters
+% ADDITIONAL PARAMETERS/VARIABLES for planner problem are given in the following sections:
+% "Compute value of employment and unemployment in 2020 conditional on number of welfare checks";
+% "Probability of unemployment"
+% "Solve planner's problem"
+% xi: Proportional reduction in income due to unemployment (xi=0 refers to 0 labor income; xi=1 refers to no drop in labor income)
+% b: Unemployment insurance replacement rate (b=0 refers to no UI benefits; b=1 refers to 100 percent labor income replacement)
+% TR: Value of a welfare check (can receive multiple checks). TO DO: Update with alternative values
+% n_welfchecksgrid: Number of welfare checks. 0 refers to 0 dollars; 51 refers to 5000 dollars
+% pi_unemp: Probability of unemployment
+% n_incgrid: Number of income groups
+% inc_grid: Grid for income groups
+
+% omega=0.0135; % Total spending on welfare checks as a share of aggregate income (estimated to cost $290 billion, or 1.35 percent of GDP in 2019. IRS has paid out $218 billion as of May 11)
+
+xi=0.75; % Proportional reduction in income due to unemployment (xi=0 refers to 0 labor income; xi=1 refers to no drop in labor income)
+b=1; % Unemployment insurance replacement rate (b=0 refers to no UI benefits; b=1 refers to 100 percent labor income replacement)
+scaleconvertor = 58056;
+TR=100/scaleconvertor; % Value of a welfare check (can receive multiple checks). TO DO: Update with alternative values
 n_welfchecksgrid=51; % Number of welfare checks. 0 refers to 0 dollars; 51 refers to 5000 dollars
+
+% Probability of unemployment
+% pi_j=[0.22;0.175;0.16;0.165;0.22]; % Probability of unemployment in 2020 by age groups from Cajner et al. (2020, NBER)
+% pi_w=[0.360;0.22;0.17;0.14;0.09]; % Probability of unemployment in 2020 by wage quintiles from Cajner et al. (2020, NBER)
+
+% Columns are wage groups; rows are age groups.
+pi_unemp=zeros(n_jgrid,5);
+aux_mat=[0.08027790 0.05170647 0.04150239 0.03537994 0.02517586];
+pi_unemp(1:13,:)=repmat(aux_mat,13,1);
+aux_mat=[0.07070343 0.04213200 0.03192792 0.02580547 0.01560139];
+pi_unemp(14:23,:)=repmat(aux_mat,10,1);
+aux_mat=[0.06751194 0.03894051 0.02873643 0.02261398 0.01240990];
+pi_unemp(24:33,:)=repmat(aux_mat,10,1);
+aux_mat=[0.06857577 0.04000434 0.02980026 0.02367781 0.01347373];
+pi_unemp(34:43,:)=repmat(aux_mat,10,1);
+aux_mat=[0.08027790 0.05170647 0.04150239 0.03537994 0.02517586];
+pi_unemp(44:48,:)=repmat(aux_mat,5,1);
+
+clear aux_mat
+
+% Solve planner's problem
+n_incgrid=201; % Number of income groups
+inc_grid=linspace(0,7,n_incgrid)'; % 7 refers to 7*58056=406392 dollars in 2012USD
 
 %% Preferences, Technologies, etc.
 
@@ -169,18 +214,18 @@ if(contains(st_param_group, "dense"))
     sigma_eta=0.018; % Variance of AR(1) productivity shocks
     g_n=0.01; % Annual population growth of 1.1 percent
     r=0.04; % Annual real interest rate of 4.0 percent from McGrattan and Prescott
-    beta=0.973087134454599; % 0.97068903873305; % Discount factor
+    beta=0.969010845568155; % 0.97068903873305; % Discount factor
 else
     rho_eta=0.98^it_yrs_per_period;
     sigma_eta=sqrt(0.018^2*sum((0.98.^(0:(it_yrs_per_period-1))).^2));
     g_n=(1.01^it_yrs_per_period)-1;
     r=(1.04^it_yrs_per_period)-1;
-    beta=0.973087134454599^it_yrs_per_period;
+    beta=0.969010845568155^it_yrs_per_period;
 end
 
 % Spousal Shocks
 rho_eta_spouse=0; % Persistence of spousal AR(1) productivity shocks
-sigma_eta_spouse=1.078196^2; % Variance of spousal AR(1) productivity shocks (standard deviation of residual from spousal income regression for 18-65 year-old household heads. See spousal_income.m for regression specification details)
+sigma_eta_spouse=1.040654^2; % Variance of spousal AR(1) productivity shocks (standard deviation of residual from spousal income regression for 18-65 year-old household heads. See spousal_income.m for regression specification details)
 
 % Bequest
 % Bequests allocation rule (=1: accidental bequests go to the government; =2: accidental bequests uniformly across the population)
@@ -190,12 +235,12 @@ Bequests=0.05826*(bequests_option-1);
 throw_in_ocean=1; % If bequests go to the government, a value of 1 for throw_in_ocean means that all accidental bequests are "thrown in the ocean", whereas a value of 0 means the full amount goes to the government
 
 if bequests_option==2
-    a2=1.575; % Initial guess for average income tax burden (if we use GS)
+    a2=1.575;
 elseif bequests_option==1
     if throw_in_ocean==0
-        a2=0.7027; % 1.57; % Initial guess for average income tax burden (if we use GS
+        a2=0.7027;
     elseif throw_in_ocean==1
-        a2=1.55791088259089; % 1.55888288714205;
+        a2=1.6081061107858;
     end
 end
 
@@ -204,7 +249,7 @@ end
 g_cons=0.17575574; % Government consumption expenditures to GDP (BEA: Average 2015-2019)
 
 % Calibrated parameters
-theta=0.67317057489809; % 0.691180561033545; % TFP parameter to normalize units such that average household income relative to GDP per capita equals (the latter is normalized to 1): Real GDP/capita in 2019: $58,056
+theta=0.66947637485374; % TFP parameter to normalize units such that average household income relative to GDP per capita is consistent with the data (the latter is normalized to 1): Real GDP/capita in 2019: $58,056
 
 % Consumption allocation rule (1=uniform; 2=square root)
 cons_allocation_rule=2;
@@ -330,6 +375,7 @@ clear aux_sum counter pi_kids_trans_prob pi_kids_pktp
 %% PARAM Specifying asset grid (use non-linear spacing with minimum value of 0)
 curv=3; % Governs how the grid points are allocated
 scale_a=190; % Maximum value of assets (NOTE: Verifying that it does not bind in Aggregation.m) grid=1.2451e-11
+scale_a=135; % Maximum value of assets (NOTE: Verifying that it does not bind in Aggregation.m) grid=0
 
 agrid=zeros(n_agrid,1);
 
@@ -470,8 +516,12 @@ st_old_age_depend =[name,num2str(sum(Pop(jret:end))/sum(Pop(1:(jret-1))))];
 mp_params_covid_unemploy = containers.Map('KeyType', 'char', 'ValueType', 'any');
 mp_params_covid_unemploy('xi') = xi;
 mp_params_covid_unemploy('b') = b;
+mp_params_covid_unemploy('scaleconvertor') = scaleconvertor;
 mp_params_covid_unemploy('TR') = TR;
 mp_params_covid_unemploy('n_welfchecksgrid') = n_welfchecksgrid;
+mp_params_covid_unemploy('pi_unemp') = pi_unemp;
+mp_params_covid_unemploy('n_incgrid') = n_incgrid;
+mp_params_covid_unemploy('inc_grid') = inc_grid;
 
 mp_params_preftechpricegov = containers.Map('KeyType', 'char', 'ValueType', 'any');
 mp_params_preftechpricegov('gamma') = gamma;
@@ -537,7 +587,7 @@ mp_params('mp_params_name') = string(st_param_group);
 %     MP_PARAMS_EXOTRANS; MP_PARAMS_TYPELIFE; MP_PARAMS_INTLEN];
 
 %% Print
-if (bl_print_mp_params)    
+if (bl_print_mp_params)
     ff_container_map_display(mp_params_covid_unemploy);
     ff_container_map_display(mp_params_preftechpricegov);
     ff_container_map_display(mp_params_intlen);
@@ -553,7 +603,7 @@ if (nargout==1)
     varargout{1} = mp_params;
 elseif (nargout==6)
     varargout = cell(nargout,0);
-    varargout{1} = mp_params;    
+    varargout{1} = mp_params;
     varargout{2} = mp_params_covid_unemploy;
     varargout{3} = mp_params_preftechpricegov;
     varargout{4} = mp_params_statesgrid;

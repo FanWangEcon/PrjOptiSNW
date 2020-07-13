@@ -1,3 +1,5 @@
+This is a matlab folder that is responsible for solving the value to the planner given different levels of COVID Checks.
+
 The folder contains code for the matlab toolbox that:
 
 1. Solves household dynamic programming problems that incorporates

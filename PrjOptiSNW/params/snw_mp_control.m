@@ -21,7 +21,7 @@ if (~isempty(varargin))
     
     if (length(varargin)==1)
         st_param_group = varargin{:};
-        bl_print_mp_controls = false;        
+        bl_print_mp_controls = false;
     elseif (length(varargin)==2)
         [st_param_group, bl_print_mp_controls] = varargin{:};
     end
@@ -61,30 +61,25 @@ bl_print_vfi = true;
 bl_print_ds = true;
 bl_print_a4chk = true;
 bl_print_vu_vw = true;
+bl_print_v_planner = true;
 
 if (strcmp(st_param_group, 'default_test')) 
     bl_print_ds_verbose = true;
     bl_print_vfi_verbose = true;
     bl_print_a4chk_verbose = true;
     bl_print_vu_vw_verbose = true;
+    bl_print_v_planner_verbose = true;
 else
     bl_print_ds_verbose = false;
     bl_print_vfi_verbose = false;
     bl_print_a4chk_verbose = false;
     bl_print_vu_vw_verbose = false;
-end
-
-%% Control Storage
-if (strcmp(st_param_group, 'default_test')) 
-    bl_ds_store_all = true;
-    bl_vfi_store_all = true;
-else
-    bl_ds_store_all = false;
-    bl_vfi_store_all = false;
+    bl_print_v_planner_verbose = false;
 end
 
 %% Control Optimization 
 mp_minimizer_controls = containers.Map('KeyType', 'char', 'ValueType', 'any');
+
 mp_minimizer_controls('A_aux') = A_aux;
 mp_minimizer_controls('B_aux') = B_aux;
 mp_minimizer_controls('Aeq') = Aeq;
@@ -111,7 +106,7 @@ mp_display = containers.Map('KeyType', 'char', 'ValueType', 'any');
 mp_display('bl_print_vfi') = bl_print_vfi;
 mp_display('bl_print_vfi_verbose') = bl_print_vfi_verbose;
 
-mp_display('bl_print_ds') = bl_print_vfi;
+mp_display('bl_print_ds') = bl_print_ds;
 mp_display('bl_print_ds_verbose') = bl_print_ds_verbose;
 
 mp_display('bl_print_a4chk') = bl_print_a4chk;
@@ -120,13 +115,12 @@ mp_display('bl_print_a4chk_verbose') = bl_print_a4chk_verbose;
 mp_display('bl_print_vu_vw') = bl_print_vu_vw;
 mp_display('bl_print_vu_vw_verbose') = bl_print_vu_vw_verbose;
 
-mp_store = containers.Map('KeyType', 'char', 'ValueType', 'any');
-mp_store('bl_ds_store_all') = bl_ds_store_all;
-mp_store('bl_vfi_store_all') = bl_vfi_store_all;
-
+mp_display('bl_print_v_planner') = bl_print_v_planner;
+mp_display('bl_print_v_planner_verbose') = bl_print_v_planner_verbose;
+ 
 %% Combine Maps
 mp_controls = [mp_minimizer_controls; mp_m4check_controls; ...
-    mp_calibrate; mp_compute_stats; mp_profile; mp_display; mp_store];
+    mp_calibrate; mp_compute_stats; mp_profile; mp_display];
 mp_controls('mp_params_name') = string(st_param_group);
 
 %% Print 

@@ -25,16 +25,16 @@
 %
 
 %%
-function [V_W, exitflag_fsolve]=snw_a4chk_wrk(varargin)
+function [V_W, C_W, exitflag_fsolve]=snw_a4chk_wrk(varargin)
 
 %% Default and Parse
 if (~isempty(varargin))
     
-    if (length(varargin)==2)
-        [welf_checks, V_ss] = varargin{:};
+    if (length(varargin)==3)
+        [welf_checks, V_ss, cons_ss] = varargin{:};
         mp_controls = snw_mp_control('default_base');
-    elseif (length(varargin)==4)
-        [welf_checks, V_ss, mp_params, mp_controls] = varargin{:};
+    elseif (length(varargin)==5)
+        [welf_checks, V_ss, cons_ss, mp_params, mp_controls] = varargin{:};
     end
     
 else
@@ -44,10 +44,10 @@ else
     % Solve the VFI Problem and get Value Function
     mp_params = snw_mp_param('default_tiny');
     mp_controls = snw_mp_control('default_test');
-    [V_ss,~,~,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
+    [V_ss,~,cons_ss,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
            
     % Solve for Value of One Period Unemployment Shock
-    welf_checks = 2;    
+    welf_checks = 10;    
     TR = 100/58056;
     mp_params('TR') = TR;
     
@@ -103,6 +103,7 @@ end
 %% Loop over states and find A state for a Particular Check Level
 
 V_W=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+C_W=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 exitflag_fsolve=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 
 for j=1:n_jgrid % Age
@@ -147,7 +148,8 @@ for j=1:n_jgrid % Age
                             
                         end
                         
-                        V_W(j,a,eta,educ,married,kids)=vals(1)*V_ss(j,inds(1),eta,educ,married,kids)+vals(2)*V_ss(j,inds(2),eta,educ,married,kids);
+                        V_W(j,a,eta,educ,married,kids)=vals(1)*V_ss(j,inds(1),eta,educ,married,kids)+vals(2)*V_ss(j,inds(2),eta,educ,married,kids);                        
+                        C_W(j,a,eta,educ,married,kids)=vals(1)*cons_ss(j,inds(1),eta,educ,married,kids)+vals(2)*cons_ss(j,inds(2),eta,educ,married,kids);                        
                         
                     end
                 end
@@ -178,14 +180,18 @@ end
 %% Compare Difference between V_ss and V_W
 
 if (bl_print_a4chk_verbose)
+    
     mn_V_gain_check = V_W - V_ss;
-    mn_V_gain_frac_check = (V_W - V_ss)./V_ss;
+    mn_C_gain_check = C_W - cons_ss;
+    mn_MPC = (C_W - cons_ss)./(welf_checks*TR);    
     mp_container_map = containers.Map('KeyType','char', 'ValueType','any');
     mp_container_map('V_W') = V_W;
-    mp_container_map('V_ss') = V_ss;
+    mp_container_map('C_W') = C_W;
     mp_container_map('V_W_minus_V_ss') = mn_V_gain_check;
-    mp_container_map('V_W_minus_V_ss_divide_V_ss') = mn_V_gain_frac_check;
+    mp_container_map('C_W_minus_C_ss') = mn_C_gain_check;    
+    mp_container_map('mn_MPC') = mn_MPC;    
     ff_container_map_display(mp_container_map);
+    
 end
 
 end

@@ -25,16 +25,13 @@
 %
 
 %%
-function [V_VFI,ap_VFI,cons_VFI,exitflag_VFI]=snw_vfi_unemp(varargin)
+function [varargout]=snw_vfi_unemp(varargin)
 
 %% Default and Parse 
 if (~isempty(varargin))
     
-    if (length(varargin)==2)
-        [V_ss, mp_params] = varargin{:};
-        mp_controls = snw_mp_control('default_base');
-    elseif (length(varargin)==3)
-        [V_ss, mp_params, mp_controls] = varargin{:};
+    if (length(varargin)==3)
+        [mp_params, mp_controls, V_ss] = varargin{:};
     end
     
 else
@@ -109,8 +106,11 @@ params_group = values(mp_controls, {'bl_print_vfi', 'bl_print_vfi_verbose'});
 [bl_print_vfi, bl_print_vfi_verbose] = params_group{:};
 
 % Store Controls
-params_group = values(mp_controls, {'bl_vfi_store_all'});
-[bl_vfi_store_all] = params_group{:};
+bl_vfi_store_all = false;
+% Store all if request more than 4 outputs
+if (nargout >= 4)
+    bl_vfi_store_all = true;
+end
 
 %% Timing and Profiling Start
 if (bl_timer)
@@ -122,13 +122,12 @@ end
 V_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 ap_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 cons_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
-% if (bl_vfi_store_all)
-%     y_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
-%     tax_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
-%     SS_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
-% end
-
-exitflag_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+if (bl_vfi_store_all)
+    inc_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+    earn_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+    spouse_inc_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+    exitflag_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+end
 
 % Solve for value function and policy functions by means of backwards induction
 for j=1:n_jgrid % Age
@@ -138,16 +137,16 @@ for j=1:n_jgrid % Age
                 for married=1:n_marriedgrid % Marital status
                     for kids=1:n_kidsgrid % Number of kids
                         
+                        [inc,earn]=individual_income(j,a,eta,educ,xi,b);
+                        spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
+                        
                         if j<n_jgrid
                             
                             % Solve for next period's assets
                             x0=agrid(a); % Initial guess for ap
                             
                             amin=0;
-                            
-                            [inc,earn]=individual_income(j,a,eta,educ,xi,b);
-                            spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
-                            
+                                                        
                             amax = min(agrid(end), ...
                                 (1+r)*(agrid(a) ...
                                 + Bequests*(bequests_option-1)) ...                                
@@ -156,7 +155,7 @@ for j=1:n_jgrid % Age
                                 + (married-1)*spouse_inc*exp(eta_S_grid(eta)) ...
                                 - max(0,Tax(inc,(married-1)*spouse_inc*exp(eta_S_grid(eta)))));
                             
-                            [ap_aux,~,exitflag_VFI(j,a,eta,educ,married,kids)]=fmincon(@(x)value_func_aux_unemp(x,j,a,eta,educ,married,kids,V_ss,xi,b),x0,A_aux,B_aux,Aeq,Beq,amin,amax,nonlcon,options);
+                            [ap_aux,~,exit_flag]=fmincon(@(x)value_func_aux_unemp(x,j,a,eta,educ,married,kids,V_ss,xi,b),x0,A_aux,B_aux,Aeq,Beq,amin,amax,nonlcon,options);
                             
                             ind_aux=find(agrid<=ap_aux,1,'last');
                             
@@ -235,7 +234,16 @@ for j=1:n_jgrid % Age
                             end
                             
                             V_VFI(j,a,eta,educ,married,kids)=utility(cons_VFI(j,a,eta,educ,married,kids),married,kids);
+                            exit_flag = 0;
                             
+                        end
+                        
+                        % Store More Information for Analysis
+                        if (bl_vfi_store_all)
+                            inc_VFI(j,a,eta,educ,married,kids) = inc;
+                            earn_VFI(j,a,eta,educ,married,kids) = earn*(xi+b*(1-xi));
+                            spouse_inc_VFI(j,a,eta,educ,married,kids) = (married-1)*spouse_inc*exp(eta_S_grid(eta));
+                            exitflag_VFI(j,a,eta,educ,married,kids) = exit_flag;
                         end
                         
                     end
@@ -259,6 +267,27 @@ if (bl_timer)
          ['SNW_MP_CONTROL=' char(mp_controls('mp_params_name'))] ...
         ], ";");
     disp(st_complete_vfi);
+end
+
+
+%% Store
+varargout = cell(nargout,0);
+for it_k = 1:nargout
+    if (it_k==1)
+        ob_out_cur = V_VFI;
+    elseif (it_k==2)
+        ob_out_cur = ap_VFI;
+    elseif (it_k==3)
+        ob_out_cur = cons_VFI;
+    elseif (it_k==4)
+        mp_valpol_more = containers.Map('KeyType','char', 'ValueType','any');
+        mp_valpol_more('inc_VFI') = inc_VFI;
+        mp_valpol_more('earn_VFI') = earn_VFI;
+        mp_valpol_more('spouse_inc_VFI') = spouse_inc_VFI;
+        mp_valpol_more('exitflag_VFI') = exitflag_VFI;
+        ob_out_cur = mp_valpol_more;
+    end
+    varargout{it_k} = ob_out_cur;
 end
 
 end

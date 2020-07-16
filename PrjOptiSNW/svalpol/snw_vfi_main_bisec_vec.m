@@ -74,11 +74,11 @@ end
 % globals = who('global');
 % clear(globals{:});
 % Parameters used in this code directly
-global beta theta r agrid epsilon SS pi_eta pi_kids psi n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
+% global beta theta r agrid epsilon SS pi_eta pi_kids psi n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
 % Used in functions that are called by this code
-global gamma g_n g_cons a2 cons_allocation_rule jret
+% global gamma g_n g_cons a2 cons_allocation_rule jret
 % July 1st new parameters
-global eta_H_grid eta_S_grid Bequests bequests_option throw_in_ocean
+% global eta_H_grid eta_S_grid Bequests bequests_option throw_in_ocean
 
 %% Parse Model Parameters
 params_group = values(mp_params, {...
@@ -190,20 +190,23 @@ for j=ar_j_seq % Age
                         % Resources
                         if (length(varargin)==3)
                             % one period unemployed shock
-                            [inc,earn]=individual_income(j,a,eta,educ,xi,b);
+                            [inc,earn]=snw_hh_individual_income(j,a,eta,educ,...
+                                theta, r, agrid, epsilon, eta_H_grid, SS, Bequests, bequests_option,...
+                                xi,b);
                             % do not earn one hundred percent
                             fl_earn_ratio = (xi+b*(1-xi));
                         else
-                            [inc,earn]=individual_income(j,a,eta,educ);
+                            [inc,earn]=snw_hh_individual_income(j,a,eta,educ,...
+                                theta, r, agrid, epsilon, eta_H_grid, SS, Bequests, bequests_option);
                             fl_earn_ratio = 1;
                         end
 
-                        spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
+                        spouse_inc=snw_hh_spousal_income(j,educ,kids,earn,SS(j,educ), jret);
                         resources = (1+r)*(agrid(a)+Bequests*(bequests_option-1)) ...
                                     + epsilon(j,educ)*theta*exp(eta_H_grid(eta))*fl_earn_ratio ...
                                     + SS(j,educ) ...
                                     + (married-1)*spouse_inc*exp(eta_S_grid(eta)) ...
-                                    - max(0,Tax(inc,(married-1)*spouse_inc*exp(eta_S_grid(eta))));
+                                    - max(0,snw_tax_hh(inc,(married-1)*spouse_inc*exp(eta_S_grid(eta)),a2));
                         mn_resources(a, eta, educ, married, kids) = resources;
 
                         % Non-asset position Counter
@@ -222,7 +225,7 @@ for j=ar_j_seq % Age
                             earn_VFI(j,a,eta,educ,married,kids) = earn*fl_earn_ratio;
                             spouse_inc_VFI(j,a,eta,educ,married,kids) = (married-1)*spouse_inc*exp(eta_S_grid(eta));
                             SS_VFI(j,a,eta,educ,married,kids) = SS(j,educ);
-                            tax_VFI(j,a,eta,educ,married,kids) = max(0,Tax(inc,(married-1)*spouse_inc*exp(eta_S_grid(eta))));                            
+                            tax_VFI(j,a,eta,educ,married,kids) = max(0,snw_tax_hh(inc,(married-1)*spouse_inc*exp(eta_S_grid(eta)),a2));
                         end
 
                     end
@@ -337,14 +340,19 @@ for j=ar_j_seq % Age
                             if j==n_jgrid
 
                                 ap_VFI(j,a,eta,educ,married,kids)=0;
-                                cons_VFI(j,a,eta,educ,married,kids) = consumption(j,a,eta,educ,married,kids,ap_VFI(j,a,eta,educ,married,kids));
+                                cons_VFI(j,a,eta,educ,married,kids) = snw_hh_consumption(...
+                                    j,a,eta,educ,married,kids,ap_VFI(j,a,eta,educ,married,kids),...
+                                    theta, r, agrid, epsilon, eta_H_grid, eta_S_grid, SS, Bequests, bequests_option,...
+                                    jret,a2);
 
                                 if cons_VFI(j,a,eta,educ,married,kids)<=0
                                     disp([j,a,eta,educ,married,kids,cons_VFI(j,a,eta,educ,married,kids)])
                                     error('Non-positive consumption')
                                 end
 
-                                V_VFI(j,a,eta,educ,married,kids)=utility(cons_VFI(j,a,eta,educ,married,kids),married,kids);
+                                V_VFI(j,a,eta,educ,married,kids)=snw_hh_utility(...
+                                    cons_VFI(j,a,eta,educ,married,kids),married,kids,...
+                                    gamma, cons_allocation_rule);
 
                             end
                         end

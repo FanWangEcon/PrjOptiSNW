@@ -82,13 +82,13 @@ end
 
 %% Reset All globals
 % Parameters used in this code directly
-global agrid n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
+% global agrid n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
 % Used in find_a_working function
-global theta r agrid epsilon eta_H_grid eta_S_grid SS Bequests bequests_option throw_in_ocean
+% global theta r agrid epsilon eta_H_grid eta_S_grid SS Bequests bequests_option throw_in_ocean
 
 %% Parse Model Parameters
-params_group = values(mp_params, {'theta', 'r'});
-[theta,  r] = params_group{:};
+params_group = values(mp_params, {'theta', 'r', 'a2', 'jret'});
+[theta,  r, a2, jret] = params_group{:};
 
 params_group = values(mp_params, {'Bequests', 'bequests_option', 'throw_in_ocean'});
 [Bequests, bequests_option, throw_in_ocean] = params_group{:};
@@ -143,8 +143,11 @@ if ~exist('ar_inc_amz','var')
                     for married=1:n_marriedgrid % Marital status
                         for kids=1:n_kidsgrid % Number of kids
 
-                            [inc,earn]=individual_income(j,a,eta,educ);
-                            spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
+                            % [inc,earn]=individual_income(j,a,eta,educ);
+                            % spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
+                            [inc,earn]=snw_hh_individual_income(j,a,eta,educ,...
+                                theta, r, agrid, epsilon, eta_H_grid, SS, Bequests, bequests_option);
+                            spouse_inc=snw_hh_spousal_income(j,educ,kids,earn,SS(j,educ), jret);
 
                             mn_inc(j,a,eta,educ,married,kids) = inc;
                             mn_spouse_inc(j,a,eta,educ,married,kids) = (married-1)*spouse_inc*exp(eta_S_grid(eta));
@@ -170,7 +173,7 @@ end
 fc_ffi_frac0t1_find_a_working = @(x) ffi_frac0t1_find_a_working_vec(...
     x, ...
     ar_a_amz, ar_inc_amz, ar_spouse_inc_amz, ...
-    welf_checks, TR, r, fl_max_trchk_perc_increase);
+    welf_checks, TR, r, a2, fl_max_trchk_perc_increase);
 
 % B2. Solve with Bisection
 [~, ar_a_aux_bisec_amz] = ...
@@ -258,7 +261,7 @@ function [ar_root_zero, ar_a_aux_amz] = ...
     ffi_frac0t1_find_a_working_vec(...
     ar_aux_change_frac_amz, ...
     ar_a_amz, ar_inc_amz, ar_spouse_amz, ...
-    welf_checks, TR, r, fl_max_trchk_perc_increase)
+    welf_checks, TR, r, a2, fl_max_trchk_perc_increase)
     
     % Max A change to account for check
     fl_a_aux_max = TR*welf_checks*fl_max_trchk_perc_increase;    
@@ -271,8 +274,8 @@ function [ar_root_zero, ar_a_aux_amz] = ...
     
     % Account for tax, inc changes by r
     ar_tax_gap = ...
-          max(0, Tax(ar_inc_amz, ar_spouse_amz)) ...
-        - max(0, Tax(ar_inc_amz - ar_a_amz*r + ar_a_aux_amz*r, ar_spouse_amz));
+          max(0, snw_tax_hh(ar_inc_amz, ar_spouse_amz, a2)) ...
+        - max(0, snw_tax_hh(ar_inc_amz - ar_a_amz*r + ar_a_aux_amz*r, ar_spouse_amz, a2));
     
     % difference equation f(a4chkchange)=0
     ar_root_zero = TR*welf_checks + ar_r_gap - ar_tax_gap;

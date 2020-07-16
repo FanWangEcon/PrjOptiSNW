@@ -68,13 +68,13 @@ end
 % globals = who('global');
 % clear(globals{:});
 % Parameters used in this code directly
-global a2 g_cons agrid SS pi_eta pi_kids Pop n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid 
+% global a2 g_cons agrid SS pi_eta pi_kids Pop n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid 
 % Added
-global epsilon theta eta_H_grid eta_S_grid r g_n psi Bequests bequests_option throw_in_ocean
+% global epsilon theta eta_H_grid eta_S_grid r g_n psi Bequests bequests_option throw_in_ocean
 
 %% Parse Model Parameters
-params_group = values(mp_params, {'theta', 'r', 'g_n', 'g_cons', 'a2'});
-[theta, r, g_n, g_cons, a2] = params_group{:};
+params_group = values(mp_params, {'theta', 'r', 'g_n', 'g_cons', 'a2','jret'});
+[theta, r, g_n, g_cons, a2,jret] = params_group{:};
 
 params_group = values(mp_params, {'Bequests', 'bequests_option', 'throw_in_ocean'});
 [Bequests, bequests_option, throw_in_ocean] = params_group{:};
@@ -233,14 +233,17 @@ for j=1:n_jgrid
                    Aprime_agg=Aprime_agg+Phi_true(j,1:n_agrid,eta,educ,married,kids)*ap_ss(j,1:n_agrid,eta,educ,married,kids)'; % Aggregate saving
                    C_agg=C_agg+Phi_true(j,1:n_agrid,eta,educ,married,kids)*cons_ss(j,1:n_agrid,eta,educ,married,kids)'; % Aggregate consumption
 
-                   [inc,earn]=individual_income(j,1:n_agrid,eta,educ);
-                   spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
-
+                   % [inc,earn]=individual_income(j,1:n_agrid,eta,educ);
+                   [inc,earn]=snw_hh_individual_income(j,1:n_agrid,eta,educ,...
+                       theta, r, agrid, epsilon, eta_H_grid, SS, Bequests, bequests_option);
+                   % spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
+                   spouse_inc=snw_hh_spousal_income(j,educ,kids,earn,SS(j,educ), jret);
+                   
                    inc_aux=r*(agrid(1:n_agrid)+Bequests*(bequests_option-1))+epsilon(j,educ)*theta*exp(eta_H_grid(eta)); % Income (excluding Social Security benefits)
 
                    Y_inc_agg=Y_inc_agg+Phi_true(j,1:n_agrid,eta,educ,married,kids)*( inc_aux+(married-1)*spouse_inc*exp(eta_S_grid(eta)) ); % Aggregate income (labor earnings, spousal income, interest earnings)
 
-                   Tax_revenues=Tax_revenues+Phi_true(j,1:n_agrid,eta,educ,married,kids)*max(0,Tax(inc,(married-1)*spouse_inc*exp(eta_S_grid(eta)))); % Tax revenues
+                   Tax_revenues=Tax_revenues+Phi_true(j,1:n_agrid,eta,educ,married,kids)*max(0,snw_tax_hh(inc,(married-1)*spouse_inc*exp(eta_S_grid(eta)),a2)); % Tax revenues
 
                    SS_spend=SS_spend+sum(Phi_true(j,1:n_agrid,eta,educ,married,kids)*SS(j,educ)); % Total spending on Social Security
 
@@ -294,9 +297,12 @@ while err>tol
                for married=1:n_marriedgrid
                    for kids=1:n_kidsgrid
 
-                       [inc,earn]=individual_income(j,1:n_agrid,eta,educ);
-                       spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
-                       Tax_revenues_aux=Tax_revenues_aux+Phi_true(j,1:n_agrid,eta,educ,married,kids)*max(0,Tax(inc,(married-1)*spouse_inc*exp(eta_S_grid(eta)))); % Tax revenues
+                       % [inc,earn]=individual_income(j,1:n_agrid,eta,educ);
+                       [inc,earn]=snw_hh_individual_income(j,1:n_agrid,eta,educ,...
+                       theta, r, agrid, epsilon, eta_H_grid, SS, Bequests, bequests_option);
+                       % spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
+                       spouse_inc=snw_hh_spousal_income(j,educ,kids,earn,SS(j,educ), jret);
+                       Tax_revenues_aux=Tax_revenues_aux+Phi_true(j,1:n_agrid,eta,educ,married,kids)*max(0,snw_tax_hh(inc,(married-1)*spouse_inc*exp(eta_S_grid(eta)),a2)); % Tax revenues
 
                    end
                end

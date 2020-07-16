@@ -82,13 +82,13 @@ end
 
 %% Reset All globals
 % Parameters used in this code directly
-global agrid n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
+% global agrid n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
 % Used in find_a_working function
-global theta r agrid epsilon eta_H_grid eta_S_grid SS Bequests bequests_option throw_in_ocean
+% global theta r agrid epsilon eta_H_grid eta_S_grid SS Bequests bequests_option throw_in_ocean
 
 %% Parse Model Parameters
-params_group = values(mp_params, {'theta', 'r'});
-[theta,  r] = params_group{:};
+params_group = values(mp_params, {'theta', 'r', 'jret'});
+[theta,  r, jret] = params_group{:};
 
 params_group = values(mp_params, {'Bequests', 'bequests_option', 'throw_in_ocean'});
 [Bequests, bequests_option, throw_in_ocean] = params_group{:};
@@ -180,8 +180,12 @@ if (nargout ~= 3 && nargout ~= 6)
                     for married=1:n_marriedgrid % Marital status
                         for kids=1:n_kidsgrid % Number of kids
                             
-                            [inc,earn]=individual_income(j,a,eta,educ);
-                            spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
+                            %[inc,earn]=individual_income(j,a,eta,educ);
+                            %spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
+                            [inc,earn]=snw_hh_individual_income(j,a,eta,educ,...
+                                theta, r, agrid, epsilon, eta_H_grid, SS, Bequests, bequests_option);
+                            spouse_inc=snw_hh_spousal_income(j,educ,kids,earn,SS(j,educ), jret);
+                            
                             
                             mn_inc(j,a,eta,educ,married,kids) = inc;
                             mn_spouse_inc(j,a,eta,educ,married,kids) = (married-1)*spouse_inc*exp(eta_S_grid(eta));
@@ -220,8 +224,12 @@ if (nargout ~= 3 && nargout ~= 6)
                     for married=1:n_marriedgrid % Marital status
                         for kids=1:n_kidsgrid % Number of kids
                             
-                            [inc,earn]=individual_income(j,a,eta,educ,xi,b);
-                            spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
+                            % [inc,earn]=individual_income(j,a,eta,educ,xi,b);
+                            % spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
+                            [inc,earn]=snw_hh_individual_income(j,a,eta,educ,...
+                                theta, r, agrid, epsilon, eta_H_grid, SS, Bequests, bequests_option,...
+                                xi,b);
+                            spouse_inc=snw_hh_spousal_income(j,educ,kids,earn,SS(j,educ), jret);
                             
                             mn_inc_unemp(j,a,eta,educ,married,kids) = inc;
                             mn_spouse_inc_unemp(j,a,eta,educ,married,kids) = (married-1)*spouse_inc*exp(eta_S_grid(eta));

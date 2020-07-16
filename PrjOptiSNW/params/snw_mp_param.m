@@ -588,9 +588,9 @@ mp_params('mp_params_name') = string(st_param_group);
 
 %% Print
 if (bl_print_mp_params)
-    ff_container_map_display(mp_params_covid_unemploy);
     ff_container_map_display(mp_params_preftechpricegov);
     ff_container_map_display(mp_params_intlen);
+    ff_container_map_display(mp_params_covid_unemploy, it_row_n_keep, it_col_n_keep);
     ff_container_map_display(mp_params_statesgrid, it_row_n_keep, it_col_n_keep);
     ff_container_map_display(mp_params_exotrans, it_row_n_keep, it_col_n_keep);
     ff_container_map_display(mp_params_typelife, it_row_n_keep, it_col_n_keep);

@@ -51,7 +51,9 @@ for j=1:n_jgrid % Age
                        end
 
                        V_U(j,a,eta,educ,married,kids)=vals(1)*V_unemp(j,inds(1),eta,educ,married,kids)+vals(2)*V_unemp(j,inds(2),eta,educ,married,kids);
-                       C_U(j,a,eta,educ,married,kids)=vals(1)*cons_unemp(j,inds(1),eta,educ,married,kids)+vals(2)*cons_unemp(j,inds(2),eta,educ,married,kids);
+%                       C_U(j,a,eta,educ,married,kids)=vals(1)*cons_unemp(j,inds(1),eta,educ,married,kids)+vals(2)*cons_unemp(j,inds(2),eta,educ,married,kids);
+                       
+                       C_U(j,a,eta,educ,married,kids)=vals(1)*(cons_unemp(j,inds(1),eta,educ,married,kids)/(married+kids-1))+vals(2)*(cons_unemp(j,inds(2),eta,educ,married,kids)/(married+kids-1));
                        
                    end
                end

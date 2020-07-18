@@ -1,7 +1,7 @@
 function F=spousal_income(j,educ,kids,earn,SS_inc)
 
 global jret
-
+ 
 % reg ln_Sincome ln_Rincome c.RAGE##c.RAGE##c.RAGE Rcollege i.kids dummy65 dummy65kids dummy_YEAR* if RAGE>=18 & RAGE!=. & Rmarried==1 [pweight=WEIGHT]
 % Income refers to labor income+Social Security+SSI+UI benefits+other transfers
 coeff_ln_Rincome=0.1344672;
@@ -50,7 +50,7 @@ end
 F=exp(F);
 
 % if j<jret
-%
+%     
 %     % reg ln_Sincome ln_Rincome c.RAGE##c.RAGE##c.RAGE Rcollege i.kids dummy_YEAR* if inrange(RAGE,18,64) & Rmarried==1 [pweight=WEIGHT]
 %     % Income refers to labor income+Social Security+SSI+UI benefits+other transfers
 %     coeff_ln_Rincome=0.1110694;
@@ -63,7 +63,7 @@ F=exp(F);
 %     coeff_Rkids3=-0.4702531;
 %     coeff_Rkids4=-0.7895856;
 %     coeff_cons=-4.58432;
-%
+%     
 %     if kids==1
 %         F=coeff_cons+(coeff_ln_Rincome*log(earn+SS_inc))+(coeff_Rage*(j+17))+(coeff_Rage_sq*((j+17)^2))+(coeff_Rage_cube*((j+17)^3))+(coeff_Rcollege*(educ-1));
 %     elseif kids==2
@@ -78,17 +78,17 @@ F=exp(F);
 %         error('Update spousal_income.m to allow for more than 4 kids')
 %     end
 % else
-%
+%     
 %     % reg ln_Sincome ln_Rincome c.RAGE Rcollege dummy_YEAR* if RAGE>=65 & RAGE!=. & Rmarried==1 [pweight=WEIGHT]
 %     % Income refers to labor income+Social Security+SSI+UI benefits+other transfers
 %     coeff_ln_Rincome=0.2213816;
 %     coeff_Rage=-0.0305283;
 %     coeff_Rcollege=0.1391068;
 %     coeff_cons=0.7526077;
-%
+%     
 %     F=coeff_cons+(coeff_ln_Rincome*log(earn+SS_inc))+(coeff_Rage*(j+17))+(coeff_Rcollege*(educ-1));
 % end
-%
+% 
 % F=exp(F);
 
 end

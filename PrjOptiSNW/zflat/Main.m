@@ -7,7 +7,7 @@ clc
 
 format longg
 
-% Last updated: 07/08/2020
+% Last updated: 07/15/2020
 
 global beta gamma g_cons a2 rho_eta sigma_eta theta g_n cons_allocation_rule r agrid epsilon eta_H_grid eta_S_grid SS pi_eta pi_kids pi_unemp psi Pop n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid jret Bequests bequests_option throw_in_ocean
 
@@ -520,7 +520,7 @@ clear name name2
 
 %% Compute value of employment and unemployment in 2020 conditional on number of welfare checks: "Manna-from-heaven" where taxes do not change
 xi=0.75; % Proportional reduction in income due to unemployment (xi=0 refers to 0 labor income; xi=1 refers to no drop in labor income)
-b=1; % Unemployment insurance replacement rate (b=0 refers to no UI benefits; b=1 refers to 100 percent labor income replacement)
+b=0; % 1; % Unemployment insurance replacement rate (b=0 refers to no UI benefits; b=1 refers to 100 percent labor income replacement)
 
 % Compute policy functions in the event of unemployment. Required to compute V_U in the Planner's problem
 disp('Compute value function and policy functions in the event of unemployment')
@@ -620,10 +620,55 @@ cutoffs=wage_cutoffs(Phi_true);
 n_incgrid=201; % Number of income groups
 inc_grid=linspace(0,7,n_incgrid)'; % 7 refers to 7*58056=406392 dollars in 2012USD
 
+% Income and earning grids used to speed up the code
+ref_earn_grid=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+inc_tot_grid=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+Phi_true_1=zeros(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+
+for j=1:n_jgrid
+   for a=1:n_agrid
+       for eta=1:n_etagrid 
+           for educ=1:n_educgrid
+               for married=1:n_marriedgrid
+                   for kids=1:n_kidsgrid
+                       [inc,earn]=individual_income(j,a,eta,educ);
+                       ref_earn_grid(j,a,eta,educ,married,kids)=earn;
+                       spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
+                       inc_tot_grid(j,a,eta,educ,married,kids)=inc+spouse_inc;
+                       if Phi_true(j,a,eta,educ,married,kids)>0
+                           Phi_true_1(j,a,eta,educ,married,kids)=Phi_true(j,a,eta,educ,married,kids)/sum(Phi_true,'all');
+                       end
+                   end
+               end
+           end
+       end
+   end
+end
+
+EV=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid,n_welfchecksgrid,5);
+for j=1:n_jgrid
+   for a=1:n_agrid
+       for eta=1:n_etagrid 
+           for educ=1:n_educgrid
+               for married=1:n_marriedgrid
+                   for kids=1:n_kidsgrid
+                       for welf_checks=1:n_welfchecksgrid
+                            for wage_ind=1:5
+                                EV(j,a,eta,educ,married,kids,welf_checks,wage_ind)=pi_unemp(j,wage_ind)*V_U(j,a,eta,educ,married,kids,welf_checks)+(1-pi_unemp(j,wage_ind))*V_W(j,a,eta,educ,married,kids,welf_checks);
+                            end
+                       end
+                   end
+               end
+           end
+       end
+   end
+end
+
 V_planner=NaN(n_jgrid-1,n_marriedgrid,n_kidsgrid,n_welfchecksgrid,n_incgrid);
 Phi_mass=NaN(n_jgrid-1,n_marriedgrid,n_kidsgrid,n_incgrid);
 
 disp('Solve the problem of the Planner')
+tic;
 for j=1:(n_jgrid-1) % Age
    for married=1:n_marriedgrid % Marital status
        for kids=1:n_kidsgrid % Number of kids
@@ -631,12 +676,12 @@ for j=1:(n_jgrid-1) % Age
                for inc_group=1:n_incgrid
                    
                    if inc_group<n_incgrid
-                      [V_planner(j,married,kids,welf_checks+1,inc_group),Phi_mass(j,married,kids,inc_group)]=Planner(Phi_true,j,married,kids,welf_checks,inc_grid(inc_group),inc_grid(inc_group+1),V_U,V_W,ap,cutoffs);
-%                        [V_planner(j,married,kids,welf_checks+1,inc_group),Phi_mass(j,married,kids,inc_group)]=Planner_grid_search(Phi_true,j,married,kids,welf_checks,inc_grid(inc_group),inc_grid(inc_group+1),V_U,V_W,ap,cutoffs);
+                      [V_planner(j,married,kids,welf_checks+1,inc_group),Phi_mass(j,married,kids,inc_group)]=Planner(Phi_true_1,j,married,kids,welf_checks,inc_grid(inc_group),inc_grid(inc_group+1),ap,cutoffs,ref_earn_grid,inc_tot_grid,EV,pi_eta,pi_kids,agrid,n_agrid,n_etagrid,n_educgrid,n_kidsgrid);
+%                        [V_planner(j,married,kids,welf_checks+1,inc_group),Phi_mass(j,married,kids,inc_group)]=Planner_grid_search(Phi_true,j,married,kids,welf_checks,inc_grid(inc_group),inc_grid(inc_group+1),V_U,V_W,ap,cutoffs,ref_inc_grid,ref_earn_grid,spouse_inc_grid);
                                          
                    elseif inc_group==n_incgrid
-                      [V_planner(j,married,kids,welf_checks+1,inc_group),Phi_mass(j,married,kids,inc_group)]=Planner(Phi_true,j,married,kids,welf_checks,inc_grid(inc_group),10E30,V_U,V_W,ap,cutoffs);
-%                        [V_planner(j,married,kids,welf_checks+1,inc_group),Phi_mass(j,married,kids,inc_group)]=Planner_grid_search(Phi_true,j,married,kids,welf_checks,inc_grid(inc_group),10E30,V_U,V_W,ap,cutoffs);
+                      [V_planner(j,married,kids,welf_checks+1,inc_group),Phi_mass(j,married,kids,inc_group)]=Planner(Phi_true_1,j,married,kids,welf_checks,inc_grid(inc_group),10E30,ap,cutoffs,ref_earn_grid,inc_tot_grid,EV,pi_eta,pi_kids,agrid,n_agrid,n_etagrid,n_educgrid,n_kidsgrid);
+%                        [V_planner(j,married,kids,welf_checks+1,inc_group),Phi_mass(j,married,kids,inc_group)]=Planner_grid_search(Phi_true,j,married,kids,welf_checks,inc_grid(inc_group),10E30,V_U,V_W,ap,cutoffs,ref_inc_grid,ref_earn_grid,spouse_inc_grid);
                        
                    end
                                      
@@ -648,6 +693,7 @@ for j=1:(n_jgrid-1) % Age
    disp(j)
    
 end
+toc;
 
 % Output for computing optimal allocation
 Output=NaN((n_jgrid-1)*n_marriedgrid*n_kidsgrid*n_welfchecksgrid*inc_group,9);

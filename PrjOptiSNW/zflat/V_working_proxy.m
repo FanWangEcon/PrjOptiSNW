@@ -51,7 +51,9 @@ for j=1:n_jgrid % Age
                        end
                        
                        V_W(j,a,eta,educ,married,kids)=vals(1)*V_ss(j,inds(1),eta,educ,married,kids)+vals(2)*V_ss(j,inds(2),eta,educ,married,kids);
-                       C_W(j,a,eta,educ,married,kids)=vals(1)*cons_ss(j,inds(1),eta,educ,married,kids)+vals(2)*cons_ss(j,inds(2),eta,educ,married,kids);
+%                       C_W(j,a,eta,educ,married,kids)=vals(1)*cons_ss(j,inds(1),eta,educ,married,kids)+vals(2)*cons_ss(j,inds(2),eta,educ,married,kids);
+                       
+                       C_W(j,a,eta,educ,married,kids)=vals(1)*(cons_ss(j,inds(1),eta,educ,married,kids)/(married+kids-1))+vals(2)*(cons_ss(j,inds(2),eta,educ,married,kids)/(married+kids-1));
                        
                    end
                end

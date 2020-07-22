@@ -53,7 +53,7 @@ function [V_W, C_W]=snw_a4chk_wrk_bisec_vec(varargin)
 
 %% Default and Parse
 if (~isempty(varargin))
-    
+
     if (length(varargin)==3)
         [welf_checks, V_ss, cons_ss] = varargin{:};
     elseif (length(varargin)==5)
@@ -64,20 +64,21 @@ if (~isempty(varargin))
     else
         error('Need to provide 2/4/7 parameter inputs');
     end
-    
+
 else
     close all;
-    
+
     % A1. Solve the VFI Problem and get Value Function
     mp_params = snw_mp_param('default_tiny');
+    mp_params = snw_mp_param('default_moredense');
     mp_controls = snw_mp_control('default_test');
     [V_ss,~,cons_ss,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
-    
+
     % Solve for Value of One Period Unemployment Shock
-    welf_checks = 10;    
+    welf_checks = 10;
     TR = 100/58056;
     mp_params('TR') = TR;
-        
+
 end
 
 %% Reset All globals
@@ -104,7 +105,7 @@ params_group = values(mp_params, ...
 [n_jgrid, n_agrid, n_etagrid, n_educgrid, n_marriedgrid, n_kidsgrid] = params_group{:};
 
 params_group = values(mp_params, {'TR'});
-[TR] = params_group{:};    
+[TR] = params_group{:};
 
 %% Parse Model Controls
 % Minimizer Controls
@@ -129,12 +130,13 @@ end
 
 % this is only called when the function is called without mn_inc_plus_spouse_inc
 if ~exist('ar_inc_amz','var')
-    
-    % initialize
+
+    % initialize: head inc, spouse inc, asset, and household size
     mn_inc = NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
     mn_spouse_inc = NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
     mn_a = NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
-    
+    mn_hhsize = NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+
     % Txable Income at all state-space points
     for j=1:n_jgrid % Age
         for a=1:n_agrid % Assets
@@ -152,19 +154,20 @@ if ~exist('ar_inc_amz','var')
                             mn_inc(j,a,eta,educ,married,kids) = inc;
                             mn_spouse_inc(j,a,eta,educ,married,kids) = (married-1)*spouse_inc*exp(eta_S_grid(eta));
                             mn_a(j,a,eta,educ,married,kids) = agrid(a);
-                            
+                            mn_hhsize(j,a,eta,educ,married,kids) = married+kids-1;
+
                         end
                     end
                 end
             end
         end
     end
-    
+
     % flatten the nd dimensional array
     ar_inc_amz = mn_inc(:);
     ar_spouse_inc_amz = mn_spouse_inc(:);
     ar_a_amz = mn_a(:);
-    
+
 end
 
 %% B. Vectorized Solution for Optimal Check Adjustments
@@ -187,7 +190,9 @@ mn_a_aux_bisec = reshape(ar_a_aux_bisec_amz, [n_jgrid,n_agrid,n_etagrid,n_educgr
 % ad1 = a is dimension 1
 
 % C1. Change matrix order so asset becomes the first dimension
+% Note consumption is in per-capita terms
 mn_v_ad1 = permute(V_ss, [2,1,3,4,5,6]);
+% mn_c_ad1 = permute(cons_ss./mn_hhsize, [2,1,3,4,5,6]);
 mn_c_ad1 = permute(cons_ss, [2,1,3,4,5,6]);
 mn_a_aux_bisec_ad1 = permute(mn_a_aux_bisec, [2,1,3,4,5,6]);
 
@@ -245,13 +250,13 @@ end
 if (bl_print_a4chk_verbose)
     mn_V_gain_check = V_W - V_ss;
     mn_C_gain_check = C_W - cons_ss;
-    mn_MPC = (C_W - cons_ss)./(welf_checks*TR);    
+    mn_MPC = (C_W - cons_ss)./(welf_checks*TR);
     mp_container_map = containers.Map('KeyType','char', 'ValueType','any');
     mp_container_map('V_W') = V_W;
     mp_container_map('C_W') = C_W;
     mp_container_map('V_W_minus_V_ss') = mn_V_gain_check;
-    mp_container_map('C_W_minus_C_ss') = mn_C_gain_check;    
-    mp_container_map('mn_MPC') = mn_MPC;    
+    mp_container_map('C_W_minus_C_ss') = mn_C_gain_check;
+    mp_container_map('mn_MPC') = mn_MPC;
     ff_container_map_display(mp_container_map);
 end
 
@@ -262,21 +267,21 @@ function [ar_root_zero, ar_a_aux_amz] = ...
     ar_aux_change_frac_amz, ...
     ar_a_amz, ar_inc_amz, ar_spouse_amz, ...
     welf_checks, TR, r, a2, fl_max_trchk_perc_increase)
-    
+
     % Max A change to account for check
-    fl_a_aux_max = TR*welf_checks*fl_max_trchk_perc_increase;    
-    
+    fl_a_aux_max = TR*welf_checks*fl_max_trchk_perc_increase;
+
     % Level of A change
     ar_a_aux_amz = ar_a_amz + ar_aux_change_frac_amz.*fl_a_aux_max;
-    
+
     % Account for Interest Rates
     ar_r_gap = (1+r).*(ar_a_amz - ar_a_aux_amz);
-    
+
     % Account for tax, inc changes by r
     ar_tax_gap = ...
           max(0, snw_tax_hh(ar_inc_amz, ar_spouse_amz, a2)) ...
         - max(0, snw_tax_hh(ar_inc_amz - ar_a_amz*r + ar_a_aux_amz*r, ar_spouse_amz, a2));
-    
+
     % difference equation f(a4chkchange)=0
     ar_root_zero = TR*welf_checks + ar_r_gap - ar_tax_gap;
 end

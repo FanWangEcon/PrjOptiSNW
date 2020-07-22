@@ -1,0 +1,1106 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>SNW_V_PLANNER Planner Last Year Value Given Income, Marriage, Age, Kids</title><meta name="generator" content="MATLAB 9.7"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-07-15"><meta name="DC.source" content="snw_v_planner.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>SNW_V_PLANNER Planner Last Year Value Given Income, Marriage, Age, Kids</h1><!--introduction--><pre>  Obtains the mass at each age, marriage status, child count, and income
+  level. And calculates planner value integrating over V_U and V_W,
+  where the state-space fall within the planner's
+  age/marriage/child-count/income-level group, and V_U and V_W are
+  specific to each check. Calculate the planner Value associated with
+  each check level.</pre><pre>  * ST_SOLU_TYPE: 'matlab_minimizer', 'grid_search', 'bisec_vec', three
+  alternative solution methods</pre><pre>  [V_VFI, ap_VFI, cons_VFI] = SNW_VU_VW_CHECKS(ST_SOLU_TYPE) Solves
+  given solution method for value function, policy functions. Using
+  default parameters.</pre><pre>  [V_VFI, ap_VFI, cons_VFI, V_VFI_unemp, ap_VFI_unemp, cons_VFI_unemp] =
+  SNW_VU_VW_CHECKS(ST_SOLU_TYPE, MP_PARAMS, MP_CONTROLS) Solves given
+  solution method for value function, policy functions under both
+  employed and unemployed situations, using default parameters. Change
+  model parameters through MP_PARAMS.</pre><pre>  [V_VFI, ap_VFI, cons_VFI, V_VFI_unemp, ap_VFI_unemp, cons_VFI_unemp,
+  V_W_allchecks, C_W_allchecks, V_U_allchecks, C_U_allchecks] =
+  SNW_VU_VW_CHECKS(ST_SOLU_TYPE, MP_PARAMS, MP_CONTROLS) Solves the
+  model for some number of checks for employed and unemployed. The
+  number of checks is set through the 'n_welfchecksgrid' parameters in
+  MP_PARAMS.</pre><pre>  [V_W_allchecks, C_W_allchecks, V_U_allchecks, C_U_allchecks] =
+  SNW_VU_VW_CHECKS(ST_SOLU_TYPE, MP_PARAMS, MP_CONTROLS, V_SS, V_UNEMP)
+  provide V_SS and V_UNEMP solved out elsewhere, and only get two
+  outputs out.</pre><pre>  See also SNW_VU_VW_CHECKS</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#3">Default and Parse</a></li><li><a href="#4">Reset All globals</a></li><li><a href="#5">Parse Model Parameters</a></li><li><a href="#6">Parse Model Controls</a></li><li><a href="#7">Timing and Profiling Start</a></li><li><a href="#8">Wage Cut-Offs</a></li><li><a href="#9">Solve planner's problem</a></li><li><a href="#10">Output for computing optimal allocation</a></li><li><a href="#11">Timing and Profiling End</a></li><li><a href="#12">Print</a></li><li><a href="#13">Return</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> [varargout]=snw_v_planner(varargin)
+</pre><h2 id="3">Default and Parse</h2><pre class="codeinput"><span class="keyword">if</span> (~isempty(varargin))
+
+    <span class="keyword">if</span> (length(varargin)==8)
+        [mp_params, mp_controls, Phi_true, ap_ss, <span class="keyword">...</span>
+            V_W_allchecks, C_W_allchecks, V_U_allchecks, C_U_allchecks] = varargin{:};
+    <span class="keyword">else</span>
+        error(<span class="string">'Need to provide 8 parameter inputs'</span>);
+    <span class="keyword">end</span>
+
+<span class="keyword">else</span>
+    close <span class="string">all</span>;
+
+    st_solu_type = <span class="string">'bisec_vec'</span>;
+    mp_params = snw_mp_param(<span class="string">'default_base'</span>);
+    mp_controls = snw_mp_control(<span class="string">'default_test'</span>);
+
+    mp_params(<span class="string">'TR'</span>) = 100/58056;
+    mp_params(<span class="string">'xi'</span>) = 0.5;
+    mp_params(<span class="string">'b'</span>) = 0;
+    mp_params(<span class="string">'n_welfchecksgrid'</span>) = 51;
+    n_incgrid = 201;
+    mp_params(<span class="string">'n_incgrid'</span>) = n_incgrid;
+    mp_params(<span class="string">'inc_grid'</span>) = linspace(0, 7, n_incgrid)'; <span class="comment">% 7 refers to 7*58056=406392 dollars in 2012USD</span>
+
+    mp_controls(<span class="string">'bl_timer'</span>) = true;
+
+    mp_controls(<span class="string">'bl_print_ds'</span>) = false;
+    mp_controls(<span class="string">'bl_print_vfi'</span>) = false;
+    mp_controls(<span class="string">'bl_print_a4chk'</span>) = false;
+    mp_controls(<span class="string">'bl_print_vu_vw'</span>) = false;
+
+    mp_controls(<span class="string">'bl_print_ds_verbose'</span>) = false;
+    mp_controls(<span class="string">'bl_print_vfi_verbose'</span>) = false;
+    mp_controls(<span class="string">'bl_print_a4chk_verbose'</span>) = false;
+    mp_controls(<span class="string">'bl_print_vu_vw_verbose'</span>) = false;
+
+    mp_controls(<span class="string">'bl_print_v_planner'</span>) = true;
+    mp_controls(<span class="string">'bl_print_v_planner_verbose'</span>) = true;
+
+    <span class="comment">% Calculate Values for All Checks</span>
+    [~, ap_ss, ~, <span class="keyword">...</span>
+        ~, ~, ~, <span class="keyword">...</span>
+        V_W_allchecks, C_W_allchecks, V_U_allchecks, C_U_allchecks] = <span class="keyword">...</span>
+        snw_vu_vw_checks(st_solu_type, mp_params, mp_controls);
+
+    <span class="comment">% Distribution</span>
+    [Phi_true] = snw_ds_main(mp_params, mp_controls);
+
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">Elapsed time is 20.399832 seconds.
+Completed SNW_VFI_MAIN;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 19.670674 seconds.
+Completed SNW_VFI_MAIN 1 PERIOD UNEMP SHK;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.670210 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=0;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.503122 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=0;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.466077 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=1;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.472124 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=1;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.467923 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=2;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.508676 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=2;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.579652 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=3;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.469953 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=3;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.472561 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=4;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.519213 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=4;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.488679 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=5;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.500384 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=5;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.534808 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=6;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.462106 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=6;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.473567 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=7;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.473751 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=7;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.542867 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=8;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.464594 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=8;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.468120 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=9;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.475193 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=9;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.464037 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=10;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.467239 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=10;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.465901 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=11;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.462387 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=11;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.472270 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=12;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.477366 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=12;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.536741 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=13;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.464903 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=13;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.471649 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=14;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.509653 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=14;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.571194 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=15;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.653185 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=15;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.810797 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=16;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.629175 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=16;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.587894 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=17;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.551387 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=17;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.477132 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=18;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.461717 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=18;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.477729 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=19;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.468810 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=19;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.463577 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=20;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.539938 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=20;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.467941 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=21;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.463362 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=21;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.467621 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=22;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.571990 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=22;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.469291 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=23;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.468959 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=23;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.466263 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=24;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.473327 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=24;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.462155 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=25;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.466857 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=25;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.475056 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=26;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.468128 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=26;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.465688 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=27;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.515637 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=27;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.479583 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=28;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.467077 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=28;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.465695 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=29;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.467591 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=29;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.507707 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=30;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.669054 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=30;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.514290 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=31;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.464535 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=31;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.475317 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=32;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.560363 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=32;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.528798 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=33;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.475058 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=33;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.472968 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=34;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.468959 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=34;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.468548 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=35;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.493188 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=35;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.508023 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=36;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.476346 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=36;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.467727 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=37;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.538855 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=37;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.482510 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=38;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.472470 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=38;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.466277 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=39;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.478667 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=39;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.468849 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=40;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.465919 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=40;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.467545 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=41;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.468092 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=41;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.463740 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=42;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.536538 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=42;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.497761 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=43;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.463781 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=43;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.468564 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=44;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.480571 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=44;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.473796 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=45;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.541193 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=45;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.687898 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=46;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.479817 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=46;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.607010 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=47;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.563820 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=47;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.483964 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=48;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.465741 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=48;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.466466 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=49;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.477913 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=49;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.463733 seconds.
+Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=50;TR=0.0017225;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.518388 seconds.
+Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=50;TR=0.0017225;xi=0.5;b=0;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 1.526729 seconds.
+Completed SNW_VU_VW_CHECKS;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 17.984666 seconds.
+Completed SNW_VFI_MAIN;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test
+Elapsed time is 43.374210 seconds.
+Completed SNW_DS_MAIN;SNW_MP_PARAM=;default_base;SNW_MP_CONTROL=;default_test
+</pre><h2 id="4">Reset All globals</h2><p>Parameters used in this code directly</p><pre class="codeinput"><span class="keyword">global</span> agrid n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
+<span class="comment">% Used in find_a_working function</span>
+<span class="keyword">global</span> theta r agrid epsilon eta_H_grid eta_S_grid SS Bequests bequests_option throw_in_ocean
+<span class="keyword">global</span> pi_eta pi_kids pi_unemp
+</pre><h2 id="5">Parse Model Parameters</h2><pre class="codeinput">params_group = values(mp_params, {<span class="string">'theta'</span>, <span class="string">'r'</span>});
+[theta,  r] = params_group{:};
+
+params_group = values(mp_params, {<span class="string">'Bequests'</span>, <span class="string">'bequests_option'</span>, <span class="string">'throw_in_ocean'</span>});
+[Bequests, bequests_option, throw_in_ocean] = params_group{:};
+
+params_group = values(mp_params, {<span class="string">'agrid'</span>, <span class="string">'eta_H_grid'</span>, <span class="string">'eta_S_grid'</span>});
+[agrid, eta_H_grid, eta_S_grid] = params_group{:};
+
+params_group = values(mp_params, <span class="keyword">...</span>
+    {<span class="string">'pi_eta'</span>, <span class="string">'pi_kids'</span>});
+[pi_eta, pi_kids] = params_group{:};
+
+params_group = values(mp_params, {<span class="string">'epsilon'</span>, <span class="string">'SS'</span>});
+[epsilon, SS] = params_group{:};
+
+params_group = values(mp_params, <span class="keyword">...</span>
+    {<span class="string">'n_jgrid'</span>, <span class="string">'n_agrid'</span>, <span class="string">'n_etagrid'</span>, <span class="string">'n_educgrid'</span>, <span class="string">'n_marriedgrid'</span>, <span class="string">'n_kidsgrid'</span>});
+[n_jgrid, n_agrid, n_etagrid, n_educgrid, n_marriedgrid, n_kidsgrid] = params_group{:};
+
+params_group = values(mp_params, {<span class="string">'n_welfchecksgrid'</span>, <span class="string">'scaleconvertor'</span>});
+[n_welfchecksgrid, scaleconvertor] = params_group{:};
+
+params_group = values(mp_params, {<span class="string">'pi_unemp'</span>, <span class="string">'n_incgrid'</span>, <span class="string">'inc_grid'</span>});
+[pi_unemp, n_incgrid, inc_grid] = params_group{:};
+</pre><h2 id="6">Parse Model Controls</h2><p>Profiling Controls</p><pre class="codeinput">params_group = values(mp_controls, {<span class="string">'bl_timer'</span>});
+[bl_timer] = params_group{:};
+
+<span class="comment">% Display Controls</span>
+params_group = values(mp_controls, {<span class="string">'bl_print_v_planner'</span>, <span class="string">'bl_print_v_planner_verbose'</span>});
+[bl_print_v_planner, bl_print_v_planner_verbose] = params_group{:};
+</pre><h2 id="7">Timing and Profiling Start</h2><pre class="codeinput"><span class="keyword">if</span> (bl_timer)
+    tm_planner_all = tic;
+<span class="keyword">end</span>
+</pre><h2 id="8">Wage Cut-Offs</h2><pre class="codeinput">cutoffs=wage_cutoffs(Phi_true);
+
+<span class="keyword">if</span> (bl_print_v_planner) tm_planner_inc_compute = tic; <span class="keyword">end</span>
+
+<span class="comment">% Income and earning grids used to speed up the code</span>
+ref_earn_grid=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+inc_tot_grid=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+inc_tot_ygroup_grid=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+Phi_true_1=zeros(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+
+<span class="keyword">for</span> j=1:n_jgrid
+   <span class="keyword">for</span> a=1:n_agrid
+       <span class="keyword">for</span> eta=1:n_etagrid
+           <span class="keyword">for</span> educ=1:n_educgrid
+               <span class="keyword">for</span> married=1:n_marriedgrid
+                   <span class="keyword">for</span> kids=1:n_kidsgrid
+
+                       <span class="comment">% Joint Probability Mass</span>
+                       <span class="keyword">if</span> Phi_true(j,a,eta,educ,married,kids)&gt;0
+                           Phi_true_1(j,a,eta,educ,married,kids)=Phi_true(j,a,eta,educ,married,kids)/sum(Phi_true,<span class="string">'all'</span>);
+                       <span class="keyword">end</span>
+
+                       <span class="comment">% Gather income Information</span>
+                       [inc,earn]=individual_income(j,a,eta,educ);
+                       ref_earn_grid(j,a,eta,educ,married,kids)=earn;
+                       spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
+                       int_tot = inc+spouse_inc;
+                       inc_tot_grid(j,a,eta,educ,married,kids)=int_tot;
+
+                       <span class="comment">% Which Income Group does total income belong to?</span>
+                       inc_group_include_idx = NaN;
+                       <span class="keyword">for</span> inc_group=1:n_incgrid
+                           <span class="keyword">if</span> inc_group&lt;n_incgrid
+                               ymin = inc_grid(inc_group);
+                               ymax = inc_grid(inc_group+1);
+                           <span class="keyword">elseif</span> inc_group==n_incgrid
+                               ymin = inc_grid(inc_group);
+                               ymax = 10E30;
+                           <span class="keyword">end</span>
+                           <span class="keyword">if</span> (int_tot&gt;=ymin &amp;&amp; int_tot&lt;ymax)
+                               inc_group_include_idx = inc_group;
+                           <span class="keyword">end</span>
+                       <span class="keyword">end</span>
+                       inc_tot_ygroup_grid(j,a,eta,educ,married,kids)=inc_group_include_idx;
+
+                   <span class="keyword">end</span>
+               <span class="keyword">end</span>
+           <span class="keyword">end</span>
+       <span class="keyword">end</span>
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+EVU=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid,n_welfchecksgrid);
+EVC=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid,n_welfchecksgrid);
+EVU5=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid,n_welfchecksgrid,5);
+EVC5=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid,n_welfchecksgrid,5);
+<span class="keyword">for</span> j=1:n_jgrid
+    <span class="keyword">for</span> a=1:n_agrid
+        <span class="keyword">for</span> eta=1:n_etagrid
+            <span class="keyword">for</span> educ=1:n_educgrid
+                <span class="keyword">for</span> married=1:n_marriedgrid
+                    <span class="keyword">for</span> kids=1:n_kidsgrid
+
+                        <span class="comment">% Belongs to which wage group?</span>
+                        wages = ref_earn_grid(j,a,eta,educ,married,kids);
+                        <span class="keyword">if</span> wages&lt;=cutoffs(1)
+                            wage_ind=1;
+                        <span class="keyword">elseif</span> wages&gt;cutoffs(1) &amp;&amp; wages&lt;=cutoffs(2)
+                            wage_ind=2;
+                        <span class="keyword">elseif</span> wages&gt;cutoffs(2) &amp;&amp; wages&lt;=cutoffs(3)
+                            wage_ind=3;
+                        <span class="keyword">elseif</span> wages&gt;cutoffs(3) &amp;&amp; wages&lt;=cutoffs(4)
+                            wage_ind=4;
+                        <span class="keyword">elseif</span> wages&gt;cutoffs(4)
+                            wage_ind=5;
+                        <span class="keyword">end</span>
+
+                        <span class="comment">% Expected Value of Checks</span>
+                        <span class="keyword">for</span> welf_checks=1:n_welfchecksgrid
+                            EVU(j,a,eta,educ,married,kids,welf_checks)=pi_unemp(j,wage_ind)*V_U_allchecks(j,a,eta,educ,married,kids,welf_checks)+(1-pi_unemp(j,wage_ind))*V_W_allchecks(j,a,eta,educ,married,kids,welf_checks);
+                            EVC(j,a,eta,educ,married,kids,welf_checks)=pi_unemp(j,wage_ind)*C_U_allchecks(j,a,eta,educ,married,kids,welf_checks)+(1-pi_unemp(j,wage_ind))*C_W_allchecks(j,a,eta,educ,married,kids,welf_checks);
+                            EVU5(j,a,eta,educ,married,kids,welf_checks,wage_ind)=pi_unemp(j,wage_ind)*V_U_allchecks(j,a,eta,educ,married,kids,welf_checks)+(1-pi_unemp(j,wage_ind))*V_W_allchecks(j,a,eta,educ,married,kids,welf_checks);
+                            EVC5(j,a,eta,educ,married,kids,welf_checks,wage_ind)=pi_unemp(j,wage_ind)*C_U_allchecks(j,a,eta,educ,married,kids,welf_checks)+(1-pi_unemp(j,wage_ind))*C_W_allchecks(j,a,eta,educ,married,kids,welf_checks);
+                        <span class="keyword">end</span>
+
+                    <span class="keyword">end</span>
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> (bl_print_v_planner)
+    tm_planner_inc_end = toc(tm_planner_inc_compute);
+    disp(strcat([<span class="string">'SNW_V_PLANNER: pre-computed incomes '</span><span class="keyword">...</span>
+        <span class="string">', time-cost:'</span> num2str(tm_planner_inc_end)]));
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">Wage quintile cutoffs=0.59373     0.87193      1.0799      1.8082
+SNW_V_PLANNER: pre-computed incomes , time-cost:70.4973
+</pre><h2 id="9">Solve planner's problem</h2><pre class="codeinput">C_planner=NaN(n_jgrid-1,n_marriedgrid,n_kidsgrid,n_welfchecksgrid,n_incgrid);
+V_planner=NaN(n_jgrid-1,n_marriedgrid,n_kidsgrid,n_welfchecksgrid,n_incgrid);
+Phi_mass=NaN(n_jgrid-1,n_marriedgrid,n_kidsgrid,n_incgrid);
+
+<span class="keyword">for</span> c_or_v=[1,2]
+
+    <span class="keyword">if</span> (bl_print_v_planner)
+        disp(strcat([<span class="string">'SNW_V_PLANNER: c(1) or v(2):'</span> num2str(c_or_v)]));
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span> (c_or_v == 1)
+        EV = EVU;
+        EV5 = EVU5;
+    <span class="keyword">elseif</span>(c_or_v == 2)
+        EV = EVC;
+        EV5 = EVU5;
+    <span class="keyword">end</span>
+
+    <span class="keyword">for</span> j=1:(n_jgrid-1) <span class="comment">% Age</span>
+
+        <span class="keyword">if</span> (bl_print_v_planner) tm_planner_age = tic; <span class="keyword">end</span>
+
+        <span class="keyword">for</span> married=1:n_marriedgrid <span class="comment">% Marital status</span>
+            <span class="keyword">for</span> kids=1:n_kidsgrid <span class="comment">% Number of kids</span>
+                <span class="keyword">for</span> welf_checks=0:(n_welfchecksgrid-1)
+
+                    <span class="comment">% income groups that are reached by this age/marry/kids group</span>
+                    Phi_true_1_amk = Phi_true_1(j,:,:,:,married,kids);
+                    inc_tot_ygroup_amk = inc_tot_ygroup_grid(j,:,:,:,married,kids);
+                    inc_tot_ygroup_amk_unique = unique(reshape(inc_tot_ygroup_amk, 1, []));
+
+                    <span class="comment">% loop over income groups that are specific to this amk</span>
+                    <span class="keyword">for</span> inc_group=inc_tot_ygroup_amk_unique
+
+                        <span class="comment">% Mass at this amk point</span>
+                        Phi_true_1_amk_in_inc_group = (inc_tot_ygroup_amk == inc_group);
+                        Phi_mass_amk = sum(Phi_true_1_amk(Phi_true_1_amk_in_inc_group), <span class="string">'all'</span>);
+                        Phi_mass(j,married,kids,inc_group) = Phi_mass_amk;
+
+                        <span class="comment">% Mass for inc</span>
+                        Phi_true_1_amk_inc = zeros(size(Phi_true_1_amk));
+                        Phi_true_1_amk_inc(Phi_true_1_amk_in_inc_group) = Phi_true_1_amk(Phi_true_1_amk_in_inc_group);
+
+                        <span class="comment">% Evaluate for Planner</span>
+                        [V_or_C] = snw_v_planner_amky(<span class="keyword">...</span>
+                            Phi_true_1_amk_inc, Phi_mass_amk,<span class="keyword">...</span>
+                            j,married,kids,welf_checks,<span class="keyword">...</span>
+                            ap_ss,<span class="keyword">...</span>
+                            EV,<span class="keyword">...</span>
+                            pi_eta,pi_kids,agrid,n_agrid,n_etagrid,n_educgrid,n_kidsgrid);
+
+                        <span class="comment">% Store Results</span>
+                        <span class="keyword">if</span> (c_or_v == 1)
+                            V_planner(j,married,kids,welf_checks+1,inc_group) = V_or_C;
+                        <span class="keyword">elseif</span>(c_or_v == 2)
+                            C_planner(j,married,kids,welf_checks+1,inc_group) = V_or_C;
+                        <span class="keyword">end</span>
+
+                    <span class="keyword">end</span>
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+
+        <span class="keyword">if</span> (bl_print_v_planner)
+            tm_planner_age_end = toc(tm_planner_age);
+            disp(strcat([<span class="string">'SNW_V_PLANNER: Finished Age Group:'</span> <span class="keyword">...</span>
+                num2str(j) <span class="string">' of '</span> num2str(n_jgrid-1) <span class="keyword">...</span>
+                <span class="string">', time-this-age:'</span> num2str(tm_planner_age_end)]));
+        <span class="keyword">end</span>
+
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">SNW_V_PLANNER: c(1) or v(2):1
+SNW_V_PLANNER: Finished Age Group:1 of 41, time-this-age:2.4308
+SNW_V_PLANNER: Finished Age Group:2 of 41, time-this-age:2.7437
+SNW_V_PLANNER: Finished Age Group:3 of 41, time-this-age:3.051
+SNW_V_PLANNER: Finished Age Group:4 of 41, time-this-age:3.5052
+SNW_V_PLANNER: Finished Age Group:5 of 41, time-this-age:3.2236
+SNW_V_PLANNER: Finished Age Group:6 of 41, time-this-age:3.3297
+SNW_V_PLANNER: Finished Age Group:7 of 41, time-this-age:3.4596
+SNW_V_PLANNER: Finished Age Group:8 of 41, time-this-age:3.5323
+SNW_V_PLANNER: Finished Age Group:9 of 41, time-this-age:3.6072
+SNW_V_PLANNER: Finished Age Group:10 of 41, time-this-age:3.6158
+SNW_V_PLANNER: Finished Age Group:11 of 41, time-this-age:3.7434
+SNW_V_PLANNER: Finished Age Group:12 of 41, time-this-age:3.8696
+SNW_V_PLANNER: Finished Age Group:13 of 41, time-this-age:4.1352
+SNW_V_PLANNER: Finished Age Group:14 of 41, time-this-age:3.9608
+SNW_V_PLANNER: Finished Age Group:15 of 41, time-this-age:3.9055
+SNW_V_PLANNER: Finished Age Group:16 of 41, time-this-age:4.6651
+SNW_V_PLANNER: Finished Age Group:17 of 41, time-this-age:4.0414
+SNW_V_PLANNER: Finished Age Group:18 of 41, time-this-age:4.1588
+SNW_V_PLANNER: Finished Age Group:19 of 41, time-this-age:4.1184
+SNW_V_PLANNER: Finished Age Group:20 of 41, time-this-age:4.3889
+SNW_V_PLANNER: Finished Age Group:21 of 41, time-this-age:4.5786
+SNW_V_PLANNER: Finished Age Group:22 of 41, time-this-age:4.1978
+SNW_V_PLANNER: Finished Age Group:23 of 41, time-this-age:4.2537
+SNW_V_PLANNER: Finished Age Group:24 of 41, time-this-age:4.2887
+SNW_V_PLANNER: Finished Age Group:25 of 41, time-this-age:1.9846
+SNW_V_PLANNER: Finished Age Group:26 of 41, time-this-age:2.0143
+SNW_V_PLANNER: Finished Age Group:27 of 41, time-this-age:2.169
+SNW_V_PLANNER: Finished Age Group:28 of 41, time-this-age:1.9605
+SNW_V_PLANNER: Finished Age Group:29 of 41, time-this-age:2.3835
+SNW_V_PLANNER: Finished Age Group:30 of 41, time-this-age:2.1167
+SNW_V_PLANNER: Finished Age Group:31 of 41, time-this-age:2.1533
+SNW_V_PLANNER: Finished Age Group:32 of 41, time-this-age:1.8963
+SNW_V_PLANNER: Finished Age Group:33 of 41, time-this-age:1.9521
+SNW_V_PLANNER: Finished Age Group:34 of 41, time-this-age:1.9976
+SNW_V_PLANNER: Finished Age Group:35 of 41, time-this-age:1.9887
+SNW_V_PLANNER: Finished Age Group:36 of 41, time-this-age:1.7385
+SNW_V_PLANNER: Finished Age Group:37 of 41, time-this-age:1.7602
+SNW_V_PLANNER: Finished Age Group:38 of 41, time-this-age:1.7076
+SNW_V_PLANNER: Finished Age Group:39 of 41, time-this-age:1.7402
+SNW_V_PLANNER: Finished Age Group:40 of 41, time-this-age:1.6493
+SNW_V_PLANNER: Finished Age Group:41 of 41, time-this-age:1.495
+SNW_V_PLANNER: c(1) or v(2):2
+SNW_V_PLANNER: Finished Age Group:1 of 41, time-this-age:2.4518
+SNW_V_PLANNER: Finished Age Group:2 of 41, time-this-age:2.7087
+SNW_V_PLANNER: Finished Age Group:3 of 41, time-this-age:3.0479
+SNW_V_PLANNER: Finished Age Group:4 of 41, time-this-age:3.1496
+SNW_V_PLANNER: Finished Age Group:5 of 41, time-this-age:3.2894
+SNW_V_PLANNER: Finished Age Group:6 of 41, time-this-age:3.732
+SNW_V_PLANNER: Finished Age Group:7 of 41, time-this-age:3.6471
+SNW_V_PLANNER: Finished Age Group:8 of 41, time-this-age:4.8794
+SNW_V_PLANNER: Finished Age Group:9 of 41, time-this-age:3.5184
+SNW_V_PLANNER: Finished Age Group:10 of 41, time-this-age:3.6914
+SNW_V_PLANNER: Finished Age Group:11 of 41, time-this-age:3.8636
+SNW_V_PLANNER: Finished Age Group:12 of 41, time-this-age:3.8568
+SNW_V_PLANNER: Finished Age Group:13 of 41, time-this-age:3.8343
+SNW_V_PLANNER: Finished Age Group:14 of 41, time-this-age:3.9487
+SNW_V_PLANNER: Finished Age Group:15 of 41, time-this-age:4.1285
+SNW_V_PLANNER: Finished Age Group:16 of 41, time-this-age:4.1951
+SNW_V_PLANNER: Finished Age Group:17 of 41, time-this-age:4.1377
+SNW_V_PLANNER: Finished Age Group:18 of 41, time-this-age:4.1993
+SNW_V_PLANNER: Finished Age Group:19 of 41, time-this-age:5.148
+SNW_V_PLANNER: Finished Age Group:20 of 41, time-this-age:4.2984
+SNW_V_PLANNER: Finished Age Group:21 of 41, time-this-age:4.5162
+SNW_V_PLANNER: Finished Age Group:22 of 41, time-this-age:4.3442
+SNW_V_PLANNER: Finished Age Group:23 of 41, time-this-age:4.4579
+SNW_V_PLANNER: Finished Age Group:24 of 41, time-this-age:4.4113
+SNW_V_PLANNER: Finished Age Group:25 of 41, time-this-age:2.0547
+SNW_V_PLANNER: Finished Age Group:26 of 41, time-this-age:2.402
+SNW_V_PLANNER: Finished Age Group:27 of 41, time-this-age:2.4921
+SNW_V_PLANNER: Finished Age Group:28 of 41, time-this-age:2.084
+SNW_V_PLANNER: Finished Age Group:29 of 41, time-this-age:1.9806
+SNW_V_PLANNER: Finished Age Group:30 of 41, time-this-age:1.9942
+SNW_V_PLANNER: Finished Age Group:31 of 41, time-this-age:2.002
+SNW_V_PLANNER: Finished Age Group:32 of 41, time-this-age:1.8894
+SNW_V_PLANNER: Finished Age Group:33 of 41, time-this-age:1.8844
+SNW_V_PLANNER: Finished Age Group:34 of 41, time-this-age:2.2777
+SNW_V_PLANNER: Finished Age Group:35 of 41, time-this-age:1.9605
+SNW_V_PLANNER: Finished Age Group:36 of 41, time-this-age:1.8153
+SNW_V_PLANNER: Finished Age Group:37 of 41, time-this-age:1.6673
+SNW_V_PLANNER: Finished Age Group:38 of 41, time-this-age:1.8042
+SNW_V_PLANNER: Finished Age Group:39 of 41, time-this-age:1.7292
+SNW_V_PLANNER: Finished Age Group:40 of 41, time-this-age:1.5364
+SNW_V_PLANNER: Finished Age Group:41 of 41, time-this-age:1.763
+</pre><h2 id="10">Output for computing optimal allocation</h2><pre class="codeinput">Output=NaN((n_jgrid-1)*n_marriedgrid*n_kidsgrid*n_welfchecksgrid*inc_group,9);
+counter=0;
+<span class="keyword">for</span> j=1:(n_jgrid-1) <span class="comment">% Age</span>
+    <span class="keyword">for</span> married=1:n_marriedgrid <span class="comment">% Marital status</span>
+        <span class="keyword">for</span> kids=1:n_kidsgrid <span class="comment">% Number of kids</span>
+            <span class="keyword">for</span> welf_checks=0:(n_welfchecksgrid-1) <span class="comment">% Number of welfare checks</span>
+                <span class="keyword">for</span> inc_group=1:n_incgrid
+
+                    counter=counter+1;
+
+                    Output(counter,1)=17+j;
+                    Output(counter,2)=married-1;
+                    Output(counter,3)=kids-1;
+                    Output(counter,4)=welf_checks;
+
+                    Output(counter,5)=inc_grid(inc_group)*scaleconvertor;
+                    Output(counter,6)=10E30;
+                    Output(counter,7)=Phi_mass(j,married,kids,inc_group);
+                    Output(counter,8)=psi(j);
+                    Output(counter,9)=V_planner(j,married,kids,welf_checks+1,inc_group);
+                    Output(counter,10)=C_planner(j,married,kids,welf_checks+1,inc_group);
+
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+<span class="keyword">end</span>
+</pre><h2 id="11">Timing and Profiling End</h2><pre class="codeinput"><span class="keyword">if</span> (bl_timer)
+    tm_planner_all_end = toc(tm_planner_all);
+    st_complete_vu_vw_checks = strjoin(<span class="keyword">...</span>
+        [<span class="string">"Completed SNW_V_PLANNER"</span>, <span class="keyword">...</span>
+         [<span class="string">'SNW_MP_PARAM='</span> char(mp_params(<span class="string">'mp_params_name'</span>))], <span class="keyword">...</span>
+         [<span class="string">'SNW_MP_CONTROL='</span> char(mp_controls(<span class="string">'mp_params_name'</span>))], <span class="keyword">...</span>
+         [<span class="string">'time cost='</span> num2str(tm_planner_all_end)] <span class="keyword">...</span>
+        ], <span class="string">";"</span>);
+    disp(st_complete_vu_vw_checks);
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">Completed SNW_V_PLANNER;SNW_MP_PARAM=default_base;SNW_MP_CONTROL=default_test;time cost=324.5696
+</pre><h2 id="12">Print</h2><pre class="codeinput"><span class="keyword">if</span> (bl_print_v_planner_verbose)
+    mp_outcomes = containers.Map(<span class="string">'KeyType'</span>, <span class="string">'char'</span>, <span class="string">'ValueType'</span>, <span class="string">'any'</span>);
+    mp_outcomes(<span class="string">'V_planner'</span>) = V_planner;
+    mp_outcomes(<span class="string">'C_planner'</span>) = C_planner;
+    mp_outcomes(<span class="string">'Phi_mass'</span>) = Phi_mass;
+    mp_outcomes(<span class="string">'Output'</span>) = Output;
+    ff_container_map_display(mp_outcomes);
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">----------------------------------------
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+CONTAINER NAME: mp_outcomes ND Array (Matrix etc)
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                 i    idx    ndim      numel          rowN          colN       sum    mean    std    coefvari      min         max   
+                 _    ___    ____    __________    __________    __________    ___    ____    ___    ________    _______    _________
+
+    C_planner    1     1      5      4.2029e+06            41    1.0251e+05    NaN    NaN     NaN      NaN             0       13.565
+    Output       2     2      2      4.2029e+07    4.2029e+06            10    NaN    NaN     NaN      NaN       -70.006        1e+31
+    Phi_mass     3     3      4           82410            41          2010    NaN    NaN     NaN      NaN             0    0.0046772
+    V_planner    4     4      5      4.2029e+06            41    1.0251e+05    NaN    NaN     NaN      NaN       -70.006       7.6999
+
+</pre><h2 id="13">Return</h2><pre class="codeinput">varargout = cell(nargout,0);
+<span class="keyword">for</span> it_k = 1:nargout
+    <span class="keyword">if</span> (it_k==1)
+        ob_out_cur = V_planner;
+    <span class="keyword">elseif</span> (it_k==2)
+        ob_out_cur = C_planner;
+    <span class="keyword">elseif</span> (it_k==3)
+        ob_out_cur = Phi_mass;
+    <span class="keyword">elseif</span> (it_k==4)
+        ob_out_cur = Output;
+    <span class="keyword">end</span>
+    varargout{it_k} = ob_out_cur;
+<span class="keyword">end</span>
+</pre><pre class="codeinput"><span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% SNW_V_PLANNER Planner Last Year Value Given Income, Marriage, Age, Kids
+%    Obtains the mass at each age, marriage status, child count, and income
+%    level. And calculates planner value integrating over V_U and V_W,
+%    where the state-space fall within the planner's
+%    age/marriage/child-count/income-level group, and V_U and V_W are
+%    specific to each check. Calculate the planner Value associated with
+%    each check level.
+%
+%    * ST_SOLU_TYPE: 'matlab_minimizer', 'grid_search', 'bisec_vec', three
+%    alternative solution methods
+%
+%    [V_VFI, ap_VFI, cons_VFI] = SNW_VU_VW_CHECKS(ST_SOLU_TYPE) Solves
+%    given solution method for value function, policy functions. Using
+%    default parameters.
+%
+%    [V_VFI, ap_VFI, cons_VFI, V_VFI_unemp, ap_VFI_unemp, cons_VFI_unemp] =
+%    SNW_VU_VW_CHECKS(ST_SOLU_TYPE, MP_PARAMS, MP_CONTROLS) Solves given
+%    solution method for value function, policy functions under both
+%    employed and unemployed situations, using default parameters. Change
+%    model parameters through MP_PARAMS.
+%
+%    [V_VFI, ap_VFI, cons_VFI, V_VFI_unemp, ap_VFI_unemp, cons_VFI_unemp,
+%    V_W_allchecks, C_W_allchecks, V_U_allchecks, C_U_allchecks] =
+%    SNW_VU_VW_CHECKS(ST_SOLU_TYPE, MP_PARAMS, MP_CONTROLS) Solves the
+%    model for some number of checks for employed and unemployed. The
+%    number of checks is set through the 'n_welfchecksgrid' parameters in
+%    MP_PARAMS.
+%
+%    [V_W_allchecks, C_W_allchecks, V_U_allchecks, C_U_allchecks] =
+%    SNW_VU_VW_CHECKS(ST_SOLU_TYPE, MP_PARAMS, MP_CONTROLS, V_SS, V_UNEMP)
+%    provide V_SS and V_UNEMP solved out elsewhere, and only get two
+%    outputs out.
+%
+%    See also SNW_VU_VW_CHECKS
+%
+
+%%
+function [varargout]=snw_v_planner(varargin)
+
+%% Default and Parse
+if (~isempty(varargin))
+
+    if (length(varargin)==8)
+        [mp_params, mp_controls, Phi_true, ap_ss, ...
+            V_W_allchecks, C_W_allchecks, V_U_allchecks, C_U_allchecks] = varargin{:};
+    else
+        error('Need to provide 8 parameter inputs');
+    end
+
+else
+    close all;
+
+    st_solu_type = 'bisec_vec';
+    mp_params = snw_mp_param('default_base');
+    mp_controls = snw_mp_control('default_test');
+
+    mp_params('TR') = 100/58056;
+    mp_params('xi') = 0.5;
+    mp_params('b') = 0;
+    mp_params('n_welfchecksgrid') = 51;
+    n_incgrid = 201;
+    mp_params('n_incgrid') = n_incgrid;
+    mp_params('inc_grid') = linspace(0, 7, n_incgrid)'; % 7 refers to 7*58056=406392 dollars in 2012USD
+
+    mp_controls('bl_timer') = true;
+
+    mp_controls('bl_print_ds') = false;
+    mp_controls('bl_print_vfi') = false;
+    mp_controls('bl_print_a4chk') = false;
+    mp_controls('bl_print_vu_vw') = false;
+
+    mp_controls('bl_print_ds_verbose') = false;
+    mp_controls('bl_print_vfi_verbose') = false;
+    mp_controls('bl_print_a4chk_verbose') = false;
+    mp_controls('bl_print_vu_vw_verbose') = false;
+
+    mp_controls('bl_print_v_planner') = true;
+    mp_controls('bl_print_v_planner_verbose') = true;
+
+    % Calculate Values for All Checks
+    [~, ap_ss, ~, ...
+        ~, ~, ~, ...
+        V_W_allchecks, C_W_allchecks, V_U_allchecks, C_U_allchecks] = ...
+        snw_vu_vw_checks(st_solu_type, mp_params, mp_controls);
+
+    % Distribution
+    [Phi_true] = snw_ds_main(mp_params, mp_controls);
+
+end
+
+%% Reset All globals
+% Parameters used in this code directly
+global agrid n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
+% Used in find_a_working function
+global theta r agrid epsilon eta_H_grid eta_S_grid SS Bequests bequests_option throw_in_ocean
+global pi_eta pi_kids pi_unemp
+
+%% Parse Model Parameters
+params_group = values(mp_params, {'theta', 'r'});
+[theta,  r] = params_group{:};
+
+params_group = values(mp_params, {'Bequests', 'bequests_option', 'throw_in_ocean'});
+[Bequests, bequests_option, throw_in_ocean] = params_group{:};
+
+params_group = values(mp_params, {'agrid', 'eta_H_grid', 'eta_S_grid'});
+[agrid, eta_H_grid, eta_S_grid] = params_group{:};
+
+params_group = values(mp_params, ...
+    {'pi_eta', 'pi_kids'});
+[pi_eta, pi_kids] = params_group{:};
+
+params_group = values(mp_params, {'epsilon', 'SS'});
+[epsilon, SS] = params_group{:};
+
+params_group = values(mp_params, ...
+    {'n_jgrid', 'n_agrid', 'n_etagrid', 'n_educgrid', 'n_marriedgrid', 'n_kidsgrid'});
+[n_jgrid, n_agrid, n_etagrid, n_educgrid, n_marriedgrid, n_kidsgrid] = params_group{:};
+
+params_group = values(mp_params, {'n_welfchecksgrid', 'scaleconvertor'});
+[n_welfchecksgrid, scaleconvertor] = params_group{:};
+
+params_group = values(mp_params, {'pi_unemp', 'n_incgrid', 'inc_grid'});
+[pi_unemp, n_incgrid, inc_grid] = params_group{:};
+
+%% Parse Model Controls
+% Profiling Controls
+params_group = values(mp_controls, {'bl_timer'});
+[bl_timer] = params_group{:};
+
+% Display Controls
+params_group = values(mp_controls, {'bl_print_v_planner', 'bl_print_v_planner_verbose'});
+[bl_print_v_planner, bl_print_v_planner_verbose] = params_group{:};
+
+%% Timing and Profiling Start
+
+if (bl_timer)
+    tm_planner_all = tic;
+end
+
+%% Wage Cut-Offs
+cutoffs=wage_cutoffs(Phi_true);
+
+if (bl_print_v_planner) tm_planner_inc_compute = tic; end
+
+% Income and earning grids used to speed up the code
+ref_earn_grid=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+inc_tot_grid=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+inc_tot_ygroup_grid=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+Phi_true_1=zeros(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+
+for j=1:n_jgrid
+   for a=1:n_agrid
+       for eta=1:n_etagrid
+           for educ=1:n_educgrid
+               for married=1:n_marriedgrid
+                   for kids=1:n_kidsgrid
+                       
+                       % Joint Probability Mass
+                       if Phi_true(j,a,eta,educ,married,kids)>0
+                           Phi_true_1(j,a,eta,educ,married,kids)=Phi_true(j,a,eta,educ,married,kids)/sum(Phi_true,'all');
+                       end
+                       
+                       % Gather income Information
+                       [inc,earn]=individual_income(j,a,eta,educ);
+                       ref_earn_grid(j,a,eta,educ,married,kids)=earn;
+                       spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
+                       int_tot = inc+spouse_inc;
+                       inc_tot_grid(j,a,eta,educ,married,kids)=int_tot;
+                       
+                       % Which Income Group does total income belong to?
+                       inc_group_include_idx = NaN;
+                       for inc_group=1:n_incgrid
+                           if inc_group<n_incgrid
+                               ymin = inc_grid(inc_group);
+                               ymax = inc_grid(inc_group+1);
+                           elseif inc_group==n_incgrid
+                               ymin = inc_grid(inc_group);
+                               ymax = 10E30;
+                           end
+                           if (int_tot>=ymin && int_tot<ymax)
+                               inc_group_include_idx = inc_group;
+                           end
+                       end
+                       inc_tot_ygroup_grid(j,a,eta,educ,married,kids)=inc_group_include_idx;                       
+                       
+                   end
+               end
+           end
+       end
+   end
+end
+
+EVU=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid,n_welfchecksgrid);
+EVC=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid,n_welfchecksgrid);
+EVU5=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid,n_welfchecksgrid,5);
+EVC5=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid,n_welfchecksgrid,5);
+for j=1:n_jgrid
+    for a=1:n_agrid
+        for eta=1:n_etagrid
+            for educ=1:n_educgrid
+                for married=1:n_marriedgrid
+                    for kids=1:n_kidsgrid
+                        
+                        % Belongs to which wage group?
+                        wages = ref_earn_grid(j,a,eta,educ,married,kids);
+                        if wages<=cutoffs(1)
+                            wage_ind=1;
+                        elseif wages>cutoffs(1) && wages<=cutoffs(2)
+                            wage_ind=2;
+                        elseif wages>cutoffs(2) && wages<=cutoffs(3)
+                            wage_ind=3;
+                        elseif wages>cutoffs(3) && wages<=cutoffs(4)
+                            wage_ind=4;
+                        elseif wages>cutoffs(4)
+                            wage_ind=5;
+                        end
+                        
+                        % Expected Value of Checks
+                        for welf_checks=1:n_welfchecksgrid                            
+                            EVU(j,a,eta,educ,married,kids,welf_checks)=pi_unemp(j,wage_ind)*V_U_allchecks(j,a,eta,educ,married,kids,welf_checks)+(1-pi_unemp(j,wage_ind))*V_W_allchecks(j,a,eta,educ,married,kids,welf_checks);
+                            EVC(j,a,eta,educ,married,kids,welf_checks)=pi_unemp(j,wage_ind)*C_U_allchecks(j,a,eta,educ,married,kids,welf_checks)+(1-pi_unemp(j,wage_ind))*C_W_allchecks(j,a,eta,educ,married,kids,welf_checks);
+                            EVU5(j,a,eta,educ,married,kids,welf_checks,wage_ind)=pi_unemp(j,wage_ind)*V_U_allchecks(j,a,eta,educ,married,kids,welf_checks)+(1-pi_unemp(j,wage_ind))*V_W_allchecks(j,a,eta,educ,married,kids,welf_checks);
+                            EVC5(j,a,eta,educ,married,kids,welf_checks,wage_ind)=pi_unemp(j,wage_ind)*C_U_allchecks(j,a,eta,educ,married,kids,welf_checks)+(1-pi_unemp(j,wage_ind))*C_W_allchecks(j,a,eta,educ,married,kids,welf_checks);
+                        end
+                        
+                    end
+                end
+            end
+        end
+    end
+end
+
+if (bl_print_v_planner)
+    tm_planner_inc_end = toc(tm_planner_inc_compute);
+    disp(strcat(['SNW_V_PLANNER: pre-computed incomes '...
+        ', time-cost:' num2str(tm_planner_inc_end)]));
+end
+
+%% Solve planner's problem
+
+C_planner=NaN(n_jgrid-1,n_marriedgrid,n_kidsgrid,n_welfchecksgrid,n_incgrid);
+V_planner=NaN(n_jgrid-1,n_marriedgrid,n_kidsgrid,n_welfchecksgrid,n_incgrid);
+Phi_mass=NaN(n_jgrid-1,n_marriedgrid,n_kidsgrid,n_incgrid);
+
+for c_or_v=[1,2]
+
+    if (bl_print_v_planner)
+        disp(strcat(['SNW_V_PLANNER: c(1) or v(2):' num2str(c_or_v)]));
+    end
+
+    if (c_or_v == 1)
+        EV = EVU;
+        EV5 = EVU5;
+    elseif(c_or_v == 2)
+        EV = EVC;
+        EV5 = EVU5;
+    end
+
+    for j=1:(n_jgrid-1) % Age
+
+        if (bl_print_v_planner) tm_planner_age = tic; end
+
+        for married=1:n_marriedgrid % Marital status
+            for kids=1:n_kidsgrid % Number of kids
+                for welf_checks=0:(n_welfchecksgrid-1)
+                    
+                    % income groups that are reached by this age/marry/kids group
+                    Phi_true_1_amk = Phi_true_1(j,:,:,:,married,kids);
+                    inc_tot_ygroup_amk = inc_tot_ygroup_grid(j,:,:,:,married,kids);
+                    inc_tot_ygroup_amk_unique = unique(reshape(inc_tot_ygroup_amk, 1, []));
+                    
+                    % loop over income groups that are specific to this amk
+                    for inc_group=inc_tot_ygroup_amk_unique
+                        
+                        % Mass at this amk point
+                        Phi_true_1_amk_in_inc_group = (inc_tot_ygroup_amk == inc_group);
+                        Phi_mass_amk = sum(Phi_true_1_amk(Phi_true_1_amk_in_inc_group), 'all');
+                        Phi_mass(j,married,kids,inc_group) = Phi_mass_amk;
+                        
+                        % Mass for inc
+                        Phi_true_1_amk_inc = zeros(size(Phi_true_1_amk));
+                        Phi_true_1_amk_inc(Phi_true_1_amk_in_inc_group) = Phi_true_1_amk(Phi_true_1_amk_in_inc_group);
+                        
+                        % Evaluate for Planner
+                        [V_or_C] = snw_v_planner_amky(...
+                            Phi_true_1_amk_inc, Phi_mass_amk,...
+                            j,married,kids,welf_checks,...
+                            ap_ss,...
+                            EV,...
+                            pi_eta,pi_kids,agrid,n_agrid,n_etagrid,n_educgrid,n_kidsgrid);
+                        
+                        % Store Results
+                        if (c_or_v == 1)
+                            V_planner(j,married,kids,welf_checks+1,inc_group) = V_or_C;
+                        elseif(c_or_v == 2)
+                            C_planner(j,married,kids,welf_checks+1,inc_group) = V_or_C;
+                        end
+                        
+                    end
+                end
+            end
+        end
+
+        if (bl_print_v_planner)
+            tm_planner_age_end = toc(tm_planner_age);
+            disp(strcat(['SNW_V_PLANNER: Finished Age Group:' ...
+                num2str(j) ' of ' num2str(n_jgrid-1) ...
+                ', time-this-age:' num2str(tm_planner_age_end)]));
+        end
+
+    end
+end
+
+%% Output for computing optimal allocation
+Output=NaN((n_jgrid-1)*n_marriedgrid*n_kidsgrid*n_welfchecksgrid*inc_group,9);
+counter=0;
+for j=1:(n_jgrid-1) % Age
+    for married=1:n_marriedgrid % Marital status
+        for kids=1:n_kidsgrid % Number of kids
+            for welf_checks=0:(n_welfchecksgrid-1) % Number of welfare checks
+                for inc_group=1:n_incgrid
+
+                    counter=counter+1;
+
+                    Output(counter,1)=17+j;
+                    Output(counter,2)=married-1;
+                    Output(counter,3)=kids-1;
+                    Output(counter,4)=welf_checks;
+
+                    Output(counter,5)=inc_grid(inc_group)*scaleconvertor;
+                    Output(counter,6)=10E30;
+                    Output(counter,7)=Phi_mass(j,married,kids,inc_group);
+                    Output(counter,8)=psi(j);
+                    Output(counter,9)=V_planner(j,married,kids,welf_checks+1,inc_group);
+                    Output(counter,10)=C_planner(j,married,kids,welf_checks+1,inc_group);
+
+                end
+            end
+        end
+    end
+
+end
+
+
+%% Timing and Profiling End
+
+if (bl_timer)
+    tm_planner_all_end = toc(tm_planner_all);
+    st_complete_vu_vw_checks = strjoin(...
+        ["Completed SNW_V_PLANNER", ...
+         ['SNW_MP_PARAM=' char(mp_params('mp_params_name'))], ...
+         ['SNW_MP_CONTROL=' char(mp_controls('mp_params_name'))], ...
+         ['time cost=' num2str(tm_planner_all_end)] ...
+        ], ";");
+    disp(st_complete_vu_vw_checks);
+end
+
+%% Print
+if (bl_print_v_planner_verbose)
+    mp_outcomes = containers.Map('KeyType', 'char', 'ValueType', 'any');
+    mp_outcomes('V_planner') = V_planner;
+    mp_outcomes('C_planner') = C_planner;
+    mp_outcomes('Phi_mass') = Phi_mass;
+    mp_outcomes('Output') = Output;
+    ff_container_map_display(mp_outcomes);
+end
+
+%% Return
+varargout = cell(nargout,0);
+for it_k = 1:nargout
+    if (it_k==1)
+        ob_out_cur = V_planner;
+    elseif (it_k==2)
+        ob_out_cur = C_planner;
+    elseif (it_k==3)
+        ob_out_cur = Phi_mass;
+    elseif (it_k==4)
+        ob_out_cur = Output;
+    end
+    varargout{it_k} = ob_out_cur;
+end
+
+end
+
+##### SOURCE END #####
+--></body></html>

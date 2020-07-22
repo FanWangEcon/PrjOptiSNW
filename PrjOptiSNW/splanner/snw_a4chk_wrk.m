@@ -29,28 +29,28 @@ function [V_W, C_W, exitflag_fsolve]=snw_a4chk_wrk(varargin)
 
 %% Default and Parse
 if (~isempty(varargin))
-    
+
     if (length(varargin)==3)
         [welf_checks, V_ss, cons_ss] = varargin{:};
         mp_controls = snw_mp_control('default_base');
     elseif (length(varargin)==5)
         [welf_checks, V_ss, cons_ss, mp_params, mp_controls] = varargin{:};
     end
-    
+
 else
-    
+
     close all;
-    
+
     % Solve the VFI Problem and get Value Function
     mp_params = snw_mp_param('default_tiny');
     mp_controls = snw_mp_control('default_test');
     [V_ss,~,cons_ss,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
-           
+
     % Solve for Value of One Period Unemployment Shock
-    welf_checks = 10;    
+    welf_checks = 10;
     TR = 100/58056;
     mp_params('TR') = TR;
-    
+
 end
 
 %% Reset All globals
@@ -79,7 +79,7 @@ params_group = values(mp_params, ...
 [n_jgrid, n_agrid, n_etagrid, n_educgrid, n_marriedgrid, n_kidsgrid] = params_group{:};
 
 params_group = values(mp_params, {'TR'});
-[TR] = params_group{:};    
+[TR] = params_group{:};
 
 %% Parse Model Controls
 % Minimizer Controls
@@ -112,55 +112,55 @@ for j=1:n_jgrid % Age
             for educ=1:n_educgrid % Educational level
                 for married=1:n_marriedgrid % Marital status
                     for kids=1:n_kidsgrid % Number of kids
-                        
+
                         % Find value of assets that approximates the value of the welfare checks
                         x0=agrid(a)+TR*welf_checks; % Initial guess for a
-                        
+
                         [a_aux,~,exitflag_fsolve(j,a,eta,educ,married,kids)]=fsolve(@(x)find_a_working(x,j,a,eta,educ,married,kids,TR,welf_checks),x0,options2);
-                        
+
                         if a_aux<0
                             disp(a_aux)
                             error('Check code! Should not allow for negative welfare checks')
                         elseif a_aux>agrid(n_agrid)
                             a_aux=agrid(n_agrid);
                         end
-                        
+
                         % Linear interpolation
                         ind_aux=find(agrid<=a_aux,1,'last');
-                        
+
                         if a_aux==0
                             inds(1)=1;
                             inds(2)=1;
                             vals(1)=1;
                             vals(2)=0;
-                            
+
                         elseif a_aux==agrid(n_agrid)
                             inds(1)=n_agrid;
                             inds(2)=n_agrid;
                             vals(1)=1;
                             vals(2)=0;
-                            
+
                         else
                             inds(1)=ind_aux;
                             inds(2)=ind_aux+1;
                             vals(1)=1-((a_aux-agrid(inds(1)))/(agrid(inds(2))-agrid(inds(1))));
                             vals(2)=1-vals(1);
-                            
+
                         end
                         
-                        V_W(j,a,eta,educ,married,kids)=vals(1)*V_ss(j,inds(1),eta,educ,married,kids)+vals(2)*V_ss(j,inds(2),eta,educ,married,kids);                        
-                        C_W(j,a,eta,educ,married,kids)=vals(1)*cons_ss(j,inds(1),eta,educ,married,kids)+vals(2)*cons_ss(j,inds(2),eta,educ,married,kids);                        
-                        
+                        V_W(j,a,eta,educ,married,kids)=vals(1)*V_ss(j,inds(1),eta,educ,married,kids)+vals(2)*V_ss(j,inds(2),eta,educ,married,kids);
+                        C_W(j,a,eta,educ,married,kids)=vals(1)*(cons_ss(j,inds(1),eta,educ,married,kids)/(married+kids-1))+vals(2)*(cons_ss(j,inds(2),eta,educ,married,kids)/(married+kids-1));
+
                     end
                 end
             end
         end
     end
-    
+
     if (bl_print_a4chk)
         disp(strcat(['SNW_A4CHK_WRK: Finished Age Group:' num2str(j) ' of ' num2str(n_jgrid)]));
     end
-    
+
 end
 
 %% Timing and Profiling End
@@ -180,18 +180,18 @@ end
 %% Compare Difference between V_ss and V_W
 
 if (bl_print_a4chk_verbose)
-    
+
     mn_V_gain_check = V_W - V_ss;
     mn_C_gain_check = C_W - cons_ss;
-    mn_MPC = (C_W - cons_ss)./(welf_checks*TR);    
+    mn_MPC = (C_W - cons_ss)./(welf_checks*TR);
     mp_container_map = containers.Map('KeyType','char', 'ValueType','any');
     mp_container_map('V_W') = V_W;
     mp_container_map('C_W') = C_W;
     mp_container_map('V_W_minus_V_ss') = mn_V_gain_check;
-    mp_container_map('C_W_minus_C_ss') = mn_C_gain_check;    
-    mp_container_map('mn_MPC') = mn_MPC;    
+    mp_container_map('C_W_minus_C_ss') = mn_C_gain_check;
+    mp_container_map('mn_MPC') = mn_MPC;
     ff_container_map_display(mp_container_map);
-    
+
 end
 
 end

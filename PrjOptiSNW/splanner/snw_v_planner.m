@@ -343,26 +343,26 @@ end
 Output=zeros((n_jgrid-1)*n_marriedgrid*n_kidsgrid*n_welfchecksgrid*n_incgrid,9);
 counter=0;
 inc_grid = [inc_grid; 10E30];
-for j=1:(n_jgrid-1) % Age
-    for married=1:n_marriedgrid % Marital status
+for inc_group=1:n_incgrid
+    for welf_checks=0:(n_welfchecksgrid-1) % Number of welfare checks
         for kids=1:n_kidsgrid % Number of kids
-            for welf_checks=0:(n_welfchecksgrid-1) % Number of welfare checks
-                for inc_group=1:n_incgrid
-
+            for married=1:n_marriedgrid % Marital status
+                for j=1:(n_jgrid-1) % Age
+                    
                     counter=counter+1;
-
+                    
                     Output(counter,1)=17+j;
                     Output(counter,2)=married-1;
                     Output(counter,3)=kids-1;
                     Output(counter,4)=welf_checks;
-
+                    
                     Output(counter,5)=inc_grid(inc_group);
 %                     Output(counter,6)=inc_grid(inc_group+1)*58056;
                     Output(counter,6)=Phi_mass(j,married,kids,inc_group);
                     Output(counter,7)=psi(j);
-%                     Output(counter,9)=V_planner(j,married,kids,welf_checks+1,inc_group);
-%                     Output(counter,10)=C_planner(j,married,kids,welf_checks+1,inc_group);
-
+                    %                     Output(counter,9)=V_planner(j,married,kids,welf_checks+1,inc_group);
+                    %                     Output(counter,10)=C_planner(j,married,kids,welf_checks+1,inc_group);
+                    
                 end
             end
         end

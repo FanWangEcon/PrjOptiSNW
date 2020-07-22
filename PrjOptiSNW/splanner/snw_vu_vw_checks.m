@@ -62,13 +62,14 @@ else
     
     % Solve the VFI Problem and get Value Function
     mp_params = snw_mp_param('default_tiny');
+    mp_params = snw_mp_param('default_moredense');
     mp_controls = snw_mp_control('default_test');
     
     % set Unemployment Related Variables
     xi=0.5; % Proportional reduction in income due to unemployment (xi=0 refers to 0 labor income; xi=1 refers to no drop in labor income)
     b=0; % Unemployment insurance replacement rate (b=0 refers to no UI benefits; b=1 refers to 100 percent labor income replacement)
     TR=100/58056; % Value of a welfare check (can receive multiple checks). TO DO: Update with alternative values
-    n_welfchecksgrid=3; % Number of welfare checks. 0 refers to 0 dollars; 51 refers to 5000 dollars
+    n_welfchecksgrid=44; % Number of welfare checks. 0 refers to 0 dollars; 51 refers to 5000 dollars
     
     mp_params('xi') = xi;
     mp_params('b') = b;
@@ -167,6 +168,7 @@ end
 %% A1. Compute EMPLOYED Household-Head and Spousal Income
 
 if (nargout ~= 3 && nargout ~= 6)
+    
     % initialize
     mn_inc = NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
     mn_spouse_inc = NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
@@ -184,8 +186,7 @@ if (nargout ~= 3 && nargout ~= 6)
                             %spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
                             [inc,earn]=snw_hh_individual_income(j,a,eta,educ,...
                                 theta, r, agrid, epsilon, eta_H_grid, SS, Bequests, bequests_option);
-                            spouse_inc=snw_hh_spousal_income(j,educ,kids,earn,SS(j,educ), jret);
-                            
+                            spouse_inc=snw_hh_spousal_income(j,educ,kids,earn,SS(j,educ), jret);                          
                             
                             mn_inc(j,a,eta,educ,married,kids) = inc;
                             mn_spouse_inc(j,a,eta,educ,married,kids) = (married-1)*spouse_inc*exp(eta_S_grid(eta));
@@ -203,13 +204,55 @@ if (nargout ~= 3 && nargout ~= 6)
     ar_spouse_inc_amz = mn_spouse_inc(:);
     ar_a_amz = mn_a(:);
     
+    clear mn_inc mn_spouse_inc mn_a
+    
     % Print
     if (bl_print_vu_vw)
         disp(['SNW_VU_VW_CHECKS: Finished Employed income AMZ']);
     end
 end
 
-%% A2. Compute UNEMPLOYED Household-Head and Spousal Income 
+%% A2. Compute Check V_W and check V_U Values
+
+if (nargout ~= 3 && nargout ~= 6)
+    
+    V_W_allchecks=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid,n_welfchecksgrid);
+    C_W_allchecks=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid,n_welfchecksgrid);
+    
+    if (bl_print_vu_vw)
+        disp('Solve for V_W and V_U for different number of welfare checks')
+    end
+    
+    for welf_checks=0:(n_welfchecksgrid-1)
+        
+        if (strcmp(st_solu_type, 'matlab_minimizer'))
+            [V_W,C_W]=snw_a4chk_wrk(...
+                welf_checks, V_ss, cons_ss, mp_params, mp_controls);
+        else
+            % always use bisec_vec unless specified to use matlab_minimizer, no
+            % grid_search option for this
+            [V_W,C_W]=snw_a4chk_wrk_bisec_vec( ...
+                welf_checks, V_ss, cons_ss, mp_params, mp_controls, ...
+                ar_a_amz, ar_inc_amz, ar_spouse_inc_amz);
+        end
+        
+        % Update Collection:
+        V_W_allchecks(:,:,:,:,:,:,welf_checks+1) = V_W;
+        C_W_allchecks(:,:,:,:,:,:,welf_checks+1) = C_W;
+        
+        % Print
+        if (bl_print_vu_vw)
+            disp(strcat(['SNW_VU_VW_CHECKS: Finished checks:' ...
+                num2str(welf_checks) ' of ' num2str(n_welfchecksgrid-1)]));
+        end
+        
+    end
+    
+end
+
+clear ar_inc_amz ar_spouse_inc_amz
+
+%% B1. Compute UNEMPLOYED Household-Head and Spousal Income 
 
 if (nargout ~= 3 && nargout ~= 6)
     % initialize
@@ -245,6 +288,8 @@ if (nargout ~= 3 && nargout ~= 6)
     ar_inc_unemp_amz = mn_inc_unemp(:);
     ar_spouse_inc_unemp_amz = mn_spouse_inc_unemp(:);
     
+    clear mn_inc_unemp mn_spouse_inc_unemp
+    
     % Print
     if (bl_print_vu_vw)
         disp(['SNW_VU_VW_CHECKS: Finished Unemployed income AMZ']);
@@ -252,14 +297,11 @@ if (nargout ~= 3 && nargout ~= 6)
     
 end
 
-%% Compute Check V_W and check V_U Values
+%% B2. Compute Check V_W and check V_U Values
 
 if (nargout ~= 3 && nargout ~= 6)
     
-    V_W_allchecks=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid,n_welfchecksgrid);
     V_U_allchecks=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid,n_welfchecksgrid);
-    
-    C_W_allchecks=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid,n_welfchecksgrid);
     C_U_allchecks=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid,n_welfchecksgrid);
     
     if (bl_print_vu_vw)
@@ -269,25 +311,18 @@ if (nargout ~= 3 && nargout ~= 6)
     for welf_checks=0:(n_welfchecksgrid-1)
         
         if (strcmp(st_solu_type, 'matlab_minimizer'))
-            [V_W,C_W]=snw_a4chk_wrk(...
-                welf_checks, V_ss, cons_ss, mp_params, mp_controls);
             [V_U,C_U]=snw_a4chk_unemp(...
                 welf_checks, V_unemp, cons_unemp, mp_params, mp_controls);
         else
             % always use bisec_vec unless specified to use matlab_minimizer, no
             % grid_search option for this
-            [V_W,C_W]=snw_a4chk_wrk_bisec_vec( ...
-                welf_checks, V_ss, cons_ss, mp_params, mp_controls, ...
-                ar_a_amz, ar_inc_amz, ar_spouse_inc_amz);
             [V_U,C_U]=snw_a4chk_unemp_bisec_vec( ...
                 welf_checks, V_unemp, cons_unemp, mp_params, mp_controls, ...
                 ar_a_amz, ar_inc_unemp_amz, ar_spouse_inc_unemp_amz);
         end
         
         % Update Collection:
-        V_W_allchecks(:,:,:,:,:,:,welf_checks+1) = V_W;
         V_U_allchecks(:,:,:,:,:,:,welf_checks+1) = V_U;
-        C_W_allchecks(:,:,:,:,:,:,welf_checks+1) = C_W;
         C_U_allchecks(:,:,:,:,:,:,welf_checks+1) = C_U;
         
         % Print

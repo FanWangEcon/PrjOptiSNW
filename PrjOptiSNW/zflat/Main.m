@@ -7,7 +7,7 @@ clc
 
 format longg
 
-% Last updated: 07/15/2020
+% Last updated: 07/20/2020
 
 global beta gamma g_cons a2 rho_eta sigma_eta theta g_n cons_allocation_rule r agrid epsilon eta_H_grid eta_S_grid SS pi_eta pi_kids pi_unemp psi Pop n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid jret Bequests bequests_option throw_in_ocean
 
@@ -618,7 +618,11 @@ cutoffs=wage_cutoffs(Phi_true);
 
 %% Solve planner's problem
 n_incgrid=201; % Number of income groups
-inc_grid=linspace(0,7,n_incgrid)'; % 7 refers to 7*58056=406392 dollars in 2012USD
+n_incgrid_aux=round(0.75*n_incgrid);
+inc_grid1=linspace(0,4,n_incgrid_aux)'; % 4 refers to 4*58056=232224 dollars in 2012USD
+inc_grid=[inc_grid1;linspace(4+((7-4)/(n_incgrid-n_incgrid_aux)),7,n_incgrid-n_incgrid_aux)']; % 7 refers to 7*58056=406392 dollars in 2012USD
+
+clear inc_grid1 n_incgrid_aux
 
 % Income and earning grids used to speed up the code
 ref_earn_grid=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);

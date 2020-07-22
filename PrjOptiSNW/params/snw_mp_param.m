@@ -102,6 +102,13 @@ elseif(strcmp(st_param_group, "default_moredense"))
     n_eta_H_grid=9; % 9; % No. of grid points for persistent labor productivity shocks
     n_eta_S_grid=5; % 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
     n_kidsgrid=5; % No. of grid points for children (0 to 4+ children)
+elseif(strcmp(st_param_group, "default_moredense_a55z133"))
+    n_jgrid  =83; % Age runs from 18 to 100 (a period is 2 years)
+    jret     =48;
+    n_agrid  =55; % No. of grid points for assets
+    n_eta_H_grid=19; % 9; % No. of grid points for persistent labor productivity shocks
+    n_eta_S_grid=7; % 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
+    n_kidsgrid=5; % No. of grid points for children (0 to 4+ children)
 elseif(strcmp(st_param_group, "default_dense"))
     n_jgrid  =83; % Age runs from 18 to 100 (a period is 2 years)
     jret     =48;
@@ -203,7 +210,9 @@ clear aux_mat
 
 % Solve planner's problem
 n_incgrid=201; % Number of income groups
-inc_grid=linspace(0,7,n_incgrid)'; % 7 refers to 7*58056=406392 dollars in 2012USD
+n_incgrid_aux=round(0.75*n_incgrid);
+inc_grid1=linspace(0,4,n_incgrid_aux)'; % 4 refers to 4*58056=232224 dollars in 2012USD
+inc_grid=[inc_grid1;linspace(4+((7-4)/(n_incgrid-n_incgrid_aux)),7,n_incgrid-n_incgrid_aux)']; % 7 refers to 7*58056=406392 dollars in 2012USD
 
 %% Preferences, Technologies, etc.
 

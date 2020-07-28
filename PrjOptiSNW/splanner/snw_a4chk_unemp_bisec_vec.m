@@ -121,7 +121,7 @@ params_group = values(mp_controls, {'bl_print_a4chk','bl_print_a4chk_verbose'});
 %% Timing and Profiling Start
 
 if (bl_timer)
-    tic
+    tm_start = tic;
 end
 
 %% A. Compute Household-Head and Spousal Income
@@ -233,7 +233,7 @@ C_U = permute(mn_c_u_a_aux_ad1, [2,1,3,4,5,6]);
 
 %% D. Timing and Profiling End
 if (bl_timer)
-    toc;
+    tm_end = toc(tm_start);
     st_complete_a4chk = strjoin(...
         ["Completed SNW_A4CHK_UNEMP_BISEC_VEC", ...
          ['welf_checks=' num2str(welf_checks)], ...
@@ -241,11 +241,11 @@ if (bl_timer)
          ['xi=' num2str(xi)], ...
          ['b=' num2str(b)], ...
          ['SNW_MP_PARAM=' char(mp_params('mp_params_name'))], ...
-         ['SNW_MP_CONTROL=' char(mp_controls('mp_params_name'))] ...
+         ['SNW_MP_CONTROL=' char(mp_controls('mp_params_name'))], ...
+         ['time cost=' num2str(tm_end)] ...
         ], ";");
     disp(st_complete_a4chk);
 end
-
 
 %% Compare Difference between V_ss and V_W
 

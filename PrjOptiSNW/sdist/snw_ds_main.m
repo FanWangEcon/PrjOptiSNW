@@ -110,6 +110,12 @@ params_group = values(mp_controls, {'bl_compute_drv_stats'});
 params_group = values(mp_controls, {'bl_print_ds', 'bl_print_ds_verbose'});
 [bl_print_ds, bl_print_ds_verbose] = params_group{:};
 
+%% Timer 
+
+if (bl_timer)
+    tm_start = tic;
+end
+
 %% Initialize 6D Distributional Array and Initial Distribution
 Phiss=zeros(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 
@@ -354,13 +360,14 @@ end
 
 %% Timing and Profiling End
 if (bl_timer)
-    toc;
-    st_complete_ds = strjoin(...
+    tm_end = toc(tm_start);
+    st_complete = strjoin(...
         ["Completed SNW_DS_MAIN", ...
-         ['SNW_MP_PARAM=' mp_params('mp_params_name')], ...
-         ['SNW_MP_CONTROL=' mp_controls('mp_params_name')] ...
+         ['SNW_MP_PARAM=' char(mp_params('mp_params_name'))], ...
+         ['SNW_MP_CONTROL=' char(mp_controls('mp_params_name'))], ...
+         ['time=' num2str(tm_end)] ...
         ], ";");
-    disp(st_complete_ds);
+    disp(st_complete);
 end
 
 %% Collect Results if Require Extra Outputs

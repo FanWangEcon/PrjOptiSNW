@@ -1,4 +1,4 @@
-%% SNW_VFI_MAIN Solves Policy/Value Function SNW (Bisection Vectorized)
+%% SNW_VFI_MAIN_BISEC_VEC Solves Policy/Value Function SNW (Bisection Vectorized)
 %    Given parameters, iterate over life cycle, given age, marital status,
 %    education level and child count, as well as persistent productivity
 %    shock process, solve for optimal dynamic savings choices given
@@ -30,20 +30,23 @@
 %    * EPSILON perfect-foresight education type transition
 %    * SS Social Security
 %
-%    [V_VFI,AP_VFI,CONS_VFI,EXITFLAG_VFI] = SNW_VFI_MAIN(MP_PARAMS) invoke
-%    model with externally set parameter map MP_PARAMS.
+%    [V_VFI,AP_VFI,CONS_VFI,EXITFLAG_VFI] =
+%    SNW_VFI_MAIN_BISEC_VEC(MP_PARAMS) invoke model with externally set
+%    parameter map MP_PARAMS.
 %
-%    [V_VFI,AP_VFI,CONS_VFI,EXITFLAG_VFI] = SNW_VFI_MAIN(MP_PARAMS,
-%    MP_CONTROLS) invoke model with externally set parameter map MP_PARAMS
-%    as well as control mpa MP_CONTROLS.
+%    [V_VFI,AP_VFI,CONS_VFI,EXITFLAG_VFI] =
+%    SNW_VFI_MAIN_BISEC_VEC(MP_PARAMS, MP_CONTROLS) invoke model with
+%    externally set parameter map MP_PARAMS as well as control mpa
+%    MP_CONTROLS.
 %
-%    [V_VFI,AP_VFI,CONS_VFI,EXITFLAG_VFI] = SNW_VFI_MAIN(MP_PARAMS,
-%    MP_CONTROLS, V_VFI_FIX) provides existing value function. Suppose
-%    there is sudden shock, but future value is preserved after one period.
-%    So now we have new value that is specific to this period, that is the
-%    output V_VFI, the input V_VFI_FIX is the value for all future periods.
-%    When this program is called with V_VFI_FIX, the resource equation will
-%    use the unemployment shock information.
+%    [V_VFI,AP_VFI,CONS_VFI,EXITFLAG_VFI] =
+%    SNW_VFI_MAIN_BISEC_VEC(MP_PARAMS, MP_CONTROLS, V_VFI_FIX) provides
+%    existing value function. Suppose there is sudden shock, but future
+%    value is preserved after one period. So now we have new value that is
+%    specific to this period, that is the output V_VFI, the input V_VFI_FIX
+%    is the value for all future periods. When this program is called with
+%    V_VFI_FIX, the resource equation will use the unemployment shock
+%    information.
 %
 %    See also SNWX_VFI_MAIN, SNW_MP_CONTROL, SNW_MP_PARAM
 %
@@ -64,7 +67,8 @@ if (~isempty(varargin))
     end
 
 else
-
+    
+    clc;
     mp_params = snw_mp_param('default_tiny');
     mp_controls = snw_mp_control('default_test');
 
@@ -94,8 +98,8 @@ params_group = values(mp_params, {'agrid', 'eta_H_grid', 'eta_S_grid'});
 [agrid, eta_H_grid, eta_S_grid] = params_group{:};
 
 params_group = values(mp_params, ...
-    {'pi_eta', 'pi_kids', 'psi'});
-[pi_eta, pi_kids, psi] = params_group{:};
+    {'pi_eta', 'pi_kids', 'cl_mt_pi_jem_kidseta', 'psi'});
+[pi_eta, pi_kids, cl_mt_pi_jem_kidseta, psi] = params_group{:};
 
 params_group = values(mp_params, {'epsilon', 'SS'});
 [epsilon, SS] = params_group{:};
@@ -143,7 +147,7 @@ f_FOC = @(duda, devda) (duda + beta.*devda);
 
 %% Timing and Profiling Start
 if (bl_timer)
-    tic
+    tm_start = tic;
 end
 
 %% Solve optimization problem
@@ -172,7 +176,10 @@ end
 
 % Solve for value function and policy functions by means of backwards induction
 for j=ar_j_seq % Age
-
+    
+    % Age Timer
+    if (bl_print_vfi) tm_vfi_age = tic; end
+    
     % A1. Generate the Resources Matrix
     mn_resources = zeros(n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
     mn_z_ctr = zeros(n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
@@ -250,27 +257,27 @@ for j=ar_j_seq % Age
         else
             V_VFI_FUTURE = V_VFI;
         end
+ 
+        for educ=1:n_educgrid % Educational level
+            for married=1:n_marriedgrid % Marital status
 
-        for eta=1:n_etagrid % Productivity
-            for educ=1:n_educgrid % Educational level
-                for married=1:n_marriedgrid % Marital status
-                    for kids=1:n_kidsgrid % Number of kids
-                        for a=1:n_agrid
-                            % Add to each cell of mt_ev_ap_z, integrating over f(zp|z)
-                            for etap=1:n_etagrid
-                                for kidsp=1:n_kidsgrid
-                                    mn_ev_ap_z(a,eta,educ,married,kids) = ...
-                                        mn_ev_ap_z(a,eta,educ,married,kids) ...
-                                        + psi(j)*pi_eta(eta,etap)*pi_kids(kids,kidsp,j,educ,married)...
-                                          *V_VFI_FUTURE(j+1,a,etap,educ,married,kidsp);
-                                end
-                            end
+                % A2a. Get P(S'|S), S = [eta x kids] by [eta x kids] transition matrix
+                mt_pi_jem_kidseta = cl_mt_pi_jem_kidseta{j,educ,married};
 
-                        end
-                    end
-                end
+                % A2b. Get age/edu/marry submatrix
+                mn_ev20_jem = permute(V_VFI_FUTURE(j+1,:,:,educ,married,:), [2,3,6,1,4,5]);
+
+                % A2c. 2D rows are savings states, columns are [eta x kids]
+                mt_ev20_jem = reshape(mn_ev20_jem, n_agrid, []);
+
+                % A2d. EV = V([a] by [eta x kids]) x TRANS([eta x kids] by [eta x kids])
+                mt_ev19_jem = psi(j)*mt_ev20_jem*mt_pi_jem_kidseta';
+
+                % A2e. Reshape Back and Store
+                mn_ev19_jem = reshape(mt_ev19_jem, [n_agrid, n_etagrid, 1, 1, n_kidsgrid]);
+                mn_ev_ap_z(:, :, educ, married, :) = mn_ev19_jem;
             end
-        end
+        end        
 
         % B1. z specific EV Slope: EV(ap,z)/d(ap)
         mn_deri_dev_dap = diff(mn_ev_ap_z, 1)./diff(agrid);
@@ -364,31 +371,50 @@ for j=ar_j_seq % Age
     end
 
     if (bl_print_vfi)
-        disp(strcat(['SNW_VFI_MAIN: Finished Age Group:' num2str(j) ' of ' num2str(n_jgrid)]));
+        tm_vfi_age_end = toc(tm_vfi_age);
+        if (length(varargin)==3)
+            disp(strcat(['SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age ' ...
+                num2str(j) ' of ' num2str(n_jgrid-1) ...
+                ', time-this-age:' num2str(tm_vfi_age_end)]));        
+        else
+            disp(strcat(['SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:' ...
+                num2str(j) ' of ' num2str(n_jgrid-1) ...
+                ', time-this-age:' num2str(tm_vfi_age_end)]));        
+        end
     end
 
 end
 
 %% Timing and Profiling End
 if (bl_timer)
-    toc;
+    tm_end = toc(tm_start);
     if (length(varargin)==3)
         st_complete_vfi = strjoin(...
-            ["Completed SNW_VFI_MAIN 1 PERIOD UNEMP SHK", ...
+            ["Completed SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock", ...
              ['SNW_MP_PARAM=' char(mp_params('mp_params_name'))], ...
-             ['SNW_MP_CONTROL=' char(mp_controls('mp_params_name'))] ...
+             ['SNW_MP_CONTROL=' char(mp_controls('mp_params_name'))], ...
+             ['time=' num2str(tm_end)] ...
             ], ";");
     else
         st_complete_vfi = strjoin(...
-            ["Completed SNW_VFI_MAIN", ...
+            ["Completed SNW_VFI_MAIN_BISEC_VEC", ...
              ['SNW_MP_PARAM=' char(mp_params('mp_params_name'))], ...
-             ['SNW_MP_CONTROL=' char(mp_controls('mp_params_name'))] ...
+             ['SNW_MP_CONTROL=' char(mp_controls('mp_params_name'))], ...
+             ['time=' num2str(tm_end)] ...
             ], ";");
     end
     disp(st_complete_vfi);
 end
 
-%% UnitTests
+%% Print
+
+if (bl_print_vfi_verbose)
+    mp_outcomes = containers.Map('KeyType', 'char', 'ValueType', 'any');
+    mp_outcomes('V_VFI') = V_VFI;
+    mp_outcomes('ap_VFI') = ap_VFI;
+    mp_outcomes('cons_VFI') = cons_VFI;
+    ff_container_map_display(mp_outcomes, 9, 9);
+end
 
 %% Return 
 varargout = cell(nargout,0);

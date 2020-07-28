@@ -51,7 +51,7 @@ else
     close all;
 
     st_solu_type = 'bisec_vec';
-    mp_params = snw_mp_param('default_base');
+    mp_params = snw_mp_param('default_dense');
     mp_controls = snw_mp_control('default_test');
 
     mp_params('TR') = 100/58056;

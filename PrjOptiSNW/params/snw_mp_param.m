@@ -75,9 +75,9 @@ if (~isempty(varargin))
 else
 
 %     st_param_group = 'default_base';
-    st_param_group = 'default_verydense';
+%     st_param_group = 'default_verydense';
 %     st_param_group = 'default_dense';
-%     st_param_group = 'default_tiny';
+    st_param_group = 'default_tiny';
     bl_print_mp_params = true;
     [it_row_n_keep, it_col_n_keep] = deal(20, 8);
 
@@ -102,13 +102,44 @@ elseif(strcmp(st_param_group, "default_moredense"))
     n_eta_H_grid=9; % 9; % No. of grid points for persistent labor productivity shocks
     n_eta_S_grid=5; % 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
     n_kidsgrid=5; % No. of grid points for children (0 to 4+ children)
-elseif(strcmp(st_param_group, "default_moredense_a55z133"))
-    n_jgrid  =83; % Age runs from 18 to 100 (a period is 2 years)
+elseif(strcmp(st_param_group, "default_moredense_a55z363"))
+    n_jgrid  =83;
     jret     =48;
-    n_agrid  =55; % No. of grid points for assets
-    n_eta_H_grid=19; % 9; % No. of grid points for persistent labor productivity shocks
-    n_eta_S_grid=7; % 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
-    n_kidsgrid=5; % No. of grid points for children (0 to 4+ children)
+    n_agrid  =55;
+    n_eta_H_grid=33; 
+    n_eta_S_grid=11;
+    n_kidsgrid=5;
+elseif(strcmp(st_param_group, "default_moredense_a55zh43zs11"))
+    n_jgrid  =83;
+    jret     =48;
+    n_agrid  =55;
+    n_eta_H_grid=43; 
+    n_eta_S_grid=11;
+    n_kidsgrid=5;
+elseif(strcmp(st_param_group, "default_moredense_a100zh266zs1"))
+    n_jgrid  =83;
+    jret     =48;
+    n_agrid  =100;
+    n_eta_H_grid=266; 
+    n_eta_S_grid=1;
+    n_kidsgrid=5;    
+elseif(strcmp(st_param_group, "default_moredense_a75zh101zs5"))
+    n_jgrid  =83;
+    jret     =48;
+    n_agrid  =75;
+    n_eta_H_grid=101; 
+    n_eta_S_grid=5;
+    n_kidsgrid=5;    
+elseif(strcmp(st_param_group, "default_moredense_a100zh266_e0m0"))
+    % household head shock only, only one education group
+    n_jgrid  =83; 
+    jret     =48;
+    n_agrid  =100;
+    n_eta_H_grid=266;
+    n_eta_S_grid=1; 
+    n_kidsgrid=5; 
+    n_educgrid=1;
+    n_marriedgrid=1;
 elseif(strcmp(st_param_group, "default_dense"))
     n_jgrid  =83; % Age runs from 18 to 100 (a period is 2 years)
     jret     =48;
@@ -187,7 +218,7 @@ xi=0.75; % Proportional reduction in income due to unemployment (xi=0 refers to 
 b=1; % Unemployment insurance replacement rate (b=0 refers to no UI benefits; b=1 refers to 100 percent labor income replacement)
 scaleconvertor = 58056;
 TR=100/scaleconvertor; % Value of a welfare check (can receive multiple checks). TO DO: Update with alternative values
-n_welfchecksgrid=51; % Number of welfare checks. 0 refers to 0 dollars; 51 refers to 5000 dollars
+n_welfchecksgrid=45; % Number of welfare checks. 0 refers to 0 dollars; 51 refers to 5000 dollars
 
 % Probability of unemployment
 % pi_j=[0.22;0.175;0.16;0.165;0.22]; % Probability of unemployment in 2020 by age groups from Cajner et al. (2020, NBER)
@@ -324,7 +355,6 @@ clear life_cycle_prod_by_educ epsilon_aux
 % N_JGRID_PKTP as the N_JGRID count for PI_KIDS_TRANS_PROB. But assume
 % there will always be up to 6 kids, and 2 marriage/notmarry groups.
 
-
 load('pi_kids_trans_prob','pi_kids_trans_prob')
 n_kidsgrid_kptp = 5;
 n_educgrid_kptp = 2;
@@ -394,8 +424,16 @@ end
 
 %% Derive transition probabilities and stationary distribution for productivity shock
 % Discretize process for persistent productivity shocks and derive stationary distribution
-[eta_H_grid_aux,pi_H_eta]=rouwenhorst(rho_eta,sqrt(sigma_eta),n_eta_H_grid);
-[eta_S_grid_aux,pi_S_eta]=rouwenhorst(rho_eta_spouse,sqrt(sigma_eta_spouse),n_eta_S_grid);
+if (n_eta_H_grid ==1)
+    [eta_H_grid_aux,pi_H_eta]=rouwenhorst(rho_eta,sqrt(sigma_eta),n_eta_H_grid, false, 3);
+else
+    [eta_H_grid_aux,pi_H_eta]=ffy_tauchen(rho_eta,sqrt(sigma_eta),n_eta_H_grid, false, 3);
+end
+if (n_eta_S_grid ==1)
+    [eta_S_grid_aux,pi_S_eta]=rouwenhorst(rho_eta_spouse,sqrt(sigma_eta_spouse),n_eta_S_grid);
+else
+    [eta_S_grid_aux,pi_S_eta]=ffy_tauchen(rho_eta_spouse,sqrt(sigma_eta_spouse),n_eta_S_grid);
+end
 
 pi_eta=NaN(n_etagrid,n_etagrid);
 counter=0;
@@ -434,6 +472,18 @@ end
 stat_distr_eta(1,:)=x0;
 
 clear counter counterp eta_H_grid_aux eta_S_grid_aux
+
+%% Full Shock States Transition Matrix
+cl_mt_pi_jem_kidseta = cell(n_jgrid-1, n_educgrid, n_marriedgrid);
+% Generate, Age, Education and Marry specific eta/kids transition
+for j=1:(n_jgrid-1) % Age
+    for educ=1:n_educgrid
+        for married=1:n_marriedgrid % Marital status
+            cl_mt_pi_jem_kidseta{j, educ, married} = kron(pi_kids(:,:,j,educ,married), pi_eta);
+        end
+    end
+end
+
 
 %% Initial conditions for marital status, college attainment, and number of kids
 % Distribution of educational attainment from PSID
@@ -556,6 +606,7 @@ mp_params_exotrans('pi_eta') = pi_eta;
 mp_params_exotrans('pi_H_eta') = pi_H_eta;
 mp_params_exotrans('pi_S_eta') = pi_S_eta;
 mp_params_exotrans('pi_kids') = pi_kids;
+mp_params_exotrans('cl_mt_pi_jem_kidseta') = cl_mt_pi_jem_kidseta;
 mp_params_exotrans('psi') = psi;
 
 mp_params_typelife = containers.Map('KeyType', 'char', 'ValueType', 'any');

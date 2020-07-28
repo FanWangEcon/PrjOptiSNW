@@ -62,19 +62,37 @@ bl_print_ds = true;
 bl_print_a4chk = true;
 bl_print_vu_vw = true;
 bl_print_v_planner = true;
+bl_print_precompute = true;
+bl_print_evuvw20_jaeemk = true;
+bl_print_evuvw19_jaeemk = true;
+bl_print_evuvw19_jymk = true;
+bl_print_evuvw19_jmky_mass = true;
+bl_print_evuvw19_jmky_allchecks = true;
 
 if (strcmp(st_param_group, 'default_test')) 
     bl_print_ds_verbose = true;
     bl_print_vfi_verbose = true;
     bl_print_a4chk_verbose = true;
     bl_print_vu_vw_verbose = true;
-    bl_print_v_planner_verbose = true;
+    bl_print_v_planner_verbose = true;    
+    bl_print_precompute_verbose = true;
+    bl_print_evuvw20_jaeemk_verbose = true;
+    bl_print_evuvw19_jaeemk_verbose = true;
+    bl_print_evuvw19_jmky_verbose = true;
+    bl_print_evuvw19_jmky_mass_verbose = true;
+    bl_print_evuvw19_jmky_allchecks_verbose = true;
 else
     bl_print_ds_verbose = false;
     bl_print_vfi_verbose = false;
     bl_print_a4chk_verbose = false;
     bl_print_vu_vw_verbose = false;
     bl_print_v_planner_verbose = false;
+    bl_print_precompute_verbose = false;
+    bl_print_evuvw20_jaeemk_verbose = false;
+    bl_print_evuvw19_jaeemk_verbose = false;
+    bl_print_evuvw19_jmky_verbose = false;
+    bl_print_evuvw19_jmky_mass_verbose = false;
+    bl_print_evuvw19_jmky_allchecks_verbose = false;
 end
 
 %% Control Optimization 
@@ -118,6 +136,24 @@ mp_display('bl_print_vu_vw_verbose') = bl_print_vu_vw_verbose;
 mp_display('bl_print_v_planner') = bl_print_v_planner;
 mp_display('bl_print_v_planner_verbose') = bl_print_v_planner_verbose;
  
+mp_display('bl_print_precompute') = bl_print_precompute;
+mp_display('bl_print_precompute_verbose') = bl_print_precompute_verbose;
+
+mp_display('bl_print_evuvw20_jaeemk') = bl_print_evuvw20_jaeemk;
+mp_display('bl_print_evuvw20_jaeemk_verbose') = bl_print_evuvw20_jaeemk_verbose;
+
+mp_display('bl_print_evuvw19_jaeemk') = bl_print_evuvw19_jaeemk;
+mp_display('bl_print_evuvw19_jaeemk_verbose') = bl_print_evuvw19_jaeemk_verbose;
+
+mp_display('bl_print_evuvw19_jmky') = bl_print_evuvw19_jymk;
+mp_display('bl_print_evuvw19_jmky_verbose') = bl_print_evuvw19_jmky_verbose;
+
+mp_display('bl_print_evuvw19_jmky_mass') = bl_print_evuvw19_jmky_mass;
+mp_display('bl_print_evuvw19_jmky_mass_verbose') = bl_print_evuvw19_jmky_mass_verbose;
+
+mp_display('bl_print_evuvw19_jmky_allchecks') = bl_print_evuvw19_jmky_allchecks;
+mp_display('bl_print_evuvw19_jmky_allchecks_verbose') = bl_print_evuvw19_jmky_allchecks_verbose;
+
 %% Combine Maps
 mp_controls = [mp_minimizer_controls; mp_m4check_controls; ...
     mp_calibrate; mp_compute_stats; mp_profile; mp_display];

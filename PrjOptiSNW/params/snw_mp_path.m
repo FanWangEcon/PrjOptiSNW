@@ -33,7 +33,6 @@ if (strcmp(st_computer, 'fan'))
 end
 
 %% Parametesr Grid Points
-
 spt_simu_outputs = [spt_dropbox_root 'output/'];
 
 %% Set Parameter Maps

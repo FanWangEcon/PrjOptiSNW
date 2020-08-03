@@ -26,7 +26,7 @@ library(REconTools)
 ```{r}
 # Max Phase Out given 1200*2 + 500*4 = 4400
 fl_max_phaseout = 238000
-it_bin_dollar_before_phaseout = 10000
+it_bin_dollar_before_phaseout = 2500
 # Dollar Per Check
 fl_percheck_dollar = 100
 # Meaning of Ymin Ymax simulated interval of 1
@@ -60,16 +60,26 @@ srt_simu_path <- 'C:/Users/fan/Documents/Dropbox (UH-ECON)/PrjNygaardSorensenWan
 # st_file_type <- 'densemore_a55z133'
 # st_file_type <- 'densemore_a55z266_e0m0'
 # st_file_type <- 'moredense_a100z266_e0m0'
-st_file_type <- 'moredense_a55zh43zs11'
+# st_file_type <- 'moredense_a55zh43zs11'
+# st_file_type <- 'moredense_a75zh101zs5'
+
+# 1. e0m2 very dense a and zh test
+st_file_type <- 'moredense_a100zh266_e1m1'
+
+# 2. e1m1 very dense a and zh test, both married and education, no spouse shock
+st_file_type <- 'moredense_a100zh266_e2m2'
+
+# CSV Name
 snm_simu_csv <- paste0('snwx_v_planner_',st_file_type,'.csv')
 
 # Column Names
 ar_svr_csv <- c('age', 'marital', 'kids', 'checks',	'ymin', 'mass', 'survive', 'vtilde', 'ctilde')
 # Variables That Identify Individual Types
-ar_svr_groups <- c('marital', 'kids', 'ymin_group')
+ar_svr_groups <- c('marital', 'kids', 'age_group', 'ymin_group')
 ar_svr_groups_stats <- c('mass', 'survive')
 # Number of Checks and Planner Value
 svr_checks <- 'checks'
+svr_mass <- 'mass'
 svr_v_value <- 'vtilde'
 svr_c_value <- 'ctilde'
 ```
@@ -127,10 +137,14 @@ sum(df_plan_v_tilde %>% pull(mass))
 Suppose the Planner does not observe Age (or can not use age information for allocation). This requires generating a weighted-average over ages conditional on income, kids count and marital status:
 
 ```{r}
+# Age Groups
+ar_agecut = seq(it_min_age-1, it_max_age, length.out=5)
+# Dimensions
 dim(df_plan_v_tilde)
 # df_plan_v_tilde_yjm <- df_plan_v_tilde
 df_plan_v_tilde_yjm <- df_plan_v_tilde %>%
-  group_by(marital, kids, checks, ymin) %>%
+  mutate(age_group = (cut(age, ar_agecut))) %>%
+  group_by(marital, kids, checks, ymin, age_group) %>%
   summarize(vtilde = sum(vtilde*mass)/sum(mass),
             ctilde = sum(ctilde*mass)/sum(mass),
             mass = sum(mass),
@@ -143,12 +157,6 @@ rm(df_plan_v_tilde)
 # Summarize
 dim(df_plan_v_tilde_yjm)
 # REconTools::ff_summ_percentiles(df_plan_v_tilde_yjm)
-```
-
-Mass Check:
-
-```{R}
-sum(df_plan_v_tilde_yjm %>% pull(mass))
 ```
 
 ### Aggregate Over Income Groups
@@ -211,7 +219,7 @@ Weighted averaging to generate larger income groups that contain sufficient mass
 # df_plan_v_tilde_ygrpjm <- df_plan_v_tilde_yjm %>% mutate(ymin_group = as.factor(ymin))
 df_plan_v_tilde_ygrpjm <- df_plan_v_tilde_yjm %>%
   mutate(ymin_group = (cut(ymin, ar_ycut))) %>%
-  group_by(marital, kids, checks, ymin_group) %>%
+  group_by(marital, kids, checks, age_group, ymin_group) %>%
   summarize(vtilde = sum(vtilde*mass)/sum(mass),
             ctilde = sum(ctilde*mass)/sum(mass),
             mass = sum(mass),
@@ -764,7 +772,7 @@ REconTools::ff_summ_percentiles(df_input_ib_v)
 ```
 
 
-## Optimal Feasible Allocation
+## Optimal Threshold Allocation
 
 ### Total Check Amount
 
@@ -785,6 +793,31 @@ fl_dis_w <- it_total_checks
 print(fl_dis_w)
 ```
 
+### Modify Maximum Allocation Point for Each Individual
+
+Given the Observed Household Type Specific maximum allocation amount, allocate only for each kid/marriage group less than the maximum. This is simply determined by marital status and the number of kids. Each spouse gets at most 1200, and each child gets at most 500.
+
+- five check per kid
+- 12 check if married
+- 12 check base each
+
+```{r}
+# # Previous Dimension
+# print(dim(df_input_il_noninc))
+# # Threshold frame
+# df_input_il_noninc <- df_input_il_noninc %>%
+#   left_join(df_id, by = "id_i") %>%
+#   mutate(D_max_i = kids*5 + marital*12 + 12) %>%
+#   filter(D_max_i >= D_il) %>%
+#   select(id_i, v_alpha_il, D_il, c_alpha_il, id_il, D_max_i, v_A_il, c_A_il, beta_i) %>%
+#   ungroup() %>%
+#   arrange(id_i, D_il) %>%
+#   mutate(id_il = row_number())
+# # Threshold summarize
+# table(df_input_il_noninc$D_max_i)
+# # Reduced Dimension
+# print(dim(df_input_il_noninc))
+```
 ### Run Discrete Allocation Function
 
 ```{r}
@@ -884,6 +917,7 @@ df_input_il_noninc_covar <- df_input_il_noninc %>%
   mutate(ymin_group = as.numeric(ymin_group),
          kids = as.factor(kids), 
          marital = as.factor(marital),
+         age_group = as.factor(age_group),
          checks = D_il)
 # Summarize
 df_alloc_i_long_covar_v <- df_alloc_i_long_v %>% 
@@ -1077,12 +1111,12 @@ Graph out the marginal consumption gain for each check.
   # graph mean check amount by income, marital status and kids counts
 lineplot_c <- df_input_il_noninc_covar %>% 
     ggplot(aes(x=ymin_group, y=log(c_alpha_il),
-               colour=checks,
+               colour=age_group,
                shape=kids)) +
         facet_wrap( ~ marital + kids, ncol=5) +
         geom_point(size=1) +
         # scale_y_continuous(trans='log') +
-        labs(title = paste0('Marginal Consumption Gain Each Check, Conditional on: Marry+Kids+Income, ',
+        labs(title = paste0('Marginal Consumption Gain Each Check, Conditional on: Age+Marry+Kids+Income, ',
                       st_file_type, '\n', 'Top Row = Unmarried, Bottom Row = Married, Dark Blue = check 1, Light Blue = Final Check'),
              subtitle = subtitle,
              x = 'Income Group',
@@ -1098,18 +1132,21 @@ Generate the needed dataframe, averaging over ages, averages by ymin, marital st
 ```{r}
 # graph mean check amount by income, marital status and kids counts
 lineplot_c <- df_alloc_i_long_covar_c %>% 
+        filter(allocate_type == 'optimal') %>%  
   filter(rho_val == ar_rho[1]) %>% ungroup() %>% 
   mutate(ymin_group = as.numeric(ymin_group),
          kids = as.factor(kids), 
          marital = as.factor(marital)) %>%
     ggplot(aes(x=ymin_group, y=checks,
-               colour=allocate_type,
+               colour=age_group,
                shape=kids,
                linetype=marital)) +
         facet_wrap( ~ marital + kids, ncol=5) +
         geom_point(size=3) +
         geom_line() +
-        labs(title = paste0('Optimize Expected 2020 Consumption, Conditional on: Marry+Kids+Income, ',
+        labs(title = paste0(
+          'Optimal First Check\n',
+          'Optimize Expected 2020 Consumption, Conditional on: Age+Marry+Kids+Income, ',
                       st_file_type, '\n', 'Colors Represent Actual Policy versus Optimal Policy'),
              subtitle = subtitle,
              x = 'Income Group',
@@ -1129,11 +1166,11 @@ Graph out the marginal value for each check.
   # graph mean check amount by income, marital status and kids counts
 lineplot_c <- df_input_il_noninc_covar %>% 
     ggplot(aes(x=ymin_group, y=log(v_alpha_il),
-               colour=checks,
+               colour=age_group,
                shape=kids)) +
         facet_wrap( ~ marital + kids, ncol=5) +
         geom_point(size=1) +
-        labs(title = paste0('Marginal Value Gain Each Check, Conditional on: Marry+Kids+Income, ',
+        labs(title = paste0('Marginal Value Gain Each Check, Conditional on: Age+Marry+Kids+Income, ',
                       st_file_type, '\n', 'Top Row = Unmarried, Bottom Row = Married, Dark Blue = check 1, Light Blue = Final Check'),
              subtitle = subtitle,
              x = 'Income Group',
@@ -1147,19 +1184,20 @@ print(lineplot_c)
 ```{r}
 # graph mean check amount by income, marital status and kids counts
 lineplot_v <- df_alloc_i_long_covar_v %>% 
+      filter(allocate_type == 'optimal') %>%  
   filter(rho_val == ar_rho[1]) %>% ungroup() %>% 
   mutate(ymin_group = as.numeric(ymin_group),
          kids = as.factor(kids), 
          marital = as.factor(marital)) %>%
     ggplot(aes(x=ymin_group, y=checks,
-               colour=allocate_type,
+               colour=age_group,
                shape=kids,
                linetype=marital)) +
         facet_wrap( ~ marital + kids, ncol=5) +
         geom_point(size=3) +
         geom_line() +
         labs(title = 
-               paste0('Optimize Expected 2020 Value, Conditional on: Marry+Kids+Income, ',
+               paste0('Optimize Expected 2020 Value, Conditional on: Age+Marry+Kids+Income, ',
                       st_file_type, '\n', 'Colors Represent Actual Policy versus Optimal Policy'),
              subtitle = subtitle,
              x = 'Income Group',

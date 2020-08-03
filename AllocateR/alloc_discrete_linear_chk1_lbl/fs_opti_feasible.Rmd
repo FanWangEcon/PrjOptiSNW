@@ -26,7 +26,7 @@ library(REconTools)
 ```{r}
 # Max Phase Out given 1200*2 + 500*4 = 4400
 fl_max_phaseout = 238000
-it_bin_dollar_before_phaseout = 10000
+it_bin_dollar_before_phaseout = 2500
 # Dollar Per Check
 fl_percheck_dollar = 100
 # Meaning of Ymin Ymax simulated interval of 1
@@ -59,8 +59,19 @@ srt_simu_path <- 'C:/Users/fan/Documents/Dropbox (UH-ECON)/PrjNygaardSorensenWan
 # st_file_type <- 'moredense'
 # st_file_type <- 'densemore_a55z133'
 # st_file_type <- 'densemore_a55z266_e0m0'
-# st_file_type <- 'moredense_a100z266_e0m0'
-st_file_type <- 'moredense_a55zh43zs11'
+# st_file_type <- 'moredense_a55zh43zs11'
+# st_file_type <- 'moredense_a75zh101zs5'
+
+# 1. e1m1 very dense a and zh test, single, lower edu only
+st_file_type <- 'moredense_a100zh266_e1m1'
+
+# 2. e1m1 very dense a and zh test, both married and education, no spouse shock
+# st_file_type <- 'moredense_a100zh266_e2m2'
+# st_file_type <- 'moredense_a100zh81zs5_e2m2'
+# st_file_type <- 'moredense_a65zh133zs5_e2m2'
+st_file_type <- 'moredense_a65zh266zs5_e2m2'
+
+# CSV Name
 snm_simu_csv <- paste0('snwx_v_planner_',st_file_type,'.csv')
 
 # Column Names
@@ -86,16 +97,12 @@ Note:
 *filter(checks <= it_max_checks)* will keep 1 more than actual, this is before differencing happening later.
 
 ```{r}
-mt_plan_v_tilde <- read.csv(paste0(srt_simu_path, snm_simu_csv), header=FALSE)
-df_plan_v_tilde <- as_tibble(mt_plan_v_tilde) %>%
+df_plan_v_tilde <- as_tibble(read.csv(paste0(srt_simu_path, snm_simu_csv), header=FALSE)) %>%
   rename_all(~c(ar_svr_csv)) %>%
   filter(vtilde != 0) %>%
   filter(checks <= it_max_checks) %>%
   filter(age <= it_max_age) %>%
   filter(age >= it_min_age)
-
-# Remove
-rm(mt_plan_v_tilde)
 
 # Column 1: Age (in year before COVID)
 # Column 2: Marital status (0 if not married; 1 if married)
@@ -138,7 +145,7 @@ df_plan_v_tilde_yjm <- df_plan_v_tilde %>%
   ungroup()
 
 # Remove
-rm(df_plan_v_tilde)
+# rm(df_plan_v_tilde)
 
 # Summarize
 dim(df_plan_v_tilde_yjm)
@@ -219,7 +226,7 @@ df_plan_v_tilde_ygrpjm <- df_plan_v_tilde_yjm %>%
   ungroup()
 
 # Remove
-rm(df_plan_v_tilde_yjm)
+# rm(df_plan_v_tilde_yjm)
 
 # Summarize
 REconTools::ff_summ_percentiles(df_plan_v_tilde_ygrpjm)
@@ -293,7 +300,7 @@ Dataframew with ID, check, mass and values
 df_value <- df_plan_v_tilde_id %>% 
   select(one_of(svr_group_id, svr_checks, svr_v_value, svr_c_value))
 # remove
-rm(df_plan_v_tilde_id)
+# rm(df_plan_v_tilde_id)
 # Summarize
 REconTools::ff_summ_percentiles(df_value)
 REconTools::ff_summ_count_unique_by_groups(df_value, svr_group_id, svr_group_id)
@@ -747,7 +754,8 @@ df_input_ib_c <- df_input_il_covid_actual %>%
   rename(A_i_l0 = c_A_il) %>%
   mutate(alpha_o_i = case_when(actual_checks == 0 ~ 0,
                                TRUE ~ c_alpha_il)) %>%
-  select(id_i, A_i_l0, alpha_o_i, beta_i, actual_checks)
+  select(id_i, A_i_l0, alpha_o_i, beta_i, actual_checks, mass) %>%
+  rename(mass_i = mass)
 
 # value
 df_input_ib_v <- df_input_il_covid_actual %>%
@@ -756,7 +764,8 @@ df_input_ib_v <- df_input_il_covid_actual %>%
   rename(A_i_l0 = v_A_il) %>%
   mutate(alpha_o_i = case_when(actual_checks == 0 ~ 0,
                                TRUE ~ v_alpha_il)) %>%
-  select(id_i, A_i_l0, alpha_o_i, beta_i, actual_checks)
+  select(id_i, A_i_l0, alpha_o_i, beta_i, actual_checks, mass) %>%
+  rename(mass_i = mass)
 
 # summarize
 REconTools::ff_summ_percentiles(df_input_ib_c)
@@ -764,7 +773,7 @@ REconTools::ff_summ_percentiles(df_input_ib_v)
 ```
 
 
-## Optimal Threshold Allocation
+## Optimal Feasible Allocation
 
 ### Total Check Amount
 
@@ -779,37 +788,13 @@ it_total_checks <- df_input_il_covid_actual %>%
   summarize(total_checks = sum(actual_checks)) 
 it_total_checks <- as.numeric(it_total_checks)
 # this is the measure of checks available given VOX allocation and simulated mass
-print(mass_sum_covid_vox_actual)
 # And this point, the number is not important
 fl_dis_w <- it_total_checks
-print(fl_dis_w)
+fl_dis_w_mass <- as.numeric(mass_sum_covid_vox_actual)
+print(paste0('fl_dis_w_mass:', fl_dis_w_mass))
+print(paste0('fl_dis_w:', fl_dis_w))
 ```
 
-### Modify Maximum Allocation Point for Each Individual
-
-Given the Observed Household Type Specific maximum allocation amount, allocate only for each kid/marriage group less than the maximum. This is simply determined by marital status and the number of kids. Each spouse gets at most 1200, and each child gets at most 500.
-
-- five check per kid
-- 12 check if married
-- 12 check base each
-
-```{r}
-# Previous Dimension
-print(dim(df_input_il_noninc))
-# Threshold frame
-df_input_il_noninc <- df_input_il_noninc %>%
-  left_join(df_id, by = "id_i") %>%
-  mutate(D_max_i = kids*5 + marital*12 + 12) %>%
-  filter(D_max_i >= D_il) %>%
-  select(id_i, v_alpha_il, D_il, c_alpha_il, id_il, D_max_i, v_A_il, c_A_il, beta_i) %>%
-  ungroup() %>%
-  arrange(id_i, D_il) %>%
-  mutate(id_il = row_number())
-# Threshold summarize
-table(df_input_il_noninc$D_max_i)
-# Reduced Dimension
-print(dim(df_input_il_noninc))
-```
 ### Run Discrete Allocation Function
 
 ```{r}
@@ -818,17 +803,24 @@ print(dim(df_input_il_noninc))
 df_input_il_c <- df_input_il_noninc %>% 
   rename(A_il = c_A_il) %>% 
   rename(alpha_il = c_alpha_il) %>% 
-  select(-v_A_il, -v_alpha_il)
+  select(-v_A_il, -v_alpha_il) 
+
+# merge with mass, and set beta to 1
+df_input_il_c <- df_input_il_c %>% 
+  mutate(beta_i = 1) %>%
+  left_join(df_id %>% select(id_i, mass), by='id_i') %>%
+  rename(mass_i = mass)
 
 # Solve with Function
 ls_dis_solu_c <- suppressWarnings(suppressMessages(
   ffp_opt_anlyz_rhgin_dis(ar_rho,
-                          fl_dis_w,
+                          fl_dis_w_mass,
                           df_input_il_c,
                           bl_df_alloc_il = FALSE,
                           bl_return_V = TRUE,
                           bl_return_allQ_V = FALSE,
-                          bl_return_inner_V = FALSE)))
+                          bl_return_inner_V = FALSE,
+                          svr_measure_i = 'mass_i')))
 df_queue_il_long_c <-ls_dis_solu_c$df_queue_il_long
 df_alloc_i_long_c <- ls_dis_solu_c$df_alloc_i_long
 df_rho_gini_c <- ls_dis_solu_c$df_rho_gini
@@ -844,15 +836,22 @@ df_input_il_v <- df_input_il_noninc %>%
   rename(alpha_il = v_alpha_il) %>% 
   select(-c_A_il, -c_alpha_il)
 
+# merge with mass, and set beta to 1
+df_input_il_v <- df_input_il_v %>% 
+  mutate(beta_i = 1) %>%
+  left_join(df_id %>% select(id_i, mass), by='id_i') %>%
+  rename(mass_i = mass)
+
 # Solve with Function
 ls_dis_solu_v <- suppressWarnings(suppressMessages(
   ffp_opt_anlyz_rhgin_dis(ar_rho,
-                          fl_dis_w,
+                          fl_dis_w_mass,
                           df_input_il_v,
                           bl_df_alloc_il = FALSE,
                           bl_return_V = TRUE,
                           bl_return_allQ_V = FALSE,
-                          bl_return_inner_V = FALSE)))
+                          bl_return_inner_V = FALSE,
+                          svr_measure_i = 'mass_i')))
 df_queue_il_long_v <-ls_dis_solu_v$df_queue_il_long
 df_alloc_i_long_v <- ls_dis_solu_v$df_alloc_i_long
 df_rho_gini_v <- ls_dis_solu_v$df_rho_gini

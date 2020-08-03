@@ -1,5 +1,5 @@
 ---
-title: "Linear Preference, Threshold Optimal Allocation, Allocate by Y, Kids, Marry, Consider <= 65"
+title: "Linear Preference, Feasible Optimal Allocation, Allocate by Y, Kids, Marry, Consider <= 65"
 output:
   html_notebook:
     toc: yes
@@ -17,15 +17,16 @@ library(REconTools)
 
 # Optimal Allocation Y, J and M
 
-2019 Income, Kids Count and Martial Status (non-stochastic) based optimal linear allocation (Utilitarian). 
-
-Threshold based allocation, meaning use the same maximum allocation by household type as in actual, so only adjusting threshold and downward slope
+2019 Income, Kids Count and Martial Status (non-stochastic) based optimal linear allocation (Utilitarian).
 
 ## Process Simulation Outputs
 
 ### Define Some Parameters
 
 ```{r}
+# Max Phase Out given 1200*2 + 500*4 = 4400
+fl_max_phaseout = 238000
+it_bin_dollar_before_phaseout = 2500
 # Dollar Per Check
 fl_percheck_dollar = 100
 # Meaning of Ymin Ymax simulated interval of 1
@@ -34,9 +35,12 @@ fl_multiple = 58056
 it_max_checks = 44
 # Number of Tax Paying Households
 fl_tax_hh = 128580000
-# Number of Income Groups to Use
-# it_inc_groups = 25
-it_inc_groups = 9
+# Number of Income Groups to Use: use 25 for 10,000 = 1
+# Age Conditions
+# it_max_age = 64
+# it_min_age = 64
+it_max_age = 64
+it_min_age = 18
 ```
 
 ### Variable Names and Paths
@@ -50,10 +54,22 @@ srt_simu_path <- 'C:/Users/fan/Documents/Dropbox (UH-ECON)/PrjNygaardSorensenWan
 # snm_simu_csv <- 'snwx_v_planner_base.csv'
 # snm_simu_csv <- 'snwx_v_planner_dense.csv'
 # snm_simu_csv <- 'snwx_v_planner_densemore.csv'
-# st_file_type <- 'densemore'
+# st_file_type <- 'small_dup'
 # st_file_type <- 'dense'
-# st_file_type <- 'densemore'
-st_file_type <- 'densemore_a55z133'
+# st_file_type <- 'moredense'
+# st_file_type <- 'densemore_a55z133'
+# st_file_type <- 'densemore_a55z266_e0m0'
+# st_file_type <- 'moredense_a100z266_e0m0'
+# st_file_type <- 'moredense_a55zh43zs11'
+# st_file_type <- 'moredense_a75zh101zs5'
+
+# 1. e0m2 very dense a and zh test
+st_file_type <- 'moredense_a100zh266_e1m1'
+
+# 2. e0m2 very dense a and zh test
+st_file_type <- 'moredense_a100zh266_e2m2'
+
+# CSV Name
 snm_simu_csv <- paste0('snwx_v_planner_',st_file_type,'.csv')
 
 # Column Names
@@ -84,7 +100,11 @@ df_plan_v_tilde <- as_tibble(mt_plan_v_tilde) %>%
   rename_all(~c(ar_svr_csv)) %>%
   filter(vtilde != 0) %>%
   filter(checks <= it_max_checks) %>%
-  filter(age <= 64 && age >= 22)
+  filter(age <= it_max_age) %>%
+  filter(age >= it_min_age)
+
+# Remove
+rm(mt_plan_v_tilde)
 
 # Column 1: Age (in year before COVID)
 # Column 2: Marital status (0 if not married; 1 if married)
@@ -100,7 +120,7 @@ df_plan_v_tilde <- as_tibble(mt_plan_v_tilde) %>%
 Summarize Dataframe:
 
 ```{r}
-REconTools::ff_summ_percentiles(df_plan_v_tilde)
+# REconTools::ff_summ_percentiles(df_plan_v_tilde)
 ```
 
 Total Mass Check, and Total Check Measures Check ( 1 + total check possible, difference later):
@@ -117,17 +137,21 @@ Suppose the Planner does not observe Age (or can not use age information for all
 
 ```{r}
 dim(df_plan_v_tilde)
+# df_plan_v_tilde_yjm <- df_plan_v_tilde
 df_plan_v_tilde_yjm <- df_plan_v_tilde %>%
-  mutate(vtilde_m = vtilde*mass, ctilde_m = ctilde*mass) %>%
-  arrange(marital, kids, checks, ymin, age, vtilde) %>%
   group_by(marital, kids, checks, ymin) %>%
-  summarize(vtilde = mean(vtilde_m)/sum(mass),
-            ctilde = mean(ctilde_m)/sum(mass),
-            mass = sum(mass), 
+  summarize(vtilde = sum(vtilde*mass)/sum(mass),
+            ctilde = sum(ctilde*mass)/sum(mass),
+            mass = sum(mass),
             survive = mean(survive)) %>%
   ungroup()
+
+# Remove
+rm(df_plan_v_tilde)
+
+# Summarize
 dim(df_plan_v_tilde_yjm)
-REconTools::ff_summ_percentiles(df_plan_v_tilde_yjm)
+# REconTools::ff_summ_percentiles(df_plan_v_tilde_yjm)
 ```
 
 Mass Check:
@@ -144,7 +168,8 @@ Note, the way the income groups work is the following:
 
 - We generated income from 0 to 7
 - Ymin goes from 0.35 to 7: 7 refers to 7*58056=406392 dollars in 2012USD.
-- Solved at 200 bins, each bin = 0.035, 0.035*58056=2031.96
+- For less precise version of solution, solved at 200 bins, each bin = 0.035, 0.035*58056=2031.96
+- For more precise version of solution, solved roughly at 500 dollar intervals before phase out of 238000.
 - 4*58056 = 232224
 - linspace(0,3.99,115) is all segments at 0.035 interval before 23 thousand, or 3.99
 - Divide these into 20 bins, at 0.21 interval between 0 and 3.99, each 0.21 is 0.21*58056=12191 12k
@@ -155,34 +180,57 @@ Note, the way the income groups work is the following:
 Generate Some Income bin Information:
 
 ```{r}
-fl_max_full_phaseout = 4.10
-ar_ycut = c(0, seq(
-  min(df_plan_v_tilde_yjm %>% pull(ymin)), 
-  fl_max_full_phaseout, 
-  length.out=(it_inc_groups - 1))[2:(it_inc_groups - 1)], 7)
+# Number of Cuts Before th Mas Phase Out Point. 
+fl_thres = fl_max_phaseout/fl_multiple
+# Solution Grid Precision prior to max_phaseout point.
+inc_grid1 = seq(0, fl_thres, length.out=(fl_max_phaseout)/it_bin_dollar_before_phaseout)
+fl_grid_gap = inc_grid1[2] - inc_grid1[1]
+# Not all inc_grid1 points are valid, there are some elements that have no mass
+fl_min_ymin_posmass = min(df_plan_v_tilde_yjm %>% pull(ymin))
+# First group is min
+ar_ycut = c(0, inc_grid1[inc_grid1>fl_min_ymin_posmass+fl_grid_gap], 7)
+
+# alternative method
+# fl_max_full_phaseout = fl_max_phaseout/fl_multiple
+# ar_ycut2 = c(0, seq(
+#   min(df_plan_v_tilde_yjm %>% pull(ymin)),
+#   fl_max_full_phaseout,
+#   length.out=(it_inc_groups - 1))[2:(it_inc_groups - 1)], 7)
+
+# ar_ycut = c(0, seq(
+#   min(df_plan_v_tilde_yjm %>% pull(ymin)),
+#   7,
+#   length.out=(it_inc_groups - 1))[2:(it_inc_groups - 1)])
+
 print(ar_ycut*fl_multiple)
 it_inc_groups = length(ar_ycut)
 fl_inc_gap = (ar_ycut[3]-ar_ycut[2])*fl_multiple
 fl_inc_min = min(df_plan_v_tilde_yjm %>% pull(ymin))*fl_multiple
 subtitle = paste0('1 unit along x-axis = $', round(fl_inc_gap), 
                   ', x-axis min = $', round(fl_inc_min), 
-                  ', x-axis final group >= $', round(fl_max_full_phaseout*fl_multiple))
+                  ', x-axis final group >= $', round(ar_ycut[length(ar_ycut)-1]*fl_multiple))
 print(subtitle)
 ```
 
 Weighted averaging to generate larger income groups that contain sufficient mass to appropriately approximate results:
 
 ```{r}
+# df_plan_v_tilde_ygrpjm %>% filter(kids==0 & checks == 1)
+# table(df_plan_v_tilde_ygrpjm$ymin_group)
+# df_plan_v_tilde_ygrpjm <- df_plan_v_tilde_yjm %>% mutate(ymin_group = as.factor(ymin))
 df_plan_v_tilde_ygrpjm <- df_plan_v_tilde_yjm %>%
-  mutate(ymin_group = (cut(ymin, ar_ycut))) %>% 
-  mutate(vtilde_m = vtilde*mass, ctilde_m = ctilde*mass) %>%
+  mutate(ymin_group = (cut(ymin, ar_ycut))) %>%
   group_by(marital, kids, checks, ymin_group) %>%
-  summarize(vtilde = mean(vtilde_m)/sum(mass),
-            ctilde = mean(ctilde_m)/sum(mass),
-            mass = sum(mass), 
+  summarize(vtilde = sum(vtilde*mass)/sum(mass),
+            ctilde = sum(ctilde*mass)/sum(mass),
+            mass = sum(mass),
             survive = mean(survive)) %>%
   ungroup()
-dim(df_plan_v_tilde_ygrpjm)
+
+# Remove
+rm(df_plan_v_tilde_yjm)
+
+# Summarize
 REconTools::ff_summ_percentiles(df_plan_v_tilde_ygrpjm)
 ```
 
@@ -491,7 +539,7 @@ ffi_alpha_non_increasing_adj <- function(ar_alpha, fl_min_inc_bd = 1e-20) {
 ### Apply alpha Adjustment Function over Dataframe
 
 ```{r}
-bl_non_inc_adjust = TRUE
+bl_non_inc_adjust = FALSE
 if (bl_non_inc_adjust){
   # Update c_alpha_il
   df_input_il_noninc <- df_input_il %>% 
@@ -745,6 +793,7 @@ print(mass_sum_covid_vox_actual)
 fl_dis_w <- it_total_checks
 print(fl_dis_w)
 ```
+
 ### Modify Maximum Allocation Point for Each Individual
 
 Given the Observed Household Type Specific maximum allocation amount, allocate only for each kid/marriage group less than the maximum. This is simply determined by marital status and the number of kids. Each spouse gets at most 1200, and each child gets at most 500.
@@ -757,7 +806,7 @@ Given the Observed Household Type Specific maximum allocation amount, allocate o
 # Previous Dimension
 print(dim(df_input_il_noninc))
 # Threshold frame
-df_input_il_noninc_threshold <- df_input_il_noninc %>%
+df_input_il_noninc <- df_input_il_noninc %>%
   left_join(df_id, by = "id_i") %>%
   mutate(D_max_i = kids*5 + marital*12 + 12) %>%
   filter(D_max_i >= D_il) %>%
@@ -766,17 +815,16 @@ df_input_il_noninc_threshold <- df_input_il_noninc %>%
   arrange(id_i, D_il) %>%
   mutate(id_il = row_number())
 # Threshold summarize
-table(df_input_il_noninc_threshold$D_max_i)
+table(df_input_il_noninc$D_max_i)
 # Reduced Dimension
-print(dim(df_input_il_noninc_threshold))
+print(dim(df_input_il_noninc))
 ```
-
 ### Run Discrete Allocation Function
 
 ```{r}
 # Inputs
 # 30 individuals 25 checks, half the amount is available
-df_input_il_c <- df_input_il_noninc_threshold %>% 
+df_input_il_c <- df_input_il_noninc %>% 
   rename(A_il = c_A_il) %>% 
   rename(alpha_il = c_alpha_il) %>% 
   select(-v_A_il, -v_alpha_il)
@@ -800,7 +848,7 @@ Second Allocation based on life-time utility:
 ```{r}
 # Inputs
 # 30 individuals 25 checks, half the amount is available
-df_input_il_v <- df_input_il_noninc_threshold %>% 
+df_input_il_v <- df_input_il_noninc %>% 
   rename(A_il = v_A_il) %>% 
   rename(alpha_il = v_alpha_il) %>% 
   select(-c_A_il, -c_alpha_il)
@@ -860,16 +908,35 @@ print(tb_rho_rev_v)
 
 ## Allocaiton Results Analysis
 
-
-Join the allocation level dataframe with individual attributes:
+Join the allocation level dataframe with individual attributes, and possibly drop some ages to make graphs easier to read
 
 ```{r}
+# Consider only subsets of ages for graphing
+df_input_il_noninc_covar <- df_input_il_noninc %>%
+  left_join(df_id, by = "id_i") %>%
+  filter(kids <= 4) %>%
+  mutate(ymin_group = as.numeric(ymin_group),
+         kids = as.factor(kids), 
+         marital = as.factor(marital),
+         checks = D_il)
 # Summarize
-df_alloc_i_long_covar_v <- df_alloc_i_long_v %>% left_join(df_id, by = "id_i")
-df_alloc_i_long_covar_c <- df_alloc_i_long_c %>% left_join(df_id, by = "id_i")
+df_alloc_i_long_covar_v <- df_alloc_i_long_v %>% 
+  left_join(df_id, by = "id_i") %>%
+  filter(kids <= 4)
+df_alloc_i_long_covar_c <- df_alloc_i_long_c %>% 
+  left_join(df_id, by = "id_i") %>%
+  filter(kids <= 4)
 ```
 
-### Allocation Quantity Comparison, Actual, Optimal Various
+Common Graph Notes
+
+```{r}
+stg_source = paste0('SNW 2020 Simulation')
+stg_age = paste0('Age Between ', it_min_age, ' and ', it_max_age, '; Income Groups = ', it_inc_groups)
+stg_caption = paste0(stg_source, '\n', stg_age)
+```
+
+### Table Allocation Quantity Comparison, Actual, Optimal Various
 
 We have actual allocations, that is one column. Then we have optimal allocations based on c or V. And we have a number of attributes, y group, kids count, and marriage status. Show how actual and optimal allocations differ. 
 
@@ -912,7 +979,7 @@ df_alloc_i_long_covar_c <- df_alloc_i_long_covar_c %>%
 ```
 
 
-### Welfare Comparison Figure
+### Graph Welfare Comparison Figure
 
 ```{r}
 
@@ -961,7 +1028,7 @@ if (bl_save_img) {
 }
 ```
 
-### C Allocation Amounts by Attributes
+### Table C Allocation Amounts by Attributes
 
 Summarize check level statistics by key attributes:
 
@@ -985,7 +1052,7 @@ for (svr_group in ls_svr_groups) {
 }
 ```
 
-### V Allocation Amounts by Attributes
+### Table V Allocation Amounts by Attributes
 
 Summarize check level statistics by key attributes:
 
@@ -1009,7 +1076,7 @@ for (svr_group in ls_svr_groups) {
 }
 ```
 
-### Mass at Points
+### Graph Mass at Points
 
 ```{r}
 # graph mean check amount by income, marital status and kids counts
@@ -1029,11 +1096,36 @@ lineplot_c <- df_alloc_i_long_covar_c %>%
              subtitle = subtitle,
              x = 'Income Group',
              y = 'Mass for this Group',
-             caption = 'SNW 2020 Simulations') 
+             caption = stg_caption)
 print(lineplot_c)
 ```
 
-### Consumption Based Allocation Figure
+### Graph Consumption Marginal Per Check
+
+Graph out the marginal consumption gain for each check.
+
+```{r}
+# df_input_il_noninc %>% 
+#   left_join(df_id, by = "id_i")
+
+  # graph mean check amount by income, marital status and kids counts
+lineplot_c <- df_input_il_noninc_covar %>% 
+    ggplot(aes(x=ymin_group, y=log(c_alpha_il),
+               colour=checks,
+               shape=kids)) +
+        facet_wrap( ~ marital + kids, ncol=5) +
+        geom_point(size=1) +
+        # scale_y_continuous(trans='log') +
+        labs(title = paste0('Marginal Consumption Gain Each Check, Conditional on: Marry+Kids+Income, ',
+                      st_file_type, '\n', 'Top Row = Unmarried, Bottom Row = Married, Dark Blue = check 1, Light Blue = Final Check'),
+             subtitle = subtitle,
+             x = 'Income Group',
+             y = 'Log(Marginal Consumption Gain Per Check)',
+             caption = stg_caption) 
+print(lineplot_c)
+```
+
+### Graph Consumption Based Allocation Figure
 
 Generate the needed dataframe, averaging over ages, averages by ymin, marital status, and kids count:
 
@@ -1041,7 +1133,6 @@ Generate the needed dataframe, averaging over ages, averages by ymin, marital st
 # graph mean check amount by income, marital status and kids counts
 lineplot_c <- df_alloc_i_long_covar_c %>% 
   filter(rho_val == ar_rho[1]) %>% ungroup() %>% 
-  # filter(marital == 1) %>% 
   mutate(ymin_group = as.numeric(ymin_group),
          kids = as.factor(kids), 
          marital = as.factor(marital)) %>%
@@ -1052,22 +1143,45 @@ lineplot_c <- df_alloc_i_long_covar_c %>%
         facet_wrap( ~ marital + kids, ncol=5) +
         geom_point(size=3) +
         geom_line() +
-        labs(title = paste0('Optimize Expected 2020 Consumption, Conditional on: Marry+Kids+Income, Threshold Max 1200*N+500*K',
+        labs(title = paste0('Optimize Expected 2020 Consumption, Conditional on: Marry+Kids+Income, ',
                       st_file_type, '\n', 'Colors Represent Actual Policy versus Optimal Policy'),
              subtitle = subtitle,
              x = 'Income Group',
              y = 'Number of Checks',
-             caption = 'SNW 2020 Simulations') 
+             caption = stg_caption) 
 print(lineplot_c)
 ```
 
-### Lifetime Utility Allocation Figure
+### Graph Value Marginal Per Check
+
+Graph out the marginal value for each check.
+
+```{r}
+# df_input_il_noninc %>% 
+#   left_join(df_id, by = "id_i")
+
+  # graph mean check amount by income, marital status and kids counts
+lineplot_c <- df_input_il_noninc_covar %>% 
+    ggplot(aes(x=ymin_group, y=log(v_alpha_il),
+               colour=checks,
+               shape=kids)) +
+        facet_wrap( ~ marital + kids, ncol=5) +
+        geom_point(size=1) +
+        labs(title = paste0('Marginal Value Gain Each Check, Conditional on: Marry+Kids+Income, ',
+                      st_file_type, '\n', 'Top Row = Unmarried, Bottom Row = Married, Dark Blue = check 1, Light Blue = Final Check'),
+             subtitle = subtitle,
+             x = 'Income Group',
+             y = 'Log(Marginal Value Gain Per Check)',
+             caption = stg_caption) 
+print(lineplot_c)  
+```
+
+### Graph Value Based Allocation Figure
 
 ```{r}
 # graph mean check amount by income, marital status and kids counts
 lineplot_v <- df_alloc_i_long_covar_v %>% 
   filter(rho_val == ar_rho[1]) %>% ungroup() %>% 
-  # filter(marital == 1) %>% 
   mutate(ymin_group = as.numeric(ymin_group),
          kids = as.factor(kids), 
          marital = as.factor(marital)) %>%
@@ -1079,11 +1193,11 @@ lineplot_v <- df_alloc_i_long_covar_v %>%
         geom_point(size=3) +
         geom_line() +
         labs(title = 
-               paste0('Optimize Expected 2020 Value, Conditional on: Marry+Kids+Income, Threshold Max 1200*N+500*K',
+               paste0('Optimize Expected 2020 Value, Conditional on: Marry+Kids+Income, ',
                       st_file_type, '\n', 'Colors Represent Actual Policy versus Optimal Policy'),
              subtitle = subtitle,
              x = 'Income Group',
              y = 'Number of Checks',
-             caption = 'SNW 2020 Simulations') 
+             caption = stg_caption) 
 print(lineplot_v)
 ```

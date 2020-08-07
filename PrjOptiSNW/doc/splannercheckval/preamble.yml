@@ -1,0 +1,37 @@
+- file: snwx_a4chk_unemp_bisec_vec
+  title: "Marginal Gain Per Check 2020 Unemployed"
+  titleshort: "Marginal Gain Per Check 2020 Unemployed"
+  description: |
+    Marginal Gain Per Check 2020 Unemployed.
+  date: 2020-08-07
+  date_start: 2020-08-07
+  output:
+    pdf_document:
+      pandoc_args: '../../../_output_kniti_pdf.yaml'
+      includes:
+        in_header: '../../../preamble.tex'
+    html_document:
+      pandoc_args: '../../../_output_kniti_html.yaml'
+      includes:
+        in_header: '../../../hdga.html'
+  always_allow_html: true
+  urlcolor: blue
+
+- file: snwx_a4chk_wrk_bisec_vec
+  title: "Marginal Gain Per Check 2020 Employed"
+  titleshort: "Marginal Gain Per Check 2020 Employed"
+  description: |
+    Marginal Gain Per Check 2020 Employed.
+  date: 2020-08-07
+  date_start: 2020-08-07
+  output:
+    pdf_document:
+      pandoc_args: '../../../_output_kniti_pdf.yaml'
+      includes:
+        in_header: '../../../preamble.tex'
+    html_document:
+      pandoc_args: '../../../_output_kniti_html.yaml'
+      includes:
+        in_header: '../../../hdga.html'
+  always_allow_html: true
+  urlcolor: blue

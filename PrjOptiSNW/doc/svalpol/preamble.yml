@@ -1,0 +1,37 @@
+- file: snwx_vfi_main_bisec_vec
+  title: "Policy and Value Functions Dynamic Life Cycle"
+  titleshort: "Policy and Value Functions Dynamic Life Cycle"
+  description: |
+    Policy and Value Functions Dynamic Life Cycle.
+  date: 2020-08-07
+  date_start: 2020-08-07
+  output:
+    pdf_document:
+      pandoc_args: '../../../_output_kniti_pdf.yaml'
+      includes:
+        in_header: '../../../preamble.tex'
+    html_document:
+      pandoc_args: '../../../_output_kniti_html.yaml'
+      includes:
+        in_header: '../../../hdga.html'
+  always_allow_html: true
+  urlcolor: blue
+
+- file: snwx_vfi_unemp_bisec_vec
+  title: "Policy and Value Functions Dynamic Life Cycle if Unemployed"
+  titleshort: "Policy and Value Functions Dynamic Life Cycle if Unemployed"
+  description: |
+    Policy and Value Functions Dynamic Life Cycle if Unemployed.
+  date: 2020-08-07
+  date_start: 2020-08-07
+  output:
+    pdf_document:
+      pandoc_args: '../../../_output_kniti_pdf.yaml'
+      includes:
+        in_header: '../../../preamble.tex'
+    html_document:
+      pandoc_args: '../../../_output_kniti_html.yaml'
+      includes:
+        in_header: '../../../hdga.html'
+  always_allow_html: true
+  urlcolor: blue

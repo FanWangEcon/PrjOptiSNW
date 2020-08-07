@@ -25,9 +25,10 @@ if (~isempty(varargin))
 else
     close all;
     
-    % Solve the VFI Problem and get Value Function
+% %     % Solve the VFI Problem and get Value Function
     mp_params = snw_mp_param('default_tiny');
-%     mp_params = snw_mp_param('default_moredense');
+%     mp_params = snw_mp_param('default_small');
+    mp_params = snw_mp_param('default_dense');
     mp_controls = snw_mp_control('default_test');
     
     % Solve for Unemployment Values
@@ -38,7 +39,7 @@ else
     
     % Solve the Model to get V working and unemployed
     [~,ap_ss,cons_ss,mp_valpol_more_ss] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
-    [Phi_true] = snw_ds_main(mp_params, mp_controls, ap_ss, cons_ss, mp_valpol_more_ss);
+    [Phi_true, Phi_adj] = snw_ds_main(mp_params, mp_controls, ap_ss, cons_ss, mp_valpol_more_ss);
     
     % Get Matrixes
     cl_st_precompute_list = {'inc_tot_ygroup_grid'};
@@ -118,6 +119,7 @@ end
 if (bl_print_evuvw19_jmky_mass_verbose)
     mp_outcomes = containers.Map('KeyType', 'char', 'ValueType', 'any');    
     mp_outcomes('Phi_true') = Phi_true;
+%     mp_outcomes('Phi_adj') = Phi_adj;
     mp_outcomes('Phi_true_jmky') = Phi_true_jmky;
     ff_container_map_display(mp_outcomes);
 end

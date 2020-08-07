@@ -37,6 +37,18 @@
          <source>snw_a4chk_wrk_bisec_vec</source>
          <file>PrjOptiSNW/splanner/html/snw_a4chk_wrk_bisec_vec.html</file>
       </demoitem>
+      <demoitem>
+         <label>snw_v_planner</label>
+         <type>other</type>
+         <source>snw_v_planner</source>
+         <file>PrjOptiSNW/splanner/html/snw_v_planner.html</file>
+      </demoitem>
+      <demoitem>
+         <label>snw_vu_vw_checks</label>
+         <type>other</type>
+         <source>snw_vu_vw_checks</source>
+         <file>PrjOptiSNW/splanner/html/snw_vu_vw_checks.html</file>
+      </demoitem>
    </demosection>
    <demosection>
       <label>sdist</label>

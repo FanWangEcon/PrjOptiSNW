@@ -5,9 +5,9 @@
 %    check calculations
 %
 %    [EV19_JMKY_ALLCHECKS, EC19_JMKY_ALLCHECKS, OUTPUT] =
-%    SNW_EVUVW19_JMKY_ALLCHECKS(WELF_CHECKS, ST_SOLU_TYPE, MP_PARAMS,
-%    MP_CONTROLS, V_SS, V_UNEMP) provide V_SS and V_UNEMP solved out
-%    elsewhere, and only get two outputs out.
+%    SNW_EVUVW19_JMKY_ALLCHECKS(MP_PARAMS, MP_CONTROLS, ST_SOLU_TYPE,
+%    BL_PARFOR, IT_WORKERS, BL_EXPORT, SNM_SUFFIX) provide V_SS and V_UNEMP
+%    solved out elsewhere, and only get two outputs out.
 %
 %    See also SNW_EVUVW19_JMKY, SNW_EVUVW19_JMKY_MASS, SNW_EVUVW19_JAEEMK,
 %    SNW_EVUVW20_JAEEMK, SNW_HH_PRECOMPUTE
@@ -20,7 +20,7 @@ function [varargout]=snw_evuvw19_jmky_allchecks(varargin)
 if (~isempty(varargin))
     
     if (length(varargin)==7)
-        [mp_params, mp_controls, ...
+        [mp_params, mp_controls, st_solu_type, ...
             bl_parfor, it_workers, ...
             bl_export, snm_suffix] = varargin{:};
     else
@@ -30,42 +30,65 @@ if (~isempty(varargin))
 else
     clc;
     clear all;
-
-    bl_parfor = true;
-    it_workers = 2;
-    bl_export = true;
     
-%     bl_parfor = false;
-%     it_workers = 1;
-%     bl_export = true;
+    % 1a. Parfor controls
+%     bl_parfor = true;
+%     it_workers = 2;
+    bl_parfor = false;
+    it_workers = 1;
+
+    % 1b. Export Controls
+    % bl_export = false;
+    bl_export = true;
     
     snm_suffix = '';
     
+    % 1c. Solution Type
     st_solu_type = 'bisec_vec';
     
-    % 1. Set Up Parameters
+    % 2. Set Up Parameters
     % Solve the VFI Problem and get Value Function        
-%      mp_params = snw_mp_param('default_moredense_a100zh266_e0m0');
-%     mp_params = snw_mp_param('default_moredense_a55zh43zs11');
-    mp_params = snw_mp_param('default_moredense_a100zh266zs1');
-%     mp_params = snw_mp_param('default_moredense_a75zh101zs5');        
-%     mp_params = snw_mp_param('default_moredense_a55z363');
-    %     mp_params = snw_mp_param('default_moredense');
-    %     mp_params = snw_mp_param('default_dense');
+    %     mp_params = snw_mp_param('default_moredense_a55zh43zs11');
+    %     mp_params = snw_mp_param('default_moredense_a100zh266zs1');
+    %       mp_params = snw_mp_param('default_moredense_a100zh266zs1');
+    %     mp_params = snw_mp_param('default_moredense_a75zh101zs5');
+    %     mp_params = snw_mp_param('default_moredense_a55z363');
+        %     mp_params = snw_mp_param('default_moredense');
+%             mp_params = snw_mp_param('default_dense');
+%     mp_params = snw_mp_param('default_small');
 %         mp_params = snw_mp_param('default_tiny');
+    
+    
+    % 2a. Simulation 1, e1m1, dense a and zh test
+    % mp_params = snw_mp_param('default_moredense_a100zh266_e1m1');
+    % 2b. Simulation 2, both edu and marriage, no spouse shock
+    % mp_params = snw_mp_param('default_moredense_a100zh266_e2m2');
+    % 2c. Simulation 3, both edu and marriage, 5 spouse shock
+    % mp_params = snw_mp_param('default_moredense_a65zh81zs5_e2m2');
+    % mp_params = snw_mp_param('default_moredense_a100zh81zs5_e2m2');   
+    % mp_params = snw_mp_param('default_moredense_a65zh133zs5_e2m2');
+    mp_params = snw_mp_param('default_moredense_a65zh266zs5_e2m2');
+    
+    % 3. Controls
     mp_controls = snw_mp_control('default_test');
     
+    % 4. Unemployment
+    % L283 LABEL B
     % set Unemployment Related Variables
     xi=0.5; % Proportional reduction in income due to unemployment (xi=0 refers to 0 labor income; xi=1 refers to no drop in labor income)
-    b=0; % Unemployment insurance replacement rate (b=0 refers to no UI benefits; b=1 refers to 100 percent labor income replacement)
-    TR=100/58056; % Value of a welfare check (can receive multiple checks). TO DO: Update with alternative values
-    n_welfchecksgrid = 45;
+    b=1; % Unemployment insurance replacement rate (b=0 refers to no UI benefits; b=1 refers to 100 percent labor income replacement)
+    TR=100/58056; % Value of a wezlfare check (can receive multiple checks). TO DO: Update with alternative values
     
     mp_params('xi') = xi;
     mp_params('b') = b;
     mp_params('TR') = TR;
+    
+    % 5a. Check Count
+    % 89 checks to allow for both the first and the second round
+    n_welfchecksgrid = 89;
     mp_params('n_welfchecksgrid') = n_welfchecksgrid;
     
+    % 5b. Income Grid
     % Income Groups
     % 4 refers to 4*58056=232224 dollars in 2012USD
     % max 7 refers to 7*58056=406392 dollars in 2012USD
@@ -75,24 +98,24 @@ else
     fl_max_phaseout = 238000;
     fl_multiple = 58056;
     it_bin_dollar_before_phaseout = 500;
-    it_bin_dollar_after_phaseout = 2000;
+    it_bin_dollar_after_phaseout = 5000;
     fl_thres = fl_max_phaseout/fl_multiple;
     inc_grid1 = linspace(0,fl_thres,(fl_max_phaseout)/it_bin_dollar_before_phaseout);
     inc_grid2 = linspace(fl_thres, 7, (7*fl_multiple-fl_max_phaseout)/it_bin_dollar_after_phaseout); 
-    inc_grid=sort(unique([inc_grid1 inc_grid2]'));
-    
-    % n_incgrid=25; % Number of income groups
-    % inc_grid=linspace(0,7,n_incgrid)';
+    inc_grid=sort(unique([inc_grid1 inc_grid2]'));    
+%     n_incgrid=25; % Number of income groups
+%     inc_grid=linspace(0,7,n_incgrid)';
     
     mp_params('n_incgrid') = length(inc_grid);
     mp_params('inc_grid') = inc_grid;
     
+    % 6. Display Controls
     % Solve for Unemployment Values
-    mp_controls('bl_print_vfi') = false;
+    mp_controls('bl_print_vfi') = true;
     mp_controls('bl_print_vfi_verbose') = false;
-    mp_controls('bl_print_ds') = false;
-    mp_controls('bl_print_ds_verbose') = false;
-    mp_controls('bl_print_precompute') = false;
+    mp_controls('bl_print_ds') = true;
+    mp_controls('bl_print_ds_verbose') = true;
+    mp_controls('bl_print_precompute') = true;
     mp_controls('bl_print_precompute_verbose') = false;
     mp_controls('bl_print_a4chk') = false;
     mp_controls('bl_print_a4chk_verbose') = false;
@@ -110,8 +133,8 @@ params_group = values(mp_params, ...
     {'n_welfchecksgrid', 'n_jgrid', 'n_marriedgrid', 'n_kidsgrid'});
 [n_welfchecksgrid, n_jgrid, n_marriedgrid, n_kidsgrid] = params_group{:};
 
-params_group = values(mp_params, {'n_incgrid'});
-[n_incgrid] = params_group{:};
+params_group = values(mp_params, {'pi_unemp', 'n_incgrid', 'inc_grid'});
+[pi_unemp, n_incgrid, inc_grid] = params_group{:};
 
 %% Parse Model Controls
 % Profiling Controls
@@ -217,12 +240,14 @@ else
     end    
 end
 
-
 if (bl_parfor)
    delete(gcp('nocreate'));
 end
 
-%% F1. Output for computing optimal allocation
+%% F1. Mass to Probability
+Phi_true_jmky_prob = Phi_true_jmky./sum(Phi_true_jmky, 'all');
+
+%% F2. Output for computing optimal allocation
 Output=zeros((n_jgrid-1)*n_marriedgrid*n_kidsgrid*n_welfchecksgrid*n_incgrid,9);
 counter=0;
 inc_grid = [inc_grid; 10E30];
@@ -240,7 +265,7 @@ for inc_group=1:n_incgrid
                     Output(counter,4)=welf_checks;
                     
                     Output(counter,5)=inc_grid(inc_group);
-                    Output(counter,6)=Phi_true_jmky(j,married,kids,inc_group);
+                    Output(counter,6)=Phi_true_jmky_prob(j,married,kids,inc_group);
                     Output(counter,7)=psi(j);
                     
                 end
@@ -258,7 +283,7 @@ Output = Output(Output(:,6) > 0,:);
 if (bl_export)
     mp_path = snw_mp_path('fan');
     snm_invoke_suffix = strrep(mp_params('mp_params_name'), 'default_', '');
-    snm_file_csv = ['snwx_v_planner_' char(snm_invoke_suffix) char(snm_suffix) '.csv'];
+    snm_file_csv = ['snwx_v_planner_' char(snm_invoke_suffix) char(snm_suffix) '_b1.csv'];
     writematrix(Output, [mp_path('spt_simu_outputs') snm_file_csv]);
 end
 

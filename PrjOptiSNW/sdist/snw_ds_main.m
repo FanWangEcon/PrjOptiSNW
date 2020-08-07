@@ -21,14 +21,16 @@ function varargout=snw_ds_main(varargin)
 
 %% Default and Parse Inputs
 if (~isempty(varargin))
-
+    
+    bl_loop_aggregate = true;
+    
     if (length(varargin)==2)        
         [mp_params, mp_controls] = varargin{:};                
     elseif (length(varargin)==4)        
         % This will not produce extra statistics outputs
         [mp_params, mp_controls, ap_ss, cons_ss] = varargin{:};        
-    elseif (length(varargin)==5)        
-        % This will not produce extra statistics outputs
+    elseif (length(varargin)==5)
+        % This will produce extra statistics outputs
         [mp_params, mp_controls, ap_ss, cons_ss, mp_valpol_more_ss] = varargin{:};        
     else
         error('Need to provide 2/4 parameter inputs');
@@ -37,12 +39,16 @@ if (~isempty(varargin))
     bl_ds_store_all = false;
     
 else
-
-    mp_params = snw_mp_param('default_small');
+    
+    clc;    
+    clear all;
+%     mp_params = snw_mp_param('default_dense');
+    mp_params = snw_mp_param('default_tiny');
     mp_controls = snw_mp_control('default_test');
     [v_ss, ap_ss, cons_ss, mp_valpol_more_ss] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
     
     bl_ds_store_all = true;
+    bl_loop_aggregate = true;
     
 end
 
@@ -137,42 +143,48 @@ end
 % Use policy functions and survival probabilities to get distribution of remaining idiosyncratic states
 
 for j=1:(n_jgrid-1) % Age
+    
+    % Age Timer
+    if (bl_print_ds) tm_ds_age = tic; end
+    
    for a=1:n_agrid % Assets
        for eta=1:n_etagrid % Productivity
            for educ=1:n_educgrid % Educational level
                for married=1:n_marriedgrid % Marital status
                    for kids=1:n_kidsgrid % No. of kids
-
-                       if ap_ss(j,a,eta,educ,married,kids)==0
-                           inds(1)=1;
-                           inds(2)=1;
-                           vals(1)=1;
-                           vals(2)=0;
-
-                       elseif ap_ss(j,a,eta,educ,married,kids)>=agrid(n_agrid)
-                           inds(1)=n_agrid;
-                           inds(2)=n_agrid;
-                           vals(1)=1;
-                           vals(2)=0;
-
-                       else
-
-                           ind_aux=find(agrid<=ap_ss(j,a,eta,educ,married,kids),1,'last');
-
-                           inds(1)=ind_aux;
-                           inds(2)=ind_aux+1;
-
-                           % Linear interpolation
-                           vals(1)=1-((ap_ss(j,a,eta,educ,married,kids)-agrid(inds(1)))/(agrid(inds(2))-agrid(inds(1))));
-                           vals(2)=1-vals(1);
-
-                       end
-
-                       for etap=1:n_etagrid
-                           for kidsp=1:n_kidsgrid
-                               Phiss(j+1,inds(1),etap,educ,married,kidsp)=Phiss(j+1,inds(1),etap,educ,married,kidsp)+Phiss(j,a,eta,educ,married,kids)*vals(1)*pi_eta(eta,etap)*pi_kids(kids,kidsp,j,educ,married);
-                               Phiss(j+1,inds(2),etap,educ,married,kidsp)=Phiss(j+1,inds(2),etap,educ,married,kidsp)+Phiss(j,a,eta,educ,married,kids)*vals(2)*pi_eta(eta,etap)*pi_kids(kids,kidsp,j,educ,married);
+                    
+                       if (Phiss(j,a,eta,educ,married,kids)>0)                          
+                           if ap_ss(j,a,eta,educ,married,kids)==0
+                               inds(1)=1;
+                               inds(2)=1;
+                               vals(1)=1;
+                               vals(2)=0;
+                               
+                           elseif ap_ss(j,a,eta,educ,married,kids)>=agrid(n_agrid)
+                               inds(1)=n_agrid;
+                               inds(2)=n_agrid;
+                               vals(1)=1;
+                               vals(2)=0;
+                               
+                           else
+                               
+                               ind_aux=find(agrid<=ap_ss(j,a,eta,educ,married,kids),1,'last');
+                               
+                               inds(1)=ind_aux;
+                               inds(2)=ind_aux+1;
+                               
+                               % Linear interpolation
+                               vals(1)=1-((ap_ss(j,a,eta,educ,married,kids)-agrid(inds(1)))/(agrid(inds(2))-agrid(inds(1))));
+                               vals(2)=1-vals(1);
+                               
                            end
+                           
+                           for etap=1:n_etagrid
+                               for kidsp=1:n_kidsgrid
+                                   Phiss(j+1,inds(1),etap,educ,married,kidsp)=Phiss(j+1,inds(1),etap,educ,married,kidsp)+Phiss(j,a,eta,educ,married,kids)*vals(1)*pi_eta(eta,etap)*pi_kids(kids,kidsp,j,educ,married);
+                                   Phiss(j+1,inds(2),etap,educ,married,kidsp)=Phiss(j+1,inds(2),etap,educ,married,kidsp)+Phiss(j,a,eta,educ,married,kids)*vals(2)*pi_eta(eta,etap)*pi_kids(kids,kidsp,j,educ,married);
+                               end
+                           end                           
                        end
 
                    end
@@ -180,14 +192,25 @@ for j=1:(n_jgrid-1) % Age
            end
        end
    end
+
+   if (bl_print_ds)
+       tm_ds_age_end = toc(tm_ds_age);
+       disp(strcat(['SNW_DS_MAIN ACUMU MASS: Finished Age Group:' ...
+           num2str(j) ' of ' num2str(n_jgrid-1) ...
+           ', time-this-age:' num2str(tm_ds_age_end)]));
+   end
+    
 end
 
-% Normalize distribution of idiosyncratic states to sum to 1 for each age
+%% Normalize distribution of idiosyncratic states to sum to 1 for each age
 Phi_adj=zeros(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 Phi_true=zeros(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 
 for j=1:n_jgrid
 
+    % Age Timer
+    if (bl_print_ds) tm_ds_age = tic; end
+    
     dummy=sum(sum(sum(sum(sum(Phiss(j,:,:,:,:,:))))));
 
     for a=1:n_agrid
@@ -210,8 +233,14 @@ for j=1:n_jgrid
        end
     end
 
+   if (bl_print_ds)
+       tm_ds_age_end = toc(tm_ds_age);
+       disp(strcat(['SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:' ...
+           num2str(j) ' of ' num2str(n_jgrid-1) ...
+           ', time-this-age:' num2str(tm_ds_age_end)]));
+   end
+        
 end
-
 
 % Check if the upper bound on assets binds
 check_asset_distr=sum(sum(sum(sum(sum(Phi_true(:,n_agrid,:,:,:,:))))));
@@ -220,143 +249,146 @@ if (bl_print_ds)
         num2str(check_asset_distr/sum(Pop))]));
 end
 
-% Aggregate variables
-A_agg=0;
-Aprime_agg=0;
-C_agg=0;
-Y_inc_agg=0;
-Tax_revenues=0;
-SS_spend=0;
-Bequests_aux=0;
-
-for j=1:n_jgrid
-   for eta=1:n_etagrid
-       for educ=1:n_educgrid
-           for married=1:n_marriedgrid
-               for kids=1:n_kidsgrid
-
-                   A_agg=A_agg+Phi_true(j,1:n_agrid,eta,educ,married,kids)*agrid(1:n_agrid); % Aggregate wealth
-                   Aprime_agg=Aprime_agg+Phi_true(j,1:n_agrid,eta,educ,married,kids)*ap_ss(j,1:n_agrid,eta,educ,married,kids)'; % Aggregate saving
-                   C_agg=C_agg+Phi_true(j,1:n_agrid,eta,educ,married,kids)*cons_ss(j,1:n_agrid,eta,educ,married,kids)'; % Aggregate consumption
-
-                   % [inc,earn]=individual_income(j,1:n_agrid,eta,educ);
-                   [inc,earn]=snw_hh_individual_income(j,1:n_agrid,eta,educ,...
-                       theta, r, agrid, epsilon, eta_H_grid, SS, Bequests, bequests_option);
-                   % spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
-                   spouse_inc=snw_hh_spousal_income(j,educ,kids,earn,SS(j,educ), jret);
-                   
-                   inc_aux=r*(agrid(1:n_agrid)+Bequests*(bequests_option-1))+epsilon(j,educ)*theta*exp(eta_H_grid(eta)); % Income (excluding Social Security benefits)
-
-                   Y_inc_agg=Y_inc_agg+Phi_true(j,1:n_agrid,eta,educ,married,kids)*( inc_aux+(married-1)*spouse_inc*exp(eta_S_grid(eta)) ); % Aggregate income (labor earnings, spousal income, interest earnings)
-
-                   Tax_revenues=Tax_revenues+Phi_true(j,1:n_agrid,eta,educ,married,kids)*max(0,snw_tax_hh(inc,(married-1)*spouse_inc*exp(eta_S_grid(eta)),a2)); % Tax revenues
-
-                   SS_spend=SS_spend+sum(Phi_true(j,1:n_agrid,eta,educ,married,kids)*SS(j,educ)); % Total spending on Social Security
-
-                   Bequests_aux=Bequests_aux+Phi_true(j,1:n_agrid,eta,educ,married,kids)*ap_ss(j,1:n_agrid,eta,educ,married,kids)'*(1-psi(j)); % Accidental Bequests*(bequests_option-1)
-
-               end
-           end
-       end
-   end
-end
-
-% Alternative 1: Suppose accidental bequests go to the government
-% Alternative 2: Allocate accidental bequests uniformly across the population
-if bequests_option==1
-    if throw_in_ocean==0
-        if (bl_print_ds)
-            disp('SNW_DS_MAIN: Accidental bequests are part of government revenues');
-        end
-        Tax_revenues=Tax_revenues+Bequests_aux*(1+r);
-    elseif throw_in_ocean==1
-        if (bl_print_ds)
-            disp('SNW_DS_MAIN: Accidental bequests are thrown in the ocean');
-        end
-    end
-elseif bequests_option==2
-    if (bl_print_ds)
-        disp('SNW_DS_MAIN: Accidental bequests are uniformly distributed across the population');
-    end
-    Bequests=Bequests_aux/(sum(Pop)*(1+g_n));
-end
-
-% Update guess for a2 (determines average level of income taxation)
-% Assuming government balances its budget period-by-period
-
-tol=10^-4; %10^-3; %5*10^-4;
-err=abs((Tax_revenues/(SS_spend+g_cons*Y_inc_agg))-1);
-
-a2_update=a2;
-
-it=0;
-
-while err>tol
-
-    it=it+1;
-
-    Tax_revenues_aux=0;
-
+%% Explicit Looped Aggregate variables Calculation
+if (bl_loop_aggregate)
+    
+    A_agg=0;
+    Aprime_agg=0;
+    C_agg=0;
+    Y_inc_agg=0;
+    Tax_revenues=0;
+    SS_spend=0;
+    Bequests_aux=0;
+    
     for j=1:n_jgrid
-       for eta=1:n_etagrid
-           for educ=1:n_educgrid
-               for married=1:n_marriedgrid
-                   for kids=1:n_kidsgrid
-
-                       % [inc,earn]=individual_income(j,1:n_agrid,eta,educ);
-                       [inc,earn]=snw_hh_individual_income(j,1:n_agrid,eta,educ,...
-                       theta, r, agrid, epsilon, eta_H_grid, SS, Bequests, bequests_option);
-                       % spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
-                       spouse_inc=snw_hh_spousal_income(j,educ,kids,earn,SS(j,educ), jret);
-                       Tax_revenues_aux=Tax_revenues_aux+Phi_true(j,1:n_agrid,eta,educ,married,kids)*max(0,snw_tax_hh(inc,(married-1)*spouse_inc*exp(eta_S_grid(eta)),a2)); % Tax revenues
-
-                   end
-               end
-           end
-       end
+        for eta=1:n_etagrid
+            for educ=1:n_educgrid
+                for married=1:n_marriedgrid
+                    for kids=1:n_kidsgrid
+                        
+                        A_agg=A_agg+Phi_true(j,1:n_agrid,eta,educ,married,kids)*agrid(1:n_agrid); % Aggregate wealth
+                        Aprime_agg=Aprime_agg+Phi_true(j,1:n_agrid,eta,educ,married,kids)*ap_ss(j,1:n_agrid,eta,educ,married,kids)'; % Aggregate saving
+                        C_agg=C_agg+Phi_true(j,1:n_agrid,eta,educ,married,kids)*cons_ss(j,1:n_agrid,eta,educ,married,kids)'; % Aggregate consumption
+                        
+                        % [inc,earn]=individual_income(j,1:n_agrid,eta,educ);
+                        [inc,earn]=snw_hh_individual_income(j,1:n_agrid,eta,educ,...
+                            theta, r, agrid, epsilon, eta_H_grid, SS, Bequests, bequests_option);
+                        % spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
+                        spouse_inc=snw_hh_spousal_income(j,educ,kids,earn,SS(j,educ), jret);
+                        
+                        inc_aux=r*(agrid(1:n_agrid)+Bequests*(bequests_option-1))+epsilon(j,educ)*theta*exp(eta_H_grid(eta)); % Income (excluding Social Security benefits)
+                        
+                        Y_inc_agg=Y_inc_agg+Phi_true(j,1:n_agrid,eta,educ,married,kids)*( inc_aux+(married-1)*spouse_inc*exp(eta_S_grid(eta)) ); % Aggregate income (labor earnings, spousal income, interest earnings)
+                        
+                        Tax_revenues=Tax_revenues+Phi_true(j,1:n_agrid,eta,educ,married,kids)*max(0,snw_tax_hh(inc,(married-1)*spouse_inc*exp(eta_S_grid(eta)),a2)); % Tax revenues
+                        
+                        SS_spend=SS_spend+sum(Phi_true(j,1:n_agrid,eta,educ,married,kids)*SS(j,educ)); % Total spending on Social Security
+                        
+                        Bequests_aux=Bequests_aux+Phi_true(j,1:n_agrid,eta,educ,married,kids)*ap_ss(j,1:n_agrid,eta,educ,married,kids)'*(1-psi(j)); % Accidental Bequests*(bequests_option-1)
+                        
+                    end
+                end
+            end
+        end
     end
-
+    
+    % Alternative 1: Suppose accidental bequests go to the government
+    % Alternative 2: Allocate accidental bequests uniformly across the population
     if bequests_option==1
         if throw_in_ocean==0
-            Tax_revenues_aux=Tax_revenues_aux+Bequests_aux*(1+r);
+            if (bl_print_ds)
+                disp('SNW_DS_MAIN: Accidental bequests are part of government revenues');
+            end
+            Tax_revenues=Tax_revenues+Bequests_aux*(1+r);
+        elseif throw_in_ocean==1
+            if (bl_print_ds)
+                disp('SNW_DS_MAIN: Accidental bequests are thrown in the ocean');
+            end
+        end
+    elseif bequests_option==2
+        if (bl_print_ds)
+            disp('SNW_DS_MAIN: Accidental bequests are uniformly distributed across the population');
+        end
+        Bequests=Bequests_aux/(sum(Pop)*(1+g_n));
+    end
+    
+    % Update guess for a2 (determines average level of income taxation)
+    % Assuming government balances its budget period-by-period
+    
+    tol=10^-4; %10^-3; %5*10^-4;
+    err=abs((Tax_revenues/(SS_spend+g_cons*Y_inc_agg))-1);
+    
+    a2_update=a2;
+    
+    it=0;
+    
+    while err>tol
+        
+        it=it+1;
+        
+        Tax_revenues_aux=0;
+        
+        for j=1:n_jgrid
+            for eta=1:n_etagrid
+                for educ=1:n_educgrid
+                    for married=1:n_marriedgrid
+                        for kids=1:n_kidsgrid
+                            
+                            % [inc,earn]=individual_income(j,1:n_agrid,eta,educ);
+                            [inc,earn]=snw_hh_individual_income(j,1:n_agrid,eta,educ,...
+                                theta, r, agrid, epsilon, eta_H_grid, SS, Bequests, bequests_option);
+                            % spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
+                            spouse_inc=snw_hh_spousal_income(j,educ,kids,earn,SS(j,educ), jret);
+                            Tax_revenues_aux=Tax_revenues_aux+Phi_true(j,1:n_agrid,eta,educ,married,kids)*max(0,snw_tax_hh(inc,(married-1)*spouse_inc*exp(eta_S_grid(eta)),a2)); % Tax revenues
+                            
+                        end
+                    end
+                end
+            end
+        end
+        
+        if bequests_option==1
+            if throw_in_ocean==0
+                Tax_revenues_aux=Tax_revenues_aux+Bequests_aux*(1+r);
+            end
+        end
+        
+        a2=a2*(((SS_spend+g_cons*Y_inc_agg)/Tax_revenues_aux)^0.75); % Find value of a2 that balances government budget
+        
+        err=abs((Tax_revenues_aux/(SS_spend+g_cons*Y_inc_agg))-1);
+        
+        if (bl_print_ds)
+            st_tax_iter = strjoin(...
+                ["SNW_DS_MAIN tax and spend", ...
+                ['it=' num2str(it)], ...
+                ['err=' num2str(err)] ...
+                ], ";");
+            disp(st_tax_iter);
         end
     end
-
-    a2=a2*(((SS_spend+g_cons*Y_inc_agg)/Tax_revenues_aux)^0.75); % Find value of a2 that balances government budget
-
-    err=abs((Tax_revenues_aux/(SS_spend+g_cons*Y_inc_agg))-1);
-
+    
+    
     if (bl_print_ds)
-        st_tax_iter = strjoin(...
-            ["SNW_DS_MAIN tax and spend", ...
-             ['it=' num2str(it)], ...
-             ['err=' num2str(err)] ...
-            ], ";");        
-        disp(st_tax_iter);
+        name='SNW_DS_MAIN: Number of a2-adjustments (for taxation) used to balance the government budget= ';
+        name2=[name,num2str(it)];
+        disp(name2);
+        
+        a2_update=[a2_update,a2];
+        
+        name='SNW_DS_MAIN: Old and updated value of a2=';
+        name2=[name,num2str(a2_update)];
+        disp(name2);
+        
+        name='SNW_DS_MAIN: Aggregates: Cons., Gov. cons., Save, Assets, Income, Bequests ';
+        aggregates=[C_agg,g_cons*Y_inc_agg,A_agg,Aprime_agg,Y_inc_agg,Bequests_aux];
+        name2=[name,num2str(aggregates)];
+        disp(name2);
+        
+        name='SNW_DS_MAIN: Resource constraint: C_t+A_{t+1}+G_t=A_t+Y_t ';
+        name2=[name,num2str([C_agg+g_cons*Y_inc_agg+Aprime_agg,A_agg+Y_inc_agg])];
+        disp(name2);
     end
 end
-
-
-if (bl_print_ds)
-    name='SNW_DS_MAIN: Number of a2-adjustments (for taxation) used to balance the government budget= ';
-    name2=[name,num2str(it)];
-    disp(name2);
-
-    a2_update=[a2_update,a2];
-
-    name='SNW_DS_MAIN: Old and updated value of a2=';
-    name2=[name,num2str(a2_update)];
-    disp(name2);
-
-    name='SNW_DS_MAIN: Aggregates: Cons., Gov. cons., Save, Assets, Income, Bequests ';
-    aggregates=[C_agg,g_cons*Y_inc_agg,A_agg,Aprime_agg,Y_inc_agg,Bequests_aux];
-    name2=[name,num2str(aggregates)];
-    disp(name2);
-
-    name='SNW_DS_MAIN: Resource constraint: C_t+A_{t+1}+G_t=A_t+Y_t ';
-    name2=[name,num2str([C_agg+g_cons*Y_inc_agg+Aprime_agg,A_agg+Y_inc_agg])];
-    disp(name2);    
-end 
 
 %% Timing and Profiling End
 if (bl_timer)
@@ -372,6 +404,7 @@ end
 
 %% Collect Results if Require Extra Outputs
 if (bl_ds_store_all)
+    
     mp_dsvfi_results = containers.Map('KeyType', 'char', 'ValueType', 'any');
     mp_dsvfi_results('mp_params') = mp_params;
     mp_dsvfi_results('mp_controls') = mp_controls;
@@ -392,13 +425,6 @@ if (bl_ds_store_all)
     mp_dsvfi_results('SS_ss') = SS_ss;
     mp_dsvfi_results('tax_ss') = tax_ss;       
     
-    % Additional aggregate Statistics
-    mp_dsvfi_results('Aprime_agg') = Aprime_agg;
-    mp_dsvfi_results('C_agg') = C_agg;
-    mp_dsvfi_results('Tax_revenues') = Tax_revenues;
-    mp_dsvfi_results('SS_spend') = SS_spend;
-    mp_dsvfi_results('Bequests_aux') = Bequests_aux;
-   
     % Household Asset State Space Value
     a_ss = zeros(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
     for a=1:n_agrid
@@ -434,14 +460,36 @@ if (bl_ds_store_all)
     mp_dsvfi_results('yshr_SS_ss') = yshr_SS;
     mp_dsvfi_results('yshr_tax_ss') = yshr_tax;
     mp_dsvfi_results('yshr_nttxss_ss') = yshr_nettxss;
+   
+    % Additional aggregate Statistics (Duplicate Initial Looped Method)
+    if (bl_loop_aggregate)
+        mp_dsvfi_results('A_agg') = A_agg;
+        mp_dsvfi_results('Aprime_agg') = Aprime_agg;
+        mp_dsvfi_results('Y_inc_agg') = Y_inc_agg;
+        mp_dsvfi_results('C_agg') = C_agg;
+        mp_dsvfi_results('Tax_revenues') = Tax_revenues;
+        mp_dsvfi_results('SS_spend') = SS_spend;
+        mp_dsvfi_results('Bequests_aux') = Bequests_aux;
+        
+        mp_dsvfi_results('A_agg_perhh') = A_agg/sum(Pop);
+        mp_dsvfi_results('Aprime_agg_perhh') = Aprime_agg/sum(Pop);
+        mp_dsvfi_results('Y_inc_agg_perhh') = Y_inc_agg/sum(Pop);
+        
+        mp_dsvfi_results('C_agg_perhh') = C_agg/sum(Pop);
+        mp_dsvfi_results('Tax_revenues_perhh') = Tax_revenues/sum(Pop);
+        mp_dsvfi_results('SS_spend_perhh') = SS_spend/sum(Pop);
+        mp_dsvfi_results('Bequests_aux_perhh') = Bequests_aux/sum(Pop);
+    end
     
 end
 
 %% Results Basic Print and Verbose print
 if (bl_print_ds_verbose)
-    ff_container_map_display(mp_params);
-    ff_container_map_display(mp_controls);
-    ff_container_map_display(mp_dsvfi_results);
+%     ff_container_map_display(mp_params);
+%     ff_container_map_display(mp_controls);
+    if exist('mp_dsvfi_results', 'var')
+        ff_container_map_display(mp_dsvfi_results);
+    end
 end
 
 if (bl_compute_drv_stats)
@@ -458,7 +506,7 @@ if (bl_compute_drv_stats)
         mp_cl_ar_xyz_of_s('y_head_inc') = {y_inc_ss(:), zeros(1)};
         mp_cl_ar_xyz_of_s('y_head_earn') = {y_earn_ss(:), zeros(1)};
         mp_cl_ar_xyz_of_s('y_spouse_inc') = {y_spouse_inc_ss(:), zeros(1)};
-        mp_cl_ar_xyz_of_s('y_all') = {y_inc_ss(:) + y_spouse_inc_ss(:), zeros(1)};
+        mp_cl_ar_xyz_of_s('y_all') = {y_inc_ss(:) + y_spouse_inc_ss(:) - SS_ss(:), zeros(1)};
         
         % Add to Map
         mp_cl_ar_xyz_of_s('yshr_interest') = {yshr_interest(:), zeros(1)};
@@ -510,9 +558,12 @@ for it_k = 1:nargout
     elseif (it_k==4)
         ob_out_cur = Y_inc_agg;
     elseif (it_k==5)
-        ob_out_cur = it;        
+        ob_out_cur = it;
     elseif (it_k==6)
-        ob_out_cur = mp_dsvfi_results;        
+        ob_out_cur = mp_dsvfi_results;
+    elseif (it_k==7)
+        % update the tax parameter
+        ob_out_cur = a2;
     end
     varargout{it_k} = ob_out_cur;
 end

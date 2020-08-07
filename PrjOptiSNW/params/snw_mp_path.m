@@ -26,10 +26,13 @@ else
     
 end
 
-%% Dropbox Roots
-
+%% Dropbox Root Auto Detect by Computer
 if (strcmp(st_computer, 'fan'))
-    spt_dropbox_root = 'C:/Users/fan/Documents/Dropbox (UH-ECON)/PrjNygaardSorensenWang/';
+     if (exist('D:/Dropbox (UH-ECON)', 'dir')>0)
+         spt_dropbox_root = 'D:/Dropbox (UH-ECON)/PrjNygaardSorensenWang/';
+     elseif (exist('C:/Users/fan/Documents/Dropbox (UH-ECON)/', 'dir')>0)
+         spt_dropbox_root = 'C:/Users/fan/Documents/Dropbox (UH-ECON)/PrjNygaardSorensenWang/';
+     end
 end
 
 %% Parametesr Grid Points

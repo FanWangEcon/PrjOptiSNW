@@ -47,6 +47,10 @@
 %    IT_ROW_N_KEEP, IT_COL_N_KEEP) Control for output matrixes how many
 %    rows and columns to print out.
 %
+%    MP_PARAMS = SNW_MP_PARAM(ST_PARAM_GROUP, BL_PRINT_MP_PARAMS,
+%    ST_SHOCK_METHOD) controls the shock method used ST_SHOCK_METHOD is
+%    either 'tauchen' or 'rouwenhorst'.
+%
 %    [MP_PARAMS, MP_PARAMS_PREFTECHPRICEGOV, MP_PARAMS_STATESGRID,
 %    MP_PARAMS_EXOTRANS, MP_PARAMS_TYPELIFE, MP_PARAMS_INTLEN] =
 %    SNW_MP_PARAM(ST_PARAM_GROUP) generates default parameters for the type
@@ -60,7 +64,8 @@
 function varargout = snw_mp_param(varargin)
 %% Parse Main Inputs and Set Defaults
 if (~isempty(varargin))
-
+    
+    st_shock_method = 'tauchen';
     [it_row_n_keep, it_col_n_keep] = deal(8, 8);
 
     if (length(varargin)==1)
@@ -68,6 +73,8 @@ if (~isempty(varargin))
         bl_print_mp_params = false;
     elseif (length(varargin)==2)
         [st_param_group, bl_print_mp_params] = varargin{:};
+    elseif (length(varargin)==3)
+        [st_param_group, bl_print_mp_params, st_shock_method] = varargin{:};
     elseif (length(varargin)==4)
         [st_param_group, bl_print_mp_params, it_row_n_keep, it_col_n_keep] = varargin{:};
     end
@@ -78,6 +85,7 @@ else
 %     st_param_group = 'default_verydense';
 %     st_param_group = 'default_dense';
     st_param_group = 'default_tiny';
+    st_shock_method = 'tauchen';
     bl_print_mp_params = true;
     [it_row_n_keep, it_col_n_keep] = deal(20, 8);
 
@@ -102,35 +110,8 @@ elseif(strcmp(st_param_group, "default_moredense"))
     n_eta_H_grid=9; % 9; % No. of grid points for persistent labor productivity shocks
     n_eta_S_grid=5; % 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
     n_kidsgrid=5; % No. of grid points for children (0 to 4+ children)
-elseif(strcmp(st_param_group, "default_moredense_a55z363"))
-    n_jgrid  =83;
-    jret     =48;
-    n_agrid  =55;
-    n_eta_H_grid=33; 
-    n_eta_S_grid=11;
-    n_kidsgrid=5;
-elseif(strcmp(st_param_group, "default_moredense_a55zh43zs11"))
-    n_jgrid  =83;
-    jret     =48;
-    n_agrid  =55;
-    n_eta_H_grid=43; 
-    n_eta_S_grid=11;
-    n_kidsgrid=5;
-elseif(strcmp(st_param_group, "default_moredense_a100zh266zs1"))
-    n_jgrid  =83;
-    jret     =48;
-    n_agrid  =100;
-    n_eta_H_grid=266; 
-    n_eta_S_grid=1;
-    n_kidsgrid=5;    
-elseif(strcmp(st_param_group, "default_moredense_a75zh101zs5"))
-    n_jgrid  =83;
-    jret     =48;
-    n_agrid  =75;
-    n_eta_H_grid=101; 
-    n_eta_S_grid=5;
-    n_kidsgrid=5;    
-elseif(strcmp(st_param_group, "default_moredense_a100zh266_e0m0"))
+elseif(strcmp(st_param_group, "default_moredense_a100zh266_e1m1"))
+    % 15 workers
     % household head shock only, only one education group
     n_jgrid  =83; 
     jret     =48;
@@ -140,6 +121,67 @@ elseif(strcmp(st_param_group, "default_moredense_a100zh266_e0m0"))
     n_kidsgrid=5; 
     n_educgrid=1;
     n_marriedgrid=1;
+elseif(strcmp(st_param_group, "default_moredense_a100zh266_e2m2"))
+    % 8 workers
+    n_jgrid  =83; 
+    jret     =48;
+    n_agrid  =100;
+    n_eta_H_grid=266;
+    n_eta_S_grid=1; 
+    n_kidsgrid=5; 
+    n_educgrid=2;
+    n_marriedgrid=2;
+elseif(strcmp(st_param_group, "default_moredense_a100zh81zs5_e2m2"))
+    % 6 workers on Precision
+    % household head shock only, only one education group
+    n_jgrid  =83; 
+    jret     =48;
+    n_agrid  =100;
+    n_eta_H_grid=81;
+    n_eta_S_grid=5; 
+    n_kidsgrid=5; 
+    n_educgrid=2;
+    n_marriedgrid=2;
+elseif(strcmp(st_param_group, "default_moredense_a65zh21zs5_e2m2"))
+    % 5 workers
+    n_jgrid  =83; 
+    jret     =48;
+    n_agrid  =65;
+    n_eta_H_grid=21;
+    n_eta_S_grid=5; 
+    n_kidsgrid=5; 
+    n_educgrid=2;
+    n_marriedgrid=2;
+elseif(strcmp(st_param_group, "default_moredense_a65zh81zs5_e2m2"))
+    % 5 workers
+    n_jgrid  =83; 
+    jret     =48;
+    n_agrid  =65;
+    n_eta_H_grid=81;
+    n_eta_S_grid=5; 
+    n_kidsgrid=5; 
+    n_educgrid=2;
+    n_marriedgrid=2;
+elseif(strcmp(st_param_group, "default_moredense_a65zh133zs5_e2m2"))
+    % 1 workers on Precision
+    n_jgrid  =83; 
+    jret     =48;
+    n_agrid  =65;
+    n_eta_H_grid=133;
+    n_eta_S_grid=5; 
+    n_kidsgrid=5; 
+    n_educgrid=2;
+    n_marriedgrid=2;
+elseif(strcmp(st_param_group, "default_moredense_a65zh266zs5_e2m2"))
+    % 1 workers on Precision
+    n_jgrid  =83; 
+    jret     =48;
+    n_agrid  =65;
+    n_eta_H_grid=266;
+    n_eta_S_grid=5; 
+    n_kidsgrid=5; 
+    n_educgrid=2;
+    n_marriedgrid=2;           
 elseif(strcmp(st_param_group, "default_dense"))
     n_jgrid  =83; % Age runs from 18 to 100 (a period is 2 years)
     jret     =48;
@@ -254,15 +296,17 @@ if(contains(st_param_group, "dense"))
     sigma_eta=0.018; % Variance of AR(1) productivity shocks
     g_n=0.01; % Annual population growth of 1.1 percent
     r=0.04; % Annual real interest rate of 4.0 percent from McGrattan and Prescott
-    beta=0.969010845568155; % 0.97068903873305; % Discount factor
+    % Calibrated with: default_moredense_a65zh81zs5_e2m2, using snwx_calibrate_beta_norm_gdp_m    
+    beta=0.971162552785405; % 0.97068903873305; % Discount factor
 else
     rho_eta=0.98^it_yrs_per_period;
     sigma_eta=sqrt(0.018^2*sum((0.98.^(0:(it_yrs_per_period-1))).^2));
     g_n=(1.01^it_yrs_per_period)-1;
     r=(1.04^it_yrs_per_period)-1;
-    beta=0.969010845568155^it_yrs_per_period;
+    % Calibrated with: default_moredense_a65zh81zs5_e2m2, using snwx_calibrate_beta_norm_gdp_m
+    beta=0.971162552785405^it_yrs_per_period;
 end
-
+    
 % Spousal Shocks
 rho_eta_spouse=0; % Persistence of spousal AR(1) productivity shocks
 sigma_eta_spouse=1.040654^2; % Variance of spousal AR(1) productivity shocks (standard deviation of residual from spousal income regression for 18-65 year-old household heads. See spousal_income.m for regression specification details)
@@ -280,7 +324,8 @@ elseif bequests_option==1
     if throw_in_ocean==0
         a2=0.7027;
     elseif throw_in_ocean==1
-        a2=1.6081061107858;
+        % Calibrated with: default_moredense_a65zh81zs5_e2m2, using snwx_calibrate_beta_norm_gdp_m
+        a2=1.528571486531964;
     end
 end
 
@@ -289,7 +334,8 @@ end
 g_cons=0.17575574; % Government consumption expenditures to GDP (BEA: Average 2015-2019)
 
 % Calibrated parameters
-theta=0.66947637485374; % TFP parameter to normalize units such that average household income relative to GDP per capita is consistent with the data (the latter is normalized to 1): Real GDP/capita in 2019: $58,056
+% Calibrated with: default_moredense_a65zh81zs5_e2m2, using snwx_calibrate_beta_norm_gdp_m
+theta=0.565228521783443; % TFP parameter to normalize units such that average household income relative to GDP per capita is consistent with the data (the latter is normalized to 1): Real GDP/capita in 2019: $58,056
 
 % Consumption allocation rule (1=uniform; 2=square root)
 cons_allocation_rule=2;
@@ -425,14 +471,22 @@ end
 %% Derive transition probabilities and stationary distribution for productivity shock
 % Discretize process for persistent productivity shocks and derive stationary distribution
 if (n_eta_H_grid ==1)
-    [eta_H_grid_aux,pi_H_eta]=rouwenhorst(rho_eta,sqrt(sigma_eta),n_eta_H_grid, false, 3);
+    [eta_H_grid_aux,pi_H_eta]=rouwenhorst(rho_eta,sqrt(sigma_eta),n_eta_H_grid);
 else
-    [eta_H_grid_aux,pi_H_eta]=ffy_tauchen(rho_eta,sqrt(sigma_eta),n_eta_H_grid, false, 3);
+    if (strcmp(st_shock_method, 'tauchen'))
+        [eta_H_grid_aux,pi_H_eta]=ffy_tauchen(rho_eta,sqrt(sigma_eta),n_eta_H_grid, false, 4);
+    elseif (strcmp(st_shock_method, 'rouwenhorst'))
+        [eta_H_grid_aux,pi_H_eta]=rouwenhorst(rho_eta,sqrt(sigma_eta),n_eta_H_grid);
+    end
 end
 if (n_eta_S_grid ==1)
     [eta_S_grid_aux,pi_S_eta]=rouwenhorst(rho_eta_spouse,sqrt(sigma_eta_spouse),n_eta_S_grid);
 else
-    [eta_S_grid_aux,pi_S_eta]=ffy_tauchen(rho_eta_spouse,sqrt(sigma_eta_spouse),n_eta_S_grid);
+    if (strcmp(st_shock_method, 'tauchen'))
+        [eta_S_grid_aux,pi_S_eta]=ffy_tauchen(rho_eta_spouse,sqrt(sigma_eta_spouse),n_eta_S_grid);
+    elseif (strcmp(st_shock_method, 'rouwenhorst'))
+        [eta_S_grid_aux,pi_S_eta]=rouwenhorst(rho_eta_spouse,sqrt(sigma_eta_spouse),n_eta_S_grid);
+    end        
 end
 
 pi_eta=NaN(n_etagrid,n_etagrid);

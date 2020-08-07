@@ -36,9 +36,9 @@ else
 %     st_solu_type = 'grid_search';
 
     % Solve the VFI Problem and get Value Function
-%     mp_params = snw_mp_param('default_tiny');
+    mp_params = snw_mp_param('default_tiny');
 %     mp_params = snw_mp_param('default_dense');
-    mp_params = snw_mp_param('default_moredense');
+%     mp_params = snw_mp_param('default_moredense');
     mp_controls = snw_mp_control('default_test');
 
     % The Number of Checks to Provide

@@ -1,0 +1,473 @@
+---
+title: "Process Simulation Results Solve for Discrete Optimal Allocation"
+output:
+  html_notebook:
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(fig.width=12, fig.height=8)
+
+library(tidyverse)
+library(REconTools)
+```
+
+# Analyze Planner Value
+
+Age, Y, J and M based optimal allocation.
+
+## Process Simulation Outputs
+
+### Variable Names and Paths
+
+```{r}
+# File Path
+srt_simu_path <- 'C:/Users/fan/Documents/Dropbox (UH-ECON)/PrjNygaardSorensenWang/Output/'
+# File Name
+snm_simu_csv <- 'snwx_v_planner_small.csv'
+# Column Names
+ar_svr_csv <- c('age', 'marital', 'kids', 'checks',	'ymin', 'ymax', 'mass', 'survive', 'vtilde', 'ctilde')
+# Variables That Identify Individual Types
+ar_svr_groups <- c('age', 'marital', 'kids', 'ymin', 'ymax')
+ar_svr_groups_stats <- c('mass', 'survive')
+# Number of Checks and Planner Value
+svr_checks <- 'checks'
+svr_v_value <- 'vtilde'
+svr_c_value <- 'ctilde'
+```
+
+### Read Input CSV Data
+
+```{r}
+mt_plan_v_tilde <- read.csv(paste0(srt_simu_path, snm_simu_csv), header=FALSE)
+df_plan_v_tilde <- as_tibble(mt_plan_v_tilde) %>%
+  rename_all(~c(ar_svr_csv)) %>%
+  rowid_to_column(var = "id") %>%
+  filter(vtilde != 0)
+
+# Column 1: Age (in year before COVID)
+# Column 2: Marital status (0 if not married; 1 if married)
+# Column 3: Nr of kids (0, 1, ..., 5) where 5 means 5 or more
+# Column 4: Number of welfare checks (here either equal to 0 or 1)
+# Column 5 and column 6 give income range
+# So the individual's income is at least as large as the value in column 5 but strictly less than the value in column 6
+# Column 7: Population weight Of that particular group (in the stationary distribution)
+# Column 8: Survival probability of that particular age (since the planner knows that some of the individuals will die before next period, so wasn't sure how you wanted me to include that. I did not already include it in V^tilde)
+# Column 9: Value of planner as in the slides (with the exception that I didn't multiply by the survival probability
+```
+
+```{r}
+REconTools::ff_summ_percentiles(df_plan_v_tilde)
+```
+### Generate ID dataframe, and Value dataframe using Group IDs
+
+Split dataframe, so that there is one dataframe with just ID information. And there is another dataframe with ID and associated check, values, and mass. Within each group, there are multiple checks possibly. 
+
+```{r}
+# group id
+svr_group_id <- 'group_id'
+# Define
+ls_svr_group_vars <- ar_svr_groups
+# panel dataframe following
+df_plan_v_tilde_id <- df_plan_v_tilde %>%
+  arrange(!!!syms(ls_svr_group_vars)) %>%
+  group_by(!!!syms(ls_svr_group_vars)) %>%
+  mutate(!!sym(svr_group_id) := (row_number()==1)*1) %>%
+  ungroup() %>%
+  mutate(!!sym(svr_group_id) := cumsum(!!sym(svr_group_id))) %>%
+  select(one_of(svr_group_id, ls_svr_group_vars), everything())
+```
+
+Stats Check:
+
+```{r}
+# Stats
+# REconTools::ff_summ_count_unique_by_groups(
+#   df_plan_v_tilde_id,ls_svr_group_vars,svr_group_id)
+# REconTools::ff_summ_percentiles(df_plan_v_tilde_id, bl_statsasrows = FALSE)
+```
+
+ID Identifying Dataframe
+
+```{r}
+# Select Grouping by Variables
+df_id <- df_plan_v_tilde_id %>% 
+  select(one_of(svr_group_id, ls_svr_group_vars, ar_svr_groups_stats)) %>% 
+  group_by(!!!syms(svr_group_id)) %>% 
+  slice_head() %>% ungroup() %>% 
+  select(one_of(svr_group_id, ls_svr_group_vars, ar_svr_groups_stats)) %>% 
+  rename(id_i = !!sym(svr_group_id))
+ar_group_ids <- unique(df_id %>% pull(id_i))
+# Summarize
+REconTools::ff_summ_percentiles(df_id)
+```
+
+Dataframew with ID, check, mass and values
+
+```{r}
+# Select 4 variables
+df_value <- df_plan_v_tilde_id %>% 
+  select(one_of(svr_group_id, svr_checks, svr_v_value, svr_c_value))
+# Summarize
+REconTools::ff_summ_percentiles(df_value)
+# REconTools::ff_summ_count_unique_by_groups(df_value, svr_group_id, svr_group_id)
+```
+
+## Generate Dataframe Inputs for the Allocation Problem
+
+Restructure the value dataframe slightly so that it can be used with the allocation functions. Note that the output structure has an *A* column and an *alpha* column, and starts counting *checks* at 1. For the check = 1 row, *A* is the value without the check, and *alpha* is the marginal effects of the checks. 
+
+### Generate IL Dataframe Core 
+
+```{r}
+# 1. id column and id_il
+df_il <- df_value %>% rename(id_i = !!sym(svr_group_id)) %>%
+  mutate(id_il = row_number()) %>%
+  select(id_i, id_il, everything())
+# 2. D_max_i and D_il
+df_il <- df_il %>% 
+  arrange(id_i, svr_checks) %>% group_by(id_i) %>% 
+  mutate(D_max_i = n()) %>%
+  rename(D_il = !!sym(svr_checks)) %>%
+  mutate(beta_i = 1/n()) %>%
+  select(id_i, id_il, D_max_i, D_il, everything())
+# Summarize
+REconTools::ff_summ_percentiles(df_il)
+```
+
+### Generate IL Dataframe for Utility
+
+Generate A and alpha:
+
+```{r}
+# 3. A_il and alpha_il
+df_il_U <- df_il %>% 
+  mutate(c_alpha_il = lead(!!sym(svr_c_value)) - (!!sym(svr_c_value)),
+         v_alpha_il = lead(!!sym(svr_v_value)) - (!!sym(svr_v_value))) %>% 
+  rename(c_A_il = !!sym(svr_c_value),
+         v_A_il = !!sym(svr_v_value)) %>% 
+  ungroup()
+
+# 4. drop max check
+df_il_U <- df_il_U %>% 
+  filter(D_il != max(df_il$D_il)) %>% 
+  mutate(D_il = D_il + 1)
+```
+
+Summarize:
+
+```{r}
+# https://fanwangecon.github.io/PrjOptiAlloc/reference/df_opt_caschool_input_il.html
+# id_i id_il D_max_i  D_il  A_il alpha_il  beta_i
+head(df_il_U, 50)
+tail(df_il_U, 50)
+# Summarize
+REconTools::ff_summ_percentiles(df_il_U)
+```
+
+#### Rescale Dataframe
+
+Utility could be negative, inequality usually considered over positive outcomes. We can rescale utility to be positive. The extreme Rawlsian only cares about relative $A$ and the utilitarian only cares about $\alpha$, so in some sense, shifting the utility levels up do not really matter. In principle inequality of Utils makes sense but there is no clear scale. Hence inequality over consumption, income other other types of outcomes with hard-scales could be easier to interpret. 
+
+To make future comparisons reasonable, will increase all utility up by 25 units, if utility is below -25, set to 25. 
+
+```{r}
+# Rescale
+df_il_U <- df_il_U %>% 
+  mutate(v_A_il = v_A_il + 18) %>%
+  mutate(v_A_il = case_when(v_A_il >= 1 ~ v_A_il, 
+                            v_A_il <  1 ~ 1 ))
+# Summarize
+REconTools::ff_summ_percentiles(df_il_U)
+```
+
+## Preference Vector
+
+Preference vectors:
+
+```{r}
+ar_rho <- 1 - (10^(c(seq(-2,2, length.out=8))))
+ar_rho <- unique(ar_rho)
+```
+
+## Select Random Subset
+
+select data subset:
+
+```{r, fig.width=5, fig.height=5}
+# subset select
+set.seed(123)
+it_draw <- 3746
+ar_group_rand <- ar_group_ids[sample(length(ar_group_ids), it_draw, replace=FALSE)]
+df_input_il <- df_il_U %>% 
+  filter(id_i %in% ar_group_rand) %>% 
+  mutate(id_il = row_number())
+```
+
+## Generate Alternative Allocations 
+
+Suppose we allocate Uniformly across individuals
+
+```{r}
+# checks - 1 because will have alpha + A, A = 11, alpha = adding 1 check given 11 checks
+it_avg_check <- 12
+# 2020 consumption
+df_input_ib_c <- df_input_il %>%
+  filter(D_il == it_avg_check-1) %>%
+  rename(A_i_l0 = c_A_il) %>%
+  rename(alpha_o_i = c_alpha_il) %>%
+  select(id_i, A_i_l0, alpha_o_i, beta_i)
+# value
+df_input_ib_v <- df_input_il %>%
+  filter(D_il == it_avg_check-1) %>%
+  rename(A_i_l0 = v_A_il) %>%
+  rename(alpha_o_i = v_alpha_il) %>%
+  select(id_i, A_i_l0, alpha_o_i, beta_i)
+# summarize
+REconTools::ff_summ_percentiles(df_input_ib_c)
+REconTools::ff_summ_percentiles(df_input_ib_v)
+```
+
+## Allocate for All
+
+First Allocation based on 2020 Consumption: 
+
+```{r}
+# Inputs
+# 30 individuals 25 checks, half the amount is available
+fl_dis_w <- dim(df_input_ib_c)[1]*it_avg_check
+df_input_il_c <- df_input_il %>% 
+  rename(A_il = c_A_il) %>% 
+  rename(alpha_il = c_alpha_il) %>% 
+  select(-v_A_il, -v_alpha_il)
+
+# Solve with Function
+ls_dis_solu_c <- suppressWarnings(suppressMessages(
+  ffp_opt_anlyz_rhgin_dis(ar_rho,
+                          fl_dis_w,
+                          df_input_il_c,
+                          bl_df_alloc_il = FALSE,
+                          bl_return_V = TRUE,
+                          bl_return_allQ_V = FALSE,
+                          bl_return_inner_V = FALSE)))
+df_queue_il_long_c <-ls_dis_solu_c$df_queue_il_long
+df_alloc_i_long_c <- ls_dis_solu_c$df_alloc_i_long
+df_rho_gini_c <- ls_dis_solu_c$df_rho_gini
+```
+
+Second Allocation based on life-time utility:
+
+```{r}
+# Inputs
+# 30 individuals 25 checks, half the amount is available
+fl_dis_w <- dim(df_input_ib_v)[1]*it_avg_check
+df_input_il_v <- df_input_il %>% 
+  rename(A_il = v_A_il) %>% 
+  rename(alpha_il = v_alpha_il) %>% 
+  select(-c_A_il, -c_alpha_il)
+
+# Solve with Function
+ls_dis_solu_v <- suppressWarnings(suppressMessages(
+  ffp_opt_anlyz_rhgin_dis(ar_rho,
+                          fl_dis_w,
+                          df_input_il_v,
+                          bl_df_alloc_il = FALSE,
+                          bl_return_V = TRUE,
+                          bl_return_allQ_V = FALSE,
+                          bl_return_inner_V = FALSE)))
+df_queue_il_long_v <-ls_dis_solu_v$df_queue_il_long
+df_alloc_i_long_v <- ls_dis_solu_v$df_alloc_i_long
+df_rho_gini_v <- ls_dis_solu_v$df_rho_gini
+```
+
+## Welfare Comparison Optimal vs Unifom Allocation
+
+```{r}
+REconTools::ff_summ_percentiles(df_queue_il_long_c, bl_statsasrows = FALSE)
+REconTools::ff_summ_percentiles(df_alloc_i_long_c, bl_statsasrows = FALSE)
+REconTools::ff_summ_percentiles(df_queue_il_long_v, bl_statsasrows = FALSE)
+REconTools::ff_summ_percentiles(df_alloc_i_long_v, bl_statsasrows = FALSE)
+```
+
+2020 Consumption comparison:
+
+```{r}
+tb_rho_rev_c <-
+  PrjOptiAlloc::ffp_opt_anlyz_sodis_rev(ar_rho,
+                          fl_dis_w,
+                          df_input_ib = df_input_ib_c,
+                          df_queue_il_long_with_V = df_queue_il_long_c)
+```
+
+```{r}
+# Display Results
+print(tb_rho_rev_c)
+```
+
+Life-time Value comparison:
+
+```{r}
+tb_rho_rev_v <-
+  PrjOptiAlloc::ffp_opt_anlyz_sodis_rev(ar_rho,
+                          fl_dis_w,
+                          df_input_ib = df_input_ib_v,
+                          df_queue_il_long_with_V = df_queue_il_long_v)
+```
+```{r}
+# Display Results
+print(tb_rho_rev_v)
+```
+
+### Welfare Comparison Figure
+
+```{r}
+
+# x-labels
+x.labels <- c('λ=0.99', 'λ=0.90', 'λ=0', 'λ=-10', 'λ=-100')
+x.breaks <- c(0.01, 0.10, 1, 10, 100)
+
+# title line 2
+# title_line1 <- sprintf("Percentage of Training Spots Misallocated, NSW Lalonde (AER, 1986)")
+# title_line2 <- sprintf("REV (Resource Equivalent Variation) Along Planner Spectrum")
+
+st_title <- sprintf(paste0('How much Fewer Resources are Needed (Shares) to Achieve the Same Welfare'))
+title_line1 <- sprintf("Covid Check: Compare Optimal vs Uniform Allocation (Andrew Yang)")
+
+# Graph Results--Draw
+line.plot <- tb_rho_rev_v %>%
+  mutate(REV = 100*REV)  %>%
+  mutate(one_minus_rho = 1 - rho_val)  %>%
+  ggplot(aes(x=one_minus_rho, y=REV)) +
+  geom_line() +
+  geom_point() +
+  # geom_vline(xintercept=c(1), linetype="dotted") +
+  labs(title = st_title,
+       subtitle = paste0(title_line1),
+       x = 'log10 Rescale of λ, Log10(1-λ)\nλ=1 Utilitarian (Maximize Average), λ=-infty Rawlsian (Maximize Minimum)',
+       y = paste0('100 x REV (Resource Equivalent Variations)'),
+       caption = 'SNW 2020 Life Cycle Simulations.') +
+  scale_x_continuous(trans='log10', labels = x.labels, breaks = x.breaks) +
+  theme_bw(base_size=8) +
+  ylim(0, 100)
+# +
+#   guides(colour=FALSE)
+
+
+# Print
+print(line.plot)
+
+spt_img_save <- 'img/'
+bl_save_img <- FALSE
+if (bl_save_img) {
+  snm_cnts <- 'opti_vs_unif_rev.png'
+  png(paste0(spt_img_save, snm_cnts),
+      width = 135, height = 96, units='mm', res = 300, pointsize=7)
+  print(line.plot)
+  dev.off()
+}
+```
+
+## Allocation Results Analysis
+
+Join the allocation level dataframe with individual attributes:
+
+```{r}
+# Summarize
+df_alloc_i_long_covar_v <- df_alloc_i_long_v %>% left_join(df_id, by = "id_i")
+df_alloc_i_long_covar_c <- df_alloc_i_long_c %>% left_join(df_id, by = "id_i")
+```
+
+
+### C Allocation Amounts by Attributes
+
+Summarize check level statistics by key attributes:
+
+```{r}
+ls_svr_groups <- c('ymin', 'marital', 'kids', 'age')
+for (svr_group in ls_svr_groups) {
+  
+  # Group by variable
+  print(paste0('current group = ', svr_group))
+  
+  # Summarize
+  df <- df_alloc_i_long_covar_c
+  vars.group <- c('rho_val', svr_group)
+  var.numeric <- 'D_star_i'
+  str.stats.group <- 'allperc'
+  ar.perc <- c(0.10, 0.5, 0.90)
+  ls_summ_by_group <- REconTools::ff_summ_bygroup(
+    df, vars.group, var.numeric, str.stats.group, ar.perc)
+  print(ls_summ_by_group$df_table_grp_stats)
+  
+}
+```
+
+### V Allocation Amounts by Attributes
+
+Summarize check level statistics by key attributes:
+
+```{r}
+ls_svr_groups <- c('ymin', 'marital', 'kids', 'age')
+for (svr_group in ls_svr_groups) {
+  
+  # Group by variable
+  print(paste0('current group = ', svr_group))
+  
+  # Summarize
+  df <- df_alloc_i_long_covar_v
+  vars.group <- c('rho_val', svr_group)
+  var.numeric <- 'D_star_i'
+  str.stats.group <- 'allperc'
+  ar.perc <- c(0.10, 0.5, 0.90)
+  ls_summ_by_group <- REconTools::ff_summ_bygroup(
+    df, vars.group, var.numeric, str.stats.group, ar.perc)
+  print(ls_summ_by_group$df_table_grp_stats)
+  
+}
+```
+
+### Consumption Based Allocation Figure
+
+Generate the needed dataframe, averaging over ages, averages by ymin, marital status, and kids count:
+
+```{r}
+# graph mean check amount by income, marital status and kids counts
+lineplot_c <- df_alloc_i_long_covar_c %>% 
+  filter(rho_val == 0.99) %>% ungroup() %>% 
+  # filter(marital == 1) %>% 
+  mutate(kids = as.factor(kids), 
+         marital = as.factor(marital)) %>%
+    ggplot(aes(x=ymin, y=D_star_i ,
+               colour=kids,
+               shape=marital)) +
+        geom_point(size=3) +
+        facet_wrap( ~ age, nrow = 3) +
+        labs(title = '2020 Expected Consumption Allocation (Age, Marray, Kids, Income)',
+             x = 'Income Group',
+             y = 'Number of Checks',
+             caption = 'SNW 2020 Simulations') 
+print(lineplot_c)
+```
+
+### Lifetime Utility Allocation Figure
+
+
+```{r}
+# graph mean check amount by income, marital status and kids counts
+lineplot_v <- df_alloc_i_long_covar_v %>% 
+  filter(rho_val == 0.99) %>% ungroup() %>% 
+  # filter(marital == 1) %>% 
+  mutate(kids = as.factor(kids), 
+         marital = as.factor(marital)) %>%
+    ggplot(aes(x=ymin, y=D_star_i ,
+               colour=kids,
+               shape=marital)) +
+        geom_point(size=3) +
+        facet_wrap( ~ age, nrow = 3) + 
+        labs(title = '2020 Utilitarian Allocation (Age, Marray, Kids, Income)',
+             x = 'Income Group',
+             y = 'Number of Checks',
+             caption = 'SNW 2020 Simulations') 
+print(lineplot_v)
+```

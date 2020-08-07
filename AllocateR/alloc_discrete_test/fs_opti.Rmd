@@ -1,0 +1,297 @@
+---
+title: "Process Simulation Results Solve for Optimal Allocation"
+output:
+  html_notebook:
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(fig.width=12, fig.height=8)
+
+library(tidyverse)
+library(REconTools)
+```
+
+# Analyze Planner Value
+
+## Process Simulation Outputs
+
+### Variable Names and Paths
+
+```{r}
+# File Path
+srt_simu_path <- '../../Output/'
+# File Name
+snm_simu_csv <- 'Output.csv'
+# Column Names
+ar_svr_csv <- c('age', 'marital', 'kids', 'checks',	'ymin', 'ymax', 'mass', 'survive', 'vtilde')
+# Variables That Identify Individual Types
+ar_svr_groups <- c('age', 'marital', 'kids', 'ymin', 'ymax')
+ar_svr_groups_stats <- c('mass', 'survive')
+# Number of Checks and Planner Value
+svr_checks <- 'checks'
+svr_value <- 'vtilde'
+```
+
+### Read Input CSV Data
+
+```{r}
+mt_plan_v_tilde <- read.csv(paste0(srt_simu_path, snm_simu_csv), header=FALSE)
+df_plan_v_tilde <- as_tibble(mt_plan_v_tilde) %>%
+  rename_all(~c(ar_svr_csv)) %>%
+  rowid_to_column(var = "id") %>%
+  filter(vtilde != 0)
+
+# Column 1: Age (in year before COVID)
+# Column 2: Marital status (0 if not married; 1 if married)
+# Column 3: Nr of kids (0, 1, ..., 5) where 5 means 5 or more
+# Column 4: Number of welfare checks (here either equal to 0 or 1)
+# Column 5 and column 6 give income range
+# So the individual's income is at least as large as the value in column 5 but strictly less than the value in column 6
+# Column 7: Population weight Of that particular group (in the stationary distribution)
+# Column 8: Survival probability of that particular age (since the planner knows that some of the individuals will die before next period, so wasn't sure how you wanted me to include that. I did not already include it in V^tilde)
+# Column 9: Value of planner as in the slides (with the exception that I didn't multiply by the survival probability
+```
+
+```{r}
+REconTools::ff_summ_percentiles(df_plan_v_tilde)
+```
+### Generate ID dataframe, and Value dataframe using Group IDs
+
+Split dataframe, so that there is one dataframe with just ID information. And there is another dataframe with ID and associated check, values, and mass. Within each group, there are multiple checks possibly. 
+
+```{r}
+# group id
+svr_group_id <- 'group_id'
+# Define
+ls_svr_group_vars <- ar_svr_groups
+# panel dataframe following
+df_plan_v_tilde_id <- df_plan_v_tilde %>%
+  arrange(!!!syms(ls_svr_group_vars)) %>%
+  group_by(!!!syms(ls_svr_group_vars)) %>%
+  mutate(!!sym(svr_group_id) := (row_number()==1)*1) %>%
+  ungroup() %>%
+  mutate(!!sym(svr_group_id) := cumsum(!!sym(svr_group_id))) %>%
+  select(one_of(svr_group_id, ls_svr_group_vars), everything())
+```
+
+Stats Check:
+
+```{r}
+# Stats
+# REconTools::ff_summ_count_unique_by_groups(
+#   df_plan_v_tilde_id,ls_svr_group_vars,svr_group_id)
+# REconTools::ff_summ_percentiles(
+#   df_plan_v_tilde_id, bl_statsasrows = FALSE)
+```
+
+ID Identifying Dataframe
+
+```{r}
+# Select Grouping by Variables
+df_id <- df_plan_v_tilde_id %>% 
+  select(one_of(svr_group_id, ls_svr_group_vars, ar_svr_groups_stats)) %>% 
+  group_by(!!!syms(svr_group_id)) %>% 
+  slice_head() %>% ungroup() %>% 
+  select(one_of(svr_group_id, ls_svr_group_vars, ar_svr_groups_stats)) %>% 
+  rename(id_i = !!sym(svr_group_id))
+# Summarize
+REconTools::ff_summ_percentiles(df_id)
+```
+
+Dataframew with ID, check, mass and values
+
+```{r}
+# Select 4 variables
+df_value <- df_plan_v_tilde_id %>% 
+  select(one_of(svr_group_id, svr_checks, svr_value)) %>% 
+  group_by(!!!syms(c(svr_group_id, svr_checks)))
+# Summarize
+REconTools::ff_summ_percentiles(df_value)
+# REconTools::ff_summ_count_unique_by_groups(df_value, svr_group_id, svr_group_id)
+```
+
+## Generate Dataframe Inputs for the Allocation Problem
+
+Restructure the value dataframe slightly so that it can be used with the allocation functions. Note that the output structure has an *A* column and an *alpha* column, and starts counting *checks* at 1. For the check = 1 row, *A* is the value without the check, and *alpha* is the marginal effects of the checks. 
+
+### Generate IL Dataframe Core 
+
+```{r}
+# 1. id column and id_il
+df_il <- df_value %>% rename(id_i = !!sym(svr_group_id)) %>%
+  mutate(id_il = row_number()) %>%
+  select(id_i, id_il, everything())
+# 2. D_max_i and D_il
+df_il <- df_il %>% 
+  arrange(id_i, svr_checks) %>% group_by(id_i) %>% 
+  mutate(D_max_i = n()) %>%
+  rename(D_il = !!sym(svr_checks)) %>%
+  mutate(beta_i = 1/n()) %>%
+  select(id_i, id_il, D_max_i, D_il, everything())
+# Summarize
+REconTools::ff_summ_percentiles(df_il)
+```
+
+### Generate IL Dataframe for Utility
+
+```{r}
+# 3. A_il and alpha_il
+df_il_U <- df_il %>% 
+  mutate(alpha_il = !!sym(svr_value) - lag(!!sym(svr_value))) %>% 
+  rename(A_il = !!sym(svr_value))
+# 4. drop check = 0
+df_il_U <- df_il_U %>% filter(D_il != 0)
+# https://fanwangecon.github.io/PrjOptiAlloc/reference/df_opt_caschool_input_il.html
+# id_i id_il D_max_i  D_il  A_il alpha_il  beta_i
+head(df_il_U, 10)
+tail(df_il_U, 10)
+df_il_U
+# Summarize
+REconTools::ff_summ_percentiles(df_il_U)
+```
+
+#### Rescale Dataframe
+
+Utility could be negative, inequality usually considered over positive outcomes. We can rescale utility to be positive. The extreme Rawlsian only cares about relative $A$ and the utilitarian only cares about $\alpha$, so in some sense, shifting the utility levels up do not really matter. In principle inequality of Utils makes sense but there is no clear scale. Hence inequality over consumption, income other other types of outcomes with hard-scales could be easier to interpret. 
+
+To make future comparisons reasonable, will increase all utility up by 25 units, if utility is below -25, set to 25. 
+
+```{r}
+# Rescale
+df_il_U <- df_il_U %>% 
+  mutate(A_il = A_il + 25) %>%
+  mutate(A_il = case_when(A_il >= 1 ~ A_il, 
+                          A_il <  1 ~ 1 ))
+# Summarize
+REconTools::ff_summ_percentiles(df_il_U)
+```
+
+## Distribution of A and alpha
+
+### Utility Distribution of A and alpha by States
+
+```{r}
+# Binary Marginal Effects and Prediction without Binary
+ggplot.A.alpha.x <- function(svr_x, df,
+                             svr_alpha = 'alpha_il', svr_A = "A_il"){
+
+  scatter <- ggplot(df, aes(x=!!sym(svr_x))) +
+        geom_point(aes(y=!!sym(svr_alpha)), size=4, shape=4, color="red") +
+        geom_point(aes(y=!!sym(svr_A)), size=2, shape=8, color="blue") +
+        geom_abline(intercept = 0, slope = 1) + # 45 degree line
+        labs(title = paste0('A (blue) and alpha (red) vs x variables=', svr_x),
+             x = svr_x,
+             y = 'Coefficient of Variation for A and alpha',
+             caption = paste0('SNW 2020 Binary Check Simulated Prediction')) +
+        theme_bw()
+
+return(scatter)
+}
+```
+
+Join A and alpha frame with State Variables:
+
+```{r}
+# Plot over multiple
+df_il_U_join_states <- df_il_U %>% 
+  left_join(df_id, by = "id_i") %>% 
+  mutate(A_il = (A_il-mean(df_il_U$A_il))/sd(df_il_U$A_il),
+         alpha_il = (alpha_il-mean(df_il_U$alpha_il))/sd(df_il_U$alpha_il))
+```
+
+Graph:
+
+```{r}
+ls_st_xs <- ar_svr_groups
+# ls_st_xs <- ar_svr_groups <- c('age', 'marital')
+lapply(ls_st_xs,
+       ggplot.A.alpha.x,
+       df = df_il_U_join_states)
+```
+
+
+## Generate Optimal Allocation
+
+Preference vectors:
+
+```{r}
+ar_rho <- 1 - (10^(c(seq(-2,2, length.out=3))))
+ar_rho <- unique(ar_rho)
+```
+
+select data subset:
+
+```{r}
+it_w_agg <- 5000
+it_draw <- 30
+set.seed(123)
+df_input_il <- df_il_U_join_states[sample(dim(df_il_U)[1], it_draw, replace=FALSE),] 
+  # arrange(id_i, D_il) %>% group_by(id_i) %>%
+  # mutate(id_i_new = (row_number()==1)*1) %>%
+  # ungroup() %>%
+  # mutate(id_i_new = cumsum(id_i_new)) %>% select(-id_i) %>%
+  # rename(id_i = id_i_new)
+REconTools::ff_summ_percentiles(df_input_il)
+```
+
+Allocate:
+
+```{r}
+it_w_agg <- 25
+# Optimal Linear Equation
+svr_inpalc <- 'rank'
+# Solve with Function
+ls_bin_solu_all_rhos  <-
+  ffp_opt_anlyz_rhgin_bin(df_input_il, svr_id_i = 'id_i',
+                          svr_A_i = 'A_il', svr_alpha_i = 'alpha_il', svr_beta_i = 'beta_i',
+                          ar_rho = ar_rho,
+                          svr_inpalc = svr_inpalc,
+                          svr_expout = 'opti_exp_outcome')
+# Process Outputs
+tb_opti_alloc_all_rho <- ls_bin_solu_all_rhos$df_all_rho
+tb_opti_alloc_all_rho_long <- ls_bin_solu_all_rhos$df_all_rho_long
+# Converge rho to numeric so the graph below sorts along x-axis properly 
+tb_opti_alloc_all_rho_long <- tb_opti_alloc_all_rho_long %>% mutate(rho_num = as.numeric(rho))
+tb_opti_alloc_all_rho_long <- tb_opti_alloc_all_rho_long %>%
+  left_join(df_input_il %>% select(id_i, one_of(ar_svr_groups)), by='id_i')
+```
+Show Results in Table
+
+```{r}
+print(tb_opti_alloc_all_rho %>% 
+        select(id_i, one_of(ar_svr_groups), contains('rho_c'), everything()))
+```
+
+Show Results Graphically:
+
+```{r}
+st_title = paste0("Binary Rank, Who to Give Checks to")
+st_subtitle = paste0("30 Random Types Selected, Who to Give Checks to?")
+st_caption = paste0("SNW 2020 Binary Check Simulation US Population")
+st_x_lab = paste0("Efficiency (Utilitarian) --> Cobb-Douglas --> Equity (Rawlsian)")
+st_y_lab = paste0("Rank Along Binary Allocation Queue ( 1 = highest ranked)")
+
+tb_opti_alloc_all_rho_long %>%
+  ggplot(aes(x = rho_num, y = !!sym(svr_inpalc), group = id_i)) +
+    geom_line(aes(color = age, alpha = 1), size = 2) +
+    geom_point(aes(color = age, alpha = 1), size = 4) +
+    scale_x_discrete(expand = c(0.85,0))+
+    scale_y_reverse(breaks = 1:nrow(tb_opti_alloc_all_rho_long))+
+    theme(legend.position = "none") +
+    labs(x = st_x_lab,
+         y = st_y_lab,
+         title = st_title,
+         subtitle = st_subtitle,
+         caption = st_caption) +
+    ffy_opt_ghthm_dk() +
+    geom_text(data =tb_opti_alloc_all_rho,aes(y=rho_c1_rk,x=0.6,label=id_i),hjust="right")
+
+```
+
+
+
+
+
+

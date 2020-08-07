@@ -1,0 +1,15 @@
+book_filename: "SNW Dynamic Life Cycle and Welfare Checks Code Companion"
+output_dir: "bookdown"
+language:
+  ui:
+    chapter_name: "Chapter "
+delete_merged_file: true
+rmd_files:
+  - index.Rmd
+
+  - PrjOptiSNW/doc/sdist/main.Rmd
+  - PrjOptiSNW/doc/sdist/snwx_ds_main_grid_search.Rmd
+  - PrjOptiSNW/doc/sdist/snwx_ds_main_bisec_vec_loop.Rmd
+
+  - README_appendix.md
+  - title.Rmd

@@ -1,0 +1,5 @@
+---
+title: "SNW Dynamic Life Cycle and Welfare Checks Code Companion"
+author: "Fan Wang"
+date: '`r format(Sys.Date(), "%Y-%m-%d")`'
+---

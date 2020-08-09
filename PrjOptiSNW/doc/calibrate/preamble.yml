@@ -1,0 +1,18 @@
+- file: snwx_calibrate_beta_norm_gdp
+  title: "Calibrate Discount Factor and Normalize GDP"
+  titleshort: "Calibrate Discount Factor and Normalize GDP"
+  description: |
+    Calibration
+  date: 2020-08-07
+  date_start: 2020-08-07
+  output:
+    pdf_document:
+      pandoc_args: '../../../_output_kniti_pdf.yaml'
+      includes:
+        in_header: '../../../preamble.tex'
+    html_document:
+      pandoc_args: '../../../_output_kniti_html.yaml'
+      includes:
+        in_header: '../../../hdga.html'
+  always_allow_html: true
+  urlcolor: blue

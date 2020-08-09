@@ -9,11 +9,10 @@
 ###################
 
 _img/
-PrjOptiSNW/*.Rmd
+*.Rmd
 !index.Rmd
 !title.Rmd
 !main.Rmd
-*.html
 
 ###################
 # R markdown

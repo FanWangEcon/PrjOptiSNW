@@ -1,0 +1,37 @@
+- file: snw_evuvw19_jaeemk
+  title: "Expected Value from 2019 Given Age, Savings, Shocks, Kids, Educaiton and Marriage"
+  titleshort: "Expected Value from 2019 Given Age, Savings, Shocks, Kids, Educaiton and Marriage"
+  description: |
+    Expected Value from 2019 Given Age, Savings, Shocks, Kids, Educaiton and Marriage.
+  date: 2020-08-07
+  date_start: 2020-08-07
+  output:
+    pdf_document:
+      pandoc_args: '../../../_output_kniti_pdf.yaml'
+      includes:
+        in_header: '../../../preamble.tex'
+    html_document:
+      pandoc_args: '../../../_output_kniti_html.yaml'
+      includes:
+        in_header: '../../../hdga.html'
+  always_allow_html: true
+  urlcolor: blue
+
+- file: snw_evuvw20_jaeemk
+  title: "Value from 2020 Given Age, Savings, Shocks, Kids, Educaiton and Marriage"
+  titleshort: "Value from 2020 Given Age, Savings, Shocks, Kids, Educaiton and Marriage"
+  description: |
+    Value from 2020 Given Age, Savings, Shocks, Kids, Educaiton and Marriage.
+  date: 2020-08-07
+  date_start: 2020-08-07
+  output:
+    pdf_document:
+      pandoc_args: '../../../_output_kniti_pdf.yaml'
+      includes:
+        in_header: '../../../preamble.tex'
+    html_document:
+      pandoc_args: '../../../_output_kniti_html.yaml'
+      includes:
+        in_header: '../../../hdga.html'
+  always_allow_html: true
+  urlcolor: blue

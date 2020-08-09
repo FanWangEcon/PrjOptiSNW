@@ -269,6 +269,13 @@ if (bl_timer)
     disp(st_complete_vfi);
 end
 
+if (bl_print_vfi_verbose)
+    mp_outcomes = containers.Map('KeyType', 'char', 'ValueType', 'any');
+    mp_outcomes('V_VFI') = V_VFI;
+    mp_outcomes('ap_VFI') = ap_VFI;
+    mp_outcomes('cons_VFI') = cons_VFI;
+    ff_container_map_display(mp_outcomes, 9, 9);
+end
 
 %% Store
 varargout = cell(nargout,0);

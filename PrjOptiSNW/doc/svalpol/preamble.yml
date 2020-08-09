@@ -1,27 +1,15 @@
-- file: snwx_vfi_main_bisec_vec
-  title: "Policy and Value Functions Dynamic Life Cycle"
-  titleshort: "Policy and Value Functions Dynamic Life Cycle"
+- file: snwx_vfi_bisec_vec
+  title: "Policy and Value Functions Dynamic Life Cycle Vectorized Bisection"
+  titleshort: "Policy and Value Functions Dynamic Life Cycle Vectorized Bisection"
   description: |
-    Policy and Value Functions Dynamic Life Cycle.
-  date: 2020-08-07
-  date_start: 2020-08-07
-  output:
-    pdf_document:
-      pandoc_args: '../../../_output_kniti_pdf.yaml'
-      includes:
-        in_header: '../../../preamble.tex'
-    html_document:
-      pandoc_args: '../../../_output_kniti_html.yaml'
-      includes:
-        in_header: '../../../hdga.html'
-  always_allow_html: true
-  urlcolor: blue
-
-- file: snwx_vfi_unemp_bisec_vec
-  title: "Policy and Value Functions Dynamic Life Cycle if Unemployed"
-  titleshort: "Policy and Value Functions Dynamic Life Cycle if Unemployed"
-  description: |
-    Policy and Value Functions Dynamic Life Cycle if Unemployed.
+    Solving for policy and value functions from 18 to 100 years of age, at 1 year interval.
+    Households face persistent productivity shocks for household heads, stochastic shocks for spousal income, exogenous children under age 17 transition probability, and age-specific household-head survival probabilities.
+    The household can have up to four children under age 17, and has permanent heterogeneity in marital status and education types.
+    Problem solved for exact savings choices using [vectorized bisection](https://fanwangecon.github.io/MEconTools/MEconTools/doc/vfi/htmlpdfm/fx_vfi_az_bisec_vec.html) from from [MEconTools](https://fanwangecon.github.io/MEconTools/).
+  core :
+    - package: PrjOptiSNW
+      code: |
+        [snwx_vfi_bisec_vec()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/svalpol/snw_vfi_main_bisec_vec.m)
   date: 2020-08-07
   date_start: 2020-08-07
   output:

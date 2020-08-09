@@ -111,12 +111,12 @@ elseif(strcmp(st_param_group, "default_moredense"))
     n_eta_S_grid=5; % 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
     n_kidsgrid=5; % No. of grid points for children (0 to 4+ children)
 elseif(strcmp(st_param_group, "default_docdense"))
-    n_jgrid  =83; % Age runs from 18 to 100 (a period is 2 years)
+    n_jgrid  =83; 
     jret     =48;
-    n_agrid  =151; % No. of grid points for assets
-    n_eta_H_grid=9; % 9; % No. of grid points for persistent labor productivity shocks
-    n_eta_S_grid=5; % 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
-    n_kidsgrid=5; % No. of grid points for children (0 to 4+ children)    
+    n_agrid  =151; 
+    n_eta_H_grid=9; 
+    n_eta_S_grid=5;
+    n_kidsgrid=5;
 elseif(strcmp(st_param_group, "default_moredense_a100zh266_e1m1"))
     % 15 workers
     % household head shock only, only one education group
@@ -188,7 +188,7 @@ elseif(strcmp(st_param_group, "default_moredense_a65zh266zs5_e2m2"))
     n_eta_S_grid=5; 
     n_kidsgrid=5; 
     n_educgrid=2;
-    n_marriedgrid=2;           
+    n_marriedgrid=2;
 elseif(strcmp(st_param_group, "default_dense"))
     n_jgrid  =83; % Age runs from 18 to 100 (a period is 2 years)
     jret     =48;

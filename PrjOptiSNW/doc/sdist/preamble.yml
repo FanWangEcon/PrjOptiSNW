@@ -1,8 +1,8 @@
-- file: snwx_ds_main_bisec_vec_loop
+- file: snwx_ds_bisec_vec_loop
   title: "Assets and Demographic Distributions with Continuous Exact Savings Choices"
   titleshort: "Assets and Demographic Distributions with Continuous Exact Savings Choices"
   description: |
-    Simulate the life cycle distribution of assets, consumptions, and demographic patterns, given exogenous initial distribution at age 18.
+    Simulate the life cycle distribution of assets, consumptions, and demographic patterns up to age 100, given exogenous initial distributions at age 18.
     Solves for budget clearing tax rates given distributional results.
     Uses vectorized bisection to solve for exact savings choices, looped distribution code.
   core :
@@ -23,7 +23,7 @@
   always_allow_html: true
   urlcolor: blue
 
-- file: snwx_ds_main_grid_search
+- file: snwx_ds_grid_search
   title: "Assets and Demographic Distributions with Grid Search"
   titleshort: "Assets and Demographic Distributions with Grid Search"
   description: |

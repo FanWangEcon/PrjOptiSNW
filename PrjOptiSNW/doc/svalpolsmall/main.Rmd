@@ -1,1 +1,1 @@
-# Small Grid Testing of Dynamic Life Cycle
+# Alternative Value Function Solution Testing

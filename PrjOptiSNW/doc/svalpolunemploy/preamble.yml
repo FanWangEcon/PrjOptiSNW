@@ -1,0 +1,26 @@
+- file: snwx_vfi_unemp_bisec_vec
+  title: "Policy and Value Functions Dynamic Life Cycle if Unemployed"
+  titleshort: "Policy and Value Functions Dynamic Life Cycle if Unemployed"
+  description: |
+    Solving the dynamic programming problem conditional on having an one period unemployment shock.
+    There is an unemployment shock in 2020. We first solve for the policy and value functions without the unemployment shock.
+    Using the value function from the world without the 2020 covid unemployment shock as future values, we solve for optimal choices in 2020 given a COVID unemployment shock.
+    The COVID shock lowers the realization of household's stochastic income process proportionally, but the lost income might be replenished by unemployment benefits up to 100 percent. Unemployment benefits have to be paid for by taxes.
+    Households can receive welfare checks in 2020. The number of welfare checks is not a separate state-variable, but its effects is evaluated as a change in resource available considering household-specific tax and interest earnings.
+  core :
+    - package: PrjOptiSNW
+      code: |
+        [snwx_vfi_bisec_vec()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/svalpol/snw_vfi_main_bisec_vec.m)
+  date: 2020-08-07
+  date_start: 2020-08-07
+  output:
+    pdf_document:
+      pandoc_args: '../../../_output_kniti_pdf.yaml'
+      includes:
+        in_header: '../../../preamble.tex'
+    html_document:
+      pandoc_args: '../../../_output_kniti_html.yaml'
+      includes:
+        in_header: '../../../hdga.html'
+  always_allow_html: true
+  urlcolor: blue

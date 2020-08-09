@@ -2,7 +2,11 @@
   title: "Model Parameters"
   titleshort: "Model Parameters"
   description: |
-    Model parameters.
+    Model parameters, transition matrices, permanent heterogeneities.
+  core :
+    - package: PrjOptiSNW
+      code: |
+        [snw_mp_param()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/params/snw_mp_param.m)
   date: 2020-08-07
   date_start: 2020-08-07
   output:
@@ -21,7 +25,11 @@
   title: "Model Controls"
   titleshort: "Model Controls Parameters"
   description: |
-    Model controls.
+    Parameters to control display options etc.
+  core :
+    - package: PrjOptiSNW
+      code: |
+        [snw_mp_control()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/params/snw_mp_control.m)
   date: 2020-08-07
   date_start: 2020-08-07
   output:

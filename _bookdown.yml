@@ -9,7 +9,15 @@ rmd_files:
 
   - PrjOptiSNW/doc/svalpol/main.Rmd
   - PrjOptiSNW/doc/svalpol/snwx_vfi_bisec_vec.Rmd
-  - PrjOptiSNW/doc/svalpol/snwx_vfi_unemp_bisec_vec.Rmd
+
+  - PrjOptiSNW/doc/svalpolsmall/main.Rmd
+  - PrjOptiSNW/doc/svalpolsmall/snwx_vfi_test.Rmd
+  - PrjOptiSNW/doc/svalpolsmall/snwx_vfi_test_grid_search.Rmd
+  - PrjOptiSNW/doc/svalpolsmall/snwx_vfi_test_bisec_vec.Rmd
+  - PrjOptiSNW/doc/svalpolsmall/snwx_vfi_test_bisec_vec_spousalshock.Rmd
+
+  - PrjOptiSNW/doc/svalpolunemploy/main.Rmd
+  - PrjOptiSNW/doc/svalpolunemploy/snwx_vfi_unemp_bisec_vec.Rmd
 
   - PrjOptiSNW/doc/sdist/main.Rmd
   - PrjOptiSNW/doc/sdist/snwx_ds_grid_search.Rmd
@@ -24,12 +32,12 @@ rmd_files:
   - PrjOptiSNW/doc/splannercheckval/snwx_a4chk_unemp_bisec_vec.Rmd
 
   - PrjOptiSNW/doc/splannerjaeemk/main.Rmd
-  - PrjOptiSNW/doc/splannerjaeemk/snw_evuvw20_jaeemk.Rmd
-  - PrjOptiSNW/doc/splannerjaeemk/snw_evuvw19_jaeemk.Rmd
+  - PrjOptiSNW/doc/splannerjaeemk/snwx_evuvw20_jaeemk.Rmd
+  - PrjOptiSNW/doc/splannerjaeemk/snwx_evuvw19_jaeemk.Rmd
 
   - PrjOptiSNW/doc/splannerjmky/main.Rmd
-  - PrjOptiSNW/doc/splannerjmky/snw_evuvw19_jmky.Rmd
-  - PrjOptiSNW/doc/splannerjmky/snw_evuvw19_jmky_allchecks.Rmd
+  - PrjOptiSNW/doc/splannerjmky/snwx_evuvw19_jmky.Rmd
+  - PrjOptiSNW/doc/splannerjmky/snwx_evuvw19_jmky_allchecks.Rmd
 
   # - PrjOptiSNW/doc/calibrate/main.Rmd
   # - PrjOptiSNW/doc/calibrate/snwx_calibrate_beta_norm_gdp.Rmd

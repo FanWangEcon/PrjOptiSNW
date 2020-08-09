@@ -2,7 +2,12 @@
   title: "Calibrate Discount Factor and Normalize GDP"
   titleshort: "Calibrate Discount Factor and Normalize GDP"
   description: |
-    Calibration
+    We calibrate the model so that the Asset/Savings/Capital to GDP/Income ratio is 3.
+    We normalize the model so that median household income is equal to 1 in the model.
+  core :
+    - package: PrjOptiSNW
+      code: |
+        [snw_calibrate_beta_norm_gdp()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/calibrate/snw_calibrate_beta_norm_gdp.m)
   date: 2020-08-07
   date_start: 2020-08-07
   output:

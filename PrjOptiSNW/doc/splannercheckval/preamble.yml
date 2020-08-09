@@ -2,7 +2,12 @@
   title: "Marginal Gain Per Check 2020 Unemployed"
   titleshort: "Marginal Gain Per Check 2020 Unemployed"
   description: |
-    Marginal Gain Per Check 2020 Unemployed.
+    Evaluate the marginal gain per check in 2020 if household head is unemployed.
+    Solve for the increase in savings that is equivalent to the impact of an additional check on a household's resource available in 2020, given tax and interest rates considerations.
+  core :
+    - package: PrjOptiSNW
+      code: |
+        [snw_a4chk_unemp_bisec_vec()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/splanner/snw_a4chk_unemp_bisec_vec.m)
   date: 2020-08-07
   date_start: 2020-08-07
   output:
@@ -21,7 +26,12 @@
   title: "Marginal Gain Per Check 2020 Employed"
   titleshort: "Marginal Gain Per Check 2020 Employed"
   description: |
-    Marginal Gain Per Check 2020 Employed.
+    Evaluate the marginal gain per check in 2020 if household head is employed.
+    Solve for the increase in savings that is equivalent to the impact of an additional check on a household's resource available in 2020, given tax and interest rates considerations.
+  core :
+    - package: PrjOptiSNW
+      code: |
+        [snw_a4chk_wrk_bisec_vec()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/splanner/snw_a4chk_wrk_bisec_vec.m)
   date: 2020-08-07
   date_start: 2020-08-07
   output:

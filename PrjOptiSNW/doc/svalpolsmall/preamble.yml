@@ -1,0 +1,97 @@
+- file: snwx_vfi_test
+  title: "Small Test Looped Minimizer Routine to Solve for Exact Savings Choices"
+  titleshort: "Small Test Looped Minimizer Routine to Solve for Exact Savings Choices"
+  description: |
+    Solve for the exact savings choices using matlab minimizer in an iterative loop.
+    The code demonstrates the solution structure. We use [snwx_vfi_bisec_vec()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/svalpol/snw_vfi_main_bisec_vec.m) with [vectorized bisection](https://fanwangecon.github.io/MEconTools/MEconTools/doc/vfi/htmlpdfm/fx_vfi_az_bisec_vec.html) for working implementations.
+    Due to speed, only show testing results at small grid without spousal shocks.
+  core :
+    - package: PrjOptiSNW
+      code: |
+        [snw_vfi_main()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/svalpol/snw_vfi_main.m)
+  date: 2020-08-07
+  date_start: 2020-08-07
+  output:
+    pdf_document:
+      pandoc_args: '../../../_output_kniti_pdf.yaml'
+      includes:
+        in_header: '../../../preamble.tex'
+    html_document:
+      pandoc_args: '../../../_output_kniti_html.yaml'
+      includes:
+        in_header: '../../../hdga.html'
+  always_allow_html: true
+  urlcolor: blue
+
+- file: snwx_vfi_test_grid_search
+  title: "Small Test Looped over States Grid Search Solution"
+  titleshort: "Small Test Looped over States Grid Search Solution"
+  description: |
+    The savings choice grid is the same as the savings states grid. Solve for optimal savings choices using grid-search. Loop over the state space, at each state-space point, vectorized optimization.
+    Our problem requires very high precision to solve for the marginal gains to households from each increment of welfare checks. We rely on the exact solution method from [snwx_vfi_bisec_vec()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/svalpol/snw_vfi_main_bisec_vec.m) for the working code.
+    Due to speed, only show testing results at small grid without spousal shocks.
+  core :
+    - package: PrjOptiSNW
+      code: |
+        [snw_vfi_main_grid_search()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/svalpol/snw_vfi_main_grid_search.m)
+  date: 2020-08-07
+  date_start: 2020-08-07
+  output:
+    pdf_document:
+      pandoc_args: '../../../_output_kniti_pdf.yaml'
+      includes:
+        in_header: '../../../preamble.tex'
+    html_document:
+      pandoc_args: '../../../_output_kniti_html.yaml'
+      includes:
+        in_header: '../../../hdga.html'
+  always_allow_html: true
+  urlcolor: blue
+
+- file: snwx_vfi_test_bisec_vec
+  title: "Small Test Vectorized Bisection Solve for Exact Savings Choices"
+  titleshort: "Small Test Vectorized Bisection Solve for Exact Savings Choices"
+  description: |
+    Vectorized bisection exact solution code tested with small grid to compare to alternative solutiom methods.
+    Small grid without spousal shocks.
+  core :
+    - package: PrjOptiSNW
+      code: |
+        [snwx_vfi_bisec_vec()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/svalpol/snw_vfi_main_bisec_vec.m)
+  date: 2020-08-07
+  date_start: 2020-08-07
+  output:
+    pdf_document:
+      pandoc_args: '../../../_output_kniti_pdf.yaml'
+      includes:
+        in_header: '../../../preamble.tex'
+    html_document:
+      pandoc_args: '../../../_output_kniti_html.yaml'
+      includes:
+        in_header: '../../../hdga.html'
+  always_allow_html: true
+  urlcolor: blue
+
+- file: snwx_vfi_test_bisec_vec_spousalshock
+  title: "Small Test Spousal Shocks Vectorized Bisection Solve for Exact Savings Choices"
+  titleshort: "Small Test Spousal Shocks  Test Vectorized Bisection Solve for Exact Savings Choices"
+  description: |
+    Vectorized bisection exact solution code tested with small grid to compare to alternative solutiom methods.
+    Small grid with spousal shocks. There are three shocks: persistent household head income shock, i.i.d. spousal income shock, and persistent kids count transition shocks.
+  core :
+    - package: PrjOptiSNW
+      code: |
+        [snwx_vfi_bisec_vec()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/svalpol/snw_vfi_main_bisec_vec.m)
+  date: 2020-08-07
+  date_start: 2020-08-07
+  output:
+    pdf_document:
+      pandoc_args: '../../../_output_kniti_pdf.yaml'
+      includes:
+        in_header: '../../../preamble.tex'
+    html_document:
+      pandoc_args: '../../../_output_kniti_html.yaml'
+      includes:
+        in_header: '../../../hdga.html'
+  always_allow_html: true
+  urlcolor: blue

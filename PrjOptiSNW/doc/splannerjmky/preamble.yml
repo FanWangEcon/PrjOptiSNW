@@ -1,8 +1,13 @@
-- file: snw_evuvw19_jmky
+- file: snwx_evuvw19_jmky
   title: "Expected Value from 2019 Given Age, Kids, Income and Marriage"
   titleshort: "Expected Value from 2019 Given Age, Kids, Income and Marriage"
   description: |
     Expected Value from 2019 Given Age, Kids, Income and Marriage.
+    Each 2019 income group consists of individuals with varying productivity shocks, savings, and from lower and higher education groups.
+  core :
+    - package: PrjOptiSNW
+      code: |
+        [snw_evuvw19_jmky()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/splanneralt/snw_evuvw19_jmky.m)
   date: 2020-08-07
   date_start: 2020-08-07
   output:
@@ -17,11 +22,16 @@
   always_allow_html: true
   urlcolor: blue
 
-- file: snw_evuvw19_jmky_allchecks
+- file: snwx_evuvw19_jmky_allchecks
   title: "Expected Value from 2019 Given Age, Kids, Income and Marriage for All Checks"
   titleshort: "Expected Value from 2019 Given Age, Kids, Income and Marriage for All Checks"
   description: |
     Expected Value from 2019 Given Age, Kids, Income and Marriage for All Checks.
+    This is the gateway function that solves policy functions, derive distributions, computes value in 2020 with and without unemployment shocks with varying check levels, derives 2019 planner expected values given household optimization and shocks, and finds the mass of individuals in different income/age/marital-status bins, and saves the simulated value of check results for the planner.
+  core :
+    - package: PrjOptiSNW
+      code: |
+        [snw_evuvw19_jmky_allchecks()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/splanneralt/snw_evuvw19_jmky_allchecks.m)
   date: 2020-08-07
   date_start: 2020-08-07
   output:

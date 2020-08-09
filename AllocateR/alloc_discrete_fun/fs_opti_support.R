@@ -1,0 +1,40 @@
+fs_opti_support <- function() {
+
+# ls_output <- fs_opti_support()
+# st_file_type_withspouse_shock <- ls_output$st_file_type_withspouse_shock
+# snm_simu_csv_withspouse_shock <- ls_output$snm_simu_csv_withspouse_shock
+# srt_simu_path <- ls_output$srt_simu_path
+# bl_save_img <- ls_output$bl_save_img
+# spt_img_save <- ls_output$spt_img_save
+# srt_csv_path <- ls_output$srt_csv_path
+
+# This function store a number of support strings. for folder output path,
+# file name, etc that are shared across feasiable, optimal and threshold allocations
+
+srt_root <- 'D:/Dropbox (UH-ECON)/PrjNygaardSorensenWang/'
+# srt_root <- 'C:/Users/fan/Documents/Dropbox (UH-ECON)/PrjNygaardSorensenWang/'
+st_file_type_withspouse_shock <- 'moredense_a65zh266zs5_e2m2_b0_calibrated'
+snm_simu_csv_withspouse_shock <- paste0('snwx_v_planner_',st_file_type_withspouse_shock,'.csv')
+
+srt_simu_path <- paste0(srt_root, 'Output/')
+
+bl_save_img <- TRUE
+spt_img_save <- paste0(srt_root, 'Results/2020-08-05/Graphs/')
+srt_csv_path <- paste0(srt_root, 'Results/2020-08-05/csv/')
+
+# CSV and Image Paths
+spt_img_save = paste0(spt_img_save, st_file_type_withspouse_shock,'/')
+srt_csv_path = paste0(srt_csv_path, st_file_type_withspouse_shock,'/')
+dir.create(file.path(spt_img_save), showWarnings = FALSE, recursive = TRUE)
+dir.create(file.path(srt_csv_path), showWarnings = FALSE, recursive = TRUE)
+
+ls_output <- list(st_file_type_withspouse_shock=st_file_type_withspouse_shock,
+                  snm_simu_csv_withspouse_shock=snm_simu_csv_withspouse_shock,
+                  srt_simu_path=srt_simu_path,
+                  bl_save_img=bl_save_img,
+                  spt_img_save=spt_img_save,
+                  srt_csv_path=srt_csv_path)
+
+return(ls_output)
+
+}

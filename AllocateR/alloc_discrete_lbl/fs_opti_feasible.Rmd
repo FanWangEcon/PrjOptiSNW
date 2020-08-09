@@ -13,6 +13,7 @@ knitr::opts_chunk$set(fig.width=12, fig.height=8)
 
 library(tidyverse)
 library(REconTools)
+library(PrjOptiAlloc)
 ```
 
 # Optimal Allocation Y, J and M
@@ -390,7 +391,7 @@ REconTools::ff_summ_percentiles(df_il_U)
 Preference vectors:
 
 ```{r}
-ar_rho <- 1 - (10^(c(seq(-2,2, length.out=4))))
+ar_rho <- 1 - (10^(c(seq(-2,2, length.out=8))))
 ar_rho <- unique(c(1,ar_rho))
 # ar_rho <- c(1)
 ```
@@ -419,7 +420,7 @@ Adjust approximation jumps, there are some minor approximation errors. These err
 
 Are these arrays below non-increasing? Individual 50 clearly downward shifting marginal value, but individual 14's marginal values almost constant, and very very tiny not real change flucations. Individual 50 is much poorer than individual 14.
 
-### Adjust alpha to make it non-increasing
+  ### Adjust alpha to make it non-increasing
 
 ```{r, eval=FALSE}
 # # Get C and V Marginal Arrays
@@ -499,8 +500,44 @@ Cumulative sum for correction:
 
 ### Alpha Adjustment Function
 
+#### Adjustment Function Flattening
+
+This is the preferred method, the next unit of allocation's marginal effects is foreced to be not higher than the previous unit: 
+
 ```{r}
-ffi_alpha_non_increasing_adj <- function(ar_alpha, fl_min_inc_bd = 1e-20) {
+ffi_alpha_non_increasing_adj_flatten <- function(ar_alpha, fl_min_inc_bd = 1e-20) {
+  # Flattening, flatten so that the marginal value of the next check must be
+  # lower than the marginal value of the check prior
+
+  ar_cur <- ar_alpha
+  ar_cur_adj <- rep(NA, length(ar_cur))
+  ar_cur_adj[1] <- ar_cur[1]
+
+  for (it_ctr in 2:length(ar_cur)) {
+
+    fl_cur_val <- ar_cur[it_ctr]
+    fl_last_val <- ar_cur_adj[it_ctr-1]
+
+    if (fl_cur_val > fl_last_val) {
+      ar_cur_adj[it_ctr] = fl_last_val
+    } else {
+      ar_cur_adj[it_ctr] = fl_cur_val
+    }
+
+  }
+
+  # return
+  return(ar_cur_adj)
+
+}
+```
+
+#### Adjustment Function Cumusum
+
+This method pushes marginal value changes too much lower, uses a cumulative sum. This should not be used.
+
+```{r}
+ffi_alpha_non_increasing_adj_cumusum <- function(ar_alpha, fl_min_inc_bd = 1e-20) {
   # alpha has tiny upticks sometimes due to approximation errors, need to be adjusted
   # Following theorem 1, alpha must be non-increasing.
 
@@ -546,6 +583,71 @@ ffi_alpha_non_increasing_adj <- function(ar_alpha, fl_min_inc_bd = 1e-20) {
 # plot(seq(1,44), ar_id50_c_alpha_adj, col='black')
 ```
 
+### Alternative Adjustment Methods and Visualizae Corrections
+
+Which are the top cells that requires adjustments, what do they look like prior and post adjustments?
+
+#### Alternative C Adjustments Outputs
+
+```{r}
+# A1. Identify shifts in levels and percentages from current algorithm ---------------------
+# At how many positions are V and C adjusted based on nonincreasing adjustments.
+df_input_il_noninc_test <- df_input_il %>%
+  arrange((D_il)) %>%
+  group_by(id_i) %>%
+  do(c_alpha_il_noninc_cumusum = ffi_alpha_non_increasing_adj_cumusum(.$c_alpha_il)) %>%
+  unnest(c(c_alpha_il_noninc_cumusum)) %>%
+  group_by(id_i) %>%
+  mutate(D_il = row_number()) %>%
+  left_join(df_input_il, by=(c('id_i'='id_i', 'D_il'='D_il')))
+
+## A2. Add flatten version of array
+df_input_il_noninc_test <- df_input_il_noninc_test %>%
+  arrange((D_il)) %>%
+  group_by(id_i) %>%
+  do(c_alpha_il_noninc_flatten = ffi_alpha_non_increasing_adj_flatten(.$c_alpha_il)) %>%
+  unnest(c(c_alpha_il_noninc_flatten)) %>%
+  group_by(id_i) %>%
+  mutate(D_il = row_number()) %>%
+  left_join(df_input_il_noninc_test, by=(c('id_i'='id_i', 'D_il'='D_il'))) %>%
+  mutate(c_alpha_il_gap = c_alpha_il - c_alpha_il_noninc_flatten) %>%
+  mutate(c_alpha_il_ratio = (c_alpha_il - c_alpha_il_noninc_flatten)/c_alpha_il) %>%
+  ungroup()
+```
+
+#### Visualize Largest Adjustments Cases
+
+```{r}
+# it_total_rows <- dim(df_input_il_noninc)[1]
+# ar_shifts_c_alpha <- (df_input_il_noninc$c_alpha_il_noninc - df_input_il_noninc$c_alpha_il)
+# view(df_input_il_noninc[(ar_shifts_c_alpha != 0),])
+REconTools::ff_summ_percentiles(df_input_il_noninc_test, FALSE)
+
+## B. Identify cases of large changes ------------------------------
+## Examine the largeest cases of modification, is the correction correct?
+# 27 cases with more than 10 percent changes
+ar_id_large_changes <- unique(df_input_il_noninc_test %>% filter(c_alpha_il_ratio > 0.001 & c_alpha_il_ratio < 0.002) %>% pull(id_i))
+print(ar_id_large_changes)
+# graph the top 10 cases
+ar_id_large_changes <- ar_id_large_changes[1:5]
+
+## C. Graph Some of the largest Changes Cases
+# dev.off()
+for (it_id in ar_id_large_changes) {
+
+  df_id_i_1 <- df_input_il_noninc_test %>% filter(id_i == it_id)
+  ar_c_alpha_il <- df_id_i_1$c_alpha_il
+  c_alpha_il_noninc_flatten <- df_id_i_1$c_alpha_il_noninc_flatten
+  c_alpha_il_noninc_cumusum <- df_id_i_1$c_alpha_il_noninc_cumusum
+
+  mt_c_alpha_il <- cbind(ar_c_alpha_il, c_alpha_il_noninc_flatten, c_alpha_il_noninc_cumusum)
+  # show
+  par(new=F)
+  matplot((mt_c_alpha_il), col = c("black","red","blue"), type='l')
+
+  grid()
+}
+```
 
 ### Apply alpha Adjustment Function over Dataframe
 
@@ -555,7 +657,7 @@ if (bl_non_inc_adjust){
   # Update c_alpha_il
   df_input_il_noninc <- df_input_il %>%
     group_by(id_i) %>%
-    do(c_alpha_il_noninc = ffi_alpha_non_increasing_adj(.$c_alpha_il)) %>%
+    do(c_alpha_il_noninc = ffi_alpha_non_increasing_adj_flatten(.$c_alpha_il)) %>%
     unnest(c(c_alpha_il_noninc)) %>%
     group_by(id_i) %>%
     mutate(D_il = row_number()) %>%
@@ -564,7 +666,7 @@ if (bl_non_inc_adjust){
   # Update v_alpha_il
   df_input_il_noninc <- df_input_il_noninc %>%
     group_by(id_i) %>%
-    do(v_alpha_il_noninc = ffi_alpha_non_increasing_adj(.$v_alpha_il)) %>%
+    do(v_alpha_il_noninc = ffi_alpha_non_increasing_adj_flatten(.$v_alpha_il)) %>%
     unnest(c(v_alpha_il_noninc)) %>%
     group_by(id_i) %>%
     mutate(D_il = row_number()) %>%
@@ -738,6 +840,8 @@ mass_sum <- df_input_il_covid_actual %>% summarize(mass_sum = sum(mass))
 fl_cost_max_checks_all <- mass_sum*fl_percheck_dollar*fl_tax_hh
 st_covid_check_cost <- paste0('Cost All Max Checks=$', round(fl_cost_max_checks_all/1000000000,2),
                               ' bil (assume ',round(fl_tax_hh/1000000,2),' mil tax households)')
+print(mass_sum)
+print(mass_sum/sum((df_plan_v_tilde_ygrpjm %>% filter(checks == 0))$mass))
 print(st_covid_check_cost)
 ```
 
@@ -752,6 +856,7 @@ fl_cost_actual <- mass_sum_covid_vox_actual*fl_percheck_dollar*fl_tax_hh
 st_covid_check_cost <- paste0('VOX Policy Cost=$', round(fl_cost_actual/1000000000,2),
                               ' bil (assume ',round(fl_tax_hh/1000000,2),
                               ' mil tax households, use SNW 2020 simulated P(Kids, Marry, Income))')
+print(mass_sum_covid_vox_actual)
 print(st_covid_check_cost)
 ```
 
@@ -1011,7 +1116,7 @@ print(tb_rho_rev_v)
 ```
 
 
-## Allocaiton Results Analysis
+## Allocation Results Cross-Sectional Analysis
 
 Join the allocation level dataframe with individual attributes, and possibly drop some ages to make graphs easier to read
 
@@ -1351,6 +1456,81 @@ lineplot_v <- df_alloc_i_long_covar_v %>%
 print(lineplot_v)
 ```
 
+## Allocation Results Full Queue Analysis and View 
+
+Check various things:
+
+```{r}
+# 1. total probability been consdiered (note no older)
+sum((df_plan_v_tilde_ygrpjm %>% filter(checks == 0))$mass)
+# 2. Weighted aggregate C
+df_plan_v_tilde_ygrpjm %>% filter(checks == 0) %>% summarise(c_agg = sum(ctilde*mass)/sum(mass))
+# 3. di_il frame weighted aggregate c
+df_il %>% filter(D_il == 1) %>% left_join(df_id %>% select(id_i, mass), by='id_i') %>% ungroup() %>%summarise(c_agg_df_il = sum(ctilde*mass)/sum(mass))
+# 4. df_il_U weighted aggregate c
+df_il_U %>% filter(D_il == 1) %>% left_join(df_id %>% select(id_i, mass), by='id_i') %>% ungroup() %>%summarise(c_agg_df_il_U = sum(c_A_il*mass)/sum(mass))
+# 4. df_input_il weighted aggregate c
+df_input_il %>% filter(D_il == 1) %>% left_join(df_id %>% select(id_i, mass), by='id_i') %>% ungroup() %>%summarise(c_agg_df_il_U = sum(c_A_il*mass)/sum(mass))
+# 5. Adjusted Cs.
+df_input_il_noninc_test %>% filter(D_il == 1) %>% left_join(df_id %>% select(id_i, mass), by='id_i') %>% ungroup() %>%summarise(c_agg_noninc = sum(c_A_il*mass)/sum(mass))
+df_input_il_noninc %>% filter(D_il == 1) %>% left_join(df_id %>% select(id_i, mass), by='id_i') %>% ungroup() %>%summarise(c_agg_noninc = sum(c_A_il*mass)/sum(mass))
+# 6. Input for Allocation
+df_input_il_c %>% filter(D_il == 1) %>% left_join(df_id %>% select(id_i, mass), by='id_i') %>% ungroup() %>%summarise(c_agg_input_il_c = sum(A_il*mass)/sum(mass))
+# 7. Allocation output
+df_queue_il_long_c
+```
+
+For the C utilitarian, the aggregate outcome variable shows total consumption along the optimal allocation queue. 
+
+Plot along the x-axis total resource available, the y-axis aggregate consumption under optimal allocation with the specific constraints here. 
+
+Plot a vertical line, at the actual resource available level. Plot also a horizontal line, at the aggregate consumption achieved by the actual policy (Which corresponds to the REV point basically)
+
+
+```{r}
+# dataframe with mass and aggregate outcome for the utilitarian
+df_queue_agg_c <- df_queue_il_long_c %>% filter(rho == ar_rho[1]) %>% select(V_star_Q_il)
+df_queue_agg_mass_c <- df_queue_il_long_mass_c %>% filter(rho == ar_rho[1]) %>% select(mass_cumu_il, V_star_Q_il)
+# starting aggregate outcome
+(df_queue_agg_c$V_star_Q_il)[1]
+(df_queue_agg_mass_c$V_star_Q_il)[1]
+```
+```{r}
+df_queue_agg_mass_c_perc <- df_queue_agg_mass_c %>% 
+  filter(!is.na(V_star_Q_il)) %>% ungroup() %>% 
+  mutate(V_star_Q_il_inc_perc = 100*((V_star_Q_il-min(V_star_Q_il))/V_star_Q_il))
+```
+
+```{r}
+fl_rev_x <- (1-as.numeric(tb_rho_rev_mass_c[1,] %>% pull(REV)))*as.numeric(mass_sum_covid_vox_actual)
+c_perc_inc_actual <- max(df_queue_agg_mass_c_perc %>% 
+      filter( mass_cumu_il < fl_rev_x) %>%
+      pull(V_star_Q_il_inc_perc))
+c_per_inc_opti <- max(df_queue_agg_mass_c_perc %>% filter(!is.na(V_star_Q_il)) %>% pull(V_star_Q_il_inc_perc))
+```
+
+```{r}
+df_queue_agg_mass_c_perc %>% 
+  ggplot(aes(x=mass_cumu_il*100, y=V_star_Q_il_inc_perc)) +
+  geom_line(size=2) +
+  geom_vline(xintercept=as.numeric(mass_sum_covid_vox_actual)*100, 
+             linetype='dotted', size = 4, color = "blue") +
+  geom_vline(xintercept=as.numeric(fl_rev_x)*100, 
+             linetype='dashed', size = 4, color = "blue") +
+  geom_hline(yintercept=as.numeric(c_perc_inc_actual), 
+             linetype='dotted', size = 4, color = "red") +
+  geom_hline(yintercept=as.numeric(c_per_inc_opti), 
+             linetype='dotdash', size = 4, color = "red") +
+  labs(title = 'Percent Increase in Consumption and Total Resources/Budget along Optimal Allocation Queue',
+       subtitle = paste0('BLACK SOLID = The Optimal Allocation Queue for FEASIBLE ALLOCATION\n',
+                         'RED DOT  = Percentage Increase in C achieved by Actual Policy\n',
+                         'RED DASH DOT = Percentage Increase in C achieved by Optimal Policy under Actual Total Budget\n',
+                         'BLUE DOT = Actual Total Budget \n',
+                         'BLUE DASH = Total Budget Required to Achieve same Percentage increase in C as achieved by Actual Policy if allocations were optimal'),
+       x = 'Average welfare check amount (18-64 year-olds), Budget = AvgAmount x Pop18to64',
+       y = 'Aggregate Consumption Percentage Increase',
+       caption = 'If the Black Line is Linear, that means MPC identical for all, No gain to Optimal Allocation\nEach Allocation Constraint produces its own black line')
+```
 
 ## Print Results to CSV
 

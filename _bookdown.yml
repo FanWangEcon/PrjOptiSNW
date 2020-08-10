@@ -7,6 +7,10 @@ delete_merged_file: true
 rmd_files:
   - index.Rmd
 
+  - PrjOptiSNW/doc/params/main.Rmd
+  - PrjOptiSNW/doc/params/snwx_mp_param.Rmd
+  - PrjOptiSNW/doc/params/snwx_mp_control.Rmd
+
   - PrjOptiSNW/doc/svalpol/main.Rmd
   - PrjOptiSNW/doc/svalpol/snwx_vfi_bisec_vec.Rmd
 
@@ -20,8 +24,8 @@ rmd_files:
   - PrjOptiSNW/doc/svalpolunemploy/snwx_vfi_unemp_bisec_vec.Rmd
 
   - PrjOptiSNW/doc/sdist/main.Rmd
-  - PrjOptiSNW/doc/sdist/snwx_ds_grid_search.Rmd
   - PrjOptiSNW/doc/sdist/snwx_ds_bisec_vec_loop.Rmd
+  - PrjOptiSNW/doc/sdist/snwx_ds_grid_search.Rmd
 
   - PrjOptiSNW/doc/splannercheckval/main.Rmd
   - PrjOptiSNW/doc/splannercheckval/snwx_a4chk_wrk_bisec_vec.Rmd

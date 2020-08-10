@@ -111,12 +111,15 @@ elseif(strcmp(st_param_group, "default_moredense"))
     n_eta_S_grid=5; % 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
     n_kidsgrid=5; % No. of grid points for children (0 to 4+ children)
 elseif(strcmp(st_param_group, "default_docdense"))
+%     use default_moredense_a65zh81zs5_e2m2
     n_jgrid  =83; 
     jret     =48;
-    n_agrid  =151; 
-    n_eta_H_grid=9; 
-    n_eta_S_grid=5;
-    n_kidsgrid=5;
+    n_agrid  =65;
+    n_eta_H_grid=81;
+    n_eta_S_grid=5; 
+    n_kidsgrid=5; 
+    n_educgrid=2;
+    n_marriedgrid=2;
 elseif(strcmp(st_param_group, "default_moredense_a100zh266_e1m1"))
     % 15 workers
     % household head shock only, only one education group

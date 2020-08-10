@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><meta name="generator" content="MATLAB R2019b"><title>Calibrate Beta and Normalize GDP</title><style type="text/css">.rtcContent { padding: 30px; } .S0 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 28.8px; min-height: 0px; white-space: pre-wrap; color: rgb(213, 80, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 24px; font-weight: 400; text-align: left;  }
+.S1 { margin: 2px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: pre-wrap; color: rgb(0, 0, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: 400; text-align: left;  }
+.S2 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 20px; min-height: 0px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: 700; text-align: left;  }
+.CodeBlock { background-color: #F7F7F7; margin: 10px 0 10px 0;}
+.S3 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 0px none rgb(0, 0, 0); border-radius: 4px 4px 0px 0px; padding: 6px 45px 0px 13px; line-height: 16.996px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S4 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 0px none rgb(0, 0, 0); border-radius: 0px; padding: 0px 45px 0px 13px; line-height: 16.996px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S5 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 0px 0px 4px 4px; padding: 0px 45px 4px 13px; line-height: 16.996px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S6 { margin: 10px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: pre-wrap; color: rgb(0, 0, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: 400; text-align: left;  }
+.S7 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 0px; padding: 0px 45px 4px 13px; line-height: 16.996px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S8 { color: rgb(64, 64, 64); padding: 10px 0px 6px 17px; background: rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box border-box; font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px; overflow-x: hidden; line-height: 16.996px;  }
+.embeddedOutputsErrorElement {min-height: 18px; max-height: 250px; overflow: auto;}
+.embeddedOutputsErrorElement.inlineElement {}
+.embeddedOutputsErrorElement.rightPaneElement {}
+.embeddedOutputsWarningElement{min-height: 18px; max-height: 250px; overflow: auto;}
+.embeddedOutputsWarningElement.inlineElement {}
+.embeddedOutputsWarningElement.rightPaneElement {}
+.diagnosticMessage-wrapper {font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 12px;}
+.diagnosticMessage-wrapper.diagnosticMessage-warningType {color: rgb(255,100,0);}
+.diagnosticMessage-wrapper.diagnosticMessage-warningType a {color: rgb(255,100,0); text-decoration: underline;}
+.diagnosticMessage-wrapper.diagnosticMessage-errorType {color: rgb(230,0,0);}
+.diagnosticMessage-wrapper.diagnosticMessage-errorType a {color: rgb(230,0,0); text-decoration: underline;}
+.diagnosticMessage-wrapper .diagnosticMessage-messagePart,.diagnosticMessage-wrapper .diagnosticMessage-causePart {white-space: pre-wrap;}
+.diagnosticMessage-wrapper .diagnosticMessage-stackPart {white-space: pre;}
+.embeddedOutputsTextElement,.embeddedOutputsVariableStringElement {white-space: pre; word-wrap: initial; min-height: 18px; max-height: 250px; overflow: auto;}
+.textElement,.rtcDataTipElement .textElement {padding-top: 3px;}
+.embeddedOutputsTextElement.inlineElement,.embeddedOutputsVariableStringElement.inlineElement {}
+.inlineElement .textElement {}
+.embeddedOutputsTextElement.rightPaneElement,.embeddedOutputsVariableStringElement.rightPaneElement {min-height: 16px;}
+.rightPaneElement .textElement {padding-top: 2px; padding-left: 9px;}
+.S9 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 0px none rgb(0, 0, 0); border-radius: 0px; padding: 6px 45px 0px 13px; line-height: 16.996px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S10 { margin: 15px 10px 5px 4px; padding: 0px; line-height: 28.8px; min-height: 0px; white-space: pre-wrap; color: rgb(213, 80, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 24px; font-weight: 400; text-align: left;  }</style></head><body><div class = rtcContent><h1  class = 'S0'><span>Calibrate Beta and Normalize GDP</span></h1><div  class = 'S1'><span>Taking advantage of </span><a href = "https://github.com/FanWangEcon/PrjOptiSNW/tree/master/PrjOptiSNW/params/snw_ds_main.m"><span style=' font-weight: bold;'>snw_ds_main</span></a><span> from the </span><a href = "https://fanwangecon.github.io/PrjOptiSNW/"><span style=' font-weight: bold;'>PrjOptiSNW Package</span><span>,</span></a><span> this function calibrates the discount factor and also solves for the normalizing constant. </span></div><h2  class = 'S2'><span>Calibrate Parameter Controls for SNW Functions</span></h2><div  class = 'S1'><span>Set up controls for shock process and tiny/small/dense/densemore</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre;"><span>clear </span><span style="color: rgb(160, 32, 240);">all</span><span>;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>bl_print_mp_params = false;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span style="color: rgb(60, 118, 61);">% st_shock_method = 'rouwenhorst';</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>st_shock_method = </span><span style="color: rgb(160, 32, 240);">'tauchen'</span><span>;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span style="color: rgb(60, 118, 61);">% st_param_group = 'default_tiny';</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span style="color: rgb(60, 118, 61);">% st_param_group = 'default_small';</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span style="color: rgb(60, 118, 61);">% st_param_group = 'default_base';</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span style="color: rgb(60, 118, 61);">% st_param_group = 'default_dense';</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span style="color: rgb(60, 118, 61);">% st_param_group = 'default_moredense';</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>st_param_group = </span><span style="color: rgb(160, 32, 240);">'default_docdense'</span><span>;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_params = snw_mp_param(st_param_group, bl_print_mp_params, st_shock_method);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>Pop = mp_params(</span><span style="color: rgb(160, 32, 240);">'Pop'</span><span>);</span></span></div></div></div><div  class = 'S6'><span>Set up print defaults</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre;"><span>mp_controls = snw_mp_control(</span><span style="color: rgb(160, 32, 240);">'default_test'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_controls(</span><span style="color: rgb(160, 32, 240);">'bl_timer'</span><span>) = timer;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_controls(</span><span style="color: rgb(160, 32, 240);">'bl_print_vfi'</span><span>) = false;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_controls(</span><span style="color: rgb(160, 32, 240);">'bl_print_vfi_verbose'</span><span>) = false;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_controls(</span><span style="color: rgb(160, 32, 240);">'bl_print_ds'</span><span>) = false;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>mp_controls(</span><span style="color: rgb(160, 32, 240);">'bl_print_ds_verbose'</span><span>) = false;</span></span></div></div></div><h2  class = 'S2'><span>Calibrate Routine</span></h2><div  class = 'S1'><span>Test this for 3 iterations</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre;"><span style="color: rgb(60, 118, 61);">%% Calibration</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>err=1;</span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S7'><span style="white-space: pre;"><span>tol=0.005;</span></span></div><div  class = 'S8'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="955F5623" data-testid="output_0" data-width="428" data-height="18" data-hashorizontaloverflow="false" style="width: 458px; max-height: 261px;"><div class="textElement">Start calibration</div></div></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre;"><span>it_counter = 1;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span style="color: rgb(0, 0, 255);">while </span><span>err&gt;tol &amp;&amp; it_counter &lt;= 3</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    disp(</span><span style="color: rgb(160, 32, 240);">''</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    it=1;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    </span><span style="color: rgb(0, 0, 255);">while </span><span>it&gt;0</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>        </span><span style="color: rgb(60, 118, 61);">% Solve optimization problem and get the distribution</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>        tm_start_a2 = tic;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>        a2_old = mp_params(</span><span style="color: rgb(160, 32, 240);">'a2'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>        [Phi_true,~,A_agg,Y_inc_agg,it,mp_dsvfi_results, a2] = snw_ds_main(mp_params, mp_controls);</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>        mp_params(</span><span style="color: rgb(160, 32, 240);">'a2'</span><span>) = a2;        </span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>        tm_end_a2 = toc(tm_start_a2);</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>        disp([</span><span style="color: rgb(160, 32, 240);">'a2_old:' </span><span>num2str(a2_old) </span><span style="color: rgb(160, 32, 240);">', a2_new:' </span><span>num2str(a2) </span><span style="color: rgb(160, 32, 240);">', tm_end_a2:' </span><span>num2str(tm_end_a2)])</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    </span><span style="color: rgb(0, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    </span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    </span><span style="color: rgb(60, 118, 61);">% Get Stats</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    mp_cl_mt_xyz_of_s = mp_dsvfi_results(</span><span style="color: rgb(160, 32, 240);">'mp_cl_mt_xyz_of_s'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    tb_outcomes = mp_cl_mt_xyz_of_s(</span><span style="color: rgb(160, 32, 240);">'tb_outcomes'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    A_agg_alt = tb_outcomes{</span><span style="color: rgb(160, 32, 240);">'a_ss'</span><span>, </span><span style="color: rgb(160, 32, 240);">'mean'</span><span>}*sum(Pop);</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    Aprime_agg_alt = tb_outcomes{</span><span style="color: rgb(160, 32, 240);">'ap_ss'</span><span>, </span><span style="color: rgb(160, 32, 240);">'mean'</span><span>}*sum(Pop);</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    Y_inc_agg_alt = tb_outcomes{</span><span style="color: rgb(160, 32, 240);">'y_all'</span><span>, </span><span style="color: rgb(160, 32, 240);">'mean'</span><span>}*sum(Pop);</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    Y_inc_median = tb_outcomes{</span><span style="color: rgb(160, 32, 240);">'y_all'</span><span>, </span><span style="color: rgb(160, 32, 240);">'p50'</span><span>};     </span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    </span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    </span><span style="color: rgb(60, 118, 61);">% Comparison</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    name=</span><span style="color: rgb(160, 32, 240);">'Median household income (target=1.0)='</span><span>;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    name2=[name,num2str(Y_inc_median)];</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    disp(name2);</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    name=</span><span style="color: rgb(160, 32, 240);">'Aggregate wealth to aggregate income (target=3.0)='</span><span>;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    name2=[name,num2str(A_agg/Y_inc_agg)];</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    disp(name2);</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    </span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    err1=abs(Y_inc_median-1.0); </span><span style="color: rgb(60, 118, 61);">% Target: Median household income (normalized to 1 in the model)</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    err2=abs((A_agg/Y_inc_agg)-3.0); </span><span style="color: rgb(60, 118, 61);">% Target: Annual capital/income ratio of 3</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    </span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    err=max(err1,err2);</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    </span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    </span><span style="color: rgb(60, 118, 61);">% Beta and Theta</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    theta = mp_params(</span><span style="color: rgb(160, 32, 240);">'theta'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    beta = mp_params(</span><span style="color: rgb(160, 32, 240);">'beta'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    param_update=[theta;beta];</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    </span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    </span><span style="color: rgb(0, 0, 255);">if </span><span>err&gt;tol</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    </span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>        theta=theta*((1.0/Y_inc_median)^0.2); </span><span style="color: rgb(60, 118, 61);">% Normalize theta such that median household income equals 1</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>        beta=beta*((3.0/(A_agg/Y_inc_agg))^0.025); </span><span style="color: rgb(60, 118, 61);">% Calibrate beta such that annual capital/income ratio equals 3</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    </span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    </span><span style="color: rgb(0, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    mp_params(</span><span style="color: rgb(160, 32, 240);">'theta'</span><span>) = theta;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    mp_params(</span><span style="color: rgb(160, 32, 240);">'beta'</span><span>) = beta;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    param_update=[param_update(1,1),theta;param_update(2,1),beta];</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    it_counter = it_counter + 1;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    name=</span><span style="color: rgb(160, 32, 240);">'Old/updated theta:'</span><span>;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    st_theta=[name, num2str(param_update(1,:))];</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    name=</span><span style="color: rgb(160, 32, 240);">'Old/updated beta:'</span><span>;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    st_beta=[name,num2str(param_update(2,:))];</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    disp([</span><span style="color: rgb(160, 32, 240);">'counter=' </span><span>num2str(it_counter) </span><span style="color: rgb(0, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>        </span><span style="color: rgb(160, 32, 240);">';beta=' </span><span>num2str(beta) </span><span style="color: rgb(0, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>        </span><span style="color: rgb(160, 32, 240);">';theta=' </span><span>num2str(theta)]);    </span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S7'><span style="white-space: pre;"><span style="color: rgb(0, 0, 255);">end</span></span></div><div  class = 'S8'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="003312E4" data-testid="output_1" data-width="428" data-height="18" data-hashorizontaloverflow="false" style="width: 458px; max-height: 261px;"><div class="textElement">a2_old:1.5286, a2_new:1.5286, tm_end_a2:4134.1075</div></div><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="7A69E49E" data-testid="output_2" data-width="428" data-height="18" data-hashorizontaloverflow="false" style="width: 458px; max-height: 261px;"><div class="textElement">Median household income (target=1.0)=0.99853</div></div><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="AABB03FE" data-testid="output_3" data-width="428" data-height="18" data-hashorizontaloverflow="false" style="width: 458px; max-height: 261px;"><div class="textElement">Aggregate wealth to aggregate income (target=3.0)=3.0026</div></div><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="027D0FDF" data-testid="output_4" data-width="428" data-height="18" data-hashorizontaloverflow="false" style="width: 458px; max-height: 261px;"><div class="textElement">counter=2;beta=0.97116;theta=0.56523</div></div></div></div></div><h1  class = 'S10'></h1></div>
+<br>
+<!-- 
+##### SOURCE BEGIN #####
+%% Calibrate Beta and Normalize GDP
+% Taking advantage of <https://github.com/FanWangEcon/PrjOptiSNW/tree/master/PrjOptiSNW/params/snw_ds_main.m 
+% *snw_ds_main*> from the <https://fanwangecon.github.io/PrjOptiSNW/ *PrjOptiSNW 
+% Package*,> this function calibrates the discount factor and also solves for 
+% the normalizing constant. 
+%% Calibrate Parameter Controls for SNW Functions
+% Set up controls for shock process and tiny/small/dense/densemore
+
+clear all;
+bl_print_mp_params = false;
+% st_shock_method = 'rouwenhorst';
+st_shock_method = 'tauchen';
+% st_param_group = 'default_tiny';
+% st_param_group = 'default_small';
+% st_param_group = 'default_base';
+% st_param_group = 'default_dense';
+% st_param_group = 'default_moredense';
+st_param_group = 'default_docdense';
+mp_params = snw_mp_param(st_param_group, bl_print_mp_params, st_shock_method);
+Pop = mp_params('Pop');
+%% 
+% Set up print defaults
+
+mp_controls = snw_mp_control('default_test');
+mp_controls('bl_timer') = timer;
+mp_controls('bl_print_vfi') = false;
+mp_controls('bl_print_vfi_verbose') = false;
+mp_controls('bl_print_ds') = false;
+mp_controls('bl_print_ds_verbose') = false;
+%% Calibrate Routine
+% Test this for 3 iterations
+
+%% Calibration
+err=1;
+tol=0.005;
+it_counter = 1;
+while err>tol && it_counter <= 3
+    disp('');
+    it=1;
+
+    while it>0
+
+        % Solve optimization problem and get the distribution
+        tm_start_a2 = tic;
+        a2_old = mp_params('a2');
+        [Phi_true,~,A_agg,Y_inc_agg,it,mp_dsvfi_results, a2] = snw_ds_main(mp_params, mp_controls);
+        mp_params('a2') = a2;        
+        tm_end_a2 = toc(tm_start_a2);
+        disp(['a2_old:' num2str(a2_old) ', a2_new:' num2str(a2) ', tm_end_a2:' num2str(tm_end_a2)])
+    end
+    
+    % Get Stats
+    mp_cl_mt_xyz_of_s = mp_dsvfi_results('mp_cl_mt_xyz_of_s');
+    tb_outcomes = mp_cl_mt_xyz_of_s('tb_outcomes');
+    A_agg_alt = tb_outcomes{'a_ss', 'mean'}*sum(Pop);
+    Aprime_agg_alt = tb_outcomes{'ap_ss', 'mean'}*sum(Pop);
+    Y_inc_agg_alt = tb_outcomes{'y_all', 'mean'}*sum(Pop);
+    Y_inc_median = tb_outcomes{'y_all', 'p50'};     
+    
+    % Comparison
+    name='Median household income (target=1.0)=';
+    name2=[name,num2str(Y_inc_median)];
+    disp(name2);
+    name='Aggregate wealth to aggregate income (target=3.0)=';
+    name2=[name,num2str(A_agg/Y_inc_agg)];
+    disp(name2);
+    
+    err1=abs(Y_inc_median-1.0); % Target: Median household income (normalized to 1 in the model)
+    err2=abs((A_agg/Y_inc_agg)-3.0); % Target: Annual capital/income ratio of 3
+    
+    err=max(err1,err2);
+    
+    % Beta and Theta
+    theta = mp_params('theta');
+    beta = mp_params('beta');
+    param_update=[theta;beta];
+    
+    if err>tol
+    
+        theta=theta*((1.0/Y_inc_median)^0.2); % Normalize theta such that median household income equals 1
+        beta=beta*((3.0/(A_agg/Y_inc_agg))^0.025); % Calibrate beta such that annual capital/income ratio equals 3
+    
+    end
+    mp_params('theta') = theta;
+    mp_params('beta') = beta;
+
+    param_update=[param_update(1,1),theta;param_update(2,1),beta];
+
+    it_counter = it_counter + 1;
+    name='Old/updated theta:';
+    st_theta=[name, num2str(param_update(1,:))];
+    name='Old/updated beta:';
+    st_beta=[name,num2str(param_update(2,:))];
+    disp(['counter=' num2str(it_counter) ...
+        ';beta=' num2str(beta) ...
+        ';theta=' num2str(theta)]);    
+end
+%%
+##### SOURCE END #####
+--></body></html>

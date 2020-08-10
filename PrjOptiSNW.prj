@@ -7,7 +7,7 @@
     <param.summary>Dynamic Life Cycle US Simulation and Welfare Checks COVID-19</param.summary>
     <param.description>Dynamic Life Cycle US Simulation and Welfare Checks COVID-19</param.description>
     <param.screenshot>${PROJECT_ROOT}\img\toolboxlogo.png</param.screenshot>
-    <param.version>0.1.4</param.version>
+    <param.version>0.1.5</param.version>
     <param.output>${PROJECT_ROOT}\PrjOptiSNW.mltbx</param.output>
     <param.products.name />
     <param.products.id />
@@ -33,7 +33,19 @@
 % All files matching a pattern in all subfolders of the toolbox folder:
 % **/*.bak
 %
+_log/*
+_simu/*
+AllocateR/*
+bookdown/*
+*.yml
+*.md
+*.css
+*.tex
 .git/*
+.git
+*/doc/*
+*/vig/*
+*/img/*
 */htmlpdfm/*
 *htmlpdfm/*
 htmlpdfm/*
@@ -67,6 +79,16 @@ htmlpdfm/*
       &lt;example name="snw_a4chk_wrk_bisec_vec" type="html"&gt;
          &lt;file type="source"&gt;/PrjOptiSNW/splanner/html/snw_a4chk_wrk_bisec_vec.html&lt;/file&gt;
          &lt;file type="main"&gt;/PrjOptiSNW/splanner/snw_a4chk_wrk_bisec_vec.m&lt;/file&gt;
+         &lt;file type="thumbnail"/&gt;
+      &lt;/example&gt;
+      &lt;example name="snw_v_planner" type="html"&gt;
+         &lt;file type="source"&gt;/PrjOptiSNW/splanner/html/snw_v_planner.html&lt;/file&gt;
+         &lt;file type="main"&gt;/PrjOptiSNW/splanner/snw_v_planner.m&lt;/file&gt;
+         &lt;file type="thumbnail"/&gt;
+      &lt;/example&gt;
+      &lt;example name="snw_vu_vw_checks" type="html"&gt;
+         &lt;file type="source"&gt;/PrjOptiSNW/splanner/html/snw_vu_vw_checks.html&lt;/file&gt;
+         &lt;file type="main"&gt;/PrjOptiSNW/splanner/snw_vu_vw_checks.m&lt;/file&gt;
          &lt;file type="thumbnail"/&gt;
       &lt;/example&gt;
    &lt;/exampleCategory&gt;
@@ -170,16 +192,23 @@ htmlpdfm/*
       <file>${PROJECT_ROOT}</file>
     </fileset.rootdir>
     <fileset.rootfiles>
-      <file>${PROJECT_ROOT}\.git</file>
       <file>${PROJECT_ROOT}\.gitattributes</file>
       <file>${PROJECT_ROOT}\.gitignore</file>
-      <file>${PROJECT_ROOT}\_config.yml</file>
+      <file>${PROJECT_ROOT}\.Rbuildignore</file>
+      <file>${PROJECT_ROOT}\.Rprofile</file>
+      <file>${PROJECT_ROOT}\_log</file>
+      <file>${PROJECT_ROOT}\_output_kniti_html.yaml</file>
+      <file>${PROJECT_ROOT}\_output_kniti_pdf.yaml</file>
+      <file>${PROJECT_ROOT}\_simu</file>
+      <file>${PROJECT_ROOT}\AllocateR</file>
+      <file>${PROJECT_ROOT}\book.bib</file>
+      <file>${PROJECT_ROOT}\bookdown</file>
       <file>${PROJECT_ROOT}\demos.xml</file>
+      <file>${PROJECT_ROOT}\hdga.html</file>
       <file>${PROJECT_ROOT}\img</file>
       <file>${PROJECT_ROOT}\LICENSE</file>
+      <file>${PROJECT_ROOT}\packages.bib</file>
       <file>${PROJECT_ROOT}\PrjOptiSNW</file>
-      <file>${PROJECT_ROOT}\README.md</file>
-      <file>${PROJECT_ROOT}\snw_vfi_unemp_grid_search.m</file>
     </fileset.rootfiles>
     <fileset.depfun.included />
     <fileset.depfun.excluded />

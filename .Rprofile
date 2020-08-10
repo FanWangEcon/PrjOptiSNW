@@ -8,6 +8,8 @@ library(formatR)
 
 # RMD Options
 options(knitr.duplicate.label = "allow")
+options(bookdown.render.file_scope = FALSE)
+
 knitr::opts_chunk$set(fig.width=7, fig.height=4, fig.align="center")
 # knitr::opts_chunk$set(tidy.opts=list(width.cutoff=60), tidy=TRUE)
 knitr::opts_chunk$set(warning=FALSE, message=FALSE, cache=FALSE)

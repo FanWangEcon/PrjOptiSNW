@@ -1,11 +1,11 @@
-%% SNW_VFI_PARAM Small Solution Analysis
+%% Small Test Exact Solution Vectorized Bisection
 % This is the example vignette for function: <https://github.com/FanWangEcon/PrjOptiSNW/tree/master/PrjOptiSNW/svalpol/snw_vfi_main_bisec_vec.m 
 % *snw_vfi_main_bisec_vec*> from the <https://fanwangecon.github.io/PrjOptiSNW/ 
 % *PrjOptiSNW Package*>*.* This function solves for policy function with vectorized 
 % bisection. Small Solution Analysis. Small Solution Analysis, husband 5 shocks, 
 % wife 1 shocks.
 %% Test SNW_VFI_MAIN Defaults Small
-% Call the function with defaults.
+% Call the function with defaults parameters.
 
 mp_param = snw_mp_param('default_small');
 [V_VFI,ap_VFI,cons_VFI,mp_valpol_more] = snw_vfi_main_bisec_vec(mp_param);

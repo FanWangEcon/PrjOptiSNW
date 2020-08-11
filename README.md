@@ -107,18 +107,7 @@ installedToolbox = matlab.addons.toolbox.installToolbox(toolboxFile, agreeToLice
 	+ Solve for the increase in savings that is equivalent to the impact of an additional check on a household's resource available in 2020, given tax and interest rates considerations.
 	+ **PrjOptiSNW**: *[snw_a4chk_unemp_bisec_vec()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/splanner/snw_a4chk_unemp_bisec_vec.m)*
 
-# 7  Value of Each Check
-
-1. [Marginal Gain Per Check 2020 Employed](https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/splannercheckval/htmlpdfm/snwx_a4chk_wrk_bisec_vec.html): [**mlx**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/splannercheckval/snwx_a4chk_wrk_bisec_vec.mlx) \| [**m**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/splannercheckval/htmlpdfm/snwx_a4chk_wrk_bisec_vec.m) \| [**pdf**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/splannercheckval/htmlpdfm/snwx_a4chk_wrk_bisec_vec.pdf) \| [**html**](https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/splannercheckval/htmlpdfm/snwx_a4chk_wrk_bisec_vec.html)
-	+ Evaluate the marginal gain per check in 2020 if household head is employed.
-	+ Solve for the increase in savings that is equivalent to the impact of an additional check on a household's resource available in 2020, given tax and interest rates considerations.
-	+ **PrjOptiSNW**: *[snw_a4chk_wrk_bisec_vec()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/splanner/snw_a4chk_wrk_bisec_vec.m)*
-2. [Marginal Gain Per Check 2020 Unemployed](https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/splannercheckval/htmlpdfm/snwx_a4chk_unemp_bisec_vec.html): [**mlx**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/splannercheckval/snwx_a4chk_unemp_bisec_vec.mlx) \| [**m**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/splannercheckval/htmlpdfm/snwx_a4chk_unemp_bisec_vec.m) \| [**pdf**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/splannercheckval/htmlpdfm/snwx_a4chk_unemp_bisec_vec.pdf) \| [**html**](https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/splannercheckval/htmlpdfm/snwx_a4chk_unemp_bisec_vec.html)
-	+ Evaluate the marginal gain per check in 2020 if household head is unemployed.
-	+ Solve for the increase in savings that is equivalent to the impact of an additional check on a household's resource available in 2020, given tax and interest rates considerations.
-	+ **PrjOptiSNW**: *[snw_a4chk_unemp_bisec_vec()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/splanner/snw_a4chk_unemp_bisec_vec.m)*
-
-# 8  2020 Outcomes Full State Space with Savings, Shocks and Education
+# 7  2020 Outcomes Full State Space with Savings, Shocks and Education
 
 1. [Value in 2020 Given Age, Savings, Shocks, Kids, Educaiton and Marriage](https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/splannerjaeemk/htmlpdfm/snwx_evuvw20_jaeemk.html): [**mlx**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/splannerjaeemk/snwx_evuvw20_jaeemk.mlx) \| [**m**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/splannerjaeemk/htmlpdfm/snwx_evuvw20_jaeemk.m) \| [**pdf**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/splannerjaeemk/htmlpdfm/snwx_evuvw20_jaeemk.pdf) \| [**html**](https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/splannerjaeemk/htmlpdfm/snwx_evuvw20_jaeemk.html)
 	+ Expected value and expected consumption from 2020 for a household given at a particular age (18-100), with a particular savings level, at a particular combination of household head and spouse income shocks, with 0 to 4 children, high or low Education status, and married or not married.
@@ -128,7 +117,7 @@ installedToolbox = matlab.addons.toolbox.installToolbox(toolboxFile, agreeToLice
 	+ Expected value and expected consumption from 2019 for a household at a particular age (18-99), savings level, shocks combinations, kids/education/marriage status, given 2019 optimal savings choices, income shock transition probability as well as household children count transition probabilities.
 	+ **PrjOptiSNW**: *[snw_evuvw19_jaeemk()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/splanneralt/snw_evuvw19_jaeemk.m)*
 
-# 9  2019 Expectations Given Income, Age, Kids and Marital Status
+# 8  2019 Expectations Given Income, Age, Kids and Marital Status
 
 1. [Expected Value from 2019 Given Age, Kids, Income and Marriage](https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/splannerjmky/htmlpdfm/snwx_evuvw19_jmky.html): [**mlx**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/splannerjmky/snwx_evuvw19_jmky.mlx) \| [**m**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/splannerjmky/htmlpdfm/snwx_evuvw19_jmky.m) \| [**pdf**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/splannerjmky/htmlpdfm/snwx_evuvw19_jmky.pdf) \| [**html**](https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/splannerjmky/htmlpdfm/snwx_evuvw19_jmky.html)
 	+ Expected Value from 2019 Given Age, Kids, Income and Marriage.
@@ -139,7 +128,7 @@ installedToolbox = matlab.addons.toolbox.installToolbox(toolboxFile, agreeToLice
 	+ This is the gateway function that solves policy functions, derive distributions, computes value in 2020 with and without unemployment shocks with varying check levels, derives 2019 planner expected values given household optimization and shocks, and finds the mass of individuals in different income/age/marital-status bins, and saves the simulated value of check results for the planner.
 	+ **PrjOptiSNW**: *[snw_evuvw19_jmky_allchecks()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/splanneralt/snw_evuvw19_jmky_allchecks.m)*
 
-# 10  Calibration
+# 9  Calibration
 
 1. [Calibrate Discount Factor and Normalize GDP](https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/calibrate/htmlpdfm/snwx_calibrate_beta_norm_gdp.html): [**mlx**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/calibrate/snwx_calibrate_beta_norm_gdp.mlx) \| [**m**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/calibrate/htmlpdfm/snwx_calibrate_beta_norm_gdp.m) \| [**pdf**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/calibrate/htmlpdfm/snwx_calibrate_beta_norm_gdp.pdf) \| [**html**](https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/calibrate/htmlpdfm/snwx_calibrate_beta_norm_gdp.html)
 	+ We calibrate the model so that the Asset/Savings/Capital to GDP/Income ratio is 3.

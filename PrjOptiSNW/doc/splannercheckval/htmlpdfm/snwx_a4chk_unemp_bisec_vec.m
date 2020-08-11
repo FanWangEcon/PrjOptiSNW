@@ -4,8 +4,8 @@
 % *PrjOptiSNW Package*>*.* This function solves for the V(states, check) for individuals 
 % working. Dense solution. Bisection, most time for the test here taken to genereate 
 % the income matrixes. But these can be generated out of the check loops.
-%% Test SNW_A4CHK_UNEMP_BISEC_VEC Defaults Dense
-% Call the function with defaults.
+%% Test SNW_A4CHK_UNEMP_BISEC_VEC Defaults
+% Call the function with defaults parameters.
 
 mp_params = snw_mp_param('default_docdense');
 mp_controls = snw_mp_control('default_test');

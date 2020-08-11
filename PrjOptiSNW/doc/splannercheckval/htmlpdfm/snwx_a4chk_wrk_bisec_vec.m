@@ -5,7 +5,7 @@
 % working. Dense solution. Bisection, most time for the test here taken to genereate 
 % the income matrixes. But these can be generated out of the check loops.
 %% Test SNW_A4CHK_WRK_BISEC_VEC Defaults Dense
-% Call the function with defaults.
+% Call the function with default parameters.
 
 mp_params = snw_mp_param('default_docdense');
 mp_controls = snw_mp_control('default_test');

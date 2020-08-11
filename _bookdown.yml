@@ -31,10 +31,6 @@ rmd_files:
   - PrjOptiSNW/doc/splannercheckval/snwx_a4chk_wrk_bisec_vec.Rmd
   - PrjOptiSNW/doc/splannercheckval/snwx_a4chk_unemp_bisec_vec.Rmd
 
-  - PrjOptiSNW/doc/splannercheckval/main.Rmd
-  - PrjOptiSNW/doc/splannercheckval/snwx_a4chk_wrk_bisec_vec.Rmd
-  - PrjOptiSNW/doc/splannercheckval/snwx_a4chk_unemp_bisec_vec.Rmd
-
   - PrjOptiSNW/doc/splannerjaeemk/main.Rmd
   - PrjOptiSNW/doc/splannerjaeemk/snwx_evuvw20_jaeemk.Rmd
   - PrjOptiSNW/doc/splannerjaeemk/snwx_evuvw19_jaeemk.Rmd

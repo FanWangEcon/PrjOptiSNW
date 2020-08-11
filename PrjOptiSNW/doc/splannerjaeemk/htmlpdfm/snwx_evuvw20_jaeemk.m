@@ -3,7 +3,7 @@
 % *snw_evuvw20_jaeemk*> from the <https://fanwangecon.github.io/PrjOptiSNW/ *PrjOptiSNW 
 % Package*>*.* 2020 integrated over VU and VW
 %% Test SNW_EVUVW20_JAEEMK Defaults Dense
-% VFI and Distribution
+% Solve for policy functions and obtain distributions.
 % 
 % Call the function with defaults.
 

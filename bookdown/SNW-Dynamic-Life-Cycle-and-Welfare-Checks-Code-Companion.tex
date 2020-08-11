@@ -1523,7 +1523,7 @@ This is the example vignette for function:
 \href{https://github.com/FanWangEcon/PrjOptiSNW/tree/master/PrjOptiSNW/params/snw_mp_controls.m}{\textbf{snw\_mp\_controls}}
 from the \href{https://fanwangecon.github.io/PrjOptiSNW/}{\textbf{PrjOptiSNW
 Package}}\textbf{.} This function
-sets and gets different parameters
+sets and gets different control parameters
 
 \hypertarget{test-snw_mp_controls-defaults}{%
 \subsection{Test SNW\_MP\_CONTROLS Defaults}\label{test-snw_mp_controls-defaults}}
@@ -2105,8 +2105,8 @@ ff_graph_grid((tb_az_c{1:end, 4:end}), ar_row_grid, age_grid, mp_support_graph);
 \hypertarget{alternative-value-function-solution-testing}{%
 \chapter{Alternative Value Function Solution Testing}\label{alternative-value-function-solution-testing}}
 
-\hypertarget{snw_vfi_param-small-solution-analysis}{%
-\section{SNW\_VFI\_PARAM Small Solution Analysis}\label{snw_vfi_param-small-solution-analysis}}
+\hypertarget{small-test-exact-solution-looped-minimizer}{%
+\section{Small Test Exact Solution Looped Minimizer}\label{small-test-exact-solution-looped-minimizer}}
 
 This is the example vignette for function:
 \href{https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/svalpol/snw_vfi_main.m}{\textbf{snw\_vfi\_main}}
@@ -2118,7 +2118,7 @@ Small Solution Analysis.
 \hypertarget{test-snw_vfi_main-defaults-small}{%
 \subsection{Test SNW\_VFI\_MAIN Defaults Small}\label{test-snw_vfi_main-defaults-small}}
 
-Call the function with defaults.
+Call the function with defaults parameters.
 
 \begin{verbatim}
 mp_param = snw_mp_param('default_small');
@@ -2329,8 +2329,8 @@ mp_support_graph('cl_st_ytitle') = {'MEAN(C(EK,J))'};
 ff_graph_grid((tb_az_c{1:end, 4:end}), ar_row_grid, age_grid, mp_support_graph);
 \end{verbatim}
 
-\hypertarget{snw_vfi_main_grid_search-small-solution-analysis}{%
-\section{SNW\_VFI\_MAIN\_GRID\_SEARCH Small Solution Analysis}\label{snw_vfi_main_grid_search-small-solution-analysis}}
+\hypertarget{small-test-grid-search-solution}{%
+\section{Small Test Grid Search Solution}\label{small-test-grid-search-solution}}
 
 This is the example vignette for function:
 \href{https://github.com/FanWangEcon/PrjOptiSNW/tree/master/PrjOptiSNW/svalpol/snw_vfi_main_grid_search.m}{\textbf{snw\_vfi\_main\_grid\_search}}
@@ -2342,7 +2342,7 @@ Small Solution Analysis, husband 5 shocks, wife 1 shocks.
 \hypertarget{test-snw_vfi_main_grid_search-defaults-small}{%
 \subsection{Test SNW\_VFI\_MAIN\_GRID\_SEARCH Defaults Small}\label{test-snw_vfi_main_grid_search-defaults-small}}
 
-Call the function with defaults.
+Call the function with defaults parameters.
 
 \begin{verbatim}
 mp_param = snw_mp_param('default_small');
@@ -2766,8 +2766,8 @@ ff_graph_grid((tb_az_c{1:end, 4:end}), ar_row_grid, age_grid, mp_support_graph);
 
 \includegraphics[width=5.20833in,height=\textheight]{img/snwx_vfi_test_grid_search_images/figure_17.png}
 
-\hypertarget{snw_vfi_param-small-solution-analysis-1}{%
-\section{SNW\_VFI\_PARAM Small Solution Analysis}\label{snw_vfi_param-small-solution-analysis-1}}
+\hypertarget{small-test-exact-solution-vectorized-bisection}{%
+\section{Small Test Exact Solution Vectorized Bisection}\label{small-test-exact-solution-vectorized-bisection}}
 
 This is the example vignette for function:
 \href{https://github.com/FanWangEcon/PrjOptiSNW/tree/master/PrjOptiSNW/svalpol/snw_vfi_main_bisec_vec.m}{\textbf{snw\_vfi\_main\_bisec\_vec}}
@@ -2779,7 +2779,7 @@ Analysis. Small Solution Analysis, husband 5 shocks, wife 1 shocks.
 \hypertarget{test-snw_vfi_main-defaults-small-1}{%
 \subsection{Test SNW\_VFI\_MAIN Defaults Small}\label{test-snw_vfi_main-defaults-small-1}}
 
-Call the function with defaults.
+Call the function with defaults parameters.
 
 \begin{verbatim}
 mp_param = snw_mp_param('default_small');
@@ -3203,8 +3203,8 @@ ff_graph_grid((tb_az_c{1:end, 4:end}), ar_row_grid, age_grid, mp_support_graph);
 
 \includegraphics[width=5.20833in,height=\textheight]{img/snwx_vfi_test_bisec_vec_images/figure_17.png}
 
-\hypertarget{snw_vfi_param-small-53-solution-analysis}{%
-\section{SNW\_VFI\_PARAM Small 5/3 Solution Analysis}\label{snw_vfi_param-small-53-solution-analysis}}
+\hypertarget{small-test-exact-solution-spousal-shocks}{%
+\section{Small Test Exact Solution Spousal Shocks}\label{small-test-exact-solution-spousal-shocks}}
 
 This is the example vignette for function:
 \href{https://github.com/FanWangEcon/PrjOptiSNW/tree/master/PrjOptiSNW/svalpol/snw_vfi_main_bisec_vec.m}{\textbf{snw\_vfi\_main\_bisec\_vec}}
@@ -3216,7 +3216,7 @@ Analysis, husband 5 shocks, wife 3 shocks.
 \hypertarget{test-snw_vfi_main-defaults-small-2}{%
 \subsection{Test SNW\_VFI\_MAIN Defaults Small}\label{test-snw_vfi_main-defaults-small-2}}
 
-Call the function with defaults.
+Call the function with default parameters.
 
 \begin{verbatim}
 mp_param = snw_mp_param('default_small53');
@@ -5425,7 +5425,7 @@ matrixes. But these can be generated out of the check loops.
 \hypertarget{test-snw_a4chk_wrk_bisec_vec-defaults-dense}{%
 \subsection{Test SNW\_A4CHK\_WRK\_BISEC\_VEC Defaults Dense}\label{test-snw_a4chk_wrk_bisec_vec-defaults-dense}}
 
-Call the function with defaults.
+Call the function with default parameters.
 
 \begin{verbatim}
 mp_params = snw_mp_param('default_docdense');
@@ -5933,10 +5933,10 @@ solves for the V(states, check) for individuals working. Dense solution.
 Bisection, most time for the test here taken to genereate the income
 matrixes. But these can be generated out of the check loops.
 
-\hypertarget{test-snw_a4chk_unemp_bisec_vec-defaults-dense}{%
-\subsection{Test SNW\_A4CHK\_UNEMP\_BISEC\_VEC Defaults Dense}\label{test-snw_a4chk_unemp_bisec_vec-defaults-dense}}
+\hypertarget{test-snw_a4chk_unemp_bisec_vec-defaults}{%
+\subsection{Test SNW\_A4CHK\_UNEMP\_BISEC\_VEC Defaults}\label{test-snw_a4chk_unemp_bisec_vec-defaults}}
 
-Call the function with defaults.
+Call the function with defaults parameters.
 
 \begin{verbatim}
 mp_params = snw_mp_param('default_docdense');
@@ -6376,7 +6376,7 @@ integrated over VU and VW
 \hypertarget{test-snw_evuvw20_jaeemk-defaults-dense}{%
 \subsection{Test SNW\_EVUVW20\_JAEEMK Defaults Dense}\label{test-snw_evuvw20_jaeemk-defaults-dense}}
 
-VFI and Distribution
+Solve for policy functions and obtain distributions.
 
 Call the function with defaults.
 
@@ -8506,38 +8506,6 @@ counter=2;beta=0.97116;theta=0.56523
 
 \hypertarget{value-of-each-check-links}{%
 \section{Value of Each Check links}\label{value-of-each-check-links}}
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  \href{https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/splannercheckval/htmlpdfm/snwx_a4chk_wrk_bisec_vec.html}{Marginal Gain Per Check 2020 Employed}: \href{https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/splannercheckval/snwx_a4chk_wrk_bisec_vec.mlx}{\textbf{mlx}} \textbar{} \href{https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/splannercheckval/htmlpdfm/snwx_a4chk_wrk_bisec_vec.m}{\textbf{m}} \textbar{} \href{https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/splannercheckval/htmlpdfm/snwx_a4chk_wrk_bisec_vec.pdf}{\textbf{pdf}} \textbar{} \href{https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/splannercheckval/htmlpdfm/snwx_a4chk_wrk_bisec_vec.html}{\textbf{html}}
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Evaluate the marginal gain per check in 2020 if household head is employed.
-  \item
-    Solve for the increase in savings that is equivalent to the impact of an additional check on a household's resource available in 2020, given tax and interest rates considerations.
-  \item
-    \textbf{PrjOptiSNW}: \emph{\href{https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/splanner/snw_a4chk_wrk_bisec_vec.m}{snw\_a4chk\_wrk\_bisec\_vec()}}
-  \end{itemize}
-\item
-  \href{https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/splannercheckval/htmlpdfm/snwx_a4chk_unemp_bisec_vec.html}{Marginal Gain Per Check 2020 Unemployed}: \href{https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/splannercheckval/snwx_a4chk_unemp_bisec_vec.mlx}{\textbf{mlx}} \textbar{} \href{https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/splannercheckval/htmlpdfm/snwx_a4chk_unemp_bisec_vec.m}{\textbf{m}} \textbar{} \href{https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/splannercheckval/htmlpdfm/snwx_a4chk_unemp_bisec_vec.pdf}{\textbf{pdf}} \textbar{} \href{https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/splannercheckval/htmlpdfm/snwx_a4chk_unemp_bisec_vec.html}{\textbf{html}}
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Evaluate the marginal gain per check in 2020 if household head is unemployed.
-  \item
-    Solve for the increase in savings that is equivalent to the impact of an additional check on a household's resource available in 2020, given tax and interest rates considerations.
-  \item
-    \textbf{PrjOptiSNW}: \emph{\href{https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/splanner/snw_a4chk_unemp_bisec_vec.m}{snw\_a4chk\_unemp\_bisec\_vec()}}
-  \end{itemize}
-\end{enumerate}
-
-\hypertarget{value-of-each-check-links-1}{%
-\section{Value of Each Check links}\label{value-of-each-check-links-1}}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}

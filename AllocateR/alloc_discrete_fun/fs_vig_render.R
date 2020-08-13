@@ -6,17 +6,17 @@ library(REconTools)
 library(PrjOptiAlloc)
 
 srt_root <- 'D:/Dropbox (UH-ECON)/PrjNygaardSorensenWang/'
+# srt_root <- 'C:/Users/fan/Documents/Dropbox (UH-ECON)/PrjNygaardSorensenWang/'
 
 source(paste0(srt_root, 'PrjOptiSNW/AllocateR/alloc_discrete_fun/fs_opti_support.R'))
 
-# srt_root <- 'C:/Users/fan/Documents/Dropbox (UH-ECON)/PrjNygaardSorensenWang/'
 ar_spt_root <- c(paste0(srt_root, 'PrjOptiSNW/AllocateR/alloc_discrete_fun/'))
-ar_spn_skip <- c('_main')
+ar_spn_skip <- c('_main', 'mpc', 'g47')
 # file directory for HTML output
 # Update Directory for Image output inside each of the RMd files.
 # spt_out_directory <- 'C:/Users/fan/Documents/Dropbox (UH-ECON)/PrjNygaardSorensenWang/Results/2020-07-29/HTML_files/'
 spt_out_directory <- paste0(srt_root, 'Results/2020-08-05/HTML_files/',
-                            'moredense_a65zh266zs5_e2m2_b0_calibrated/')
+                            'b0_a64/')
 st_save_add_suffix <- ''
 ls_bool_convert <- list(bl_pdf=FALSE, bl_html=TRUE, bl_R=FALSE)
 bl_verbose <- TRUE

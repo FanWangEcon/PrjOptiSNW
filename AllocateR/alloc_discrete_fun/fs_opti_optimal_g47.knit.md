@@ -11,15 +11,7 @@ output:
     toc_depth: 4
 ---
 
-```{r setup, include=FALSE}
-# rm(list = ls())
 
-knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_chunk$set(fig.width=12, fig.height=8)
-
-library(tidyverse)
-library(REconTools)
-```
 
 # Optimal Allocation
 
@@ -29,7 +21,8 @@ Each age one by one, to get the fully optimal age specific allocation. Do not gr
 
 Files:
 
-```{r}
+
+```r
 # # File Names
 # st_file_type_withspouse_shock <- 'moredense_ybin25000'
 # snm_simu_csv_withspouse_shock <- paste0('snwx_v_planner_',st_file_type_withspouse_shock,'.csv')
@@ -53,13 +46,12 @@ srt_simu_path <- ls_output$srt_simu_path
 bl_save_img <- ls_output$bl_save_img
 spt_img_save <- ls_output$spt_img_save
 srt_csv_path <- ls_output$srt_csv_path
-ar_rho <- ls_output$ar_rho
-it_max_age <- ls_output$it_max_age
 ```
 
 ## Common Parameters Across
 
-```{r}
+
+```r
 # Max Phase Out given 1200*2 + 500*4 = 4400
 fl_max_phaseout = 238000
 it_bin_dollar_before_phaseout = 2500
@@ -76,7 +68,7 @@ fl_tax_hh = 128580000
 # Age Conditions
 # it_max_age = 64
 # it_min_age = 64
-# it_max_age = 64
+it_max_age = 64
 it_min_age = 18
 it_age_bins = 47
 # Image Save Suffix
@@ -85,7 +77,8 @@ st_img_suf_age_ybin <- paste0(it_min_age, 't', it_max_age)
 
 ### Variable Names and Paths
 
-```{r}
+
+```r
 # File Path
 # srt_simu_path <- 'C:/Users/fan/Documents/Dropbox (UH-ECON)/PrjNygaardSorensenWang/Output/'
 
@@ -104,7 +97,8 @@ svr_mass <- 'mass'
 
 Image and Save Control
 
-```{r}
+
+```r
 # Save Folder
 # srt_csv_path <- 'C:/Users/fan/Documents/Dropbox (UH-ECON)/PrjNygaardSorensenWang/Results/2020-08-05/csv/'
 # # CSV and Image Paths
@@ -114,9 +108,10 @@ Image and Save Control
 
 ### Planner Preference
 
-```{r}
-# ar_rho <- 1 - (10^(c(seq(-2,2, length.out=8))))
-# ar_rho <- unique(c(1,ar_rho))
+
+```r
+ar_rho <- 1 - (10^(c(seq(-2,2, length.out=8))))
+ar_rho <- unique(c(1,ar_rho))
 # ar_rho <- c(1)
 ```
 
@@ -126,7 +121,8 @@ Image and Save Control
 
 Call the input processing function
 
-```{r}
+
+```r
 # Call function
 ls_prc_outputs_zs5_1st <- PrjOptiAlloc::ffp_snw_process_inputs(
   srt_simu_path = srt_simu_path,
@@ -153,20 +149,67 @@ ls_prc_outputs_zs5_1st <- PrjOptiAlloc::ffp_snw_process_inputs(
   bl_print_verbose = FALSE)
 ```
 
+```
+## Warning: `cols` is now required when using unnest().
+## Please use `cols = c(rev)`
+
+## Warning: `cols` is now required when using unnest().
+## Please use `cols = c(rev)`
+```
+
+```
+## Adding missing grouping variables: `id_i`
+```
+
 ### Outputs
 
 REV:
 
-```{r}
+
+```r
 tb_rho_rev_c=ls_prc_outputs_zs5_1st$tb_rho_rev_c
 tb_rho_rev_v=ls_prc_outputs_zs5_1st$tb_rho_rev_v
 print(tb_rho_rev_c)
+```
+
+```
+## # A tibble: 9 x 3
+##     rho rho_val   REV
+##   <int>   <dbl> <dbl>
+## 1     1   1     0.358
+## 2     2   0.99  0.360
+## 3     3   0.963 0.365
+## 4     4   0.861 0.386
+## 5     5   0.482 0.487
+## 6     6  -0.931 0.864
+## 7     7  -6.20  0.999
+## 8     8 -25.8   1.00 
+## 9     9 -99     1.00
+```
+
+```r
 print(tb_rho_rev_v)
+```
+
+```
+## # A tibble: 9 x 3
+##     rho rho_val   REV
+##   <int>   <dbl> <dbl>
+## 1     1   1     0.804
+## 2     2   0.99  0.805
+## 3     3   0.963 0.806
+## 4     4   0.861 0.810
+## 5     5   0.482 0.824
+## 6     6  -0.931 0.876
+## 7     7  -6.20  1.00 
+## 8     8 -25.8   1.00 
+## 9     9 -99     1.00
 ```
 
 ## Round 2 Results with Spousal Income Shocks
 
-```{r}
+
+```r
 bl_given_firstcheck <- TRUE
 ```
 
@@ -174,7 +217,8 @@ bl_given_firstcheck <- TRUE
 
 Call the input processing function
 
-```{r}
+
+```r
 # Call function
 ls_prc_outputs_zs5_2nd <- PrjOptiAlloc::ffp_snw_process_inputs(
   srt_simu_path = srt_simu_path,
@@ -202,15 +246,61 @@ ls_prc_outputs_zs5_2nd <- PrjOptiAlloc::ffp_snw_process_inputs(
   bl_print_verbose = FALSE)
 ```
 
+```
+## Warning: `cols` is now required when using unnest().
+## Please use `cols = c(rev)`
+
+## Warning: `cols` is now required when using unnest().
+## Please use `cols = c(rev)`
+```
+
+```
+## Adding missing grouping variables: `id_i`
+```
+
 ### Outputs
 
 REV:
 
-```{r}
+
+```r
 tb_rho_rev_c=ls_prc_outputs_zs5_2nd$tb_rho_rev_c
 tb_rho_rev_v=ls_prc_outputs_zs5_2nd$tb_rho_rev_v
 print(tb_rho_rev_c)
+```
+
+```
+## # A tibble: 9 x 3
+##     rho rho_val   REV
+##   <int>   <dbl> <dbl>
+## 1     1   1     0.337
+## 2     2   0.99  0.339
+## 3     3   0.963 0.343
+## 4     4   0.861 0.362
+## 5     5   0.482 0.455
+## 6     6  -0.931 0.860
+## 7     7  -6.20  1.00 
+## 8     8 -25.8   1.00 
+## 9     9 -99     1.00
+```
+
+```r
 print(tb_rho_rev_v)
+```
+
+```
+## # A tibble: 9 x 3
+##     rho rho_val   REV
+##   <int>   <dbl> <dbl>
+## 1     1   1     0.799
+## 2     2   0.99  0.801
+## 3     3   0.963 0.802
+## 4     4   0.861 0.806
+## 5     5   0.482 0.819
+## 6     6  -0.931 0.870
+## 7     7  -6.20  1.00 
+## 8     8 -25.8   1.00 
+## 9     9 -99     1.00
 ```
 
 ## Print Results to CSV
@@ -221,134 +311,10 @@ Only print a limited set of results, otherwise there would be too many rows.
 
 Print Allocation Results in Two Ways, Row based, with actual, first, and second round allocations as columns. And this table is outputed, at different levels of aggregations. where the allocation columns are outputed as different weighted means. Also compute fraction 0, fraction at within group max.
 
-```{r}
 
-df_alloc_all <- rbind(
-  ls_prc_outputs_zs5_1st$df_alloc_i_long_covar_v %>%
-  filter(rho_val == ar_rho[1]) %>%
-  mutate(allocate_type = case_when(allocate_type == 'optimal' ~ 'optimal_v_1st',
-                                   TRUE ~ allocate_type)),
-  ls_prc_outputs_zs5_1st$df_alloc_i_long_covar_c %>%
-  filter(rho_val == ar_rho[1]) %>%
-  filter(allocate_type == 'optimal') %>%
-  mutate(allocate_type = case_when(allocate_type == 'optimal' ~ 'optimal_c_1st',
-                                   TRUE ~ allocate_type)),
-  ls_prc_outputs_zs5_2nd$df_alloc_i_long_covar_v %>%
-  filter(rho_val == ar_rho[1]) %>%
-  filter(allocate_type == 'optimal') %>%
-  mutate(allocate_type = case_when(allocate_type == 'optimal' ~ 'optimal_v_2nd',
-                                   TRUE ~ allocate_type)),
-  ls_prc_outputs_zs5_2nd$df_alloc_i_long_covar_c %>%
-  filter(rho_val == ar_rho[1]) %>%
-  filter(allocate_type == 'optimal') %>%
-  mutate(allocate_type = case_when(allocate_type == 'optimal' ~ 'optimal_c_2nd',
-                                   TRUE ~ allocate_type))) %>%
-  arrange(id_i, allocate_type) %>%
-  select(-rho, -F_star_i, -EH_star_i, -survive) %>%
-  select(id_i, rho_val, everything())
 
-df_alloc_all <- df_alloc_all %>%
-  pivot_wider(names_from = allocate_type,
-              values_from = checks)
 
-# export
-write.csv(df_alloc_all,
-  paste0(srt_csv_path, "df_alloc_all_optimal_g47.csv"),
-  row.names = TRUE)
 
-```
 
-Export Grouped Average Statistics:
 
-```{r}
-ls_svr_groups <- ar_svr_groups
-for (svr_group in ls_svr_groups) {
 
-  # group mean
-  df_alloc_combine_group_mean <- df_alloc_all %>%
-    ungroup() %>% group_by(!!sym(svr_group)) %>%
-    summarize(actual_mean = sum(actual*mass)/sum(mass),
-              optimal_c_1st_mean = sum(optimal_c_1st*mass)/sum(mass),
-              optimal_v_1st_mean = sum(optimal_v_1st*mass)/sum(mass),
-              optimal_c_2nd_mean = sum(optimal_c_2nd*mass)/sum(mass),
-              optimal_v_2nd_mean = sum(optimal_v_2nd*mass)/sum(mass),
-              mass_sum = sum(mass))
-
-  # Export
-  write.csv(df_alloc_combine_group_mean,
-    paste0(srt_csv_path, "df_alloc_",svr_group, "_optimal_g47.csv"),
-    row.names = TRUE)
-
-  # All but Group mean
-  ls_svr_groups_oneless <- ls_svr_groups[ls_svr_groups != svr_group]
-  df_alloc_combine_group_mean_oneless <- df_alloc_all %>%
-    ungroup() %>% group_by(!!!syms(ls_svr_groups_oneless)) %>%
-    summarize(actual_mean = sum(actual*mass)/sum(mass),
-              optimal_c_1st_mean = sum(optimal_c_1st*mass)/sum(mass),
-              optimal_v_1st_mean = sum(optimal_v_1st*mass)/sum(mass),
-              optimal_c_2nd_mean = sum(optimal_c_2nd*mass)/sum(mass),
-              optimal_v_2nd_mean = sum(optimal_v_2nd*mass)/sum(mass),
-              mass_sum = sum(mass))
-
-  # Export
-  write.csv(df_alloc_combine_group_mean_oneless,
-    paste0(srt_csv_path, "df_alloc_",svr_group,"_without_optimal_g47.csv"),
-    row.names = TRUE)
-
-}
-```
-
-Average Statistics without Age
-
-```{r}
-ls_svr_groups <- ar_svr_groups_noage
-for (svr_group in ls_svr_groups) {
-
-  # All but Group mean
-  ls_svr_groups_oneless <- ls_svr_groups[ls_svr_groups != svr_group]
-  df_alloc_combine_group_mean_oneless <- df_alloc_all %>%
-    ungroup() %>% group_by(!!!syms(ls_svr_groups_oneless)) %>%
-    summarize(actual_mean = sum(actual*mass)/sum(mass),
-              optimal_c_1st_mean = sum(optimal_c_1st*mass)/sum(mass),
-              optimal_v_1st_mean = sum(optimal_v_1st*mass)/sum(mass),
-              optimal_c_2nd_mean = sum(optimal_c_2nd*mass)/sum(mass),
-              optimal_v_2nd_mean = sum(optimal_v_2nd*mass)/sum(mass),
-              mass_sum = sum(mass))
-
-  # Export
-  write.csv(df_alloc_combine_group_mean_oneless,
-    paste0(srt_csv_path, "df_alloc_",svr_group,"_without_noage_optimal_g47.csv"),
-    row.names = TRUE)
-
-}
-
-```
-
-### Print and save MASS REV results:
-
-```{r}
-# Save REV to table, Stack them
-tb_rho_rev_mass_v1_tab <- ls_prc_outputs_zs5_1st$tb_rho_rev_v %>%
-  mutate(objective = 'vlife',
-         constraint = 'optimal_g47',
-         allocround = 'first')
-tb_rho_rev_mass_c1_tab <- ls_prc_outputs_zs5_1st$tb_rho_rev_c %>%
-  mutate(objective = 'c2020',
-         constraint = 'optimal_g47',
-         allocround = 'first')
-tb_rho_rev_mass_v2_tab <- ls_prc_outputs_zs5_2nd$tb_rho_rev_v %>%
-  mutate(objective = 'vlife',
-         constraint = 'optimal_g47',
-         allocround = 'second')
-tb_rho_rev_mass_c2_tab <- ls_prc_outputs_zs5_2nd$tb_rho_rev_c %>%
-  mutate(objective = 'c2020',
-         constraint = 'optimal_g47',
-         allocround = 'second')
-# Stack frames
-tb_rho_rev_mass_v_c_tab <- rbind(tb_rho_rev_mass_v1_tab, tb_rho_rev_mass_c1_tab,
-                                 tb_rho_rev_mass_v2_tab, tb_rho_rev_mass_c2_tab)
-# export
-write.csv(tb_rho_rev_mass_v_c_tab,
-  paste0(srt_csv_path, "rev_optimal_g47.csv"),
-  row.names = TRUE)
-```

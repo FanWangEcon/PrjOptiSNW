@@ -65,6 +65,8 @@ srt_simu_path <- ls_output$srt_simu_path
 bl_save_img <- ls_output$bl_save_img
 spt_img_save <- ls_output$spt_img_save
 srt_csv_path <- ls_output$srt_csv_path
+ar_rho <- ls_output$ar_rho
+it_max_age <- ls_output$it_max_age
 ```
 
 
@@ -88,7 +90,7 @@ fl_tax_hh = 128580000
 # Age Conditions
 # it_max_age = 64
 # it_min_age = 64
-it_max_age = 64
+# it_max_age = 64
 it_min_age = 18
 it_age_bins = 4
 # Image Save Suffix
@@ -139,8 +141,8 @@ it_img_pointsize=3
 ### Planner Preference
 
 ```{r}
-ar_rho <- 1 - (10^(c(seq(-2,2, length.out=8))))
-ar_rho <- unique(c(1,ar_rho))
+# ar_rho <- 1 - (10^(c(seq(-2,2, length.out=8))))
+# ar_rho <- unique(c(1,ar_rho))
 # ar_rho <- c(1)
 ```
 
@@ -391,6 +393,30 @@ ls_pl_r2 <- ffp_snw_graph_feasible(ar_rho=ar_rho,
                                 spt_img_save=spt_img_save)
 ```
 
+#### Graph Round Two Allocations By Themselves by Age
+```{r}
+# Generate Graphs
+allocate_type_levels <- c(Actual = "actual", Optimal = "optimal")
+st_img_suffix <- paste0(st_file_type_withspouse_shock, '_', st_img_suf_age_ybin, '_round2_optimal_g4')
+ls_pl_2nd <- ffp_snw_graph_feasible(ar_rho=ar_rho,
+                                df_input_il_noninc_covar=df_input_il_noninc_covar_zs5_2nd,
+                                df_alloc_i_long_covar_c=
+                                  df_alloc_i_long_covar_c_zs5_2nd %>%
+                                  mutate(allocate_type = fct_recode(allocate_type, !!!allocate_type_levels)),
+                                df_alloc_i_long_covar_v=
+                                  df_alloc_i_long_covar_v_zs5_2nd %>%
+                                  mutate(allocate_type = fct_recode(allocate_type, !!!allocate_type_levels)),
+                                ls_st_save_imgs = c('checks_c', 'checks_v'),
+                                bl_optimal_with_age_groups = bl_optimal_with_age_groups,
+                                st_file_type = st_file_type_withspouse_shock,
+                                slb_add_title = slb_add_title_round1,
+                                stg_subtitle=stg_subtitle, stg_caption=stg_caption,
+                                it_img_width=it_img_width, it_img_height=it_img_height,
+                                st_img_units='mm', it_img_res=it_img_res, it_img_pointsize=it_img_pointsize,
+                                st_img_suffix=st_img_suffix, bl_save_img=bl_save_img,
+                                spt_img_save=spt_img_save)
+```
+
 #### Graph Round One Actual + Round Two Optimal vs Round 1/2 Actual
 
 Assume Round 1 actual duplicated in Round 2.
@@ -464,6 +490,11 @@ Given the number of checks individuals received in the first round, what is the 
 ```{r}
 print(ls_pl_r2$mc)
 ```
+#### Opti C, 2nd Optimal by itself
+
+```{r}
+print(ls_pl_2nd$checks_c)
+```
 
 #### Opti C, 1st Actual + 2nd Optimal
 
@@ -475,6 +506,12 @@ print(ls_pl_stack$checks_c)
 
 ```{r}
 print(ls_pl_r2$mv)
+```
+
+#### Opti V, 2nd Optimal by itself
+
+```{r}
+print(ls_pl_2nd$checks_v)
 ```
 
 #### Opti V, 1st Actual + 2nd Optimal

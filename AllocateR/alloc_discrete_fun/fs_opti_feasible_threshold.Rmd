@@ -67,6 +67,8 @@ srt_simu_path <- ls_output$srt_simu_path
 bl_save_img <- ls_output$bl_save_img
 spt_img_save <- ls_output$spt_img_save
 srt_csv_path <- ls_output$srt_csv_path
+ar_rho <- ls_output$ar_rho
+it_max_age <- ls_output$it_max_age
 
 ```
 
@@ -91,7 +93,7 @@ fl_tax_hh = 128580000
 # Age Conditions
 # it_max_age = 64
 # it_min_age = 64
-it_max_age = 64
+# it_max_age = 64
 it_min_age = 18
 it_age_bins = 1
 # Image Save Suffix
@@ -142,8 +144,8 @@ it_img_pointsize=3
 ### Planner Preference
 
 ```{r}
-ar_rho <- 1 - (10^(c(seq(-2,2, length.out=8))))
-ar_rho <- unique(c(1,ar_rho))
+# ar_rho <- 1 - (10^(c(seq(-2,2, length.out=8))))
+# ar_rho <- unique(c(1,ar_rho))
 # ar_rho <- c(1)
 ```
 

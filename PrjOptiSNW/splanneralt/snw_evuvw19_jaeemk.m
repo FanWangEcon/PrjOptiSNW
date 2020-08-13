@@ -17,7 +17,7 @@ function [varargout]=snw_evuvw19_jaeemk(varargin)
 
 %% Default and Parse
 if (~isempty(varargin))
-    
+
     if (length(varargin)==9)
         [welf_checks, st_solu_type, mp_params, mp_controls, ...
             V_ss, cons_ss, ...
@@ -26,55 +26,55 @@ if (~isempty(varargin))
     else
         error('Need to provide 9 parameter inputs');
     end
-    
+
 else
     clc;
     close all;
-    
+
 %     st_solu_type = 'matlab_minimizer';
     st_solu_type = 'bisec_vec';
 %     st_solu_type = 'grid_search';
-    
+
     % Solve the VFI Problem and get Value Function
     mp_params = snw_mp_param('default_tiny');
 %     mp_params = snw_mp_param('default_dense');
 %     mp_params = snw_mp_param('default_moredense');
     mp_controls = snw_mp_control('default_test');
-    
+
     % The Number of Checks to Provide
     welf_checks = 2;
-    
+
     % set Unemployment Related Variables
     xi=0.5; % Proportional reduction in income due to unemployment (xi=0 refers to 0 labor income; xi=1 refers to no drop in labor income)
     b=0; % Unemployment insurance replacement rate (b=0 refers to no UI benefits; b=1 refers to 100 percent labor income replacement)
     TR=100/58056; % Value of a welfare check (can receive multiple checks). TO DO: Update with alternative values
-    
+
     mp_params('xi') = xi;
     mp_params('b') = b;
     mp_params('TR') = TR;
-    
+
     % Solve for Unemployment Values
-    mp_controls('bl_print_a4chk') = false;     
+    mp_controls('bl_print_a4chk') = false;
     mp_controls('bl_print_vfi') = false;
     mp_controls('bl_print_ds') = false;
-    mp_controls('bl_print_ds_verbose') = false;    
+    mp_controls('bl_print_ds_verbose') = false;
     mp_controls('bl_print_precompute') = false;
     mp_controls('bl_print_evuvw20_jaeemk') = false;
     mp_controls('bl_print_evuvw20_jaeemk_verbose') = false;
     mp_controls('bl_print_a4chk_verbose') = false;
-    
+
     % Solve the Model to get V working and unemployed
     [V_ss,ap_ss,cons_ss,mp_valpol_more_ss] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
-    [V_unemp,~,cons_unemp,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls, V_ss);        
+    [V_unemp,~,cons_unemp,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls, V_ss);
     [Phi_true] = snw_ds_main(mp_params, mp_controls, ap_ss, cons_ss, mp_valpol_more_ss);
-    
+
     % Get Matrixes
     cl_st_precompute_list = {'a', ...
         'inc', 'inc_unemp', 'spouse_inc', 'spouse_inc_unemp', 'ref_earn_wageind_grid',...
         'ap_idx_lower_ss', 'ap_idx_higher_ss', 'ap_idx_lower_weight_ss'};
     mp_controls('bl_print_precompute_verbose') = false;
     [mp_precompute_res] = snw_hh_precompute(mp_params, mp_controls, cl_st_precompute_list, ap_ss, Phi_true);
-    
+
 end
 
 %% Parse Pre-Computes
@@ -121,17 +121,17 @@ bl_vectorize = false;
 bl_vectorize_a_only = false;
 
 % Solve for value function and policy functions by means of backwards induction
-for j=1:n_jgrid-1 % Age        
+for j=1:n_jgrid-1 % Age
     for educ=1:n_educgrid % Educational level
         for married=1:n_marriedgrid % Marital status
             for kids=1:n_kidsgrid % Number of kids
-                
+
                 % Age, married and kids specific transition
-                mt_pi_jem_kidseta = cl_mt_pi_jem_kidseta{j,educ,married};
-                    
+                mt_pi_jem_kidseta = kron(pi_kids(:,:,j,educ,married), pi_eta);
+
                 % loop of current uncertainty
                 for eta=1:n_etagrid % Productivity
-                    
+
                     if (bl_vectorize)
 
                         if (bl_vectorize_a_only)
@@ -156,7 +156,7 @@ for j=1:n_jgrid-1 % Age
                             end
 
                             % Continuation Value C = Planner Value 2019
-                            cons_cont=0;      
+                            cons_cont=0;
                             for etap=1:n_etagrid
                                 for kidsp=1:n_kidsgrid
                                     cons_cont=cons_cont+pi_eta(eta,etap)*pi_kids(kids,kidsp,j,educ,married)...
@@ -167,7 +167,7 @@ for j=1:n_jgrid-1 % Age
 
                             ev19_jaeemk(j,:,eta,educ,married,kids) = val_cont;
                             ec19_jaeemk(j,:,eta,educ,married,kids) = cons_cont;
-                            
+
                         else
                             % Get P(s'|s) conditional on current s
                             ar_pi_eta_kids = mt_pi_jem_kidseta((n_etagrid*(kids-1)+eta),:);
@@ -181,7 +181,7 @@ for j=1:n_jgrid-1 % Age
                             mn_consprime_higher=1-mn_consprime_lower;
 
                             % flatten
-                            ar_idx_lower = mn_idx_lower(:);                    
+                            ar_idx_lower = mn_idx_lower(:);
                             ar_idx_higher = mn_idx_higher(:);
                             ar_val_lower=mn_consprime_lower(:);
                             ar_val_higher=mn_consprime_higher(:);
@@ -189,26 +189,26 @@ for j=1:n_jgrid-1 % Age
                             % Continuation Value V = Planner Value 2019
                             mn_consprime_lower = ev20_jaeemk(j+1,ar_idx_lower,:,educ,married,:);
                             mn_consprime_higher = ev20_jaeemk(j+1,ar_idx_higher,:,educ,married,:);
-                            mn_consprime_weighted_average = (ar_val_lower'.*mn_consprime_lower + ar_val_higher'.*mn_consprime_higher);                                        
+                            mn_consprime_weighted_average = (ar_val_lower'.*mn_consprime_lower + ar_val_higher'.*mn_consprime_higher);
                             % Reshape so Shocks are Columns and a are rows
-                            mt_cons_weighted_average = reshape(mn_consprime_weighted_average, n_agrid, []);                    
+                            mt_cons_weighted_average = reshape(mn_consprime_weighted_average, n_agrid, []);
                             % EV along asset states
                             ar_ev_cont=mt_cons_weighted_average*ar_pi_eta_kids';
 
                             % Continuation Value C = Planner C 2019
                             mn_consprime_lower = ec20_jaeemk(j+1,ar_idx_lower,:,educ,married,:);
                             mn_consprime_higher = ec20_jaeemk(j+1,ar_idx_higher,:,educ,married,:);
-                            mn_consprime_weighted_average = (ar_val_lower'.*mn_consprime_lower + ar_val_higher'.*mn_consprime_higher);                                        
+                            mn_consprime_weighted_average = (ar_val_lower'.*mn_consprime_lower + ar_val_higher'.*mn_consprime_higher);
                             % Reshape so Shocks are Columns and a are rows
-                            mt_cons_weighted_average = reshape(mn_consprime_weighted_average, n_agrid, []);                    
+                            mt_cons_weighted_average = reshape(mn_consprime_weighted_average, n_agrid, []);
                             % EV along asset states
-                            ar_cons_cont=mt_cons_weighted_average*ar_pi_eta_kids';                    
+                            ar_cons_cont=mt_cons_weighted_average*ar_pi_eta_kids';
 
                             % Store
                             ev19_jaeemk(j,:,eta,educ,married,kids) = ar_ev_cont;
-                            ec19_jaeemk(j,:,eta,educ,married,kids) = ar_cons_cont;                            
-                        end                       
-                        
+                            ec19_jaeemk(j,:,eta,educ,married,kids) = ar_cons_cont;
+                        end
+
                     else
 
                         % Solve for value function and policy functions by means of backwards induction
@@ -234,7 +234,7 @@ for j=1:n_jgrid-1 % Age
                             end
 
                             % Continuation Value C = Planner Value 2019
-                            cons_cont=0;      
+                            cons_cont=0;
                             for etap=1:n_etagrid
                                 for kidsp=1:n_kidsgrid
                                     cons_cont=cons_cont+pi_eta(eta,etap)*pi_kids(kids,kidsp,j,educ,married)...
@@ -251,7 +251,7 @@ for j=1:n_jgrid-1 % Age
                         ev19_jaeemk(j,:,eta,educ,married,kids) = ar_ev_cont2;
                         ec19_jaeemk(j,:,eta,educ,married,kids) = ar_ec_cont2;
                     end
-                    
+
                 end
             end
         end
@@ -267,21 +267,21 @@ if (bl_timer)
          ['SNW_MP_CONTROL=' char(mp_controls('mp_params_name'))], ...
          ['time=' num2str(tm_end)] ...
         ], ";");
-    disp(st_complete);    
+    disp(st_complete);
 end
 
-%% Print 
+%% Print
 if (bl_print_evuvw19_jaeemk_verbose)
     mp_outcomes = containers.Map('KeyType', 'char', 'ValueType', 'any');
     mp_outcomes('ev19_jaeemk') = ev19_jaeemk;
     mp_outcomes('ec19_jaeemk') = ec19_jaeemk;
     mp_outcomes('ev20_jaeemk') = ev20_jaeemk;
-    mp_outcomes('ec20_jaeemk') = ec20_jaeemk;    
+    mp_outcomes('ec20_jaeemk') = ec20_jaeemk;
     ff_container_map_display(mp_outcomes, 9, 9);
     disp(ec19_jaeemk);
 end
 
-%% Return 
+%% Return
 varargout = cell(nargout,0);
 for it_k = 1:nargout
     if (it_k==1)
@@ -297,4 +297,3 @@ for it_k = 1:nargout
 end
 
 end
-

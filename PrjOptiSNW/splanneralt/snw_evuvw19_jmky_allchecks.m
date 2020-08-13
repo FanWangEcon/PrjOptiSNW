@@ -34,8 +34,8 @@ else
     % 1a. Parfor controls
 %     bl_parfor = true;
 %     it_workers = 2;
-    bl_parfor = false;
-    it_workers = 1;
+    bl_parfor = true;
+    it_workers = 5;
 
     % 1b. Export Controls
     % bl_export = false;
@@ -54,7 +54,7 @@ else
     %     mp_params = snw_mp_param('default_moredense_a75zh101zs5');
     %     mp_params = snw_mp_param('default_moredense_a55z363');
         %     mp_params = snw_mp_param('default_moredense');
-%             mp_params = snw_mp_param('default_dense');
+%       mp_params = snw_mp_param('default_dense');
 %     mp_params = snw_mp_param('default_small');
 %         mp_params = snw_mp_param('default_tiny');
     
@@ -64,7 +64,7 @@ else
     % 2b. Simulation 2, both edu and marriage, no spouse shock
     % mp_params = snw_mp_param('default_moredense_a100zh266_e2m2');
     % 2c. Simulation 3, both edu and marriage, 5 spouse shock
-    % mp_params = snw_mp_param('default_moredense_a65zh81zs5_e2m2');
+%     mp_params = snw_mp_param('default_moredense_a65zh81zs5_e2m2');
     % mp_params = snw_mp_param('default_moredense_a100zh81zs5_e2m2');   
     % mp_params = snw_mp_param('default_moredense_a65zh133zs5_e2m2');
     mp_params = snw_mp_param('default_moredense_a65zh266zs5_e2m2');
@@ -85,7 +85,7 @@ else
     
     % 5a. Check Count
     % 89 checks to allow for both the first and the second round
-    n_welfchecksgrid = 89;
+    n_welfchecksgrid = 245;
     mp_params('n_welfchecksgrid') = n_welfchecksgrid;
     
     % 5b. Income Grid
@@ -159,7 +159,7 @@ end
 [V_unemp,~,cons_unemp] = snw_vfi_main_bisec_vec(mp_params, mp_controls, V_ss);
 
 %% B. Solve Dist
-[Phi_true] = snw_ds_main(mp_params, mp_controls, ap_ss, cons_ss);
+[Phi_true] = snw_ds_main_vec(mp_params, mp_controls, ap_ss, cons_ss);
 
 %% C. Pre-compute
 % cl_st_precompute_list = {'a', ...

@@ -543,7 +543,8 @@ cl_mt_pi_jem_kidseta = cell(n_jgrid-1, n_educgrid, n_marriedgrid);
 for j=1:(n_jgrid-1) % Age
     for educ=1:n_educgrid
         for married=1:n_marriedgrid % Marital status
-            cl_mt_pi_jem_kidseta{j, educ, married} = kron(pi_kids(:,:,j,educ,married), pi_eta);
+%             cl_mt_pi_jem_kidseta{j, educ, married} = kron(pi_kids(:,:,j,educ,married), pi_eta);
+            cl_mt_pi_jem_kidseta{j, educ, married} = 1;
         end
     end
 end

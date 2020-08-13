@@ -262,8 +262,10 @@ for j=ar_j_seq % Age
             for married=1:n_marriedgrid % Marital status
 
                 % A2a. Get P(S'|S), S = [eta x kids] by [eta x kids] transition matrix
-                mt_pi_jem_kidseta = cl_mt_pi_jem_kidseta{j,educ,married};
-
+                % do not pre-compute save full transition of shocks, too
+                % much memory, requires 100s GB for full model
+                mt_pi_jem_kidseta = kron(pi_kids(:,:,j,educ,married), pi_eta);
+                
                 % A2b. Get age/edu/marry submatrix
                 mn_ev20_jem = permute(V_VFI_FUTURE(j+1,:,:,educ,married,:), [2,3,6,1,4,5]);
 

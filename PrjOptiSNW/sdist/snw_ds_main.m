@@ -13,7 +13,7 @@
 %    Results outputed to a map containing various output matrixes in
 %    mp_dsvfi_results, and also distributional matrixes.
 %
-%    See also SNWX_DS_MAIN, SNW_VFI_MAIN, SNW_MP_CONTROLS, SNW_MP_PARAM
+%    See also SNW_DS_MAIN_VEC, SNW_DS_GRID_SEARCH
 %
 
 %%
@@ -40,10 +40,10 @@ if (~isempty(varargin))
     
 else
     
-    clc;    
+%     clc;    
     clear all;
-%     mp_params = snw_mp_param('default_dense');
-    mp_params = snw_mp_param('default_tiny');
+    mp_params = snw_mp_param('default_docdense');
+%     mp_params = snw_mp_param('default_tiny');
     mp_controls = snw_mp_control('default_test');
     [v_ss, ap_ss, cons_ss, mp_valpol_more_ss] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
     

@@ -122,41 +122,41 @@ ev19_jaeemk=NaN(n_jgrid-1,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid)
 ec19_jaeemk=NaN(n_jgrid-1,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 
 for j=1:n_jgrid-1 % Age
-    
+
     % A1. mn_z_ctr and mn_aprime
     % array states/shocks all
     ar_aprime_amz = reshape(ap_ss(j,:,:,:,:,:), [], 1);
-    
+
     % B1. Solve For EV(ap,z) = EV(ap,zp|z)f(zp|z) for all possible ap points
     mn_ev_ap_z = zeros(n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
     mn_ec_ap_z = zeros(n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
     for educ=1:n_educgrid % Educational level
         for married=1:n_marriedgrid % Marital status
-            
+
             % B1a. Get P(S'|S), S = [eta x kids] by [eta x kids] transition matrix
-            mt_pi_jem_kidseta = cl_mt_pi_jem_kidseta{j,educ,married};
-            
+            mt_pi_jem_kidseta = kron(pi_kids(:,:,j,educ,married), pi_eta);
+
             % B1b. Get age/edu/marry submatrix
             mn_ev20_jem = permute(ev20_jaeemk(j+1,:,:,educ,married,:), [2,3,6,1,4,5]);
             mn_ec20_jem = permute(ec20_jaeemk(j+1,:,:,educ,married,:), [2,3,6,1,4,5]);
-            
+
             % B1c. 2D rows are savings states, columns are [eta x kids]
             mt_ev20_jem = reshape(mn_ev20_jem, n_agrid, []);
             mt_ec20_jem = reshape(mn_ec20_jem, n_agrid, []);
-            
+
             % B1d. EV = V([a] by [eta x kids]) x TRANS([eta x kids] by [eta x kids])
             mt_ev19_jem = mt_ev20_jem*mt_pi_jem_kidseta';
             mt_ec19_jem = mt_ec20_jem*mt_pi_jem_kidseta';
-            
+
             % B1e. Reshape Back and Store
             mn_ev19_jem = reshape(mt_ev19_jem, [n_agrid, n_etagrid, 1, 1, n_kidsgrid]);
             mn_ec19_jem = reshape(mt_ec19_jem, [n_agrid, n_etagrid, 1, 1, n_kidsgrid]);
             mn_ev_ap_z(:, :, educ, married, :) = mn_ev19_jem;
             mn_ec_ap_z(:, :, educ, married, :) = mn_ec19_jem;
-            
+
         end
     end
-    
+
     % C1. z specific EV Slope: EV(ap,z)/d(ap)
     mn_deri_dev_dap = diff(mn_ev_ap_z, 1)./diff(agrid);
     mn_deri_dec_dap = diff(mn_ec_ap_z, 1)./diff(agrid);
@@ -165,7 +165,7 @@ for j=1:n_jgrid-1 % Age
     mt_ec_ap_z = reshape(mn_ec_ap_z, n_agrid, []);
     mt_deri_dev_dap = reshape(mn_deri_dev_dap, n_agrid-1, []);
     mt_deri_dec_dap = reshape(mn_deri_dec_dap, n_agrid-1, []);
-    
+
     % D, Evaluate
     [ar_ev_aprime_z] = ffi_vec_v_ap(...
         ar_aprime_amz, agrid', ...
@@ -205,7 +205,7 @@ if (bl_print_evuvw19_jaeemk_verbose)
     mp_outcomes('ec19_jaeemk') = ec19_jaeemk;
     mp_outcomes('ev20_jaeemk') = ev20_jaeemk;
     mp_outcomes('ec20_jaeemk') = ec20_jaeemk;
-    ff_container_map_display(mp_outcomes, 9, 9);    
+    ff_container_map_display(mp_outcomes, 9, 9);
 end
 
 %% Return

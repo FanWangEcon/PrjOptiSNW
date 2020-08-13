@@ -25,6 +25,7 @@ rmd_files:
 
   - PrjOptiSNW/doc/sdist/main.Rmd
   - PrjOptiSNW/doc/sdist/snwx_ds_bisec_vec_loop.Rmd
+  - PrjOptiSNW/doc/sdist/snwx_ds_bisec_vec.Rmd
   - PrjOptiSNW/doc/sdist/snwx_ds_grid_search.Rmd
 
   - PrjOptiSNW/doc/splannercheckval/main.Rmd

@@ -1,5 +1,5 @@
 %% Distribution Grid Search
-% This is the example vignette for function: <https://github.com/FanWangEcon/PrjOptiSNW/tree/master/PrjOptiSNW/params/snw_ds_main_grid_search.m 
+% This is the example vignette for function: <https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/sdist/snw_ds_main_grid_search.m 
 % *snw_ds_main_grid_search*> from the <https://fanwangecon.github.io/PrjOptiSNW/ 
 % *PrjOptiSNW Package*>*.* This function solves for vfi and gets distribution 
 % induced by policy functions and exogenous distributions. *Grid Search* for VFI 

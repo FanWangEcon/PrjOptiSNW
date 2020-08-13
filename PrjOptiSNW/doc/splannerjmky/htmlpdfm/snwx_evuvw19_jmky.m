@@ -1,6 +1,6 @@
 %% 2019 Age, Income, Kids, Marry EV and EC of One Check
-% This is the example vignette for function:  <https://github.com/FanWangEcon/PrjOptiSNW/tree/master/PrjOptiSNW/splanneralt/snw_evuvw20_jaeemk.m 
-% *snw_evuvw20_jaeemk*> from the <https://fanwangecon.github.io/PrjOptiSNW/ *PrjOptiSNW 
+% This is the example vignette for function:  <https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/splanneralt/snw_evuvw19_jmky.m 
+% *snw_evuvw19_jmky*> from the <https://fanwangecon.github.io/PrjOptiSNW/ *PrjOptiSNW 
 % Package*>*.* 2019 integrated over VU and VW
 %% Test SNW_EVUVW19_JMKY Defaults Dense
 % Set Parameters

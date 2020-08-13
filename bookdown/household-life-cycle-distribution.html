@@ -21,10 +21,10 @@
   <meta name="twitter:description" content="Chapter 5 Household Life Cycle Distribution | SNW Dynamic Life Cycle and Welfare Checks Code Companion" />
   
 
-<meta name="author" content="Fan Wang" />
+<meta name="author" content="Vegard Nygård, Bent Sørensen, and Fan Wang" />
 
 
-<meta name="date" content="2020-08-10" />
+<meta name="date" content="2020-08-12" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -146,13 +146,17 @@
 <li class="chapter" data-level="5.1.5" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#analyze-probability-mass-asset-and-shock-dimensions"><i class="fa fa-check"></i><b>5.1.5</b> Analyze Probability Mass Asset and Shock Dimensions</a></li>
 <li class="chapter" data-level="5.1.6" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#probability-statistics-a-c-and-v-conditional-on-ages"><i class="fa fa-check"></i><b>5.1.6</b> Probability Statistics A, C and V Conditional on Ages</a></li>
 </ul></li>
-<li class="chapter" data-level="5.2" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#distribution-grid-search"><i class="fa fa-check"></i><b>5.2</b> Distribution Grid Search</a><ul>
-<li class="chapter" data-level="5.2.1" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#test-snw_ds_main_grid_search-defaults-more-dense"><i class="fa fa-check"></i><b>5.2.1</b> Test SNW_DS_MAIN_GRID_SEARCH Defaults More Dense</a></li>
+<li class="chapter" data-level="5.2" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#distribution-exact-savings-choices-vectorized"><i class="fa fa-check"></i><b>5.2</b> Distribution Exact Savings Choices Vectorized</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#test-snw_ds_main_vec-defaults-dense"><i class="fa fa-check"></i><b>5.2.1</b> Test SNW_DS_MAIN_VEC Defaults Dense</a></li>
 <li class="chapter" data-level="5.2.2" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#show-all-info-in-mp_dsvfi_results-more-dense-1"><i class="fa fa-check"></i><b>5.2.2</b> Show All Info in mp_dsvfi_results More Dense</a></li>
-<li class="chapter" data-level="5.2.3" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#more-dense-param-results-define-frames-2"><i class="fa fa-check"></i><b>5.2.3</b> More Dense Param Results Define Frames</a></li>
-<li class="chapter" data-level="5.2.4" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#analyze-probability-mass-along-age-dimensions-1"><i class="fa fa-check"></i><b>5.2.4</b> Analyze Probability Mass Along Age Dimensions</a></li>
-<li class="chapter" data-level="5.2.5" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#analyze-probability-mass-asset-and-shock-dimensions-1"><i class="fa fa-check"></i><b>5.2.5</b> Analyze Probability Mass Asset and Shock Dimensions</a></li>
-<li class="chapter" data-level="5.2.6" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#probability-statistics-a-c-and-v-conditional-on-ages-1"><i class="fa fa-check"></i><b>5.2.6</b> Probability Statistics A, C and V Conditional on Ages</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#distribution-grid-search"><i class="fa fa-check"></i><b>5.3</b> Distribution Grid Search</a><ul>
+<li class="chapter" data-level="5.3.1" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#test-snw_ds_main_grid_search-defaults-more-dense"><i class="fa fa-check"></i><b>5.3.1</b> Test SNW_DS_MAIN_GRID_SEARCH Defaults More Dense</a></li>
+<li class="chapter" data-level="5.3.2" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#show-all-info-in-mp_dsvfi_results-more-dense-2"><i class="fa fa-check"></i><b>5.3.2</b> Show All Info in mp_dsvfi_results More Dense</a></li>
+<li class="chapter" data-level="5.3.3" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#more-dense-param-results-define-frames-2"><i class="fa fa-check"></i><b>5.3.3</b> More Dense Param Results Define Frames</a></li>
+<li class="chapter" data-level="5.3.4" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#analyze-probability-mass-along-age-dimensions-1"><i class="fa fa-check"></i><b>5.3.4</b> Analyze Probability Mass Along Age Dimensions</a></li>
+<li class="chapter" data-level="5.3.5" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#analyze-probability-mass-asset-and-shock-dimensions-1"><i class="fa fa-check"></i><b>5.3.5</b> Analyze Probability Mass Asset and Shock Dimensions</a></li>
+<li class="chapter" data-level="5.3.6" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#probability-statistics-a-c-and-v-conditional-on-ages-1"><i class="fa fa-check"></i><b>5.3.6</b> Probability Statistics A, C and V Conditional on Ages</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="value-of-each-check.html"><a href="value-of-each-check.html"><i class="fa fa-check"></i><b>6</b> Value of Each Check</a><ul>
@@ -183,26 +187,15 @@
 <li class="chapter" data-level="7.1.8" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#analyze-kids-and-marriage-and-age-8"><i class="fa fa-check"></i><b>7.1.8</b> Analyze Kids and Marriage and Age</a></li>
 <li class="chapter" data-level="7.1.9" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#analyze-education-and-marriage-2"><i class="fa fa-check"></i><b>7.1.9</b> Analyze Education and Marriage</a></li>
 </ul></li>
-<li class="chapter" data-level="7.2" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#full-states-ev-and-ec-of-one-check-1"><i class="fa fa-check"></i><b>7.2</b> 2019 Full States EV and EC of One Check</a><ul>
-<li class="chapter" data-level="7.2.1" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#test-snw_evuvw19_jaeemk-defaults-dense"><i class="fa fa-check"></i><b>7.2.1</b> Test SNW_EVUVW19_JAEEMK Defaults Dense</a></li>
-<li class="chapter" data-level="7.2.2" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#solve-for-2019-evuvw-with-0-and-2-checks"><i class="fa fa-check"></i><b>7.2.2</b> Solve for 2019 Evuvw With 0 and 2 Checks</a></li>
-<li class="chapter" data-level="7.2.3" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#dense-param-results-define-frames-4"><i class="fa fa-check"></i><b>7.2.3</b> Dense Param Results Define Frames</a></li>
-<li class="chapter" data-level="7.2.4" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#analyze-difference-in-v-and-c-with-check-3"><i class="fa fa-check"></i><b>7.2.4</b> Analyze Difference in V and C with Check</a></li>
-<li class="chapter" data-level="7.2.5" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#analyze-marginal-value-and-mpc-over-yaeta-conditional-on-kids-marry-age-education-1"><i class="fa fa-check"></i><b>7.2.5</b> Analyze Marginal Value and MPC over Y(a,eta), Conditional On Kids, Marry, Age, Education</a></li>
-<li class="chapter" data-level="7.2.6" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#marginal-value-gains-color-as-shock-conditional-on-age-marital-kids-and-education-1"><i class="fa fa-check"></i><b>7.2.6</b> Marginal Value Gains, Color as Shock, Conditional on Age, Marital, Kids, and Education</a></li>
-<li class="chapter" data-level="7.2.7" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#marginal-consumption-gains-color-as-shock-conditional-on-age-marital-kids-and-education-1"><i class="fa fa-check"></i><b>7.2.7</b> Marginal Consumption Gains, Color as Shock, Conditional on Age, Marital, Kids, and Education</a></li>
-<li class="chapter" data-level="7.2.8" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#analyze-kids-and-marriage-and-age-9"><i class="fa fa-check"></i><b>7.2.8</b> Analyze Kids and Marriage and Age</a></li>
-<li class="chapter" data-level="7.2.9" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#analyze-education-and-marriage-3"><i class="fa fa-check"></i><b>7.2.9</b> Analyze Education and Marriage</a></li>
-</ul></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html"><i class="fa fa-check"></i><b>8</b> 2019 Expectations Given Income, Age, Kids and Marital Status</a><ul>
 <li class="chapter" data-level="8.1" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#age-income-kids-marry-ev-and-ec-of-one-check"><i class="fa fa-check"></i><b>8.1</b> 2019 Age, Income, Kids, Marry EV and EC of One Check</a><ul>
 <li class="chapter" data-level="8.1.1" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#test-snw_evuvw19_jmky-defaults-dense"><i class="fa fa-check"></i><b>8.1.1</b> Test SNW_EVUVW19_JMKY Defaults Dense</a></li>
 <li class="chapter" data-level="8.1.2" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#solve-vfi-and-distributon"><i class="fa fa-check"></i><b>8.1.2</b> Solve VFI and Distributon</a></li>
 <li class="chapter" data-level="8.1.3" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#pre-compute-matrixes-and-ymky-mass"><i class="fa fa-check"></i><b>8.1.3</b> Pre-Compute Matrixes and YMKY Mass</a></li>
-<li class="chapter" data-level="8.1.4" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#solve-for-2019-evuvw-with-0-and-2-checks-1"><i class="fa fa-check"></i><b>8.1.4</b> Solve for 2019 Evuvw With 0 and 2 Checks</a></li>
-<li class="chapter" data-level="8.1.5" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#dense-param-results-define-frames-5"><i class="fa fa-check"></i><b>8.1.5</b> Dense Param Results Define Frames</a></li>
-<li class="chapter" data-level="8.1.6" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#analyze-marginal-value-and-mpc-over-yaeta-conditional-on-kids-marry-age-education-2"><i class="fa fa-check"></i><b>8.1.6</b> Analyze Marginal Value and MPC over Y(a,eta), Conditional On Kids, Marry, Age, Education</a></li>
+<li class="chapter" data-level="8.1.4" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#solve-for-2019-evuvw-with-0-and-2-checks"><i class="fa fa-check"></i><b>8.1.4</b> Solve for 2019 Evuvw With 0 and 2 Checks</a></li>
+<li class="chapter" data-level="8.1.5" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#dense-param-results-define-frames-4"><i class="fa fa-check"></i><b>8.1.5</b> Dense Param Results Define Frames</a></li>
+<li class="chapter" data-level="8.1.6" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#analyze-marginal-value-and-mpc-over-yaeta-conditional-on-kids-marry-age-education-1"><i class="fa fa-check"></i><b>8.1.6</b> Analyze Marginal Value and MPC over Y(a,eta), Conditional On Kids, Marry, Age, Education</a></li>
 </ul></li>
 <li class="chapter" data-level="8.2" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#age-income-kids-marry-ev-and-ec-all-checks"><i class="fa fa-check"></i><b>8.2</b> 2019 Age, Income, Kids, Marry EV and EC All Checks</a><ul>
 <li class="chapter" data-level="8.2.1" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#test-snw_evuvw19_jmky_allchecks-parameters"><i class="fa fa-check"></i><b>8.2.1</b> Test SNW_EVUVW19_JMKY_ALLCHECKS Parameters</a></li>
@@ -253,7 +246,7 @@
 <div id="distribution-exact-savings-choices" class="section level2">
 <h2><span class="header-section-number">5.1</span> Distribution Exact Savings Choices</h2>
 <p>This is the example vignette for function:
-<a href="https://github.com/FanWangEcon/PrjOptiSNW/tree/master/PrjOptiSNW/params/snw_ds_main.m"><strong>snw_ds_main</strong></a>
+<a href="https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/sdist/snw_ds_main.m"><strong>snw_ds_main</strong></a>
 from the <a href="https://fanwangecon.github.io/PrjOptiSNW/"><strong>PrjOptiSNW
 Package</strong></a><strong>.</strong> This function
 solves for vfi and gets distribution induced by policy functions and
@@ -754,10 +747,367 @@ xxx tb_outcomes: all stats xxx
 
 </div>
 </div>
-<div id="distribution-grid-search" class="section level2">
-<h2><span class="header-section-number">5.2</span> Distribution Grid Search</h2>
+<div id="distribution-exact-savings-choices-vectorized" class="section level2">
+<h2><span class="header-section-number">5.2</span> Distribution Exact Savings Choices Vectorized</h2>
 <p>This is the example vignette for function:
-<a href="https://github.com/FanWangEcon/PrjOptiSNW/tree/master/PrjOptiSNW/params/snw_ds_main_grid_search.m"><strong>snw_ds_main_grid_search</strong></a>
+<a href="https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/sdist/snw_ds_main_vec.m"><strong>snw_ds_main_vec</strong></a>
+from the <a href="https://fanwangecon.github.io/PrjOptiSNW/"><strong>PrjOptiSNW
+Package</strong></a><strong>.</strong> This function
+solves for vfi and gets distribution induced by policy functions and
+exogenous distributions.More Dense Simulation. Vectorized to get
+distribution, but uses <strong>bisect vec</strong> for VFI.</p>
+<div id="test-snw_ds_main_vec-defaults-dense" class="section level3">
+<h3><span class="header-section-number">5.2.1</span> Test SNW_DS_MAIN_VEC Defaults Dense</h3>
+<p>Call the function with testing defaults.</p>
+<pre><code>mp_params = snw_mp_param(&#39;default_docdense&#39;);
+mp_controls = snw_mp_control(&#39;default_test&#39;);
+mp_controls(&#39;bl_print_vfi&#39;) = false;
+mp_controls(&#39;bl_print_ds&#39;) = true;
+mp_controls(&#39;bl_print_ds_verbose&#39;) = false;
+[Phi_true,Phi_adj,A_agg,Y_inc_agg,it,mp_dsvfi_results] = snw_ds_main_vec(mp_params, mp_controls);
+
+Completed SNW_VFI_MAIN_BISEC_VEC;SNW_MP_PARAM=default_docdense;SNW_MP_CONTROL=default_test;time=234.2237
+----------------------------------------
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+CONTAINER NAME: mp_outcomes ND Array (Matrix etc)
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                i    idx    ndim     numel      rowN      colN           sum         mean       std      coefvari      min        max  
+                _    ___    ____    ________    ____    _________    ___________    _______    ______    ________    ________    ______
+
+    V_VFI       1     1      6      4.37e+07     83     5.265e+05    -1.5339e+08    -3.5101    26.119     -7.441      -586.22     24.63
+    ap_VFI      2     2      6      4.37e+07     83     5.265e+05     1.4159e+09     32.402    36.798     1.1357            0     163.7
+    cons_VFI    3     3      6      4.37e+07     83     5.265e+05     2.1402e+08     4.8975    8.3294     1.7007     0.036717    141.66
+
+xxx TABLE:V_VFI xxxxxxxxxxxxxxxxxx
+             c1         c2         c3         c4         c5       c526496    c526497    c526498    c526499    c526500
+           _______    _______    _______    _______    _______    _______    _______    _______    _______    _______
+
+    r1     -346.51    -346.12    -343.63    -337.86    -328.51     21.702     21.852     22.003     22.154     22.309
+    r2     -334.38    -333.99    -331.51    -325.83    -316.83     21.724     21.869     22.015     22.163     22.314
+    r3     -322.45    -322.06     -319.6    -314.14     -305.6     21.745     21.885     22.027     22.171     22.319
+    r4     -310.63    -310.27    -307.99    -302.88    -294.87     21.767     21.903     22.041     22.182     22.327
+    r5     -299.94     -299.6    -297.46    -292.67    -285.12     21.775     21.907     22.042      22.18     22.323
+    r79    -9.9437    -9.9325    -9.8557    -9.6597    -9.3232     2.5394     2.5501     2.5602     2.5696     2.5784
+    r80    -8.9023    -8.8911    -8.8143    -8.6183    -8.2818     2.3039     2.3121     2.3198      2.327     2.3338
+    r81    -7.6363    -7.6251    -7.5484    -7.3524    -7.0159     2.0068     2.0124     2.0176     2.0226     2.0273
+    r82    -5.9673    -5.9561    -5.8793    -5.6833    -5.3468     1.5958     1.5989     1.6018     1.6046     1.6072
+    r83    -3.5892     -3.578    -3.5012    -3.3052    -2.9687    0.97904    0.98004    0.98097    0.98185    0.98267
+
+xxx TABLE:ap_VFI xxxxxxxxxxxxxxxxxx
+           c1    c2        c3           c4           c5       c526496    c526497    c526498    c526499    c526500
+           __    __    __________    _________    ________    _______    _______    _______    _______    _______
+
+    r1     0     0      0.0005656    0.0075134    0.022901    114.75     120.41     126.27     132.38      138.8 
+    r2     0     0     0.00051498    0.0065334    0.021549    114.86     120.53     126.41     132.54     138.95 
+    r3     0     0     0.00051498    0.0049294    0.019875    114.97     120.65     126.56      132.7     139.12 
+    r4     0     0     0.00051498    0.0047937    0.019672    115.73     121.42     127.34     133.51     139.92 
+    r5     0     0     0.00048517    0.0046683    0.019484     116.5     122.21     128.15     134.32     140.74 
+    r79    0     0              0            0           0    81.091      85.68     90.335     94.378     98.419 
+    r80    0     0              0            0           0    76.669     80.563     84.304      88.04     91.693 
+    r81    0     0              0            0           0    68.313     71.534     74.475     77.832      81.11 
+    r82    0     0              0            0           0    50.126     53.467     56.953     58.745     60.587 
+    r83    0     0              0            0           0         0          0          0          0          0 
+
+xxx TABLE:cons_VFI xxxxxxxxxxxxxxxxxx
+              c1          c2          c3          c4          c5       c526496    c526497    c526498    c526499    c526500
+           ________    ________    ________    ________    ________    _______    _______    _______    _______    _______
+
+    r1     0.036717    0.037251    0.040426     0.04363    0.048012    9.6491      9.817     9.9649     10.073     10.073 
+    r2     0.036717    0.037251    0.040477     0.04461    0.049364    9.8118     9.9685     10.101     10.191     10.191 
+    r3     0.036717    0.037251    0.040477    0.046214    0.051039    9.9779      10.12     10.234     10.302     10.302 
+    r4     0.038144    0.038678    0.041903    0.047776    0.052666    10.131     10.258     10.354     10.405     10.405 
+    r5     0.039534    0.040068    0.043323     0.04929    0.054241    10.272     10.384     10.463       10.5       10.5 
+    r79      0.2179     0.21844     0.22216     0.23228     0.25197    35.858     37.092     38.455     40.627     43.001 
+    r80      0.2179     0.21844     0.22216     0.23228     0.25197    40.253     42.183     44.459     46.938       49.7 
+    r81      0.2179     0.21844     0.22216     0.23228     0.25197    48.587      51.19     54.266     57.123     60.261 
+    r82      0.2179     0.21844     0.22216     0.23228     0.25197    66.755     69.238      71.77     76.192     80.765 
+    r83      0.2179     0.21844     0.22216     0.23228     0.25197    116.87     122.69     128.71     134.92     141.34 
+
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:1 of 82, time-this-age:0.48418
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:2 of 82, time-this-age:4.5075
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:3 of 82, time-this-age:5.7758
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:4 of 82, time-this-age:6.1208
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:5 of 82, time-this-age:6.5417
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:6 of 82, time-this-age:7.083
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:7 of 82, time-this-age:7.4327
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:8 of 82, time-this-age:7.7609
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:9 of 82, time-this-age:8.2184
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:10 of 82, time-this-age:9.5964
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:11 of 82, time-this-age:9.7541
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:12 of 82, time-this-age:11.3014
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:13 of 82, time-this-age:11.3944
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:14 of 82, time-this-age:11.3322
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:15 of 82, time-this-age:11.5277
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:16 of 82, time-this-age:11.9461
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:17 of 82, time-this-age:11.6505
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:18 of 82, time-this-age:11.9663
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:19 of 82, time-this-age:11.9451
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:20 of 82, time-this-age:12.0175
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:21 of 82, time-this-age:12.0305
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:22 of 82, time-this-age:12.9894
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:23 of 82, time-this-age:13.3004
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:24 of 82, time-this-age:13.2201
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:25 of 82, time-this-age:13.0713
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:26 of 82, time-this-age:13.0777
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:27 of 82, time-this-age:13.9953
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:28 of 82, time-this-age:13.7495
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:29 of 82, time-this-age:13.9164
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:30 of 82, time-this-age:13.7756
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:31 of 82, time-this-age:13.7336
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:32 of 82, time-this-age:13.6508
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:33 of 82, time-this-age:13.7827
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:34 of 82, time-this-age:13.7384
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:35 of 82, time-this-age:13.6075
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:36 of 82, time-this-age:13.4344
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:37 of 82, time-this-age:13.3535
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:38 of 82, time-this-age:13.2082
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:39 of 82, time-this-age:13.4255
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:40 of 82, time-this-age:13.3415
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:41 of 82, time-this-age:13.3007
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:42 of 82, time-this-age:12.9676
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:43 of 82, time-this-age:12.7222
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:44 of 82, time-this-age:12.8866
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:45 of 82, time-this-age:12.9692
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:46 of 82, time-this-age:12.6458
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:47 of 82, time-this-age:12.7353
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:48 of 82, time-this-age:12.4721
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:49 of 82, time-this-age:14.5103
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:50 of 82, time-this-age:14.3515
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:51 of 82, time-this-age:15.1363
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:52 of 82, time-this-age:15.4419
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:53 of 82, time-this-age:15.5071
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:54 of 82, time-this-age:15.3158
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:55 of 82, time-this-age:15.5545
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:56 of 82, time-this-age:13.8214
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:57 of 82, time-this-age:15.37
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:58 of 82, time-this-age:12.7642
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:59 of 82, time-this-age:12.8943
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:60 of 82, time-this-age:12.4232
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:61 of 82, time-this-age:13.1266
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:62 of 82, time-this-age:11.6599
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:63 of 82, time-this-age:11.311
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:64 of 82, time-this-age:9.6286
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:65 of 82, time-this-age:9.6127
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:66 of 82, time-this-age:9.5362
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:67 of 82, time-this-age:9.4717
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:68 of 82, time-this-age:9.0979
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:69 of 82, time-this-age:8.8206
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:70 of 82, time-this-age:8.6657
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:71 of 82, time-this-age:8.4039
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:72 of 82, time-this-age:8.5242
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:73 of 82, time-this-age:8.1249
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:74 of 82, time-this-age:7.7322
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:75 of 82, time-this-age:7.7105
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:76 of 82, time-this-age:7.5299
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:77 of 82, time-this-age:7.1787
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:78 of 82, time-this-age:6.8581
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:79 of 82, time-this-age:6.7112
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:80 of 82, time-this-age:6.2875
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:81 of 82, time-this-age:5.7167
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:82 of 82, time-this-age:5.08
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:1 of 82, time-this-age:0.2988
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:2 of 82, time-this-age:0.058596
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:3 of 82, time-this-age:0.060327
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:4 of 82, time-this-age:0.061785
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:5 of 82, time-this-age:0.062647
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:6 of 82, time-this-age:0.050905
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:7 of 82, time-this-age:0.051139
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:8 of 82, time-this-age:0.059177
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:9 of 82, time-this-age:0.063292
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:10 of 82, time-this-age:0.059997
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:11 of 82, time-this-age:0.064253
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:12 of 82, time-this-age:0.055315
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:13 of 82, time-this-age:0.057587
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:14 of 82, time-this-age:0.061842
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:15 of 82, time-this-age:0.061399
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:16 of 82, time-this-age:0.062957
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:17 of 82, time-this-age:0.05743
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:18 of 82, time-this-age:0.063064
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:19 of 82, time-this-age:0.055026
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:20 of 82, time-this-age:0.053961
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:21 of 82, time-this-age:0.050416
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:22 of 82, time-this-age:0.057357
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:23 of 82, time-this-age:0.049988
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:24 of 82, time-this-age:0.061724
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:25 of 82, time-this-age:0.048989
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:26 of 82, time-this-age:0.05789
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:27 of 82, time-this-age:0.048067
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:28 of 82, time-this-age:0.065258
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:29 of 82, time-this-age:0.051444
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:30 of 82, time-this-age:0.05969
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:31 of 82, time-this-age:0.048033
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:32 of 82, time-this-age:0.055682
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:33 of 82, time-this-age:0.048521
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:34 of 82, time-this-age:0.058185
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:35 of 82, time-this-age:0.050949
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:36 of 82, time-this-age:0.053854
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:37 of 82, time-this-age:0.049522
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:38 of 82, time-this-age:0.062952
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:39 of 82, time-this-age:0.05567
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:40 of 82, time-this-age:0.057658
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:41 of 82, time-this-age:0.055768
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:42 of 82, time-this-age:0.055618
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:43 of 82, time-this-age:0.054474
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:44 of 82, time-this-age:0.055961
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:45 of 82, time-this-age:0.051369
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:46 of 82, time-this-age:0.048842
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:47 of 82, time-this-age:0.053878
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:48 of 82, time-this-age:0.04771
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:49 of 82, time-this-age:0.058897
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:50 of 82, time-this-age:0.048742
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:51 of 82, time-this-age:0.043868
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:52 of 82, time-this-age:0.059429
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:53 of 82, time-this-age:0.050384
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:54 of 82, time-this-age:0.054141
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:55 of 82, time-this-age:0.050537
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:56 of 82, time-this-age:0.04595
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:57 of 82, time-this-age:0.061315
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:58 of 82, time-this-age:0.046414
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:59 of 82, time-this-age:0.055424
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:60 of 82, time-this-age:0.05507
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:61 of 82, time-this-age:0.044066
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:62 of 82, time-this-age:0.059774
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:63 of 82, time-this-age:0.05149
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:64 of 82, time-this-age:0.050386
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:65 of 82, time-this-age:0.050659
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:66 of 82, time-this-age:0.055251
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:67 of 82, time-this-age:0.052794
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:68 of 82, time-this-age:0.068309
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:69 of 82, time-this-age:0.052281
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:70 of 82, time-this-age:0.049016
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:71 of 82, time-this-age:0.059436
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:72 of 82, time-this-age:0.044294
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:73 of 82, time-this-age:0.048183
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:74 of 82, time-this-age:0.042352
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:75 of 82, time-this-age:0.065515
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:76 of 82, time-this-age:0.050545
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:77 of 82, time-this-age:0.046323
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:78 of 82, time-this-age:0.054578
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:79 of 82, time-this-age:0.047615
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:80 of 82, time-this-age:0.042437
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:81 of 82, time-this-age:0.06228
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:82 of 82, time-this-age:0.05088
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:83 of 82, time-this-age:0.049113
+SNW_DS_MAIN: Share of population with assets equal to upper bound on asset grid:6.6266e-06
+SNW_DS_MAIN: Accidental bequests are thrown in the ocean
+SNW_DS_MAIN_VEC: Number of a2-adjustments (for taxation) used to balance the government budget= 0
+SNW_DS_MAIN_VEC: Old and updated value of a2=1.5286      1.5286
+SNW_DS_MAIN_VEC: Aggregates: Cons., Gov. cons., Save, Assets, Income, Bequests 48.88966      11.38831      194.5563      199.0754      64.79625      2.572533
+SNW_DS_MAIN_VEC: Resource constraint: C_t+A_{t+1}+G_t=A_t+Y_t 259.3534      259.3526
+Completed SNW_DS_MAIN_VEC;SNW_MP_PARAM=default_docdense;SNW_MP_CONTROL=default_test;time=945.8894
+xxx tb_outcomes: all stats xxx
+     OriginalVariableNames         a_ss         ap_ss        cons_ss         v_ss         n_ss         y_all       y_head_inc    y_head_earn    y_spouse_inc    yshr_interest    yshr_wage      yshr_SS       yshr_tax     yshr_nttxss
+    ________________________    __________    __________    __________    __________    _________    __________    __________    ___________    ____________    _____________    __________    __________    __________    ___________
+
+    {&#39;mean&#39;                }        4.2486        4.3473        1.0676       -15.745       2.3554         1.415        1.1087       0.88655         0.35849         0.12214         0.77513       0.10273       0.17862      0.075896 
+    {&#39;sd&#39;                  }        6.7963         6.834       0.69454         21.68       1.4375        1.4926        1.0092       0.92804         0.95494         0.16806         0.33759       0.23637       0.03519       0.25563 
+    {&#39;coefofvar&#39;           }        1.5996         1.572       0.65055       -1.3769      0.61029        1.0548       0.91029        1.0468          2.6638          1.3759         0.43553        2.3009       0.19701        3.3681 
+    {&#39;min&#39;                 }             0             0      0.036717       -586.22            1             0      0.038108             0               0               0               0             0      0.036506      -0.89184 
+    {&#39;max&#39;                 }           135         163.7        141.66         24.63            6        50.873        24.357        18.957          26.627         0.99299               1             1        0.2552        0.2552 
+    {&#39;pYis0&#39;               }        0.1223       0.10225             0             0            0     0.0072908             0        0.2016         0.52499          0.1223         0.10584        0.7984             0             0 
+    {&#39;pYls0&#39;               }             0             0             0        0.8122            0             0             0             0               0               0               0             0             0       0.17845 
+    {&#39;pYgr0&#39;               }        0.8777       0.89775             1        0.1878            1       0.99271             1        0.7984         0.47501          0.8777         0.89416        0.2016             1       0.82155 
+    {&#39;pYisMINY&#39;            }        0.1223       0.10225    8.6094e-07    1.2848e-09      0.36005     0.0072908    1.2258e-06        0.2016         0.52499          0.1223         0.10584        0.7984    8.6094e-07      0.005835 
+    {&#39;pYisMAXY&#39;            }    6.6266e-06    2.2031e-12             0             0     0.041101    2.2031e-12     1.641e-09    1.2258e-07      1.9415e-10               0         0.11437     0.0072908    2.2031e-12    2.2031e-12 
+    {&#39;p0_01&#39;               }             0             0      0.066316       -253.42            1             0      0.065666             0               0               0               0             0      0.054112      -0.89184 
+    {&#39;p0_1&#39;                }             0             0       0.10404        -166.9            1             0        0.1034             0               0               0               0             0      0.071805      -0.89184 
+    {&#39;p1&#39;                  }             0             0         0.185       -96.092            1     0.0013184       0.17983             0               0               0               0             0      0.098826      -0.88087 
+    {&#39;p5&#39;                  }             0             0       0.27653        -56.05            1        0.1012       0.25935             0               0               0               0             0        0.1152      -0.58083 
+    {&#39;p10&#39;                 }             0             0       0.35932       -41.447            1       0.22272       0.31385             0               0               0               0             0       0.12764      -0.31476 
+    {&#39;p20&#39;                 }      0.064373      0.070044       0.49736        -27.45            1       0.42045       0.41397             0               0        0.002327         0.64663             0       0.14613       0.08656 
+    {&#39;p25&#39;                 }       0.11124       0.18238       0.56384       -23.085            1       0.50808       0.46885       0.28106               0       0.0059749         0.76907             0       0.15354       0.12744 
+    {&#39;p30&#39;                 }       0.26367       0.37542       0.63117       -19.607            1       0.60105        0.5291       0.37421               0        0.011751         0.82966             0        0.1601       0.14378 
+    {&#39;p40&#39;                 }       0.68544       0.85525       0.77036       -14.252            2       0.78729       0.65232       0.52794               0        0.027724         0.89914             0       0.17202       0.16362 
+    {&#39;p50&#39;                 }        1.4131        1.5959       0.92038       -10.153            2       0.99853       0.80051       0.68288               0        0.051008         0.94132             0        0.1824       0.17767 
+    {&#39;p60&#39;                 }        2.5301        2.7681         1.086       -6.7158            2        1.2567       0.98453       0.85118          0.1002        0.084969         0.96865             0       0.19205       0.18929 
+    {&#39;p70&#39;                 }        4.1199        4.5042        1.2802       -3.5921            3         1.594        1.2256        1.0805          0.2646         0.13328         0.98637             0        0.2015       0.19998 
+    {&#39;p75&#39;                 }        5.4836        5.7337        1.3961       -2.0335            3        1.8147        1.3831        1.2168         0.35911         0.16557         0.99279             0        0.2063       0.20525 
+    {&#39;p80&#39;                 }        7.1191        7.2583        1.5324      -0.41501            4           2.1        1.5829        1.3913         0.45945         0.20879         0.99714      0.087268       0.21131       0.21067 
+    {&#39;p90&#39;                 }         12.56        12.145        1.9406        3.5073            5        3.0498        2.2473        1.9622         0.88325         0.36622               1       0.46618       0.22265       0.22244 
+    {&#39;p95&#39;                 }        16.875        17.551        2.3509        6.4545            5        4.0398        2.9873        2.5935          1.9998         0.52139               1       0.70711       0.22976       0.22959 
+    {&#39;p99&#39;                 }        30.548         31.57        3.4062        11.343            6        6.8953          5.03        4.2881          3.3639         0.72237               1       0.99463       0.24004       0.23993 
+    {&#39;p99_9&#39;               }        56.953        57.547        5.2994        15.761            6        14.807        8.8596        7.4575          12.834         0.84841               1             1       0.24896       0.24896 
+    {&#39;p99_99&#39;              }        90.439        90.439        7.5689        18.531            6        21.018        13.695        11.644          17.794         0.90442               1             1       0.25148       0.25148 
+    {&#39;fl_cov_a_ss&#39;         }        46.189        46.181        3.4533        66.374      -1.4145         4.389        3.9111        1.9006         0.64085         0.77027        -0.77963     0.0093601      0.099405      0.090044 
+    {&#39;fl_cor_a_ss&#39;         }             1       0.99429       0.73158       0.45048     -0.14479       0.43268       0.57021       0.30133        0.098743         0.67438         -0.3398     0.0058267       0.41564       0.05183 
+    {&#39;fl_cov_ap_ss&#39;        }        46.181        46.704        3.5562        68.204      -1.3778        5.2598        4.1925        2.2089          1.2037         0.72501        -0.69253     -0.032478       0.11025       0.14273 
+    {&#39;fl_cor_ap_ss&#39;        }       0.99429             1       0.74922       0.46034     -0.14025       0.51566       0.60786       0.34828         0.18445         0.63125        -0.30018     -0.020106       0.45846      0.081703 
+    {&#39;fl_cov_cons_ss&#39;      }        3.4533        3.5562       0.48239        9.9576      0.23887       0.77394        0.5697       0.43359         0.20222        0.038411      -0.0045925     -0.033818      0.018741      0.052559 
+    {&#39;fl_cor_cons_ss&#39;      }       0.73158       0.74922             1       0.66131      0.23926       0.74658       0.81274       0.67268          0.3049         0.32907       -0.019587        -0.206       0.76677       0.29603 
+    {&#39;fl_cov_v_ss&#39;         }        66.374        68.204        9.9576           470      -1.5579        15.049        11.491        8.4668          3.9277          1.3454          -1.649       0.30355       0.55346        0.2499 
+    {&#39;fl_cor_v_ss&#39;         }       0.45048       0.46034       0.66131             1     -0.04999       0.46509       0.52517       0.42082         0.18972         0.36927        -0.22531      0.059238       0.72546      0.045094 
+    {&#39;fl_cov_n_ss&#39;         }       -1.4145       -1.3778       0.23887       -1.5579       2.0664       0.40409      0.092861       0.19345         0.26722       -0.066855         0.17059      -0.10373       0.01336       0.11709 
+    {&#39;fl_cor_n_ss&#39;         }      -0.14479      -0.14025       0.23926      -0.04999            1       0.18834      0.064008       0.14501         0.19466        -0.27673         0.35152       -0.3053       0.26411       0.31865 
+    {&#39;fl_cov_y_all&#39;        }         4.389        5.2598       0.77394        15.049      0.40409        2.2277        1.1533         1.026          1.0262       -0.020719         0.14034      -0.11962       0.04008        0.1597 
+    {&#39;fl_cor_y_all&#39;        }       0.43268       0.51566       0.74658       0.46509      0.18834             1       0.76559       0.74068            0.72       -0.082599         0.27852      -0.33906       0.76309       0.41856 
+    {&#39;fl_cov_y_head_inc&#39;   }        3.9111        4.1925        0.5697        11.491     0.092861        1.1533        1.0186         0.891         0.10581       0.0068725        0.062723     -0.069596      0.024785      0.094381 
+    {&#39;fl_cor_y_head_inc&#39;   }       0.57021       0.60786       0.81274       0.52517     0.064008       0.76559             1       0.95129         0.10979        0.040518          0.1841      -0.29175       0.69786       0.36583 
+    {&#39;fl_cov_y_head_earn&#39;  }        1.9006        2.2089       0.43359        8.4668      0.19345         1.026         0.891       0.86126        0.088671       -0.035394         0.12647     -0.091074      0.022083       0.11316 
+    {&#39;fl_cor_y_head_earn&#39;  }       0.30133       0.34828       0.67268       0.42082      0.14501       0.74068       0.95129             1         0.10006        -0.22693         0.40367      -0.41518       0.67618       0.47698 
+    {&#39;fl_cov_y_spouse_inc&#39; }       0.64085        1.2037       0.20222        3.9277      0.26722        1.0262       0.10581      0.088671         0.91191       -0.016136        0.045054     -0.028918      0.014021      0.042939 
+    {&#39;fl_cor_y_spouse_inc&#39; }      0.098743       0.18445        0.3049       0.18972      0.19466          0.72       0.10979       0.10006               1        -0.10054         0.13976      -0.12812       0.41724        0.1759 
+    {&#39;fl_cov_yshr_interest&#39;}       0.77027       0.72501      0.038411        1.3454    -0.066855     -0.020719     0.0068725     -0.035394       -0.016136        0.028245       -0.043171      0.014926    0.00012649       -0.0148 
+    {&#39;fl_cor_yshr_interest&#39;}       0.67438       0.63125       0.32907       0.36927     -0.27673     -0.082599      0.040518      -0.22693        -0.10054               1        -0.76091       0.37574      0.021388      -0.34449 
+    {&#39;fl_cov_yshr_wage&#39;    }      -0.77963      -0.69253    -0.0045925        -1.649      0.17059       0.14034      0.062723       0.12647        0.045054       -0.043171         0.11397     -0.070795     0.0039927      0.074788 
+    {&#39;fl_cor_yshr_wage&#39;    }       -0.3398      -0.30018     -0.019587      -0.22531      0.35152       0.27852        0.1841       0.40367         0.13976        -0.76091               1      -0.88722       0.33609       0.86663 
+    {&#39;fl_cov_yshr_SS&#39;      }     0.0093601     -0.032478     -0.033818       0.30355     -0.10373      -0.11962     -0.069596     -0.091074       -0.028918        0.014926       -0.070795      0.055869    -0.0041192     -0.059988 
+    {&#39;fl_cor_yshr_SS&#39;      }     0.0058267     -0.020106        -0.206      0.059238      -0.3053      -0.33906      -0.29175      -0.41518        -0.12812         0.37574        -0.88722             1      -0.49523      -0.99282 
+    {&#39;fl_cov_yshr_tax&#39;     }      0.099405       0.11025      0.018741       0.55346      0.01336       0.04008      0.024785      0.022083        0.014021      0.00012649       0.0039927    -0.0041192     0.0012383     0.0053575 
+    {&#39;fl_cor_yshr_tax&#39;     }       0.41564       0.45846       0.76677       0.72546      0.26411       0.76309       0.69786       0.67618         0.41724        0.021388         0.33609      -0.49523             1       0.59558 
+    {&#39;fl_cov_yshr_nttxss&#39;  }      0.090044       0.14273      0.052559        0.2499      0.11709        0.1597      0.094381       0.11316        0.042939         -0.0148        0.074788     -0.059988     0.0053575      0.065346 
+    {&#39;fl_cor_yshr_nttxss&#39;  }       0.05183      0.081703       0.29603      0.045094      0.31865       0.41856       0.36583       0.47698          0.1759        -0.34449         0.86663      -0.99282       0.59558             1 
+    {&#39;fracByP0_01&#39;         }             0             0    5.4315e-06     0.0018677      0.15286             0    5.2111e-06             0               0               0               0             0    2.8341e-05     -0.068566 
+    {&#39;fracByP0_1&#39;          }             0             0    8.2399e-05      0.012968      0.15286             0    7.7572e-05             0               0               0               0             0    0.00035811     -0.068566 
+    {&#39;fracByP1&#39;            }             0             0     0.0013761      0.080387      0.15286    1.3833e-06     0.0013135             0               0               0               0             0     0.0048426      -0.12534 
+    {&#39;fracByP5&#39;            }             0             0       0.01022       0.25904      0.15286     0.0014863      0.010012             0               0               0               0             0      0.029409      -0.52329 
+    {&#39;fracByP10&#39;           }             0             0      0.025187       0.41107      0.15286       0.00716       0.02408             0               0               0               0             0      0.063432      -0.79814 
+    {&#39;fracByP20&#39;           }    0.00074359    0.00061895      0.065443       0.62446      0.15286      0.030312      0.055597             0               0      0.00064165        0.035706             0        0.1405       -0.9507 
+    {&#39;fracByP25&#39;           }     0.0014042     0.0020497      0.090297       0.70441      0.15286      0.046785      0.075666      0.011684               0       0.0022615        0.081923             0        0.1825      -0.87657 
+    {&#39;fracByP30&#39;           }     0.0041483     0.0051966       0.11827       0.77196      0.15286      0.066368        0.0995      0.030168               0       0.0058507         0.13367             0       0.22644      -0.78706 
+    {&#39;fracByP40&#39;           }       0.01665      0.018812       0.18387       0.87856      0.40183       0.11522       0.15151      0.080999               0         0.02158         0.24563             0       0.31955      -0.58347 
+    {&#39;fracByP50&#39;           }      0.045047      0.046332       0.26291       0.95559      0.40183       0.17805       0.21876        0.1488               0        0.053106         0.36455             0       0.41913      -0.35826 
+    {&#39;fracByP60&#39;           }      0.094899      0.095657       0.35672        1.0089      0.40183        0.2574       0.29717       0.23502         0.01269         0.10787         0.48788             0       0.52361      -0.11631 
+    {&#39;fracByP70&#39;           }       0.17353       0.17824       0.46729        1.0416      0.56321       0.35748       0.39623       0.34392        0.062543         0.19608         0.61407             0       0.63378       0.14019 
+    {&#39;fracByP75&#39;           }       0.24359       0.23689       0.52992        1.0506      0.56321       0.41756       0.45498       0.40836         0.10565          0.2572         0.67791             0       0.69085       0.27367 
+    {&#39;fracByP80&#39;           }       0.32643       0.31096       0.59841        1.0545      0.75407       0.48651       0.52169       0.48157         0.16285         0.33349         0.74212    0.00090712       0.74929       0.41066 
+    {&#39;fracByP90&#39;           }       0.56332        0.5274       0.75898        1.0454       0.8953       0.66421       0.69048       0.66665         0.32851         0.55772               1       0.28547       0.87065       0.69579 
+    {&#39;fracByP95&#39;           }       0.69729       0.69468       0.85836        1.0299       0.8953       0.78735       0.80629       0.79244         0.52595         0.73626               1       0.56994       0.93393       0.84459 
+    {&#39;fracByP99&#39;           }       0.90278       0.90216       0.96058        1.0085            1       0.92866          0.94       0.93633         0.80937         0.93588               1        0.9103       0.98632       0.96782 
+    {&#39;fracByP99_9&#39;         }       0.98493       0.98362       0.99414        1.0011            1       0.98757       0.99016       0.98962         0.95807         0.99303               1             1        0.9986        0.9967 
+    {&#39;fracByP99_99&#39;        }       0.99793       0.99759       0.99921        1.0001            1       0.99835       0.99857       0.99849         0.99466         0.99925               1             1       0.99986       0.99967 
+
+% [Phi_true,Phi_adj] = snw_ds_main(mp_params, mp_controls);
+Phi_true = Phi_true/sum(Phi_true(:));</code></pre>
+</div>
+<div id="show-all-info-in-mp_dsvfi_results-more-dense-1" class="section level3">
+<h3><span class="header-section-number">5.2.2</span> Show All Info in mp_dsvfi_results More Dense</h3>
+<pre><code>mp_cl_mt_xyz_of_s = mp_dsvfi_results(&#39;mp_cl_mt_xyz_of_s&#39;);
+disp(mp_cl_mt_xyz_of_s(&#39;tb_outcomes&#39;))
+
+                       mean        sd       coefofvar      min         max        pYis0       pYls0      pYgr0      pYisMINY      pYisMAXY      p0_01        p0_1         p1           p5         p10         p20          p25         p30         p40         p50         p60         p70        p75        p80         p90        p95        p99       p99_9     p99_99     fl_cov_a_ss    fl_cor_a_ss    fl_cov_ap_ss    fl_cor_ap_ss    fl_cov_cons_ss    fl_cor_cons_ss    fl_cov_v_ss    fl_cor_v_ss    fl_cov_n_ss    fl_cor_n_ss    fl_cov_y_all    fl_cor_y_all    fl_cov_y_head_inc    fl_cor_y_head_inc    fl_cov_y_head_earn    fl_cor_y_head_earn    fl_cov_y_spouse_inc    fl_cor_y_spouse_inc    fl_cov_yshr_interest    fl_cor_yshr_interest    fl_cov_yshr_wage    fl_cor_yshr_wage    fl_cov_yshr_SS    fl_cor_yshr_SS    fl_cov_yshr_tax    fl_cor_yshr_tax    fl_cov_yshr_nttxss    fl_cor_yshr_nttxss    fracByP0_01    fracByP0_1     fracByP1     fracByP5     fracByP10    fracByP20     fracByP25    fracByP30    fracByP40    fracByP50    fracByP60    fracByP70    fracByP75    fracByP80     fracByP90    fracByP95    fracByP99    fracByP99_9    fracByP99_99
+                     ________    _______    _________    ________    _______    _________    _______    _______    __________    __________    ________    ________    _________    ________    ________    ________    _________    ________    ________    ________    ________    _______    _______    ________    _______    _______    _______    _______    _______    ___________    ___________    ____________    ____________    ______________    ______________    ___________    ___________    ___________    ___________    ____________    ____________    _________________    _________________    __________________    __________________    ___________________    ___________________    ____________________    ____________________    ________________    ________________    ______________    ______________    _______________    _______________    __________________    __________________    ___________    __________    __________    _________    _________    __________    _________    _________    _________    _________    _________    _________    _________    __________    _________    _________    _________    ___________    ____________
+
+    a_ss               4.2486     6.7963      1.5996            0        135       0.1223          0     0.8777        0.1223    6.6266e-06           0           0            0           0           0    0.064373      0.11124     0.26367     0.68544      1.4131      2.5301     4.1199     5.4836      7.1191      12.56     16.875     30.548     56.953     90.439        46.189              1         46.181         0.99429            3.4533          0.73158          66.374        0.45048         -1.4145      -0.14479           4.389         0.43268             3.9111             0.57021                1.9006               0.30133                0.64085              0.098743                  0.77027                0.67438               -0.77963            -0.3398           0.0093601        0.0058267           0.099405           0.41564             0.090044               0.05183                  0              0             0            0           0     0.00074359    0.0014042    0.0041483     0.01665     0.045047     0.094899      0.17353      0.24359        0.32643     0.56332      0.69729      0.90278       0.98493        0.99793   
+    ap_ss              4.3473      6.834       1.572            0      163.7      0.10225          0    0.89775       0.10225    2.2031e-12           0           0            0           0           0    0.070044      0.18238     0.37542     0.85525      1.5959      2.7681     4.5042     5.7337      7.2583     12.145     17.551      31.57     57.547     90.439        46.181        0.99429         46.704               1            3.5562          0.74922          68.204        0.46034         -1.3778      -0.14025          5.2598         0.51566             4.1925             0.60786                2.2089               0.34828                 1.2037               0.18445                  0.72501                0.63125               -0.69253           -0.30018           -0.032478        -0.020106            0.11025           0.45846              0.14273              0.081703                  0              0             0            0           0     0.00061895    0.0020497    0.0051966    0.018812     0.046332     0.095657      0.17824      0.23689        0.31096      0.5274      0.69468      0.90216       0.98362        0.99759   
+    cons_ss            1.0676    0.69454     0.65055     0.036717     141.66            0          0          1    8.6094e-07             0    0.066316     0.10404        0.185     0.27653     0.35932     0.49736      0.56384     0.63117     0.77036     0.92038       1.086     1.2802     1.3961      1.5324     1.9406     2.3509     3.4062     5.2994     7.5689        3.4533        0.73158         3.5562         0.74922           0.48239                1          9.9576        0.66131         0.23887       0.23926         0.77394         0.74658             0.5697             0.81274               0.43359               0.67268                0.20222                0.3049                 0.038411                0.32907             -0.0045925          -0.019587           -0.033818           -0.206           0.018741           0.76677             0.052559               0.29603         5.4315e-06     8.2399e-05     0.0013761      0.01022    0.025187       0.065443     0.090297      0.11827     0.18387      0.26291      0.35672      0.46729      0.52992        0.59841     0.75898      0.85836      0.96058       0.99414        0.99921   
+    v_ss              -15.745      21.68     -1.3769      -586.22      24.63            0     0.8122     0.1878    1.2848e-09             0     -253.42      -166.9      -96.092      -56.05     -41.447      -27.45      -23.085     -19.607     -14.252     -10.153     -6.7158    -3.5921    -2.0335    -0.41501     3.5073     6.4545     11.343     15.761     18.531        66.374        0.45048         68.204         0.46034            9.9576          0.66131             470              1         -1.5579      -0.04999          15.049         0.46509             11.491             0.52517                8.4668               0.42082                 3.9277               0.18972                   1.3454                0.36927                 -1.649           -0.22531             0.30355         0.059238            0.55346           0.72546               0.2499              0.045094          0.0018677       0.012968      0.080387      0.25904     0.41107        0.62446      0.70441      0.77196     0.87856      0.95559       1.0089       1.0416       1.0506         1.0545      1.0454       1.0299       1.0085        1.0011         1.0001   
+    n_ss               2.3554     1.4375     0.61029            1          6            0          0          1       0.36005      0.041101           1           1            1           1           1           1            1           1           2           2           2          3          3           4          5          5          6          6          6       -1.4145       -0.14479        -1.3778        -0.14025           0.23887          0.23926         -1.5579       -0.04999          2.0664             1         0.40409         0.18834           0.092861            0.064008               0.19345               0.14501                0.26722               0.19466                -0.066855               -0.27673                0.17059            0.35152            -0.10373          -0.3053            0.01336           0.26411              0.11709               0.31865            0.15286        0.15286       0.15286      0.15286     0.15286        0.15286      0.15286      0.15286     0.40183      0.40183      0.40183      0.56321      0.56321        0.75407      0.8953       0.8953            1             1              1   
+    y_all               1.415     1.4926      1.0548            0     50.873    0.0072908          0    0.99271     0.0072908    2.2031e-12           0           0    0.0013184      0.1012     0.22272     0.42045      0.50808     0.60105     0.78729     0.99853      1.2567      1.594     1.8147         2.1     3.0498     4.0398     6.8953     14.807     21.018         4.389        0.43268         5.2598         0.51566           0.77394          0.74658          15.049        0.46509         0.40409       0.18834          2.2277               1             1.1533             0.76559                 1.026               0.74068                 1.0262                  0.72                -0.020719              -0.082599                0.14034            0.27852            -0.11962         -0.33906            0.04008           0.76309               0.1597               0.41856                  0              0    1.3833e-06    0.0014863     0.00716       0.030312     0.046785     0.066368     0.11522      0.17805       0.2574      0.35748      0.41756        0.48651     0.66421      0.78735      0.92866       0.98757        0.99835   
+    y_head_inc         1.1087     1.0092     0.91029     0.038108     24.357            0          0          1    1.2258e-06     1.641e-09    0.065666      0.1034      0.17983     0.25935     0.31385     0.41397      0.46885      0.5291     0.65232     0.80051     0.98453     1.2256     1.3831      1.5829     2.2473     2.9873       5.03     8.8596     13.695        3.9111        0.57021         4.1925         0.60786            0.5697          0.81274          11.491        0.52517        0.092861      0.064008          1.1533         0.76559             1.0186                   1                 0.891               0.95129                0.10581               0.10979                0.0068725               0.040518               0.062723             0.1841           -0.069596         -0.29175           0.024785           0.69786             0.094381               0.36583         5.2111e-06     7.7572e-05     0.0013135     0.010012     0.02408       0.055597     0.075666       0.0995     0.15151      0.21876      0.29717      0.39623      0.45498        0.52169     0.69048      0.80629         0.94       0.99016        0.99857   
+    y_head_earn       0.88655    0.92804      1.0468            0     18.957       0.2016          0     0.7984        0.2016    1.2258e-07           0           0            0           0           0           0      0.28106     0.37421     0.52794     0.68288     0.85118     1.0805     1.2168      1.3913     1.9622     2.5935     4.2881     7.4575     11.644        1.9006        0.30133         2.2089         0.34828           0.43359          0.67268          8.4668        0.42082         0.19345       0.14501           1.026         0.74068              0.891             0.95129               0.86126                     1               0.088671               0.10006                -0.035394               -0.22693                0.12647            0.40367           -0.091074         -0.41518           0.022083           0.67618              0.11316               0.47698                  0              0             0            0           0              0     0.011684     0.030168    0.080999       0.1488      0.23502      0.34392      0.40836        0.48157     0.66665      0.79244      0.93633       0.98962        0.99849   
+    y_spouse_inc      0.35849    0.95494      2.6638            0     26.627      0.52499          0    0.47501       0.52499    1.9415e-10           0           0            0           0           0           0            0           0           0           0      0.1002     0.2646    0.35911     0.45945    0.88325     1.9998     3.3639     12.834     17.794       0.64085       0.098743         1.2037         0.18445           0.20222           0.3049          3.9277        0.18972         0.26722       0.19466          1.0262            0.72            0.10581             0.10979              0.088671               0.10006                0.91191                     1                -0.016136               -0.10054               0.045054            0.13976           -0.028918         -0.12812           0.014021           0.41724             0.042939                0.1759                  0              0             0            0           0              0            0            0           0            0      0.01269     0.062543      0.10565        0.16285     0.32851      0.52595      0.80937       0.95807        0.99466   
+    yshr_interest     0.12214    0.16806      1.3759            0    0.99299       0.1223          0     0.8777        0.1223             0           0           0            0           0           0    0.002327    0.0059749    0.011751    0.027724    0.051008    0.084969    0.13328    0.16557     0.20879    0.36622    0.52139    0.72237    0.84841    0.90442       0.77027        0.67438        0.72501         0.63125          0.038411          0.32907          1.3454        0.36927       -0.066855      -0.27673       -0.020719       -0.082599          0.0068725            0.040518             -0.035394              -0.22693              -0.016136              -0.10054                 0.028245                      1              -0.043171           -0.76091            0.014926          0.37574         0.00012649          0.021388              -0.0148              -0.34449                  0              0             0            0           0     0.00064165    0.0022615    0.0058507     0.02158     0.053106      0.10787      0.19608       0.2572        0.33349     0.55772      0.73626      0.93588       0.99303        0.99925   
+    yshr_wage         0.77513    0.33759     0.43553            0          1      0.10584          0    0.89416       0.10584       0.11437           0           0            0           0           0     0.64663      0.76907     0.82966     0.89914     0.94132     0.96865    0.98637    0.99279     0.99714          1          1          1          1          1      -0.77963        -0.3398       -0.69253        -0.30018        -0.0045925        -0.019587          -1.649       -0.22531         0.17059       0.35152         0.14034         0.27852           0.062723              0.1841               0.12647               0.40367               0.045054               0.13976                -0.043171               -0.76091                0.11397                  1           -0.070795         -0.88722          0.0039927           0.33609             0.074788               0.86663                  0              0             0            0           0       0.035706     0.081923      0.13367     0.24563      0.36455      0.48788      0.61407      0.67791        0.74212           1            1            1             1              1   
+    yshr_SS           0.10273    0.23637      2.3009            0          1       0.7984          0     0.2016        0.7984     0.0072908           0           0            0           0           0           0            0           0           0           0           0          0          0    0.087268    0.46618    0.70711    0.99463          1          1     0.0093601      0.0058267      -0.032478       -0.020106         -0.033818           -0.206         0.30355       0.059238        -0.10373       -0.3053        -0.11962        -0.33906          -0.069596            -0.29175             -0.091074              -0.41518              -0.028918              -0.12812                 0.014926                0.37574              -0.070795           -0.88722            0.055869                1         -0.0041192          -0.49523            -0.059988              -0.99282                  0              0             0            0           0              0            0            0           0            0            0            0            0     0.00090712     0.28547      0.56994       0.9103             1              1   
+    yshr_tax          0.17862    0.03519     0.19701     0.036506     0.2552            0          0          1    8.6094e-07    2.2031e-12    0.054112    0.071805     0.098826      0.1152     0.12764     0.14613      0.15354      0.1601     0.17202      0.1824     0.19205     0.2015     0.2063     0.21131    0.22265    0.22976    0.24004    0.24896    0.25148      0.099405        0.41564        0.11025         0.45846          0.018741          0.76677         0.55346        0.72546         0.01336       0.26411         0.04008         0.76309           0.024785             0.69786              0.022083               0.67618               0.014021               0.41724               0.00012649               0.021388              0.0039927            0.33609          -0.0041192         -0.49523          0.0012383                 1            0.0053575               0.59558         2.8341e-05     0.00035811     0.0048426     0.029409    0.063432         0.1405       0.1825      0.22644     0.31955      0.41913      0.52361      0.63378      0.69085        0.74929     0.87065      0.93393      0.98632        0.9986        0.99986   
+    yshr_nttxss      0.075896    0.25563      3.3681     -0.89184     0.2552            0    0.17845    0.82155      0.005835    2.2031e-12    -0.89184    -0.89184     -0.88087    -0.58083    -0.31476     0.08656      0.12744     0.14378     0.16362     0.17767     0.18929    0.19998    0.20525     0.21067    0.22244    0.22959    0.23993    0.24896    0.25148      0.090044        0.05183        0.14273        0.081703          0.052559          0.29603          0.2499       0.045094         0.11709       0.31865          0.1597         0.41856           0.094381             0.36583               0.11316               0.47698               0.042939                0.1759                  -0.0148               -0.34449               0.074788            0.86663           -0.059988         -0.99282          0.0053575           0.59558             0.065346                     1          -0.068566      -0.068566      -0.12534     -0.52329    -0.79814        -0.9507     -0.87657     -0.78706    -0.58347     -0.35826     -0.11631      0.14019      0.27367        0.41066     0.69579      0.84459      0.96782        0.9967        0.99967</code></pre>
+
+</div>
+</div>
+<div id="distribution-grid-search" class="section level2">
+<h2><span class="header-section-number">5.3</span> Distribution Grid Search</h2>
+<p>This is the example vignette for function:
+<a href="https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/sdist/snw_ds_main_grid_search.m"><strong>snw_ds_main_grid_search</strong></a>
 from the <a href="https://fanwangecon.github.io/PrjOptiSNW/"><strong>PrjOptiSNW
 Package</strong></a><strong>.</strong> This function
 solves for vfi and gets distribution induced by policy functions and
@@ -766,7 +1116,7 @@ also for Distribution. The results are illustrative of the differences
 between using grid search and exact solution. The grid search solution
 here is not fully vectorized but loops over the state-space.</p>
 <div id="test-snw_ds_main_grid_search-defaults-more-dense" class="section level3">
-<h3><span class="header-section-number">5.2.1</span> Test SNW_DS_MAIN_GRID_SEARCH Defaults More Dense</h3>
+<h3><span class="header-section-number">5.3.1</span> Test SNW_DS_MAIN_GRID_SEARCH Defaults More Dense</h3>
 <p>Due to the speed of running this, the example below only uses dense grid</p>
 <pre><code>mp_params = snw_mp_param(&#39;default_moredense&#39;);
 mp_controls = snw_mp_control(&#39;default_test&#39;);
@@ -782,8 +1132,8 @@ Completed SNW_DS_MAIN;SNW_MP_PARAM=;default_moredense;SNW_MP_CONTROL=;default_te
 
 Phi_true = Phi_true/sum(Phi_true(:));</code></pre>
 </div>
-<div id="show-all-info-in-mp_dsvfi_results-more-dense-1" class="section level3">
-<h3><span class="header-section-number">5.2.2</span> Show All Info in mp_dsvfi_results More Dense</h3>
+<div id="show-all-info-in-mp_dsvfi_results-more-dense-2" class="section level3">
+<h3><span class="header-section-number">5.3.2</span> Show All Info in mp_dsvfi_results More Dense</h3>
 <pre><code>mp_cl_mt_xyz_of_s = mp_dsvfi_results(&#39;mp_cl_mt_xyz_of_s&#39;);
 disp(mp_cl_mt_xyz_of_s(&#39;tb_outcomes&#39;))
 
@@ -806,7 +1156,7 @@ disp(mp_cl_mt_xyz_of_s(&#39;tb_outcomes&#39;))
     yshr_nttxss      0.072887     0.27591      3.7854     -0.88844    0.25519          0    0.18437    0.81563      0.012229    4.4311e-12    -0.88844    -0.88844    -0.88844    -0.6621    -0.36225       0.09139      0.13883      0.15528     0.17317     0.18697     0.19736     0.20656    0.21158       0.216     0.2262    0.23279    0.24144     0.2475    0.25038       0.11587       0.064694        0.19614        0.082747         0.071608           0.32067          0.5642         0.11361        0.12479        0.31464         0.16182         0.4058            0.12304             0.38601               0.14298                0.4832               0.038776                0.19087                 -0.0129               -0.30391              0.082672             0.88803           -0.069772          -0.9949            0.006353           0.66802            0.076125                     1           -0.14907       -0.14907     -0.14907     -0.56563    -0.92696        -1.1136       -1.0288     -0.92754    -0.70095      -0.4541     -0.19096     0.086406      0.22976       0.37651     0.67945      0.83671      0.96647       0.99659        0.99966   </code></pre>
 </div>
 <div id="more-dense-param-results-define-frames-2" class="section level3">
-<h3><span class="header-section-number">5.2.3</span> More Dense Param Results Define Frames</h3>
+<h3><span class="header-section-number">5.3.3</span> More Dense Param Results Define Frames</h3>
 <p>Define the matrix dimensions names and dimension vector values.
 Probability mass matrixes, Policy and Value Functions share the same ND
 dimensional structure.</p>
@@ -829,7 +1179,7 @@ cl_mp_datasetdesc{5} = containers.Map({&#39;name&#39;, &#39;labval&#39;}, {&#39;
 cl_mp_datasetdesc{6} = containers.Map({&#39;name&#39;, &#39;labval&#39;}, {&#39;kids&#39;, kids_grid});</code></pre>
 </div>
 <div id="analyze-probability-mass-along-age-dimensions-1" class="section level3">
-<h3><span class="header-section-number">5.2.4</span> Analyze Probability Mass Along Age Dimensions</h3>
+<h3><span class="header-section-number">5.3.4</span> Analyze Probability Mass Along Age Dimensions</h3>
 <p>Where are the mass at? Analyze mass given state space components.</p>
 <pre><code>% Get the Joint distribution over all states
 % Define Graph Inputs
@@ -898,7 +1248,7 @@ ff_graph_grid((tb_prob_amarrykids{1:end, 4:end}), ar_row_grid, age_grid, mp_supp
 
 </div>
 <div id="analyze-probability-mass-asset-and-shock-dimensions-1" class="section level3">
-<h3><span class="header-section-number">5.2.5</span> Analyze Probability Mass Asset and Shock Dimensions</h3>
+<h3><span class="header-section-number">5.3.5</span> Analyze Probability Mass Asset and Shock Dimensions</h3>
 <p>Where are the mass at?</p>
 <pre><code>% Define Graph Inputs
 mp_support_graph = containers.Map(&#39;KeyType&#39;, &#39;char&#39;, &#39;ValueType&#39;, &#39;any&#39;);
@@ -1024,7 +1374,7 @@ ff_graph_grid((tb_prob_aage{1:end, 3:end})&#39;, age_grid, agrid, mp_support_gra
 <p><img src="img/snwx_ds_grid_search_images/figure_5.png" width="500" /></p>
 </div>
 <div id="probability-statistics-a-c-and-v-conditional-on-ages-1" class="section level3">
-<h3><span class="header-section-number">5.2.6</span> Probability Statistics A, C and V Conditional on Ages</h3>
+<h3><span class="header-section-number">5.3.6</span> Probability Statistics A, C and V Conditional on Ages</h3>
 <p>Where are the mass at?</p>
 <pre><code>ap_ss = mp_dsvfi_results(&#39;ap_ss&#39;);
 c_ss = mp_dsvfi_results(&#39;cons_ss&#39;);

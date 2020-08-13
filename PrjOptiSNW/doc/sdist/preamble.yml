@@ -1,6 +1,6 @@
 - file: snwx_ds_bisec_vec_loop
-  title: "Assets and Demographic Distributions with Continuous Exact Savings Choices"
-  titleshort: "Assets and Demographic Distributions with Continuous Exact Savings Choices"
+  title: "Assets and Demographic Distributions with Continuous Exact Savings Choices (Loop)"
+  titleshort: "Assets and Demographic Distributions with Continuous Exact Savings Choices (Loop)"
   description: |
     Simulate the life cycle distribution of assets, consumptions, and demographic patterns up to age 100, given exogenous initial distributions at age 18.
     Solves for budget clearing tax rates given distributional results.
@@ -9,6 +9,29 @@
     - package: PrjOptiSNW
       code: |
         [snw_ds_main()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/sdist/snw_ds_main.m)
+  date: 2020-08-07
+  date_start: 2020-08-07
+  output:
+    pdf_document:
+      pandoc_args: '../../../_output_kniti_pdf.yaml'
+      includes:
+        in_header: '../../../preamble.tex'
+    html_document:
+      pandoc_args: '../../../_output_kniti_html.yaml'
+      includes:
+        in_header: '../../../hdga.html'
+  always_allow_html: true
+  urlcolor: blue
+
+- file: snwx_ds_bisec_vec
+  title: "Assets and Demographic Distributions with Continuous Exact Savings Choices (Vectorized)"
+  titleshort: "Assets and Demographic Distributions with Continuous Exact Savings Choices (Vectorized)"
+  description: |
+    Simulate the life cycle distributions This is the fully vectorized version of [snw_ds_main()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/sdist/snw_ds_main.m).
+  core :
+    - package: PrjOptiSNW
+      code: |
+        [snw_ds_main_vec()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/sdist/snw_ds_main_vec.m)
   date: 2020-08-07
   date_start: 2020-08-07
   output:

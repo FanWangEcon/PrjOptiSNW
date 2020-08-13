@@ -1,7 +1,7 @@
 %% 2019 Age, Income, Kids, Marry EV and EC All Checks
-% This is the example vignette for function:  <https://github.com/FanWangEcon/PrjOptiSNW/tree/master/PrjOptiSNW/splanneralt/snw_evuvw20_jaeemk.m 
-% *snw_evuvw20_jaeemk*> from the <https://fanwangecon.github.io/PrjOptiSNW/ *PrjOptiSNW 
-% Package*>*.* 2019 integrated over VU and VW
+% This is the example vignette for function:  <https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/splanneralt/snw_evuvw19_jmky_allchecks.m 
+% *snw_evuvw19_jmky_allchecks*> from the <https://fanwangecon.github.io/PrjOptiSNW/ 
+% *PrjOptiSNW Package*>*.* 2019 integrated over VU and VW
 %% Test SNW_EVUVW19_JMKY_ALLCHECKS Parameters
 % Save a result that is low in memory cost so that it can be loaded quickly 
 % for various allocation tests. Turn off Various Printing Controls. Call function 

@@ -1,8 +1,8 @@
 %% Calibrate Beta and Normalize GDP
-% Taking advantage of <https://github.com/FanWangEcon/PrjOptiSNW/tree/master/PrjOptiSNW/params/snw_ds_main.m 
-% *snw_ds_main*> from the <https://fanwangecon.github.io/PrjOptiSNW/ *PrjOptiSNW 
-% Package*,> this function calibrates the discount factor and also solves for 
-% the normalizing constant. 
+% Taking advantage of <https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/calibrate/snw_calibrate_beta_norm_gdp.m 
+% *snw_calibrate_beta_norm_gdp*> from the <https://fanwangecon.github.io/PrjOptiSNW/ 
+% *PrjOptiSNW Package*,> this function calibrates the discount factor and also 
+% solves for the normalizing constant. 
 %% Calibrate Parameter Controls for SNW Functions
 % Set up controls for shock process and tiny/small/dense/densemore
 

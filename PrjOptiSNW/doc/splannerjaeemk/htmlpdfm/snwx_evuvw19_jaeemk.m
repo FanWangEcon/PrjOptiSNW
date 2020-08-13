@@ -1,6 +1,6 @@
 %% 2019 Full States EV and EC of One Check
-% This is the example vignette for function:  <https://github.com/FanWangEcon/PrjOptiSNW/tree/master/PrjOptiSNW/splanneralt/snw_evuvw20_jaeemk.m 
-% *snw_evuvw20_jaeemk*> from the <https://fanwangecon.github.io/PrjOptiSNW/ *PrjOptiSNW 
+% This is the example vignette for function:  <https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/splanneralt/snw_evuvw19_jaeemk.m 
+% *snw_evuvw19_jaeemk*> from the <https://fanwangecon.github.io/PrjOptiSNW/ *PrjOptiSNW 
 % Package*>*.* 2019 integrated over VU and VW, given optimal savings choices, 
 % unemployment shocks and various expectations.
 %% Test SNW_EVUVW19_JAEEMK Defaults Dense

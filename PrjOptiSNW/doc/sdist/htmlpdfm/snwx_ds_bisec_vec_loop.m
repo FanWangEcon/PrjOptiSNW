@@ -1,5 +1,5 @@
 %% Distribution Exact Savings Choices
-% This is the example vignette for function: <https://github.com/FanWangEcon/PrjOptiSNW/tree/master/PrjOptiSNW/params/snw_ds_main.m 
+% This is the example vignette for function: <https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/sdist/snw_ds_main.m 
 % *snw_ds_main*> from the <https://fanwangecon.github.io/PrjOptiSNW/ *PrjOptiSNW 
 % Package*>*.* This function solves for vfi and gets distribution induced by policy 
 % functions and exogenous distributions.More Dense Simulation.  *Looped* to get 

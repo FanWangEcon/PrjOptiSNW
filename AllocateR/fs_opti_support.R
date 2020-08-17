@@ -1,4 +1,5 @@
 fs_opti_support <- function() {
+# other functions might overrid what is specified here.
 
 # ls_output <- fs_opti_support()
 # st_file_type_withspouse_shock <- ls_output$st_file_type_withspouse_shock
@@ -11,17 +12,18 @@ fs_opti_support <- function() {
 # This function store a number of support strings. for folder output path,
 # file name, etc that are shared across feasiable, optimal and threshold allocations
 
-srt_root <- 'D:/Dropbox (UH-ECON)/PrjNygaardSorensenWang/'
-# srt_root <- 'C:/Users/fan/Documents/Dropbox (UH-ECON)/PrjNygaardSorensenWang/'
+# srt_root <- 'D:/Dropbox (UH-ECON)/PrjNygaardSorensenWang/'
+srt_root <- 'C:/Users/fan/Documents/Dropbox (UH-ECON)/PrjNygaardSorensenWang/'
 st_b0b1 <- 'b1'
 st_file_type_withspouse_shock <- paste0('moredense_a65zh266zs5_e2m2_',st_b0b1)
+# st_file_type_withspouse_shock <- paste0('dense_ybin2500')
 snm_simu_csv_withspouse_shock <- paste0('snwx_v_planner_',st_file_type_withspouse_shock,'.csv')
 
 srt_simu_path <- paste0(srt_root, 'Output/')
 
 bl_save_img <- TRUE
-srt_img_save_root <- paste0(srt_root, 'Results/2020-08-05/Graphs/')
-srt_csv_path_root <- paste0(srt_root, 'Results/2020-08-05/csv/')
+srt_img_save_root <- paste0(srt_root, 'Results/2020-08-17/Graphs/')
+srt_csv_path_root <- paste0(srt_root, 'Results/2020-08-17/csv/')
 
 # Preferences
 ar_rho <- 1 - (10^(c(seq(-2,2, length.out=8))))
@@ -38,8 +40,8 @@ it_max_age <- 64
 st_file_folder <- paste0(st_b0b1, '_a', it_max_age, '')
 
 # CSV and Image Paths
-spt_img_save = paste0(srt_img_save_root, st_file_folder,'/')
-srt_csv_path = paste0(srt_csv_path_root, st_file_folder,'/')
+spt_img_save = paste0(srt_img_save_root, st_file_folder)
+srt_csv_path = paste0(srt_csv_path_root, st_file_folder)
 dir.create(file.path(spt_img_save), showWarnings = FALSE, recursive = TRUE)
 dir.create(file.path(srt_csv_path), showWarnings = FALSE, recursive = TRUE)
 

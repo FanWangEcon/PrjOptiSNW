@@ -12,8 +12,8 @@ fs_opti_support <- function() {
 # This function store a number of support strings. for folder output path,
 # file name, etc that are shared across feasiable, optimal and threshold allocations
 
-# srt_root <- 'D:/Dropbox (UH-ECON)/PrjNygaardSorensenWang/'
-srt_root <- 'C:/Users/fan/Documents/Dropbox (UH-ECON)/PrjNygaardSorensenWang/'
+srt_root <- 'D:/Dropbox (UH-ECON)/PrjNygaardSorensenWang/'
+# srt_root <- 'C:/Users/fan/Documents/Dropbox (UH-ECON)/PrjNygaardSorensenWang/'
 st_b0b1 <- 'b1'
 st_file_type_withspouse_shock <- paste0('moredense_a65zh266zs5_e2m2_',st_b0b1)
 # st_file_type_withspouse_shock <- paste0('dense_ybin2500')

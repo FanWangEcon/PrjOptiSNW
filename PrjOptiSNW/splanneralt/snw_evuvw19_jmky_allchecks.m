@@ -9,7 +9,7 @@
 %    BL_PARFOR, IT_WORKERS, BL_EXPORT, SNM_SUFFIX) provide V_SS and V_UNEMP
 %    solved out elsewhere, and only get two outputs out.
 %
-%    See also SNW_EVUVW19_JMKY, SNW_EVUVW19_JMKY_MASS, SNW_EVUVW19_JAEEMK,
+%    See also SNW_EVUVW19_JMKY, SNW_EVUVW19_JMKY_MASS, SNW_EVUVW19_JAEEMK_FOC,
 %    SNW_EVUVW20_JAEEMK, SNW_HH_PRECOMPUTE
 %
 
@@ -34,8 +34,8 @@ else
     % 1a. Parfor controls
 %     bl_parfor = true;
 %     it_workers = 2;
-    bl_parfor = true;
-    it_workers = 5;
+    bl_parfor = false;
+    it_workers = 1;
 
     % 1b. Export Controls
     % bl_export = false;
@@ -55,7 +55,7 @@ else
     %     mp_params = snw_mp_param('default_moredense_a55z363');
         %     mp_params = snw_mp_param('default_moredense');
 %       mp_params = snw_mp_param('default_dense');
-%     mp_params = snw_mp_param('default_small');
+%     mp_params = snw_mp_param('default_small', false, 'tauchen', true, 8, 8);
 %         mp_params = snw_mp_param('default_tiny');
     
     
@@ -67,7 +67,7 @@ else
 %     mp_params = snw_mp_param('default_moredense_a65zh81zs5_e2m2');
     % mp_params = snw_mp_param('default_moredense_a100zh81zs5_e2m2');   
     % mp_params = snw_mp_param('default_moredense_a65zh133zs5_e2m2');
-    mp_params = snw_mp_param('default_moredense_a65zh266zs5_e2m2');
+    mp_params = snw_mp_param('default_moredense_a65zh266zs5_e2m2', false, 'tauchen', true, 8, 8);
     
     % 3. Controls
     mp_controls = snw_mp_control('default_test');
@@ -283,7 +283,7 @@ Output = Output(Output(:,6) > 0,:);
 if (bl_export)
     mp_path = snw_mp_path('fan');
     snm_invoke_suffix = strrep(mp_params('mp_params_name'), 'default_', '');
-    snm_file_csv = ['snwx_v_planner_' char(snm_invoke_suffix) char(snm_suffix) '_b1.csv'];
+    snm_file_csv = ['snwx_v_planner_' char(snm_invoke_suffix) char(snm_suffix) '_b1_spouseinc.csv'];
     writematrix(Output, [mp_path('spt_simu_outputs') snm_file_csv]);
 end
 

@@ -40,7 +40,8 @@ else
 %     clc;
     clear all;
 %     mp_params = snw_mp_param('default_docdense');
-    mp_params = snw_mp_param('default_small');
+%     mp_params = snw_mp_param('default_small');
+    mp_params = snw_mp_param('default_tiny', false, 'tauchen', true, 8, 8);    
 %     mp_params = snw_mp_param('default_tiny');
     mp_controls = snw_mp_control('default_test');
     [v_ss, ap_ss, cons_ss, mp_valpol_more_ss] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
@@ -87,8 +88,8 @@ params_group = values(mp_params, {'agrid', 'eta_H_grid', 'eta_S_grid'});
 [agrid, eta_H_grid, eta_S_grid] = params_group{:};
 
 params_group = values(mp_params, ...
-    {'pi_eta', 'pi_kids', 'cl_mt_pi_jem_kidseta', 'psi'});
-[pi_eta, pi_kids, cl_mt_pi_jem_kidseta, psi] = params_group{:};
+    {'pi_eta', 'pi_kids', 'bl_store_shock_trans', 'cl_mt_pi_jem_kidseta', 'psi'});
+[pi_eta, pi_kids, bl_store_shock_trans, cl_mt_pi_jem_kidseta, psi] = params_group{:};
 
 params_group = values(mp_params, {'epsilon', 'SS'});
 [epsilon, SS] = params_group{:};
@@ -159,8 +160,12 @@ for j=1:(n_jgrid-1) % Age
 
             % C1. Get P(S'|S), S = [eta x kids] by [eta x kids] transition matrix
             % transition matrix is specific to jem:age/edu/marry
-            mt_pi_jem_kidseta = kron(pi_kids(:,:,j,educ,married), pi_eta);
-
+            if (bl_store_shock_trans)
+                mt_pi_jem_kidseta = cl_mt_pi_jem_kidseta{j,educ,married};
+            else
+                mt_pi_jem_kidseta = kron(pi_kids(:,:,j,educ,married), pi_eta);
+            end
+            
             % C2. Choice and Current/Last Age Probability Mass 6D to 2D
             % transformed matrix rows are savings, columns are shocks
             % column shocks include productivity as well kids shocks
@@ -451,18 +456,22 @@ if (bl_ds_store_all)
     mp_dsvfi_results('mp_controls') = mp_controls;
 
     % Store Policy Functions as Outputs
-    mp_dsvfi_results('v_ss') = v_ss;
     mp_dsvfi_results('ap_ss') = ap_ss;
     mp_dsvfi_results('cons_ss') = cons_ss;
-
+    
+    % this household head income from: snw_hh_individual_income()
     y_inc_ss = mp_valpol_more_ss('inc_VFI');
     y_earn_ss = mp_valpol_more_ss('earn_VFI');
+    % this is realized spousal income: (married-1)*snw_hh_spousal_income()*exp(eta_S_grid(eta))
     y_spouse_inc_ss = mp_valpol_more_ss('spouse_inc_VFI');
     SS_ss = mp_valpol_more_ss('SS_VFI');
     tax_ss = mp_valpol_more_ss('tax_VFI');
+    
     mp_dsvfi_results('y_head_inc_ss') = y_inc_ss;
     mp_dsvfi_results('y_head_earn_ss') = y_earn_ss;
     mp_dsvfi_results('y_spouse_inc_ss') = y_spouse_inc_ss;
+    mp_dsvfi_results('y_all_ss') = y_inc_ss + y_spouse_inc_ss;
+    
     mp_dsvfi_results('SS_ss') = SS_ss;
     mp_dsvfi_results('tax_ss') = tax_ss;
 
@@ -542,12 +551,12 @@ if (bl_compute_drv_stats)
     if (bl_ds_store_all)
 
         mp_cl_ar_xyz_of_s('a_ss') = {a_ss(:), zeros(1)};
-        mp_cl_ar_xyz_of_s('v_ss') = {v_ss(:), zeros(1)};
+%         mp_cl_ar_xyz_of_s('v_ss') = {v_ss(:), zeros(1)};
         mp_cl_ar_xyz_of_s('n_ss') = {n_ss(:), zeros(1)};
         mp_cl_ar_xyz_of_s('y_head_inc') = {y_inc_ss(:), zeros(1)};
         mp_cl_ar_xyz_of_s('y_head_earn') = {y_earn_ss(:), zeros(1)};
         mp_cl_ar_xyz_of_s('y_spouse_inc') = {y_spouse_inc_ss(:), zeros(1)};
-        mp_cl_ar_xyz_of_s('y_all') = {y_inc_ss(:) + y_spouse_inc_ss(:) - SS_ss(:), zeros(1)};
+        mp_cl_ar_xyz_of_s('y_all') = {y_inc_ss(:) + y_spouse_inc_ss(:), zeros(1)};
 
         % Add to Map
         mp_cl_ar_xyz_of_s('yshr_interest') = {yshr_interest(:), zeros(1)};
@@ -558,7 +567,7 @@ if (bl_compute_drv_stats)
 
         % Add Names to list
         mp_cl_ar_xyz_of_s('ar_st_y_name') = ...
-            ["a_ss", "ap_ss", "cons_ss", "v_ss", "n_ss", ...
+            ["a_ss", "ap_ss", "cons_ss", "n_ss", ...
             "y_all", "y_head_inc", "y_head_earn", "y_spouse_inc", ...
             "yshr_interest", "yshr_wage", "yshr_SS", ...
             "yshr_tax", "yshr_nttxss"];

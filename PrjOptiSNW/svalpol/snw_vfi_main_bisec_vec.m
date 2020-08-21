@@ -69,7 +69,7 @@ if (~isempty(varargin))
 else
     
     clc;
-    mp_params = snw_mp_param('default_tiny');
+    mp_params = snw_mp_param('default_tiny', false, 'tauchen', false, 8, 8);
     mp_controls = snw_mp_control('default_test');
 
 end
@@ -98,8 +98,8 @@ params_group = values(mp_params, {'agrid', 'eta_H_grid', 'eta_S_grid'});
 [agrid, eta_H_grid, eta_S_grid] = params_group{:};
 
 params_group = values(mp_params, ...
-    {'pi_eta', 'pi_kids', 'cl_mt_pi_jem_kidseta', 'psi'});
-[pi_eta, pi_kids, cl_mt_pi_jem_kidseta, psi] = params_group{:};
+    {'pi_eta', 'pi_kids', 'bl_store_shock_trans', 'cl_mt_pi_jem_kidseta', 'psi'});
+[pi_eta, pi_kids, bl_store_shock_trans, cl_mt_pi_jem_kidseta, psi] = params_group{:};
 
 params_group = values(mp_params, {'epsilon', 'SS'});
 [epsilon, SS] = params_group{:};
@@ -264,8 +264,12 @@ for j=ar_j_seq % Age
                 % A2a. Get P(S'|S), S = [eta x kids] by [eta x kids] transition matrix
                 % do not pre-compute save full transition of shocks, too
                 % much memory, requires 100s GB for full model
-                mt_pi_jem_kidseta = kron(pi_kids(:,:,j,educ,married), pi_eta);
-                
+                if (bl_store_shock_trans)
+                    mt_pi_jem_kidseta = cl_mt_pi_jem_kidseta{j,educ,married};
+                else
+                    mt_pi_jem_kidseta = kron(pi_kids(:,:,j,educ,married), pi_eta);
+                end
+
                 % A2b. Get age/edu/marry submatrix
                 mn_ev20_jem = permute(V_VFI_FUTURE(j+1,:,:,educ,married,:), [2,3,6,1,4,5]);
 

@@ -17,12 +17,12 @@ run_calibration=0; % Whether or not to calibrate theta and beta. run_calibration
 % Non-calibrated parameters
 gamma=2; % Risk aversion parameter
 rho_eta=0.98; % Persistence of AR(1) productivity shocks
-sigma_eta=0.018; % Variance of AR(1) productivity shocks 
+sigma_eta=0.018; % Variance of AR(1) productivity shocks
 g_n=0.01; % Annual population growth of 1.1 percent
 r=0.04; % Annual real interest rate of 4.0 percent from McGrattan and Prescott
 
 rho_eta_spouse=0; % Persistence of spousal AR(1) productivity shocks
-sigma_eta_spouse=1.040654^2; % Variance of spousal AR(1) productivity shocks (standard deviation of residual from spousal income regression. See spousal_income.m for regression specification details) 
+sigma_eta_spouse=1.040654^2; % Variance of spousal AR(1) productivity shocks (standard deviation of residual from spousal income regression. See spousal_income.m for regression specification details)
 
 % Calibrated parameters
 beta=0.969010845568155; % Discount factor
@@ -39,7 +39,7 @@ throw_in_ocean=1; % If bequests go to the government, a value of 1 for throw_in_
 % Government budget constraint parameters
 g_cons=0.17575574; % Government consumption expenditures to GDP (BEA: Average 2015-2019)
 
-% How accidental bequests are handled 
+% How accidental bequests are handled
 if bequests_option==2
     a2=1.575;
 elseif bequests_option==1
@@ -101,16 +101,16 @@ epsilon(jret:end,:)=0; % Assume zero labor productivity for 65+ year-olds (exoge
 clear life_cycle_prod_by_educ
 
 % Transition probabilities for number of children (0, 1, 2, 3, 4, or 5) (stored in the following order:
-% Number of children in year 1, age, marital status, college attainment. Each column refers to the 
+% Number of children in year 1, age, marital status, college attainment. Each column refers to the
 % number of children in year 2)
 %load('pi_kids_trans_prob','pi_kids_trans_prob_2year_intervals')
 load('pi_kids_trans_prob','pi_kids_trans_prob')
 pi_kids=NaN(n_kidsgrid,n_kidsgrid,n_jgrid,n_educgrid,n_marriedgrid);
 
 for kidsp=1:n_kidsgrid % No. of kids in year 2
-    
+
     counter=0;
-    
+
     for kids=1:n_kidsgrid % No. of kids in year 1
         for j=1:(n_jgrid-1) % Age in year 1
             for married=1:n_marriedgrid % Marital status
@@ -118,12 +118,12 @@ for kidsp=1:n_kidsgrid % No. of kids in year 2
 
                     counter=counter+1;
                     pi_kids(kids,kidsp,j,educ,married)=pi_kids_trans_prob(counter,kidsp);
-                    
+
                 end
             end
         end
     end
-    
+
 end
 
 pi_kids(:,:,n_jgrid,:,:)=0;
@@ -175,7 +175,7 @@ counter=0;
 for eta_S=1:n_eta_S_grid
     for eta_H=1:n_eta_H_grid
         counter=counter+1;
-        
+
         counterp=0;
         for eta_Sp=1:n_eta_S_grid
             for eta_Hp=1:n_eta_H_grid
@@ -200,7 +200,7 @@ while err>tol
     x1=x0*pi_eta(:,:);
     err=max(abs(x1-x0));
     if err>tol
-       x0=x1; 
+       x0=x1;
     end
 end
 
@@ -287,7 +287,7 @@ err=1;
 tol=0.005;
 
 if run_calibration==1
-    
+
     disp('Start calibration')
 
     while err>tol
@@ -346,11 +346,11 @@ if run_calibration==1
         disp([err1,err2])
 
     end
-    
+
 elseif run_calibration==0
-    
+
     disp('Not calibrating the parameters')
-    
+
     it=1;
 
     while it>0
@@ -370,7 +370,7 @@ elseif run_calibration==0
 %          [Phi_true,Phi_adj,A_agg,Y_inc_agg,it]=Aggregation_grid_search(ap,cons,stat_distr_eta,stat_distr_educ,stat_distr_married,stat_distr_kids);
 
     end
-    
+
 end
 
 disp('Done with calibration')
@@ -387,18 +387,18 @@ clear name name2
 
 % Uncomment to store value and policy functions in csv-format
 % Output=NaN(n_jgrid*n_agrid*n_etagrid*n_educgrid*n_marriedgrid*n_kidsgrid,10);
-% 
+%
 % counter=0;
-% 
+%
 % for j=1:n_jgrid % Age
 %    for a=1:n_agrid % Assets
 %        for eta=1:n_etagrid % Productivity
 %            for educ=1:n_educgrid % Educational level
 %                for married=1:n_marriedgrid % Marital status
 %                    for kids=1:n_kidsgrid % Number of kids
-%                    
+%
 %                        counter=counter+1;
-% 
+%
 %                        Output(counter,1)=17+j;
 %                        Output(counter,2)=agrid(a);
 %                        Output(counter,3)=eta_H_grid(eta);
@@ -409,31 +409,31 @@ clear name name2
 %                        Output(counter,8)=cons(j,a,eta,educ,married,kids);
 %                        Output(counter,9)=agrid(ap(j,a,eta,educ,married,kids));
 % %                        Output(counter,9)=ap(j,a,eta,educ,married,kids);
-%                        
+%
 %                        if Phi_true(j,a,eta,educ,married,kids)>0
 %                            Output(counter,10)=Phi_true(j,a,eta,educ,married,kids)/sum(sum(sum(sum(sum(sum(Phi_true))))));
 %                        else
 %                            Output(counter,10)=0;
 %                        end
-%                        
+%
 %                    end
 %                end
 %            end
 %        end
 %    end
 % end
-%                    
+%
 % % Save output for computation of optimal allocation
 % disp('Save value and policy functions')
 % writematrix(Output,'Value_and_policy_functions_steady_state.csv')
-% 
+%
 % clear Output
 
 %% Asset distribution
 % asset_distr=zeros(n_agrid,2);
 % asset_distr(:,1)=agrid;
 % for a=1:n_agrid
-%    asset_distr(a,2)=sum(sum(sum(sum(sum(Phi_true(:,a,:,:,:,:))))))/sum(Pop); 
+%    asset_distr(a,2)=sum(sum(sum(sum(sum(Phi_true(:,a,:,:,:,:))))))/sum(Pop);
 % end
 
 %% Age profiles
@@ -442,22 +442,22 @@ clear name name2
 % cons_avg=zeros(n_jgrid,1);
 % inc_avg=zeros(n_jgrid,1);
 % nr_of_kids=zeros(n_jgrid,n_kidsgrid);
-% 
+%
 % for j=1:n_jgrid % Age
 %    for a=1:n_agrid % Assets
 %        for eta=1:n_etagrid % Productivity
 %            for educ=1:n_educgrid % Educational level
 %                for married=1:n_marriedgrid % Marital status
 %                    for kids=1:n_kidsgrid % No. of kids
-% 
+%
 %                        assets_avg(j)=assets_avg(j)+Phi_adj(j,a,eta,educ,married,kids)*agrid(a);
 %                        cons_avg(j)=cons_avg(j)+Phi_adj(j,a,eta,educ,married,kids)*cons(j,a,eta,educ,married,kids);
-%                        
+%
 %                        [inc,earn]=individual_income(j,a,eta,educ);
 %                        spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
-%                        
+%
 %                        inc_avg(j)=inc_avg(j)+Phi_adj(j,a,eta,educ,married,kids)*( inc+(married-1)*spouse_inc*exp(eta_S_grid(eta)) );
-%                        
+%
 %                        nr_of_kids(j,kids)=nr_of_kids(j,kids)+Phi_adj(j,a,eta,educ,married,kids);
 %                    end
 %                end
@@ -465,7 +465,7 @@ clear name name2
 %        end
 %    end
 % end
-% 
+%
 % % Age profiles by marital status
 % Phi_adj2=zeros(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 % for j=1:n_jgrid % Age
@@ -486,36 +486,36 @@ clear name name2
 %         end
 %     end
 % end
-% 
+%
 % assets_avg_marr=zeros(n_jgrid,2);
 % cons_avg_marr=zeros(n_jgrid,2);
 % inc_avg_marr=zeros(n_jgrid,2);
 % nr_of_kids_marr=zeros(n_jgrid,n_kidsgrid,2);
-% 
+%
 % for j=1:n_jgrid % Age
 %    for a=1:n_agrid % Assets
 %        for eta=1:n_etagrid % Productivity
 %            for educ=1:n_educgrid % Educational level
 %                for married=1:n_marriedgrid % Marital status
 %                    for kids=1:n_kidsgrid % No. of kids
-% 
+%
 %                        assets_avg_marr(j,married)=assets_avg_marr(j,married)+Phi_adj2(j,a,eta,educ,married,kids)*agrid(a);
 %                        cons_avg_marr(j,married)=cons_avg_marr(j,married)+Phi_adj2(j,a,eta,educ,married,kids)*cons(j,a,eta,educ,married,kids);
-%                        
+%
 %                        [inc,earn]=individual_income(j,a,eta,educ);
 %                        spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
-%                        
+%
 %                        inc_avg_marr(j,married)=inc_avg_marr(j,married)+Phi_adj2(j,a,eta,educ,married,kids)*( inc+(married-1)*spouse_inc*exp(eta_S_grid(eta)) );
-%                        
+%
 %                        nr_of_kids_marr(j,kids,married)=nr_of_kids_marr(j,kids,married)+Phi_adj2(j,a,eta,educ,married,kids);
-%                        
+%
 %                    end
 %                end
 %            end
 %        end
 %    end
 % end
-% 
+%
 % clear dummy Phi_adj2
 
 %% Compute value of employment and unemployment in 2020 conditional on number of welfare checks: "Manna-from-heaven" where taxes do not change
@@ -535,7 +535,7 @@ name2=[name,num2str(TR*58056)];
 disp(name2)
 
 clear name name2
-    
+
 n_welfchecksgrid=51; % Number of welfare checks. 0 refers to 0 dollars; 51 refers to 5000 dollars
 
 V_W=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid,n_welfchecksgrid);
@@ -582,35 +582,35 @@ cutoffs=wage_cutoffs(Phi_true);
 % disp('This section must be updated!')
 % xi=0.75; % Proportional reduction in income due to unemployment (xi=0 refers to 0 labor income; xi=1 refers to no drop in labor income)
 % b=1; % Unemployment insurance replacement rate (b=0 refers to no UI benefits; b=1 refers to 100 percent labor income replacement. b=1 in benchmark model to capture that the generosity of UI benefits was increased under the CARES Act with the aim of replacing 100 percent of average lost earnings)
-% 
+%
 % % Find tax rate that balances government budget given total spending on
 % % unemployment bebenfits and welfare checks
 % omega=0.0135; % Total spending on welfare checks as a share of aggregate income (estimated to cost $290 billion, or 1.35 percent of GDP in 2019. IRS has paid out $218 billion as of May 11)
 % a2_guess=a2; % Initial guess for a2
-% 
+%
 % a2_COVID=find_tax_rate(a2_guess,Phi_true,omega,xi,b,cutoffs);
-% 
+%
 % % Compute policy functions in the event of working and unemployment when the government adjusts taxes to balances the budget. Required to compute V_U and V_W in the Planner's problem
 % disp('Compute policy functions when taxes adjust in the event of working')
 % [V_working_tax,~,~,~]=VFI_working_tax(A_aux,B_aux,Aeq,Beq,nonlcon,options,V,a2_COVID);
 % disp('Compute policy functions when taxes adjust in the event of unemployment')
 % [V_unemp_tax,~,~,~]=VFI_unemp_tax(A_aux,B_aux,Aeq,Beq,nonlcon,options,V,xi,b,a2_COVID);
-% 
+%
 % TR=100/58056; % Value of a welfare check (can receive multiple checks). TO DO: Update with alternative values
-% 
+%
 % n_welfchecksgrid=51; % Number of welfare checks. 0 refers to 0 dollars; 51 refers to 5000 dollars
-% 
+%
 % V_W=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid,n_welfchecksgrid);
 % V_U=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid,n_welfchecksgrid);
-% 
+%
 % C_W=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid,n_welfchecksgrid);
 % C_U=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid,n_welfchecksgrid);
-% 
+%
 % disp('Solve for V_W and V_U for different number of welfare checks')
 % for welf_checks=0:(n_welfchecksgrid-1)
 %     [V_W(:,:,:,:,:,:,welf_checks+1),C_W(:,:,:,:,:,:,welf_checks+1),~]=V_working_proxy_tax(welf_checks,TR,V_working_tax,cons_working_tax,a2_COVID,options2);
 %     [V_U(:,:,:,:,:,:,welf_checks+1),C_U(:,:,:,:,:,:,welf_checks+1),~]=V_unemp_proxy_tax(welf_checks,TR,xi,b,V_unemp_tax,cons_unemp_tax,a2_COVID,options2);
-% 
+%
 %     name='Welfare checks=';
 %     name2=[name,num2str(welf_checks)];
 %     disp(name2)
@@ -631,14 +631,14 @@ Phi_true_1=zeros(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 
 for j=1:n_jgrid
    for a=1:n_agrid
-       for eta=1:n_etagrid 
+       for eta=1:n_etagrid
            for educ=1:n_educgrid
                for married=1:n_marriedgrid
                    for kids=1:n_kidsgrid
                        [inc,earn]=individual_income(j,a,eta,educ);
                        ref_earn_grid(j,a,eta,educ,married,kids)=earn;
                        spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
-                       inc_tot_grid(j,a,eta,educ,married,kids)=inc+spouse_inc;
+                       inc_tot_grid(j,a,eta,educ,married,kids)=inc+(married-1)*spouse_inc*exp(eta_S_grid(eta));
                        if Phi_true(j,a,eta,educ,married,kids)>0
                            Phi_true_1(j,a,eta,educ,married,kids)=Phi_true(j,a,eta,educ,married,kids)/sum(Phi_true,'all');
                        end
@@ -652,7 +652,7 @@ end
 EV=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid,n_welfchecksgrid,5);
 for j=1:n_jgrid
    for a=1:n_agrid
-       for eta=1:n_etagrid 
+       for eta=1:n_etagrid
            for educ=1:n_educgrid
                for married=1:n_marriedgrid
                    for kids=1:n_kidsgrid
@@ -678,24 +678,24 @@ for j=1:(n_jgrid-1) % Age
        for kids=1:n_kidsgrid % Number of kids
            for welf_checks=0:(n_welfchecksgrid-1)
                for inc_group=1:n_incgrid
-                   
+
                    if inc_group<n_incgrid
                       [V_planner(j,married,kids,welf_checks+1,inc_group),Phi_mass(j,married,kids,inc_group)]=Planner(Phi_true_1,j,married,kids,welf_checks,inc_grid(inc_group),inc_grid(inc_group+1),ap,cutoffs,ref_earn_grid,inc_tot_grid,EV,pi_eta,pi_kids,agrid,n_agrid,n_etagrid,n_educgrid,n_kidsgrid);
 %                        [V_planner(j,married,kids,welf_checks+1,inc_group),Phi_mass(j,married,kids,inc_group)]=Planner_grid_search(Phi_true,j,married,kids,welf_checks,inc_grid(inc_group),inc_grid(inc_group+1),V_U,V_W,ap,cutoffs,ref_inc_grid,ref_earn_grid,spouse_inc_grid);
-                                         
+
                    elseif inc_group==n_incgrid
                       [V_planner(j,married,kids,welf_checks+1,inc_group),Phi_mass(j,married,kids,inc_group)]=Planner(Phi_true_1,j,married,kids,welf_checks,inc_grid(inc_group),10E30,ap,cutoffs,ref_earn_grid,inc_tot_grid,EV,pi_eta,pi_kids,agrid,n_agrid,n_etagrid,n_educgrid,n_kidsgrid);
 %                        [V_planner(j,married,kids,welf_checks+1,inc_group),Phi_mass(j,married,kids,inc_group)]=Planner_grid_search(Phi_true,j,married,kids,welf_checks,inc_grid(inc_group),10E30,V_U,V_W,ap,cutoffs,ref_inc_grid,ref_earn_grid,spouse_inc_grid);
-                       
+
                    end
-                                     
+
                end
            end
        end
    end
-   
+
    disp(j)
-   
+
 end
 toc;
 
@@ -709,14 +709,14 @@ for j=1:(n_jgrid-1) % Age
        for kids=1:n_kidsgrid % Number of kids
            for welf_checks=0:(n_welfchecksgrid-1) % Number of welfare checks
                for inc_group=1:n_incgrid
-                   
+
                    counter=counter+1;
-                   
+
                    Output(counter,1)=17+j;
                    Output(counter,2)=married-1;
                    Output(counter,3)=kids-1;
                    Output(counter,4)=welf_checks;
-                                     
+
                    if inc_group<n_incgrid
                        Output(counter,5)=inc_grid(inc_group)*58056;
                        Output(counter,6)=inc_grid(inc_group+1)*58056;
@@ -728,16 +728,16 @@ for j=1:(n_jgrid-1) % Age
                        Output(counter,7)=Phi_mass(j,married,kids,inc_group,inc_group);
                        Output(counter,9)=V_planner(j,married,kids,welf_checks+1,inc_group,inc_group);
                    end
-                   
+
                    Output(counter,8)=psi(j);
-                   
+
                end
            end
        end
    end
-   
+
 end
-                   
+
 % Save output for computation of optimal allocation
 %disp('Save output for computation of optimal allocation')
 %writematrix(Output,'Output.csv')

@@ -36,7 +36,7 @@ else
 %     st_solu_type = 'grid_search';
 
     % Solve the VFI Problem and get Value Function
-    mp_params = snw_mp_param('default_tiny');
+    mp_params = snw_mp_param('default_tiny', false, 'tauchen', false, 8, 8);
 %     mp_params = snw_mp_param('default_dense');
 %     mp_params = snw_mp_param('default_moredense');
     mp_controls = snw_mp_control('default_test');
@@ -88,8 +88,8 @@ params_group = values(mp_params, {'agrid', 'eta_H_grid', 'eta_S_grid'});
 [agrid, eta_H_grid, eta_S_grid] = params_group{:};
 
 params_group = values(mp_params, ...
-    {'pi_eta', 'pi_kids', 'cl_mt_pi_jem_kidseta', 'psi'});
-[pi_eta, pi_kids, cl_mt_pi_jem_kidseta, psi] = params_group{:};
+    {'pi_eta', 'pi_kids', 'bl_store_shock_trans', 'cl_mt_pi_jem_kidseta', 'psi'});
+[pi_eta, pi_kids, bl_store_shock_trans, cl_mt_pi_jem_kidseta, psi] = params_group{:};
 
 params_group = values(mp_params, ...
     {'n_jgrid', 'n_agrid', 'n_etagrid', 'n_educgrid', 'n_marriedgrid', 'n_kidsgrid'});
@@ -134,7 +134,11 @@ for j=1:n_jgrid-1 % Age
         for married=1:n_marriedgrid % Marital status
 
             % B1a. Get P(S'|S), S = [eta x kids] by [eta x kids] transition matrix
-            mt_pi_jem_kidseta = kron(pi_kids(:,:,j,educ,married), pi_eta);
+            if (bl_store_shock_trans)
+                mt_pi_jem_kidseta = cl_mt_pi_jem_kidseta{j,educ,married};
+            else
+                mt_pi_jem_kidseta = kron(pi_kids(:,:,j,educ,married), pi_eta);
+            end
 
             % B1b. Get age/edu/marry submatrix
             mn_ev20_jem = permute(ev20_jaeemk(j+1,:,:,educ,married,:), [2,3,6,1,4,5]);
@@ -190,7 +194,7 @@ end
 if (bl_timer)
     tm_end = toc(tm_start);
     st_complete = strjoin(...
-        ["Completed SNW_EVUVW19_JAEEMK", ...
+        ["Completed SNW_EVUVW19_JAEEMK_FOC", ...
          ['SNW_MP_PARAM=' char(mp_params('mp_params_name'))], ...
          ['SNW_MP_CONTROL=' char(mp_controls('mp_params_name'))], ...
          ['time=' num2str(tm_end)] ...

@@ -35,7 +35,8 @@ else
 %     st_solu_type = 'grid_search';
     
     % Solve the VFI Problem and get Value Function
-    mp_params = snw_mp_param('default_tiny');
+%     mp_params = snw_mp_param('default_tiny');
+    mp_params = snw_mp_param('default_dense');
 %     mp_params = snw_mp_param('default_moredense');
     mp_controls = snw_mp_control('default_test');
     
@@ -58,7 +59,7 @@ else
     % Solve the Model to get V working and unemployed
     [V_ss,ap_ss,cons_ss,mp_valpol_more_ss] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
     [V_unemp,~,cons_unemp,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls, V_ss);        
-    [Phi_true] = snw_ds_main(mp_params, mp_controls, ap_ss, cons_ss, mp_valpol_more_ss);
+    [Phi_true] = snw_ds_main_vec(mp_params, mp_controls, ap_ss, cons_ss, mp_valpol_more_ss);
     
     % Get Matrixes
     cl_st_precompute_list = {'a', ...

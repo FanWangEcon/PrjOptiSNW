@@ -65,6 +65,7 @@ function varargout = snw_mp_param(varargin)
 %% Parse Main Inputs and Set Defaults
 if (~isempty(varargin))
     
+    bl_store_shock_trans = false;
     st_shock_method = 'tauchen';
     [it_row_n_keep, it_col_n_keep] = deal(8, 8);
 
@@ -77,6 +78,9 @@ if (~isempty(varargin))
         [st_param_group, bl_print_mp_params, st_shock_method] = varargin{:};
     elseif (length(varargin)==4)
         [st_param_group, bl_print_mp_params, it_row_n_keep, it_col_n_keep] = varargin{:};
+    elseif (length(varargin)==6)
+        [st_param_group, bl_print_mp_params, st_shock_method, bl_store_shock_trans, ...
+            it_row_n_keep, it_col_n_keep] = varargin{:};
     end
 
 else
@@ -86,6 +90,7 @@ else
 %     st_param_group = 'default_dense';
     st_param_group = 'default_tiny';
     st_shock_method = 'tauchen';
+    bl_store_shock_trans = false;
     bl_print_mp_params = true;
     [it_row_n_keep, it_col_n_keep] = deal(20, 8);
 
@@ -115,7 +120,7 @@ elseif(strcmp(st_param_group, "default_docdense"))
     n_jgrid  =83; 
     jret     =48;
     n_agrid  =65;
-    n_eta_H_grid=81;
+    n_eta_H_grid=266;
     n_eta_S_grid=5; 
     n_kidsgrid=5; 
     n_educgrid=2;
@@ -543,8 +548,11 @@ cl_mt_pi_jem_kidseta = cell(n_jgrid-1, n_educgrid, n_marriedgrid);
 for j=1:(n_jgrid-1) % Age
     for educ=1:n_educgrid
         for married=1:n_marriedgrid % Marital status
-%             cl_mt_pi_jem_kidseta{j, educ, married} = kron(pi_kids(:,:,j,educ,married), pi_eta);
-            cl_mt_pi_jem_kidseta{j, educ, married} = 1;
+            if (bl_store_shock_trans)
+                cl_mt_pi_jem_kidseta{j, educ, married} = kron(pi_kids(:,:,j,educ,married), pi_eta);
+            else
+                cl_mt_pi_jem_kidseta{j, educ, married} = 0;
+            end
         end
     end
 end
@@ -673,6 +681,7 @@ mp_params_exotrans('pi_S_eta') = pi_S_eta;
 mp_params_exotrans('pi_kids') = pi_kids;
 mp_params_exotrans('cl_mt_pi_jem_kidseta') = cl_mt_pi_jem_kidseta;
 mp_params_exotrans('psi') = psi;
+mp_params_exotrans('bl_store_shock_trans') = bl_store_shock_trans;
 
 mp_params_typelife = containers.Map('KeyType', 'char', 'ValueType', 'any');
 mp_params_typelife('epsilon') = epsilon;

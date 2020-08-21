@@ -177,7 +177,7 @@ for j=1:n_jgrid
                         spouse_inc=snw_hh_spousal_income(j,educ,kids,earn,SS(j,educ), jret);
                         
                         ref_earn_grid(j,a,eta,educ,married,kids)=earn;                        
-                        int_tot = inc+spouse_inc;
+                        int_tot = inc+(married-1)*spouse_inc*exp(eta_S_grid(eta));
                         inc_tot_grid(j,a,eta,educ,married,kids)=int_tot;
                         
                         % 2. Which Income Group does total income belong to?

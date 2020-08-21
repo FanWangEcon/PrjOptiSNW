@@ -37,10 +37,12 @@ end
 
 %% Parametesr Grid Points
 spt_simu_outputs = [spt_dropbox_root 'output/'];
+spt_simu_results_csv = [spt_dropbox_root 'Results/2020-08-20/csv/'];
 
 %% Set Parameter Maps
 mp_path_external = containers.Map('KeyType', 'char', 'ValueType', 'any');
 mp_path_external('spt_simu_outputs') = spt_simu_outputs;
+mp_path_external('spt_simu_results_csv') = spt_simu_results_csv;
 
 %% Combine Maps
 mp_path = [mp_path_external];

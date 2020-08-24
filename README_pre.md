@@ -6,7 +6,11 @@ All functions are parts of a matlab toolbox that can be installed:
 
 > Download and install the Matlab toolbox: [PrjOptiSNW.mltbx](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW.mltbx)
 
-This bookdown file is a collection of mlx based vignettes for functions that are available from [PrjOptiSNW](https://github.com/FanWangEcon/PrjOptiSNW). Each Vignette file contains various examples for invoking each function.
+The Code Companion can also be accessed via the bookdown site and PDF linked below:
+
+> [**bookdown site**](https://fanwangecon.github.io/PrjOptiSNW/bookdown) and [**bookdown pdf**](https://fanwangecon.github.io/PrjOptiSNW/bookdown/SNW-Dynamic-Life-Cycle-and-Welfare-Checks-Code-Companion.pdf).
+
+This files below consistsw of a collection of mlx based vignettes for functions that are available from [PrjOptiSNW](https://github.com/FanWangEcon/PrjOptiSNW). Each Vignette file contains various examples for invoking each function.
 
 The package relies on [MEconTools](https://fanwangecon.github.io/MEconTools/), which needs to be installed first. The package does not include allocation functions, only simulation code to generate the value of each welfare check increments for households. Allocation functions rely the R optimal allocation package [PrjOptiAlloc](https://fanwangecon.github.io/PrjOptiAlloc).
 

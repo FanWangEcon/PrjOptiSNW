@@ -1,5 +1,5 @@
 ---
 title: "SNW Dynamic Life Cycle and Welfare Checks Code Companion"
-author: "Fan Wang"
+author: "Vegard M. Nygård, Bent E. Sørensen, and Fan Wang"
 date: '`r format(Sys.Date(), "%Y-%m-%d")`'
 ---

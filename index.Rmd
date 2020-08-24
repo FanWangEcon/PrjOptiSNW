@@ -1,6 +1,6 @@
 ---
 title: "SNW Dynamic Life Cycle and Welfare Checks Code Companion"
-author: "Vegard Nygård, Bent Sørensen, and Fan Wang"
+author: "Vegard M. Nygård, Bent E. Sørensen, and Fan Wang"
 date: '`r format(Sys.Date(), "%Y-%m-%d")`'
 site: bookdown::bookdown_site
 documentclass: book
@@ -36,6 +36,10 @@ All functions are parts of a matlab toolbox that can be installed:
 
 > Download and install the Matlab toolbox: [PrjOptiSNW.mltbx](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW.mltbx)
 
+The Code Companion can also be accessed via the bookdown site and PDF linked below:
+
+> [**bookdown site**](https://fanwangecon.github.io/PrjOptiSNW/bookdown) and [**bookdown pdf**](https://fanwangecon.github.io/PrjOptiSNW/bookdown/SNW-Dynamic-Life-Cycle-and-Welfare-Checks-Code-Companion.pdf).
+
 This bookdown file is a collection of mlx based vignettes for functions that are available from [PrjOptiSNW](https://github.com/FanWangEcon/PrjOptiSNW). Each Vignette file contains various examples for invoking each function.
 
 The package relies on [MEconTools](https://fanwangecon.github.io/MEconTools/), which needs to be installed first. The package does not include allocation functions, only simulation code to generate the value of each welfare check increments for households. Allocation functions rely the R optimal allocation package [PrjOptiAlloc](https://fanwangecon.github.io/PrjOptiAlloc).
@@ -45,3 +49,13 @@ The site is built using [Bookdown](https://bookdown.org/) [@R-bookdown].
 Please contact [FanWangEcon](https://fanwangecon.github.io/) for issues or problems.
 
 `r text_end_count`
+
+## The Algorithm
+
+There are two computational challenges to solving the optimal allocation of welfare checks problem.
+
+First, each increment of welfare checks is small and the solution method needs to approximate the effects of this small change on consumption within a dynamic life cycle model with demographic and productivity heterogeniety.
+
+The discrete choice problem of allocating welfare checks among household types quickly becomes computationally infeasible if one explicitly considers all possible combinations of allocations. This is the problem of "combinatorial explosion". On the one hand, the state-space grows exponentially with the addition of household types: the optimal allocation of resources for one household type depends on the attributes of all other household types. On the other hand, the choice-space grows factorially with the additional household types as well as total number of resources available. In the largest problem that we consider, where we have 2500 dollar income bins up to the actual policy maximum phase-out limit of 300 thousand dollars, yearly age groups (43 for the problem for 18 to 64 year-olds), 10 possible kids/marital status groups, we solve for the problem of optimall allocating X checks among Y number of types.
+
+The key idea of Wang (2020) is that as long as marginal gains of additional units of allocations are non-increasing, the ostensibly computationally infeasible optimally allocation problem can be solved by a simple rank order of relative values of

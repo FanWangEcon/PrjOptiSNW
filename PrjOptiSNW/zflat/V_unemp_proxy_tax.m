@@ -1,10 +1,11 @@
-function [V_U,exitflag_fsolve]=V_unemp_proxy_tax(welf_checks,TR,xi,b,V_unemp_tax,a2_COVID,options2)
+function [V_U,C_U,exitflag_fsolve]=V_unemp_proxy_tax(welf_checks,TR,xi,b,V_unemp_tax,cons_unemp_tax,a2_COVID,options2)
 
 %% Solve optimization problem
 
 global agrid n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
 
 V_U=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+C_U=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 exitflag_fsolve=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 
 for j=1:n_jgrid % Age
@@ -50,6 +51,9 @@ for j=1:n_jgrid % Age
                        end
                        
                        V_U(j,a,eta,educ,married,kids)=vals(1)*V_unemp_tax(j,inds(1),eta,educ,married,kids)+vals(2)*V_unemp_tax(j,inds(2),eta,educ,married,kids);
+%                       C_U(j,a,eta,educ,married,kids)=vals(1)*cons_unemp_tax(j,inds(1),eta,educ,married,kids)+vals(2)*cons_unemp_tax(j,inds(2),eta,educ,married,kids);
+                       
+                       C_U(j,a,eta,educ,married,kids)=vals(1)*(cons_unemp_tax(j,inds(1),eta,educ,married,kids)/(married+kids-1))+vals(2)*(cons_unemp_tax(j,inds(2),eta,educ,married,kids)/(married+kids-1));
    
                    end
                end

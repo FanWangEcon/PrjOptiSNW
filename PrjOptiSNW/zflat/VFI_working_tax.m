@@ -2,7 +2,7 @@ function [V_VFI,ap_VFI,cons_VFI,exitflag_VFI]=VFI_working_tax(A_aux,B_aux,Aeq,Be
 
 %% Solve optimization problem
 
-global beta theta r agrid epsilon eta_grid SS pi_eta pi_kids psi n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
+global beta theta r agrid epsilon SS pi_eta pi_kids psi n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid Bequests bequests_option
 
 V_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 ap_VFI=NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
@@ -26,8 +26,8 @@ for j=1:n_jgrid % Age
                            [inc,earn]=individual_income(j,a,eta,educ);
                            spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
                            
-                           amax=min(agrid(end),(1+r)*agrid(a)+epsilon(j,educ)*theta*exp(eta_grid(eta))+SS(j,educ)+(married-1)*spouse_inc-max(0,Tax_COVID(inc,(married-1)*spouse_inc,a2_COVID)) );
-
+                           amax=min(agrid(end),(1+r)*(agrid(a)+Bequests*(bequests_option-1))+epsilon(j,educ)*theta*exp(eta_H_grid(eta))+SS(j,educ)+(married-1)*spouse_inc*exp(eta_S_grid(eta))-max(0,Tax_COVID(inc,(married-1)*spouse_inc*exp(eta_S_grid(eta)),a2_COVID)) );
+                           
                            [ap_aux,~,exitflag_VFI(j,a,eta,educ,married,kids)]=fmincon(@(x)value_func_aux_working_tax(x,j,a,eta,educ,married,kids,V_ss,a2_COVID),x0,A_aux,B_aux,Aeq,Beq,amin,amax,nonlcon,options);
 
                            ind_aux=find(agrid<=ap_aux,1,'last');
@@ -60,16 +60,16 @@ for j=1:n_jgrid % Age
                                end
                            end
                            
-                           c_aux=(1+r)*agrid(a)+epsilon(j,educ)*theta*exp(eta_grid(eta))+SS(j,educ)+(married-1)*spouse_inc-max(0,Tax_COVID(inc,(married-1)*spouse_inc,a2_COVID))-ap_aux;
-
+                           c_aux=consumption_tax(j,a,eta,educ,married,kids,ap_aux,a2_COVID);
+                           
                            ap_VFI(j,a,eta,educ,married,kids)=ap_aux;
                            cons_VFI(j,a,eta,educ,married,kids)=c_aux;
 
                            V_VFI(j,a,eta,educ,married,kids)=utility(c_aux,married,kids)+beta*psi(j)*cont;
 
                            % Check end point of asset grid (ap=0)
-                           c_aux3=(1+r)*agrid(a)+epsilon(j,educ)*theta*exp(eta_grid(eta))+SS(j,educ)+(married-1)*spouse_inc-max(0,Tax_COVID(inc,(married-1)*spouse_inc,a2_COVID));
-
+                           c_aux3=consumption_tax(j,a,eta,educ,married,kids,0,a2_COVID);
+                           
                            cont=0;
                            for etap=1:n_etagrid
                                for kidsp=1:n_kidsgrid
@@ -92,12 +92,9 @@ for j=1:n_jgrid % Age
 
                        elseif j==n_jgrid
                            
-                           [inc,earn]=individual_income(j,a,eta,educ);
-                           spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
-                          
                            ap_VFI(j,a,eta,educ,married,kids)=0;
-                           cons_VFI(j,a,eta,educ,married,kids)=(1+r)*agrid(a)+epsilon(j,educ)*theta*exp(eta_grid(eta))+SS(j,educ)+(married-1)*spouse_inc-max(0,Tax_COVID(inc,(married-1)*spouse_inc,a2_COVID));
-
+                           cons_VFI(j,a,eta,educ,married,kids)=consumption_tax(j,a,eta,educ,married,kids,ap_VFI(j,a,eta,educ,married,kids),a2_COVID);
+                           
                            if cons_VFI(j,a,eta,educ,married,kids)<=0
                               disp([j,a,eta,educ,married,kids,cons_VFI(j,a,eta,educ,married,kids)])
                               error('Non-positive consumption')

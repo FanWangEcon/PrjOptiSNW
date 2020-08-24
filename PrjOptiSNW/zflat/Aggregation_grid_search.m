@@ -1,4 +1,4 @@
-function [Phi_true,Phi_adj,A_agg,Y_inc_agg,it]=Aggregation_grid_search(ap_ss,cons_ss,stat_distr_eta,stat_distr_educ,stat_distr_married,stat_distr_kids)
+function [Phi_true,Phi_adj,A_agg,Y_inc_agg,median_HH_income,it]=Aggregation_grid_search(ap_ss,cons_ss,stat_distr_eta,stat_distr_educ,stat_distr_married,stat_distr_kids)
 
 %% Aggregation
 
@@ -78,6 +78,61 @@ check_asset_distr=sum(sum(sum(sum(sum(Phi_true(:,n_agrid,:,:,:,:))))));
 name='Share of population with assets equal to upper bound on asset grid=';
 name2=[name,num2str(check_asset_distr/sum(Pop))];
 disp(name2);
+
+% Median household income
+% inc_distr=zeros(n_jgrid*n_agrid*n_etagrid*n_educgrid*n_marriedgrid*n_kidsgrid,2);
+% 
+% % counter_length_aux=Phi_true(:)>0;
+% % counter_length=sum(counter_length_aux);
+% % inc_distr=zeros(counter_length,2);
+% 
+% counter=1;
+% 
+% for j=1:n_jgrid
+%     for a=1:n_agrid
+%         for eta=1:n_etagrid
+%            for educ=1:n_educgrid
+%                for married=1:n_marriedgrid
+%                    for kids=1:n_kidsgrid
+% 
+%                        [~,earn]=individual_income(j,a,eta,educ);
+%                        spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ));
+% 
+%                        inc_aux=r*(agrid(a)+Bequests*(bequests_option-1))+epsilon(j,educ)*theta*exp(eta_H_grid(eta)); % Income of reference person (excluding Social Security benefits)
+%                        
+%                        inc_distr(counter,1)=inc_aux+(married-1)*spouse_inc*exp(eta_S_grid(eta));
+%                        inc_distr(counter,2)=Phi_true(j,a,eta,educ,married,kids);
+%                        
+%                        counter=counter+1;
+%                        
+%                    end                       
+%                end
+%            end
+%         end
+%     end
+% end
+% 
+% % Sort matrix
+% [~,idx]=sort(inc_distr(:,1));
+% sorted_inc_distr=inc_distr(idx,:);
+% 
+% [~,idx]=sort(sorted_inc_distr(:,2));
+% sorted_inc_distr2=sorted_inc_distr(idx,:);
+% 
+% % Normalize to sum to 1
+% sortedPhi_sum=sum(sorted_inc_distr2(:,2));
+% sorted_inc_distr2(:,2)=sorted_inc_distr2(:,2)/sortedPhi_sum;
+% % Cumulative mass
+% sorted_inc_distr2(1,3)=sorted_inc_distr2(1,2);
+% for i=2:length(sorted_inc_distr2)
+%     sorted_inc_distr2(i,3)=sorted_inc_distr2(i-1,3)+sorted_inc_distr2(i,2);
+% end
+% 
+% median_HH_income=find(sorted_inc_distr2(:,3)<=0.5,1,'last');
+% median_HH_income=sorted_inc_distr2(median_HH_income,1);
+% name='Median household income ';
+% name2=[name,num2str(median_HH_income)];
+% disp(name2);
 
 % Aggregate variables
 A_agg=0;

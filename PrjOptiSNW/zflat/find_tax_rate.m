@@ -1,4 +1,4 @@
-function F=find_tax_rate(a2_guess,Phi_true,omega,xi,b,cutoffs)
+function F=find_tax_rate(a2_guess,Phi_true,Gov_cons,Covid_checks,xi,b,cutoffs)
 
 global theta g_cons epsilon agrid eta_H_grid eta_S_grid SS r a2 pi_unemp n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid Bequests bequests_option
 
@@ -29,9 +29,10 @@ for j=1:n_jgrid
                            wage_ind=5;
                        end
                        
-					   spouse_inc=spousal_income(j,educ,kids,epsilon(j,educ)*theta*exp(eta_H_grid(eta)),SS(j,educ));  % What average spousal earnings are before we account for the drop in earnings due to unemployment
+                       [~,earn]=individual_income(j,a,eta,educ); % What individual earnings are before we account for the drop in earnings due to unemployment
+                       spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ)); % What average spousal earnings are before we account for the drop in earnings due to unemployment
                        
-                       inc_aux=pi_unemp(j,wage_ind)*epsilon(j,educ)*theta*exp(eta_H_grid(eta))*xi+(1-pi_unemp(j,wage_ind))*epsilon(j,educ)*theta*exp(eta_H_grid(eta))+r*(agrid(1:n_agrid)+Bequests*(bequests_option-1)); % Income (excluding Social Security benefits) after accounting for potential earnings drop in case of unemployment
+					   inc_aux=pi_unemp(j,wage_ind)*epsilon(j,educ)*theta*exp(eta_H_grid(eta))*xi+(1-pi_unemp(j,wage_ind))*epsilon(j,educ)*theta*exp(eta_H_grid(eta))+r*(agrid(1:n_agrid)+Bequests*(bequests_option-1)); % Income (excluding Social Security benefits) after accounting for potential earnings drop in case of unemployment
                        
 		               Y_inc_agg=Y_inc_agg+Phi_true(j,1:n_agrid,eta,educ,married,kids)*( inc_aux+pi_unemp(j,wage_ind)*(married-1)*spouse_inc*exp(eta_S_grid(eta))*xi+(1-pi_unemp(j,wage_ind))*(married-1)*spouse_inc*exp(eta_S_grid(eta)) ); % Aggregate income (labor earnings, spousal income, interest earnings)
 					                                                 
@@ -77,7 +78,7 @@ while err>tol
 %       end
     end
     
-    a2=a2*(((UI_benefits+SS_spend+(g_cons+omega)*Y_inc_agg)/Tax_revenues_aux)^0.75); % Find value of a2 that balances government budget
+    a2=a2*(((UI_benefits+SS_spend+Gov_cons+Covid_checks)/Tax_revenues_aux)^0.75); % Find value of a2 that balances government budget
     
     err=abs((Tax_revenues_aux/(UI_benefits+SS_spend+(g_cons+omega)*Y_inc_agg))-1);
     

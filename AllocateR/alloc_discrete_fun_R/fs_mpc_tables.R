@@ -30,25 +30,52 @@ fl_tax_hh = 128580000
 
 # Load Raw File Here Once (to save time)
 ar_svr_csv <- c('age', 'marital', 'kids', 'checks', 'ymin', 'mass', 'survive', 'vtilde', 'ctilde')
-df_plan_v_tilde_full <- as_tibble(read.csv(paste0(srt_simu_path, snm_simu_csv_withspouse_shock), header=FALSE)) %>%
-  rename_all(~c(ar_svr_csv))
+if (!exists('df_plan_v_tilde_full')) {
+  print('start loading df_plan_v_tilde_full')
+  df_plan_v_tilde_full <- as_tibble(read.csv(paste0(srt_simu_path, snm_simu_csv_withspouse_shock), header=FALSE)) %>%
+    rename_all(~c(ar_svr_csv))
+} else {
+  print('already loaded df_plan_v_tilde_full previously')
+}
 
-ar_it_max_age <- c(64, 69, 79, 100)
+ar_it_max_age <- c(64, 100)
 for (it_max_age in ar_it_max_age) {
 
-  for (bl_full in c(0)) {
-
-    if (bl_full == 1) {
-      st_suffix <- '_mpc_all_y_ages'
-      ar_agecut = seq(17, it_max_age, by=1)
-      ar_ycut <- NULL
-    }
+  for (bl_full in c(1,2,3)) {
 
     if (bl_full == 0) {
       ar_agecut = c(17, seq(19, it_max_age, by=5))
       ar_ycut <- c(0, 0.3797, 0.4747, 0.5696, 0.725, 1.044, 1.441, 2.106, 7)
       st_suffix <- '_mpc_grouped_y_ages'
     }
+
+    if (bl_full == 1) {
+      if (it_max_age == 64) {
+        ar_agecut = c(17, 30, 40, 50, 64)
+      } else {
+        ar_agecut = c(17, 30, 40, 50, 64, it_max_age)
+      }
+      ar_ycut <- c(0, 0.3797, 0.4747, 0.5696, 0.725, 1.044, 1.441, 2.106, 7)
+      st_suffix <- '_mpc_yquant_ageg4'
+    }
+
+    if (bl_full == 2) {
+      st_suffix <- '_mpc_y20k_ageg47'
+      ar_agecut = seq(17, it_max_age, by=1)
+      # ar_ycut <- NULL
+      ar_ycut <- c(seq(0, 7, by=20000/fl_multiple), 7)
+    }
+
+    if (bl_full == 3) {
+      if (it_max_age == 64) {
+        ar_agecut = c(17, 30, 40, 50, 64)
+      } else {
+        ar_agecut = c(17, 30, 40, 50, 64, it_max_age)
+      }
+      ar_ycut <- NULL
+      st_suffix <- '_mpc_y2500_ageg4'
+    }
+
 
     srt_csv_path <- paste0(srt_csv_path_root, st_b0b1, '_a', it_max_age, st_suffix, '/')
     dir.create(file.path(srt_csv_path), showWarnings = FALSE, recursive = TRUE)

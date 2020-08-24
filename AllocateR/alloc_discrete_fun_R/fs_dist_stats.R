@@ -10,7 +10,7 @@ srt_simu_path <- ls_output$srt_simu_path
 srt_csv_path_root <- ls_output$srt_csv_path_root
 
 # st_ds_file_name <- 'snwx_ds_small.csv'
-st_ds_file_name <- 'snwx_ds_docdense.csv'
+# st_ds_file_name <- 'snwx_ds_docdense.csv'
 # Load Raw File Here Once (to save time)
 ar_svr_csv <- c('marital', 'kids', 'income', 'mass', 'age', 'savings', 'pop', 'educ', 'headinc', 'spouseinc')
 
@@ -38,8 +38,8 @@ ar_svr_groups <- c('marital_group', 'kids_group', 'ymin_group')
 ar_svr_values <- c('marital', 'kids', 'income', 'age', 'savings', 'pop', 'educ', 'headinc', 'spouseinc')
 
 # Loop Over possibly different Max Ages
-ar_it_min_age <- c(18, 22)
-ar_it_max_age <- c(64, 69, 79, 100)
+ar_it_min_age <- c(18)
+ar_it_max_age <- c(64, 100)
 # ar_it_min_age <- c(18)
 # ar_it_max_age <- c(64)
 # it_min_age <- 18

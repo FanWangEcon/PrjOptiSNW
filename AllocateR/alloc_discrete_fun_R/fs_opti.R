@@ -3,7 +3,7 @@ library(tidyverse)
 library(REconTools)
 # library(PrjOptiAlloc)
 library(forcats)
-
+#
 library(foreach)
 library(doParallel)
 
@@ -25,11 +25,11 @@ slb_subtitle_stack_2nd = 'optimal2nd_total = 1st actual + 2nd round optimal (giv
 slb_subtitle_joint_1st2nd = 'optimal 1st and 2nd rounds (given 1st actual) '
 
 # Image Sizes ----------------
-it_img_width=300
-it_img_height=180
+it_img_width=270
+it_img_height=216
 st_img_units='mm'
 it_img_res=300
-it_img_pointsize=3
+it_img_pointsize=7
 
 # Locally set parameters -------------------
 # Max Phase Out given 1200*2 + 500*4 = 4400
@@ -48,6 +48,7 @@ it_age_bins = 1
 # Variable Names -----------------------
 # Variables That Identify Individual Types
 ar_svr_groups <- c('marital', 'kids', 'age_group', 'ymin_group')
+ar_svr_groups_age_ymin <- c('age_group', 'ymin_group')
 ar_svr_groups_noage <- c('marital', 'kids', 'ymin_group')
 ar_svr_groups_stats <- c('mass', 'survive')
 # Number of Checks and Planner Value
@@ -86,7 +87,7 @@ if (!exists('df_plan_v_tilde_full')) {
 
 # parallel
 it_no_cores <- detectCores(logical = TRUE)
-cl <- makeCluster(12)
+cl <- makeCluster(4)
 registerDoParallel(cl)
 
 # Loop Over Soluiton Files
@@ -94,40 +95,37 @@ registerDoParallel(cl)
 # it_age_type <- 1
 # it_solu_round <- 1
 
-# ar_double_triple_alloc <- c(22,23,
+# ar_double_triple_alloc <- c(1, 2, 3,
+#                             12,13,
+#                             22,23,
 #                             32,33,
 #                             42,43,
 #                             52,53,
 #                             62,63,
 #                             72,73,
 #                             82,83,
-#                             24,34,44,54,64,74,84,
-#                             25,35,45,55,65,75,85)
-ar_double_triple_alloc <- c(22,23,
+#                             4,14,24,34,44,54,64,74,84,
+#                             5,15,25,35,45,55,65,75,85)
+
+ar_double_triple_alloc <- c(1,2,3,
+                            12,13,
+                            22,23,
                             32,33,
                             42,43,
-                            52,53,
-                            62,63,
-                            72,73,
-                            82,83,
-                            24,34,44,54,64,74,84)
-# foreach (it_solu_type=c(1,2,3,5,6,4,7)) %dopar% {
-# for (it_solu_type in c(7)) {
-# for (it_age_type in c(1)) {
-# for (it_solu_type in c(1, 2, 3, 4, 5,
-#                        12,13,14,15,
-#                        22,23,24,25,
-#                        32,33,34,35)) {
+                            52,53)
+# 22 is mulone feasible
+# 32 is double kids feasible, 33 is double kids g4, 34 is double kids g47
+# 42 is double adults feasible, 33 is double adults g4, 34 is double adults g47
 # for (it_solu_type in ar_double_triple_alloc) {
 foreach (it_solu_type=ar_double_triple_alloc) %dopar% {
 
-  for (it_age_type in c(1,4)) {
+  for (it_age_type in c(2)) {
     if (it_age_type == 1) {
       it_max_age = 64
       it_min_age = 18
     }
     if (it_age_type == 2) {
-      it_max_age = 69
+      it_max_age = 99
       it_min_age = 18
     }
     if (it_age_type == 3) {
@@ -139,7 +137,7 @@ foreach (it_solu_type=ar_double_triple_alloc) %dopar% {
       it_min_age = 22
     }
     if (it_age_type == 5) {
-      it_max_age = 69
+      it_max_age = 100
       it_min_age = 22
     }
     if (it_age_type == 6) {
@@ -149,7 +147,7 @@ foreach (it_solu_type=ar_double_triple_alloc) %dopar% {
     # Image Save Suffix
     st_img_suf_age_ybin <- paste0(it_min_age, 't', it_max_age)
 
-    for (it_solu_round in c(1, 2)) {
+    for (it_solu_round in c(1,2)) {
 
       it_solu_group <- it_solu_round*100 + it_solu_type
       print(paste0('solution group: ', it_solu_group, '=it_solu_group started'))
@@ -708,7 +706,98 @@ foreach (it_solu_type=ar_double_triple_alloc) %dopar% {
       pivot_wider(names_from = allocate_type,
                   values_from = checks)
 
-    # export
+    # Stack three things together:
+    # 1. select from df_input_il_noninc_covar_zs5_2nd: C without allocations
+    # 2. merge df_alloc_i_long_covar_c_zs5_2nd if actual: C with actual allocations
+    # 3. merge df_alloc_i_long_covar_c_zs5_2nd if optimal: C with optimal allocations
+    # 4. select from (1),(2) and (3) only id and C column, merge with df_alloc_all
+
+    # 1. select from df_input_il_noninc_covar_zs5_2nd: C without allocations
+    df_c_no_allocation_1st <- df_input_il_noninc_covar_zs5_1st %>% ungroup() %>%
+        filter(D_il==1) %>%
+        mutate(optimal_c_1st_c_no_allocation = c_A_il) %>%
+        select(id_i, optimal_c_1st_c_no_allocation)
+
+    df_c_no_allocation_2nd <- df_input_il_noninc_covar_zs5_2nd %>% ungroup() %>%
+        filter(D_il==1) %>%
+        mutate(optimal_c_2nd_c_no_allocation = c_A_il) %>%
+        select(id_i, optimal_c_2nd_c_no_allocation)
+
+    # 2. merge df_alloc_i_long_covar_c_zs5_2nd if actual: C with actual allocations
+    # if actual = 0, use c_A_il when D_il == 1
+    # if actual > 0, use c_A_il + c_alpha_il when D_il == 1
+    df_c_allocation_actual_1st <- df_input_il_noninc_covar_zs5_1st %>% ungroup() %>%
+        mutate(checks_il = checks) %>%
+        select(id_i, checks_il, c_A_il, c_alpha_il) %>%
+        left_join(df_alloc_i_long_covar_c_zs5_1st %>%
+          filter(rho_val == ar_rho[1]) %>%
+          filter(allocate_type == 'actual') %>%
+          select(id_i, checks), by = 'id_i') %>%
+        mutate(optimal_c_1st_c_actual = case_when(
+          checks==checks_il ~ c_A_il + c_alpha_il,
+          checks==0 & checks_il == 1 ~ c_A_il)) %>%
+        filter(!is.na(optimal_c_1st_c_actual)) %>%
+        select(id_i, optimal_c_1st_c_actual)
+
+    df_c_allocation_actual_2nd <- df_input_il_noninc_covar_zs5_2nd %>% ungroup() %>%
+        mutate(checks_il = checks) %>%
+        select(id_i, checks_il, c_A_il, c_alpha_il) %>%
+        left_join(df_alloc_i_long_covar_c_zs5_2nd %>%
+          filter(rho_val == ar_rho[1]) %>%
+          filter(allocate_type == 'actual') %>%
+          select(id_i, checks), by = 'id_i') %>%
+        mutate(optimal_c_2nd_c_actual = case_when(
+          checks==checks_il ~ c_A_il + c_alpha_il,
+          checks==0 & checks_il == 1 ~ c_A_il)) %>%
+        filter(!is.na(optimal_c_2nd_c_actual)) %>%
+        select(id_i, optimal_c_2nd_c_actual)
+
+    # 3. merge df_alloc_i_long_covar_c_zs5_2nd if optimal: C with optimal allocations
+    # same precedure as above
+    df_c_allocation_optimal_1st <- df_input_il_noninc_covar_zs5_1st %>% ungroup() %>%
+        mutate(checks_il = checks) %>%
+        select(id_i, checks_il, c_A_il, c_alpha_il) %>%
+        left_join(df_alloc_i_long_covar_c_zs5_1st %>%
+          filter(rho_val == ar_rho[1]) %>%
+          filter(allocate_type == 'optimal') %>%
+          select(id_i, checks), by = 'id_i') %>%
+        mutate(optimal_c_1st_c_optimal = case_when(
+          checks==checks_il ~ c_A_il + c_alpha_il,
+          checks==0 & checks_il == 1 ~ c_A_il)) %>%
+        filter(!is.na(optimal_c_1st_c_optimal)) %>%
+        select(id_i, optimal_c_1st_c_optimal)
+
+    df_c_allocation_optimal_2nd <- df_input_il_noninc_covar_zs5_2nd %>% ungroup() %>%
+        mutate(checks_il = checks) %>%
+        select(id_i, checks_il, c_A_il, c_alpha_il) %>%
+        left_join(df_alloc_i_long_covar_c_zs5_2nd %>%
+          filter(rho_val == ar_rho[1]) %>%
+          filter(allocate_type == 'optimal') %>%
+          select(id_i, checks), by = 'id_i') %>%
+        mutate(optimal_c_2nd_c_optimal = case_when(
+          checks==checks_il ~ c_A_il + c_alpha_il,
+          checks==0 & checks_il == 1 ~ c_A_il)) %>%
+        filter(!is.na(optimal_c_2nd_c_optimal)) %>%
+        select(id_i, optimal_c_2nd_c_optimal)
+
+    # 4. Merge to oMain file
+    df_alloc_all <- df_alloc_all %>%
+        left_join(df_c_no_allocation_1st, by='id_i') %>%
+        left_join(df_c_allocation_actual_1st, by='id_i') %>%
+        left_join(df_c_allocation_optimal_1st, by='id_i') %>%
+        left_join(df_c_no_allocation_2nd, by='id_i') %>%
+        left_join(df_c_allocation_actual_2nd, by='id_i') %>%
+        left_join(df_c_allocation_optimal_2nd, by='id_i') %>%
+        mutate(apc_actual_1st = (optimal_c_1st_c_actual-optimal_c_1st_c_no_allocation)/(actual*fl_percheck_dollar/fl_multiple),
+               apc_optimal_1st = (optimal_c_1st_c_optimal-optimal_c_1st_c_no_allocation)/(optimal_c_1st*fl_percheck_dollar/fl_multiple),
+               apc_gainratio_1st = apc_optimal_1st/apc_actual_1st,
+               apc_actual_2nd = (optimal_c_2nd_c_actual-optimal_c_2nd_c_no_allocation)/(actual*fl_percheck_dollar/fl_multiple),
+               apc_optimal_2nd = (optimal_c_2nd_c_optimal-optimal_c_2nd_c_no_allocation)/(optimal_c_2nd*fl_percheck_dollar/fl_multiple),
+               apc_gainratio_2nd = apc_optimal_2nd/apc_actual_2nd)
+
+    # Export Allocation for Every Cell -----------
+    # For each cell under consideration, actual allocation and optimal Round1, Round 2 Allocations
+    # Also store, EC without allocation, EC with allocation actual, EC with allocation optimal
     write.csv(df_alloc_all,
               paste0(srt_csv_path_use, 'df_alloc_all_',st_suffix_csvimg,'.csv'),
               row.names = TRUE)
@@ -726,6 +815,18 @@ foreach (it_solu_type=ar_double_triple_alloc) %dopar% {
                   optimal_v_1st_mean = sum(optimal_v_1st*mass)/sum(mass),
                   optimal_c_2nd_mean = sum(optimal_c_2nd*mass)/sum(mass),
                   optimal_v_2nd_mean = sum(optimal_v_2nd*mass)/sum(mass),
+                  optimal_c_1st_c_no_allocation_mean = sum(optimal_c_1st_c_no_allocation*mass)/sum(mass),
+                  optimal_c_1st_c_actual_mean = sum(optimal_c_1st_c_actual*mass)/sum(mass),
+                  optimal_c_1st_c_optimal_mean = sum(optimal_c_1st_c_optimal*mass)/sum(mass),
+                  optimal_c_2nd_c_no_allocation_mean = sum(optimal_c_2nd_c_no_allocation*mass)/sum(mass),
+                  optimal_c_2nd_c_actual_mean = sum(optimal_c_2nd_c_actual*mass)/sum(mass),
+                  optimal_c_2nd_c_optimal_mean = sum(optimal_c_2nd_c_optimal*mass)/sum(mass),
+                  apc_actual_1st = (optimal_c_1st_c_actual_mean-optimal_c_1st_c_no_allocation_mean)/(actual_mean*fl_percheck_dollar/fl_multiple),
+                  apc_optimal_1st = (optimal_c_1st_c_optimal_mean-optimal_c_1st_c_no_allocation_mean)/(optimal_c_1st_mean*fl_percheck_dollar/fl_multiple),
+                  apc_gainratio_1st = apc_optimal_1st/apc_actual_1st,
+                  apc_actual_2nd = (optimal_c_2nd_c_actual_mean-optimal_c_2nd_c_no_allocation_mean)/(actual_mean*fl_percheck_dollar/fl_multiple),
+                  apc_optimal_2nd = (optimal_c_2nd_c_optimal_mean-optimal_c_2nd_c_no_allocation_mean)/(optimal_c_2nd_mean*fl_percheck_dollar/fl_multiple),
+                  apc_gainratio_2nd = apc_optimal_2nd/apc_actual_2nd,
                   mass_sum = sum(mass))
 
       # Export
@@ -742,6 +843,18 @@ foreach (it_solu_type=ar_double_triple_alloc) %dopar% {
                   optimal_v_1st_mean = sum(optimal_v_1st*mass)/sum(mass),
                   optimal_c_2nd_mean = sum(optimal_c_2nd*mass)/sum(mass),
                   optimal_v_2nd_mean = sum(optimal_v_2nd*mass)/sum(mass),
+                  optimal_c_1st_c_no_allocation_mean = sum(optimal_c_1st_c_no_allocation*mass)/sum(mass),
+                  optimal_c_1st_c_actual_mean = sum(optimal_c_1st_c_actual*mass)/sum(mass),
+                  optimal_c_1st_c_optimal_mean = sum(optimal_c_1st_c_optimal*mass)/sum(mass),
+                  optimal_c_2nd_c_no_allocation_mean = sum(optimal_c_2nd_c_no_allocation*mass)/sum(mass),
+                  optimal_c_2nd_c_actual_mean = sum(optimal_c_2nd_c_actual*mass)/sum(mass),
+                  optimal_c_2nd_c_optimal_mean = sum(optimal_c_2nd_c_optimal*mass)/sum(mass),
+                  apc_actual_1st = (optimal_c_1st_c_actual_mean-optimal_c_1st_c_no_allocation_mean)/(actual_mean*fl_percheck_dollar/fl_multiple),
+                  apc_optimal_1st = (optimal_c_1st_c_optimal_mean-optimal_c_1st_c_no_allocation_mean)/(optimal_c_1st_mean*fl_percheck_dollar/fl_multiple),
+                  apc_gainratio_1st = apc_optimal_1st/apc_actual_1st,
+                  apc_actual_2nd = (optimal_c_2nd_c_actual_mean-optimal_c_2nd_c_no_allocation_mean)/(actual_mean*fl_percheck_dollar/fl_multiple),
+                  apc_optimal_2nd = (optimal_c_2nd_c_optimal_mean-optimal_c_2nd_c_no_allocation_mean)/(optimal_c_2nd_mean*fl_percheck_dollar/fl_multiple),
+                  apc_gainratio_2nd = apc_optimal_2nd/apc_actual_2nd,
                   mass_sum = sum(mass))
 
       # Export
@@ -764,6 +877,18 @@ foreach (it_solu_type=ar_double_triple_alloc) %dopar% {
                   optimal_v_1st_mean = sum(optimal_v_1st*mass)/sum(mass),
                   optimal_c_2nd_mean = sum(optimal_c_2nd*mass)/sum(mass),
                   optimal_v_2nd_mean = sum(optimal_v_2nd*mass)/sum(mass),
+                  optimal_c_1st_c_no_allocation_mean = sum(optimal_c_1st_c_no_allocation*mass)/sum(mass),
+                  optimal_c_1st_c_actual_mean = sum(optimal_c_1st_c_actual*mass)/sum(mass),
+                  optimal_c_1st_c_optimal_mean = sum(optimal_c_1st_c_optimal*mass)/sum(mass),
+                  optimal_c_2nd_c_no_allocation_mean = sum(optimal_c_2nd_c_no_allocation*mass)/sum(mass),
+                  optimal_c_2nd_c_actual_mean = sum(optimal_c_2nd_c_actual*mass)/sum(mass),
+                  optimal_c_2nd_c_optimal_mean = sum(optimal_c_2nd_c_optimal*mass)/sum(mass),
+                  apc_actual_1st = (optimal_c_1st_c_actual_mean-optimal_c_1st_c_no_allocation_mean)/(actual_mean*fl_percheck_dollar/fl_multiple),
+                  apc_optimal_1st = (optimal_c_1st_c_optimal_mean-optimal_c_1st_c_no_allocation_mean)/(optimal_c_1st_mean*fl_percheck_dollar/fl_multiple),
+                  apc_gainratio_1st = apc_optimal_1st/apc_actual_1st,
+                  apc_actual_2nd = (optimal_c_2nd_c_actual_mean-optimal_c_2nd_c_no_allocation_mean)/(actual_mean*fl_percheck_dollar/fl_multiple),
+                  apc_optimal_2nd = (optimal_c_2nd_c_optimal_mean-optimal_c_2nd_c_no_allocation_mean)/(optimal_c_2nd_mean*fl_percheck_dollar/fl_multiple),
+                  apc_gainratio_2nd = apc_optimal_2nd/apc_actual_2nd,
                   mass_sum = sum(mass))
 
       # Export
@@ -773,37 +898,127 @@ foreach (it_solu_type=ar_double_triple_alloc) %dopar% {
 
     }
 
+    # for G4, also generate income and age grouping
+    if (ar_solu_group_digits[3] == 3) {
+
+      # All but Group mean
+      df_alloc_combine_group_ymin_g4age <- df_alloc_all %>%
+        ungroup() %>% group_by(!!!syms(ar_svr_groups_age_ymin)) %>%
+        summarize(actual_mean = sum(actual*mass)/sum(mass),
+                  optimal_c_1st_mean = sum(optimal_c_1st*mass)/sum(mass),
+                  optimal_v_1st_mean = sum(optimal_v_1st*mass)/sum(mass),
+                  optimal_c_2nd_mean = sum(optimal_c_2nd*mass)/sum(mass),
+                  optimal_v_2nd_mean = sum(optimal_v_2nd*mass)/sum(mass),
+                  optimal_c_1st_c_no_allocation_mean = sum(optimal_c_1st_c_no_allocation*mass)/sum(mass),
+                  optimal_c_1st_c_actual_mean = sum(optimal_c_1st_c_actual*mass)/sum(mass),
+                  optimal_c_1st_c_optimal_mean = sum(optimal_c_1st_c_optimal*mass)/sum(mass),
+                  optimal_c_2nd_c_no_allocation_mean = sum(optimal_c_2nd_c_no_allocation*mass)/sum(mass),
+                  optimal_c_2nd_c_actual_mean = sum(optimal_c_2nd_c_actual*mass)/sum(mass),
+                  optimal_c_2nd_c_optimal_mean = sum(optimal_c_2nd_c_optimal*mass)/sum(mass),
+                  apc_actual_1st = (optimal_c_1st_c_actual_mean-optimal_c_1st_c_no_allocation_mean)/(actual_mean*fl_percheck_dollar/fl_multiple),
+                  apc_optimal_1st = (optimal_c_1st_c_optimal_mean-optimal_c_1st_c_no_allocation_mean)/(optimal_c_1st_mean*fl_percheck_dollar/fl_multiple),
+                  apc_gainratio_1st = apc_optimal_1st/apc_actual_1st,
+                  apc_actual_2nd = (optimal_c_2nd_c_actual_mean-optimal_c_2nd_c_no_allocation_mean)/(actual_mean*fl_percheck_dollar/fl_multiple),
+                  apc_optimal_2nd = (optimal_c_2nd_c_optimal_mean-optimal_c_2nd_c_no_allocation_mean)/(optimal_c_2nd_mean*fl_percheck_dollar/fl_multiple),
+                  apc_gainratio_2nd = apc_optimal_2nd/apc_actual_2nd,
+                  mass_sum = sum(mass))
+
+      # Export
+      write.csv(df_alloc_combine_group_ymin_g4age,
+                paste0(srt_csv_path_use, "df_alloc_age_group_ymin_group_", st_suffix_csvimg, ".csv"),
+                row.names = TRUE)
+
+
+    }
+
     ### CSV Print and save MASS REV results ---------------
     # Save REV to table, Stack them
     tb_rho_rev_mass_v1_tab <- ls_prc_outputs_zs5_1st$tb_rho_rev_v %>%
       mutate(objective = 'vlife',
              constraint = st_tfo_method,
              allocround = 'first',
-             maxchecks = it_max_checks)
+             maxchecks = it_max_checks) %>%
+      left_join(ls_prc_outputs_zs5_1st$tb_rho_vstar_v %>%
+                  select(rho_val, V_star_resource), by='rho_val')
+
     tb_rho_rev_mass_c1_tab <- ls_prc_outputs_zs5_1st$tb_rho_rev_c %>%
       mutate(objective = 'c2020',
              constraint = st_tfo_method,
              allocround = 'first',
-             maxchecks = it_max_checks)
+             maxchecks = it_max_checks) %>%
+      left_join(ls_prc_outputs_zs5_1st$tb_rho_vstar_c %>%
+                  select(rho_val, V_star_resource), by='rho_val')
+
     tb_rho_rev_mass_v2_tab <- ls_prc_outputs_zs5_2nd$tb_rho_rev_v %>%
       mutate(objective = 'vlife',
              constraint = st_tfo_method,
              allocround = 'second',
-             maxchecks = it_max_checks)
+             maxchecks = it_max_checks) %>%
+      left_join(ls_prc_outputs_zs5_2nd$tb_rho_vstar_v %>%
+                  select(rho_val, V_star_resource), by='rho_val')
+
     tb_rho_rev_mass_c2_tab <- ls_prc_outputs_zs5_2nd$tb_rho_rev_c %>%
       mutate(objective = 'c2020',
              constraint = st_tfo_method,
              allocround = 'second',
-             maxchecks = it_max_checks)
+             maxchecks = it_max_checks) %>%
+      left_join(ls_prc_outputs_zs5_2nd$tb_rho_vstar_c %>%
+                  select(rho_val, V_star_resource), by='rho_val')
+
     # Stack frames
     tb_rho_rev_mass_v_c_tab <- rbind(tb_rho_rev_mass_v1_tab, tb_rho_rev_mass_c1_tab,
                                      tb_rho_rev_mass_v2_tab, tb_rho_rev_mass_c2_tab)
+
+    # Compute AAPC Aggregate Average Propensity to Consume -----------------
+    # AAPC_Actual = (Increase in Aggregate Consumption)/(Total Checks Amount)
+    # AAPC^{j}_Optimal = (Increase in Aggregate Consumption under Optimal Policy)/(Total Checks Amount)
+    # Suppose AAPC_Actual = 0.10, that means overall 10 percent of all checks was spent, and 90 percent saved under actual allocation
+    # Suppose AAPC_Optimal = 0.20, that means overall 20 percent of all checks were spent under optimal reallocation of the same total checks.
+    # In this example, AAPC_Optimal/AAPC_Actual = 2, meaning optimal policy is able to double the consumption/stimulus effects with the same budget. The ratio AAPC_Optimal/AAPC_Actual is kind of the dual number of REV. REV is proportionally how much is saved with optimal allocation, AAPC_Optimal/AAPC_Actual is proportionally how much could be gained with optimal allocation.
+
+    # Total Average Checks under Actual Policy
+    fl_avg_checks_actual <- df_alloc_all %>% ungroup() %>%summarize(actual_mean = sum(actual*mass)/sum(mass))
+    fl_checks_total_normalize <- as.numeric(fl_avg_checks_actual*fl_percheck_dollar/fl_multiple)
+
+    # aggregation Consumption
+    # c_aggregate and AlterOutcome are in the same units both need to be divided by mass
+    # NoAllocOutcome is weighted
+    fl_c_no_allocation_1st <- as.numeric(df_input_il_noninc_covar_zs5_1st %>% filter(D_il==1) %>% ungroup() %>% summarize(c_sum = sum(c_A_il*mass)/sum(mass)))
+    fl_c_no_allocation_2nd <- as.numeric(df_input_il_noninc_covar_zs5_2nd %>% filter(D_il==1) %>% ungroup() %>% summarize(c_sum = sum(c_A_il*mass)/sum(mass)))
+
+    # fl_c_no_allocation_unw <- as.numeric(df_input_il_noninc_covar_zs5_1st %>% filter(D_il==1) %>% ungroup() %>% summarize(c_sum = sum(c_A_il*mass)))
+    fl_mass_sum <- as.numeric(df_input_il_noninc_covar_zs5_1st %>% filter(D_il==1)  %>% ungroup() %>% summarize(mass_sum = sum(mass)))
+    tb_rho_rev_mass_v_c_tab <- tb_rho_rev_mass_v_c_tab %>%
+      # mutate(c_aggregate = case_when( objective == 'c2020' & rho_val == 1 ~ V_star_resource)) %>%
+      # mutate(NoAllocOutcome = fl_c_no_allocation_1st) %>%
+      # mutate(GainRelaAlterOutcomeFrac = (c_aggregate-AlterOutcome)/AlterOutcome) %>%
+      # mutate(GainRelaNoAllocOutcomeFrac = (c_aggregate/fl_mass_sum-NoAllocOutcome)/(NoAllocOutcome)) %>%
+      mutate(AAPC_actual = case_when(
+        objective == 'c2020' & rho_val == ar_rho[1] & allocround == 'first' ~
+          (((AlterOutcome/fl_mass_sum-fl_c_no_allocation_1st)/fl_checks_total_normalize)),
+        objective == 'c2020' & rho_val == ar_rho[1] & allocround == 'second' ~
+          (((AlterOutcome/fl_mass_sum-fl_c_no_allocation_2nd)/fl_checks_total_normalize)))
+        ) %>%
+      mutate(AAPC_optimal = case_when(
+        objective == 'c2020' & rho_val == ar_rho[1] & allocround == 'first' ~
+          (((V_star_resource/fl_mass_sum-fl_c_no_allocation_1st)/fl_checks_total_normalize)),
+        objective == 'c2020' & rho_val == ar_rho[1] & allocround == 'second' ~
+          (((V_star_resource/fl_mass_sum-fl_c_no_allocation_2nd)/fl_checks_total_normalize)))
+        ) %>%
+      mutate(AAPC_ratio = AAPC_optimal/AAPC_actual)
+
     # export
-    write.csv(tb_rho_rev_mass_v_c_tab,
-              paste0(srt_csv_path_use, "rev_", st_suffix_csvimg, ".csv"),
-              row.names = TRUE)
+    spn_rev_csv_save <- paste0(srt_csv_path_use, "rev_", st_suffix_csvimg, ".csv")
+    write.csv(tb_rho_rev_mass_v_c_tab, spn_rev_csv_save, row.names = TRUE)
+
+    # CSV Expected APC Average Propensity to Consume Distribution -----------------
+    # Expected consumption in 2020 (from 2019 perspective) given checks optimally allocated under optimal allocation policy j to individual i minus expected consumption without checks divided by total checks received. Only calculate this if i receives positive checks under j.
+    # For AAPC, don't need to worry about expectation vs realization, since it is integrated aggregate. But perhaps important to keep in mind that our MPC and APC are all from 2019 perspective, they are expectations given COVID shocks etc. The checks are actually spent in 2020, but we don't get to condition check allocation by COVID realization or 2020 productivity realization.
+    # We generate distribution from:  APC^{j}_{i} and MASS_{i}, save only these here
+    # Store Results here that will be processed by Matlab MEconTools which can process Discrete Random Variables Better
+    print(paste0('spn_rev_csv_save:', spn_rev_csv_save))
 
   }
 }
 
-stopCluster(cl)
+# stopCluster(cl)

@@ -73,8 +73,9 @@ srt_simu_path <- paste0(spt_root, 'Output/')
 # st_file_type <- 'moredense_a100zh81zs5_e2m2'
 # st_file_type <- 'moredense_a65zh133zs5_e2m2'
 # st_file_type <- 'moredense_a65zh266zs5_e2m2'
-st_file_type <-   'moredense_a65zh266zs5_e2m2_b0_calibrated'
-# st_file_type <- 'dense_ybin2500'
+# st_file_type <- 'moredense_a65zh266zs5_e2m2_b1'
+# st_file_type <- 'moredense_a65zh266zs5_e2m2_b0_calibrated'
+st_file_type <- 'dense_ybin2500'
 
 # CSV Name
 snm_simu_csv <- paste0('snwx_v_planner_',st_file_type,'.csv')
@@ -944,6 +945,18 @@ ls_dis_solu_c <- suppressWarnings(suppressMessages(
 df_queue_il_long_c <-ls_dis_solu_c$df_queue_il_long
 df_alloc_i_long_c <- ls_dis_solu_c$df_alloc_i_long
 df_rho_gini_c <- ls_dis_solu_c$df_rho_gini
+```
+
+Extract "Value" in this case optimal level of consumptiton reached when budget is spent optimally. 
+
+```{r}
+# this is assuming: bl_return_allQ_V = FALSE
+df_queue_il_long_c %>%
+  filter(!is.na(V_star_Q_il)) %>%
+  arrange(rho_val, Q_il) %>%
+  group_by(rho_val) %>%
+  summarise(V_star_resource = max(V_star_Q_il)) %>%
+  ungroup()
 ```
 
 ##### Discrete V Allocation Run

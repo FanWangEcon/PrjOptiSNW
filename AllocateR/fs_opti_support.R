@@ -14,16 +14,19 @@ fs_opti_support <- function() {
 
 srt_root <- 'D:/Dropbox (UH-ECON)/PrjNygaardSorensenWang/'
 # srt_root <- 'C:/Users/fan/Documents/Dropbox (UH-ECON)/PrjNygaardSorensenWang/'
+# st_b0b1 <- 'b1_spouseinc'
 st_b0b1 <- 'b1'
 st_file_type_withspouse_shock <- paste0('moredense_a65zh266zs5_e2m2_',st_b0b1)
 # st_file_type_withspouse_shock <- paste0('dense_ybin2500')
-snm_simu_csv_withspouse_shock <- paste0('snwx_v_planner_',st_file_type_withspouse_shock,'.csv')
+snm_simu_csv_withspouse_shock <- paste0('snwx_v_planner_',st_file_type_withspouse_shock,'_spouseinc.csv')
 
 srt_simu_path <- paste0(srt_root, 'Output/')
 
 bl_save_img <- TRUE
-srt_img_save_root <- paste0(srt_root, 'Results/2020-08-17/Graphs/')
-srt_csv_path_root <- paste0(srt_root, 'Results/2020-08-17/csv/')
+srt_img_save_root <- paste0(srt_root, 'Results/2020-08-23/Graphs/')
+srt_csv_path_root <- paste0(srt_root, 'Results/2020-08-23/csv/')
+srt_paper_main_textgraph <- paste0(srt_root, 'Paper/Main_text_graphs_and_tables/')
+srt_paper_appendix_textgraph <- paste0(srt_root, 'Paper/Appendix_graphs_and_tables/')
 
 # Preferences
 ar_rho <- 1 - (10^(c(seq(-2,2, length.out=8))))
@@ -52,6 +55,8 @@ ls_output <- list(st_file_type_withspouse_shock=st_file_type_withspouse_shock,
                   bl_save_img=bl_save_img,
                   srt_img_save_root=srt_img_save_root,
                   srt_csv_path_root=srt_csv_path_root,
+                  srt_paper_main_textgraph=srt_paper_main_textgraph,
+                  srt_paper_appendix_textgraph=srt_paper_appendix_textgraph,
                   spt_img_save=spt_img_save,
                   srt_csv_path=srt_csv_path,
                   ar_rho=ar_rho,

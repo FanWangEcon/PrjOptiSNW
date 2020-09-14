@@ -1,0 +1,22 @@
+- file: snwx_find_tax_rate
+  title: "Solve for Budget Clearing Tax Rates"
+  titleshort: "Solve for Budget Clearing Tax Rates"
+  description: |
+    Given welfare checks and unemployment insurance costs, solve for tax rate that clears the budget given household resource availability.
+  core :
+    - package: PrjOptiSNW
+      code: |
+        [snw_find_tax_rate()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/fgov/snw_find_tax_rate.m), [snw_tax_hh()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/fgov/snw_tax_hh.m)
+  date: 2020-09-14
+  date_start: 2020-09-14
+  output:
+    pdf_document:
+      pandoc_args: '../../../_output_kniti_pdf.yaml'
+      includes:
+        in_header: '../../../preamble.tex'
+    html_document:
+      pandoc_args: '../../../_output_kniti_html.yaml'
+      includes:
+        in_header: '../../../hdga.html'
+  always_allow_html: true
+  urlcolor: blue

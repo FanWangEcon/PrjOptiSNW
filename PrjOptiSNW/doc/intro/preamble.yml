@@ -1,0 +1,56 @@
+- file: snwx_household
+  title: "Household Problem and Distributions"
+  titleshort: "Household Problem and Distributions"
+  description: |
+    Summarize the household's dynamic programming problem and the distributions across heterogeneous households groups.
+  date: 2020-09-14
+  date_start: 2020-09-14
+  output:
+    pdf_document:
+      pandoc_args: '../../../_output_kniti_pdf.yaml'
+      includes:
+        in_header: '../../../preamble.tex'
+    html_document:
+      pandoc_args: '../../../_output_kniti_html.yaml'
+      includes:
+        in_header: '../../../hdga.html'
+  always_allow_html: true
+  urlcolor: blue
+
+- file: snwx_2019expectations
+  title: "Values of Checks Conditional on 2019 Information"
+  titleshort: "Values of Checks Conditional on 2019 Information"
+  description: |
+    Summarize the computation of expecations relevant for planning objectives given information avaiable in 2019.
+  date: 2020-09-14
+  date_start: 2020-09-14
+  output:
+    pdf_document:
+      pandoc_args: '../../../_output_kniti_pdf.yaml'
+      includes:
+        in_header: '../../../preamble.tex'
+    html_document:
+      pandoc_args: '../../../_output_kniti_html.yaml'
+      includes:
+        in_header: '../../../hdga.html'
+  always_allow_html: true
+  urlcolor: blue
+
+- file: snwx_opti_allocate
+  title: "The Welfare Check Planning Problem"
+  titleshort: "The Welfare Check Planning Problem"
+  description: |
+    Summarize several allocation problem that condition allocations on income, marital status, the number of children less than 18, and possibly age. 
+  date: 2020-09-14
+  date_start: 2020-09-14
+  output:
+    pdf_document:
+      pandoc_args: '../../../_output_kniti_pdf.yaml'
+      includes:
+        in_header: '../../../preamble.tex'
+    html_document:
+      pandoc_args: '../../../_output_kniti_html.yaml'
+      includes:
+        in_header: '../../../hdga.html'
+  always_allow_html: true
+  urlcolor: blue

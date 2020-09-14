@@ -278,7 +278,7 @@ if (bl_print_evuvw19_jaeemk_verbose)
     mp_outcomes('ev20_jaeemk') = ev20_jaeemk;
     mp_outcomes('ec20_jaeemk') = ec20_jaeemk;
     ff_container_map_display(mp_outcomes, 9, 9);
-    disp(ec19_jaeemk);
+%     disp(ec19_jaeemk);
 end
 
 %% Return

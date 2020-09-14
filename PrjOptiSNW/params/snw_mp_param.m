@@ -64,7 +64,7 @@
 function varargout = snw_mp_param(varargin)
 %% Parse Main Inputs and Set Defaults
 if (~isempty(varargin))
-    
+
     bl_store_shock_trans = false;
     st_shock_method = 'tauchen';
     [it_row_n_keep, it_col_n_keep] = deal(8, 8);
@@ -117,84 +117,84 @@ elseif(strcmp(st_param_group, "default_moredense"))
     n_kidsgrid=5; % No. of grid points for children (0 to 4+ children)
 elseif(strcmp(st_param_group, "default_docdense"))
 %     use default_moredense_a65zh81zs5_e2m2
-    n_jgrid  =83; 
+    n_jgrid  =83;
     jret     =48;
     n_agrid  =65;
-    n_eta_H_grid=266;
-    n_eta_S_grid=5; 
-    n_kidsgrid=5; 
+    n_eta_H_grid=81;
+    n_eta_S_grid=5;
+    n_kidsgrid=5;
     n_educgrid=2;
     n_marriedgrid=2;
 elseif(strcmp(st_param_group, "default_moredense_a100zh266_e1m1"))
     % 15 workers
     % household head shock only, only one education group
-    n_jgrid  =83; 
+    n_jgrid  =83;
     jret     =48;
     n_agrid  =100;
     n_eta_H_grid=266;
-    n_eta_S_grid=1; 
-    n_kidsgrid=5; 
+    n_eta_S_grid=1;
+    n_kidsgrid=5;
     n_educgrid=1;
     n_marriedgrid=1;
 elseif(strcmp(st_param_group, "default_moredense_a100zh266_e2m2"))
     % 8 workers
-    n_jgrid  =83; 
+    n_jgrid  =83;
     jret     =48;
     n_agrid  =100;
     n_eta_H_grid=266;
-    n_eta_S_grid=1; 
-    n_kidsgrid=5; 
+    n_eta_S_grid=1;
+    n_kidsgrid=5;
     n_educgrid=2;
     n_marriedgrid=2;
 elseif(strcmp(st_param_group, "default_moredense_a100zh81zs5_e2m2"))
     % 6 workers on Precision
     % household head shock only, only one education group
-    n_jgrid  =83; 
+    n_jgrid  =83;
     jret     =48;
     n_agrid  =100;
     n_eta_H_grid=81;
-    n_eta_S_grid=5; 
-    n_kidsgrid=5; 
+    n_eta_S_grid=5;
+    n_kidsgrid=5;
     n_educgrid=2;
     n_marriedgrid=2;
 elseif(strcmp(st_param_group, "default_moredense_a65zh21zs5_e2m2"))
     % 5 workers
-    n_jgrid  =83; 
+    n_jgrid  =83;
     jret     =48;
     n_agrid  =65;
     n_eta_H_grid=21;
-    n_eta_S_grid=5; 
-    n_kidsgrid=5; 
+    n_eta_S_grid=5;
+    n_kidsgrid=5;
     n_educgrid=2;
     n_marriedgrid=2;
 elseif(strcmp(st_param_group, "default_moredense_a65zh81zs5_e2m2"))
     % 5 workers
-    n_jgrid  =83; 
+    n_jgrid  =83;
     jret     =48;
     n_agrid  =65;
     n_eta_H_grid=81;
-    n_eta_S_grid=5; 
-    n_kidsgrid=5; 
+    n_eta_S_grid=5;
+    n_kidsgrid=5;
     n_educgrid=2;
     n_marriedgrid=2;
 elseif(strcmp(st_param_group, "default_moredense_a65zh133zs5_e2m2"))
     % 1 workers on Precision
-    n_jgrid  =83; 
+    n_jgrid  =83;
     jret     =48;
     n_agrid  =65;
     n_eta_H_grid=133;
-    n_eta_S_grid=5; 
-    n_kidsgrid=5; 
+    n_eta_S_grid=5;
+    n_kidsgrid=5;
     n_educgrid=2;
     n_marriedgrid=2;
 elseif(strcmp(st_param_group, "default_moredense_a65zh266zs5_e2m2"))
     % 1 workers on Precision
-    n_jgrid  =83; 
+    n_jgrid  =83;
     jret     =48;
     n_agrid  =65;
     n_eta_H_grid=266;
-    n_eta_S_grid=5; 
-    n_kidsgrid=5; 
+    n_eta_S_grid=5;
+    n_kidsgrid=5;
     n_educgrid=2;
     n_marriedgrid=2;
 elseif(strcmp(st_param_group, "default_dense"))
@@ -311,7 +311,7 @@ if(contains(st_param_group, "dense"))
     sigma_eta=0.018; % Variance of AR(1) productivity shocks
     g_n=0.01; % Annual population growth of 1.1 percent
     r=0.04; % Annual real interest rate of 4.0 percent from McGrattan and Prescott
-    % Calibrated with: default_moredense_a65zh81zs5_e2m2, using snwx_calibrate_beta_norm_gdp_m    
+    % Calibrated with: default_moredense_a65zh81zs5_e2m2, using snwx_calibrate_beta_norm_gdp_m
     beta=0.971162552785405; % 0.97068903873305; % Discount factor
 else
     rho_eta=0.98^it_yrs_per_period;
@@ -321,7 +321,7 @@ else
     % Calibrated with: default_moredense_a65zh81zs5_e2m2, using snwx_calibrate_beta_norm_gdp_m
     beta=0.971162552785405^it_yrs_per_period;
 end
-    
+
 % Spousal Shocks
 rho_eta_spouse=0; % Persistence of spousal AR(1) productivity shocks
 sigma_eta_spouse=1.040654^2; % Variance of spousal AR(1) productivity shocks (standard deviation of residual from spousal income regression for 18-65 year-old household heads. See spousal_income.m for regression specification details)
@@ -334,7 +334,7 @@ Bequests=0.05826*(bequests_option-1);
 throw_in_ocean=1; % If bequests go to the government, a value of 1 for throw_in_ocean means that all accidental bequests are "thrown in the ocean", whereas a value of 0 means the full amount goes to the government
 
 if bequests_option==2
-    a2=1.575;
+    look=1.575;
 elseif bequests_option==1
     if throw_in_ocean==0
         a2=0.7027;
@@ -344,6 +344,14 @@ elseif bequests_option==1
     end
 end
 
+
+% 2020 Tax found by running snw_find_tax_rate
+a2_covidyr_manna_heaven = a2;
+a2_covidyr_tax_fully_pay = 12.7176;
+a2_covidyr = NaN;
+% a2_covidyr = a2_mana_heaven;
+a0 = 0.258;
+a1 = 0.768;
 
 % Government budget constraint parameters
 g_cons=0.17575574; % Government consumption expenditures to GDP (BEA: Average 2015-2019)
@@ -501,7 +509,7 @@ else
         [eta_S_grid_aux,pi_S_eta]=ffy_tauchen(rho_eta_spouse,sqrt(sigma_eta_spouse),n_eta_S_grid);
     elseif (strcmp(st_shock_method, 'rouwenhorst'))
         [eta_S_grid_aux,pi_S_eta]=rouwenhorst(rho_eta_spouse,sqrt(sigma_eta_spouse),n_eta_S_grid);
-    end        
+    end
 end
 
 pi_eta=NaN(n_etagrid,n_etagrid);
@@ -663,7 +671,14 @@ mp_params_preftechpricegov('cons_allocation_rule') = cons_allocation_rule;
 mp_params_preftechpricegov('r') = r;
 mp_params_preftechpricegov('g_n') = g_n;
 mp_params_preftechpricegov('g_cons') = g_cons;
+mp_params_preftechpricegov('a0') = a0;
+mp_params_preftechpricegov('a1') = a1;
 mp_params_preftechpricegov('a2') = a2;
+mp_params_preftechpricegov('a2_covidyr') = a2_covidyr;
+mp_params_preftechpricegov('a2_covidyr_manna_heaven') = a2_covidyr_manna_heaven;
+mp_params_preftechpricegov('a2_covidyr_tax_fully_pay') = a2_covidyr_tax_fully_pay;
+
+% mp_params_preftechpricegov('a2_mana_heaven') = a2_mana_heaven;
 mp_params_preftechpricegov('jret') = jret;
 mp_params_preftechpricegov('Bequests') = Bequests;
 mp_params_preftechpricegov('bequests_option') = bequests_option;

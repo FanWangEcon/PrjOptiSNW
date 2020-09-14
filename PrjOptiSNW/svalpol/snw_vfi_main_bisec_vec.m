@@ -56,7 +56,8 @@ function [varargout]=snw_vfi_main_bisec_vec(varargin)
 
 %% Default and Parse
 if (~isempty(varargin))
-
+    
+    bl_covid_year = false;
     if (length(varargin)==1)
         [mp_params] = varargin{:};
         mp_controls = snw_mp_control('default_base');
@@ -65,12 +66,18 @@ if (~isempty(varargin))
     elseif (length(varargin)==3)
         [mp_params, mp_controls, V_VFI_POSTSHOCK] = varargin{:};
     end
-
+    
+    if (length(varargin)==3)
+        bl_covid_year = true;
+    end
+    
 else
     
     clc;
+    bl_covid_year = false;
     mp_params = snw_mp_param('default_tiny', false, 'tauchen', false, 8, 8);
     mp_controls = snw_mp_control('default_test');
+    false;
 
 end
 
@@ -87,9 +94,9 @@ end
 %% Parse Model Parameters
 params_group = values(mp_params, {...
     'gamma', 'beta', 'theta', 'cons_allocation_rule', ...
-    'r', 'g_n', 'g_cons', 'a2', 'jret'});
+    'r', 'g_n', 'g_cons', 'a2', 'a2_covidyr', 'jret'});
 [gamma, beta, theta, cons_allocation_rule, ...
-    r, g_n, g_cons, a2, jret] = params_group{:};
+    r, g_n, g_cons, a2, a2_covidyr, jret] = params_group{:};
 
 params_group = values(mp_params, {'Bequests', 'bequests_option', 'throw_in_ocean'});
 [Bequests, bequests_option, throw_in_ocean] = params_group{:};
@@ -174,6 +181,13 @@ else
     ar_j_seq = n_jgrid:(-1):1; % Age
 end
 
+if (bl_covid_year)
+    a2 = a2_covidyr;
+    if (isnan(a2))
+        error('a2 can not be NaN');
+    end
+end
+
 % Solve for value function and policy functions by means of backwards induction
 for j=ar_j_seq % Age
     
@@ -195,7 +209,7 @@ for j=ar_j_seq % Age
                     for eta=1:n_etagrid % Productivity
 
                         % Resources
-                        if (length(varargin)==3)
+                        if (length(varargin)>=3)
                             % one period unemployed shock
                             [inc,earn]=snw_hh_individual_income(j,a,eta,educ,...
                                 theta, r, agrid, epsilon, eta_H_grid, SS, Bequests, bequests_option,...
@@ -423,7 +437,6 @@ if (bl_timer)
 end
 
 %% Print
-
 if (bl_print_vfi_verbose)
     mp_outcomes = containers.Map('KeyType', 'char', 'ValueType', 'any');
     mp_outcomes('V_VFI') = V_VFI;

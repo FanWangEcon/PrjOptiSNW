@@ -56,6 +56,8 @@ if (~isempty(varargin))
 
     if (length(varargin)==3)
         [welf_checks, V_ss, cons_ss] = varargin{:};
+    elseif (length(varargin)==4)
+        [welf_checks, mp_params, mp_controls, spt_mat_path] = varargin{:};                        
     elseif (length(varargin)==5)
         [welf_checks, V_ss, cons_ss, mp_params, mp_controls] = varargin{:};
     elseif (length(varargin)==8)
@@ -70,12 +72,22 @@ else
 
     % A1. Solve the VFI Problem and get Value Function
     mp_params = snw_mp_param('default_tiny');
-    mp_params = snw_mp_param('default_moredense');
+%     mp_params = snw_mp_param('default_moredense');
     mp_controls = snw_mp_control('default_test');
     [V_ss,~,cons_ss,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
 
+    mp_params('xi') = 1;
+    mp_params('b') = 0;            
+    [V_ss_xi1b0,~,cons_ss_xi1b0,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls, V_ss);
+    
+    % the difference should be zero if xi=1 and b=0
+    V_ss_diff = min(V_ss_xi1b0 - V_ss, [], 'all');
+    if (V_ss_diff > 0)
+        error('V_ss_diff > 0');
+    end
+    
     % Solve for Value of One Period Unemployment Shock
-    welf_checks = 10;
+    welf_checks = 1;
     TR = 100/58056;
     mp_params('TR') = TR;
 
@@ -88,8 +100,8 @@ end
 % global theta r agrid epsilon eta_H_grid eta_S_grid SS Bequests bequests_option throw_in_ocean
 
 %% Parse Model Parameters
-params_group = values(mp_params, {'theta', 'r', 'a2', 'jret'});
-[theta,  r, a2, jret] = params_group{:};
+params_group = values(mp_params, {'theta', 'r', 'a2_covidyr', 'jret'});
+[theta,  r, a2_covidyr, jret] = params_group{:};
 
 params_group = values(mp_params, {'Bequests', 'bequests_option', 'throw_in_ocean'});
 [Bequests, bequests_option, throw_in_ocean] = params_group{:};
@@ -129,7 +141,7 @@ end
 %% A. Compute Household-Head and Spousal Income
 
 % this is only called when the function is called without mn_inc_plus_spouse_inc
-if ~exist('ar_inc_amz','var')
+if ~exist('ar_inc_amz','var') && ~exist('spt_mat_path', 'var')
 
     % initialize: head inc, spouse inc, asset, and household size
     mn_inc = NaN(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
@@ -171,12 +183,15 @@ if ~exist('ar_inc_amz','var')
 end
 
 %% B. Vectorized Solution for Optimal Check Adjustments
+if exist('spt_mat_path','var')
+    load(spt_mat_path, 'ar_a_amz', 'ar_inc_amz', 'ar_spouse_inc_amz');
+end
 
 % B1. Anonymous Function where X is fraction of addition given bounds
 fc_ffi_frac0t1_find_a_working = @(x) ffi_frac0t1_find_a_working_vec(...
     x, ...
     ar_a_amz, ar_inc_amz, ar_spouse_inc_amz, ...
-    welf_checks, TR, r, a2, fl_max_trchk_perc_increase);
+    welf_checks, TR, r, a2_covidyr, fl_max_trchk_perc_increase);
 
 % B2. Solve with Bisection
 [~, ar_a_aux_bisec_amz] = ...
@@ -185,21 +200,45 @@ fc_ffi_frac0t1_find_a_working = @(x) ffi_frac0t1_find_a_working_vec(...
 % B3. Reshape
 mn_a_aux_bisec = reshape(ar_a_aux_bisec_amz, [n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid]);
 
+if exist('spt_mat_path','var')
+    clear ar_a_amz ar_inc_amz ar_spouse_inc_amz
+end
+
 %% C. Interpolate and Extrapolate All Age Check Values
 % mn = nd dimensional array, mt = 2d
 % ad1 = a is dimension 1
 
 % C1. Change matrix order so asset becomes the first dimension
 % Note consumption is in per-capita terms
-mn_v_ad1 = permute(V_ss, [2,1,3,4,5,6]);
+if exist('spt_mat_path','var')
+    load(spt_mat_path, 'V_ss_2020');
+else
+    V_ss_2020 = V_ss;
+end
+mn_v_ad1 = permute(V_ss_2020, [2,1,3,4,5,6]);
+if exist('spt_mat_path','var')
+    clear V_ss_2020
+end
 % mn_c_ad1 = permute(cons_ss./mn_hhsize, [2,1,3,4,5,6]);
-mn_c_ad1 = permute(cons_ss, [2,1,3,4,5,6]);
+if exist('spt_mat_path','var') && ~bl_print_a4chk_verbose
+    load(spt_mat_path, 'cons_ss_2020');
+else
+    cons_ss_2020 = cons_ss;
+end
+mn_c_ad1 = permute(cons_ss_2020, [2,1,3,4,5,6]);
+if exist('spt_mat_path','var') && ~bl_print_a4chk_verbose
+    clear cons_ss_2020
+end
 mn_a_aux_bisec_ad1 = permute(mn_a_aux_bisec, [2,1,3,4,5,6]);
+clear mn_a_aux_bisec
 
 % C2. Reshape so that asset is dim 1, all other dim 2
 mt_v_ad1 = reshape(mn_v_ad1, n_agrid, []);
+clear mn_v_ad1
 mt_c_ad1 = reshape(mn_c_ad1, n_agrid, []);
+clear mn_c_ad1
 mt_a_aux_bisec_ad1 = reshape(mn_a_aux_bisec_ad1, n_agrid, []);
+clear mn_a_aux_bisec_ad1
 
 % C3. Derivative dv/da
 mt_dv_da_ad1 = diff(mt_v_ad1, 1)./diff(agrid);
@@ -207,30 +246,61 @@ mt_dc_da_ad1 = diff(mt_c_ad1, 1)./diff(agrid);
 
 % C4. Optimal aux and closest a index
 ar_a_aux_bisec = mt_a_aux_bisec_ad1(:);
-ar_it_a_near_lower_idx = sum(agrid' <= ar_a_aux_bisec, 2);
+clear mt_a_aux_bisec_ad1
+
+% generate over array, memory requirement too much
+ar_it_a_near_lower_idx = zeros([length(ar_a_aux_bisec),1]);
+ar_segments_points = linspace(1, length(ar_a_aux_bisec), 50);
+ar_segments_points = [1 round(ar_segments_points(2:49)) length(ar_a_aux_bisec)];
+for it_seg_ctr=2:length(ar_segments_points)
+    it_end_idx = ar_segments_points(it_seg_ctr);   
+    if (it_seg_ctr == 2)
+        it_start_idx = 1;
+    else
+        it_start_idx = ar_segments_points(it_seg_ctr-1) + 1;
+    end
+    if (it_seg_ctr >= 2)
+        ar_it_a_near_lower_idx_seg = sum(agrid' <= ar_a_aux_bisec(it_start_idx:it_end_idx), 2);    
+        ar_it_a_near_lower_idx(it_start_idx:it_end_idx) = ar_it_a_near_lower_idx_seg;
+    end   
+end
+clear ar_it_a_near_lower_idx_seg
+% ar_it_a_near_lower_idx = sum(agrid' <= ar_a_aux_bisec, 2);
 ar_it_a_near_lower_idx(ar_it_a_near_lower_idx == length(agrid)) = length(agrid) - 1;
 
 % C5. Z index
 mt_z_ctr = repmat((1:size(mt_v_ad1, 2)), size(mt_v_ad1, 1), 1);
 ar_z_ctr = mt_z_ctr(:);
+clear mt_z_ctr
 
 % C6. the marginal effects of additional asset is determined by the slope
 ar_deri_lin_idx = sub2ind(size(mt_dv_da_ad1), ar_it_a_near_lower_idx, ar_z_ctr);
 ar_v_lin_idx = sub2ind(size(mt_v_ad1), ar_it_a_near_lower_idx, ar_z_ctr);
+clear ar_z_ctr
 ar_deri_dev_da = mt_dv_da_ad1(ar_deri_lin_idx);
+clear mt_dv_da_ad1
 ar_v_a_lower_idx = mt_v_ad1(ar_v_lin_idx);
+clear mt_v_ad1
 ar_deri_dc_da = mt_dc_da_ad1(ar_deri_lin_idx);
+clear mt_dc_da_ad1 ar_deri_lin_idx
 ar_c_a_lower_idx = mt_c_ad1(ar_v_lin_idx);
+clear mt_c_ad1 ar_v_lin_idx
 
 % C7. v(a_lower_idx,z) + slope*(fl_a_aux - fl_a)
 ar_v_w_a_aux_j = ar_v_a_lower_idx + (ar_a_aux_bisec - agrid(ar_it_a_near_lower_idx)).*ar_deri_dev_da;
+clear ar_v_a_lower_idx ar_deri_dev_dap
 ar_c_w_a_aux_j = ar_c_a_lower_idx + (ar_a_aux_bisec - agrid(ar_it_a_near_lower_idx)).*ar_deri_dc_da;
+clear ar_a_aux_bisec ar_c_a_lower_idx ar_it_a_near_lower_idx ar_deri_dc_da
 mn_v_w_a_aux_ad1 = reshape(ar_v_w_a_aux_j, n_agrid, n_jgrid, n_etagrid, n_educgrid, n_marriedgrid, n_kidsgrid);
+clear ar_v_w_a_aux_j
 mn_c_w_a_aux_ad1 = reshape(ar_c_w_a_aux_j, n_agrid, n_jgrid, n_etagrid, n_educgrid, n_marriedgrid, n_kidsgrid);
+clear ar_c_w_a_aux_j
 
 % C8. Permute age as dim 1
 V_W = permute(mn_v_w_a_aux_ad1, [2,1,3,4,5,6]);
+clear mn_v_w_a_aux_ad1
 C_W = permute(mn_c_w_a_aux_ad1, [2,1,3,4,5,6]);
+clear mn_c_w_a_aux_ad1
 
 %% D. Timing and Profiling End
 if (bl_timer)
@@ -274,6 +344,7 @@ function [ar_root_zero, ar_a_aux_amz] = ...
 
     % Level of A change
     ar_a_aux_amz = ar_a_amz + ar_aux_change_frac_amz.*fl_a_aux_max;
+    clearvars fl_a_aux_max ar_aux_change_frac_amz
 
     % Account for Interest Rates
     ar_r_gap = (1+r).*(ar_a_amz - ar_a_aux_amz);
@@ -282,7 +353,10 @@ function [ar_root_zero, ar_a_aux_amz] = ...
     ar_tax_gap = ...
           max(0, snw_tax_hh(ar_inc_amz, ar_spouse_amz, a2)) ...
         - max(0, snw_tax_hh(ar_inc_amz - ar_a_amz*r + ar_a_aux_amz*r, ar_spouse_amz, a2));
+    clearvars ar_inc_amz ar_spouse_amz
 
     % difference equation f(a4chkchange)=0
     ar_root_zero = TR*welf_checks + ar_r_gap - ar_tax_gap;
+    clear ar_r_gap ar_tax_gap
+    
 end

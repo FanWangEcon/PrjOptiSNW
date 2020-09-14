@@ -84,7 +84,7 @@ plt_cur <- plt_cur +
                      limits = c(0, 175000/58056))
 
 stg_x_title_hhinc <- 'Household income (thousands of 2012 USD)'
-stg_y_title_checks <- 'Amount of welfare checks (2012 USD)'
+stg_y_title_checks <- 'Stimulus check amount (2012 USD)'
 
 plt_cur <- plt_cur + labs(x = stg_x_title_hhinc, y = stg_y_title_checks)
 

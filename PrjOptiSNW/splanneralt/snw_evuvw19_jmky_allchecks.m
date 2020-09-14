@@ -4,6 +4,9 @@
 %    check at a time. Uses pre-stored matrixes that are re-used across
 %    check calculations
 %
+%    * BL_LOAD_MAT boolean if true load saving mat file with VFI and
+%    distributiona results if the file exists
+%
 %    [EV19_JMKY_ALLCHECKS, EC19_JMKY_ALLCHECKS, OUTPUT] =
 %    SNW_EVUVW19_JMKY_ALLCHECKS(MP_PARAMS, MP_CONTROLS, ST_SOLU_TYPE,
 %    BL_PARFOR, IT_WORKERS, BL_EXPORT, SNM_SUFFIX) provide V_SS and V_UNEMP
@@ -19,12 +22,12 @@ function [varargout]=snw_evuvw19_jmky_allchecks(varargin)
 %% Default and Parse
 if (~isempty(varargin))
     
-    if (length(varargin)==7)
+    if (length(varargin)==8)
         [mp_params, mp_controls, st_solu_type, ...
             bl_parfor, it_workers, ...
-            bl_export, snm_suffix] = varargin{:};
+            bl_export, bl_load_mat, snm_suffix] = varargin{:};
     else
-        error('Need to provide 7 parameter inputs');
+        error('Need to provide 8 parameter inputs');
     end
     
 else
@@ -32,20 +35,20 @@ else
     clear all;
     
     % 1a. Parfor controls
-%     bl_parfor = true;
-%     it_workers = 2;
-    bl_parfor = false;
-    it_workers = 1;
+     bl_parfor = true;
+     it_workers = 14;
+%     bl_parfor = false;
+%     it_workers = 1;
 
     % 1b. Export Controls
     % bl_export = false;
     bl_export = true;
+    bl_load_mat = false;
     
-    snm_suffix = '';
-    
+
     % 1c. Solution Type
     st_solu_type = 'bisec_vec';
-    
+        
     % 2. Set Up Parameters
     % Solve the VFI Problem and get Value Function        
     %     mp_params = snw_mp_param('default_moredense_a55zh43zs11');
@@ -55,8 +58,8 @@ else
     %     mp_params = snw_mp_param('default_moredense_a55z363');
         %     mp_params = snw_mp_param('default_moredense');
 %       mp_params = snw_mp_param('default_dense');
-%     mp_params = snw_mp_param('default_small', false, 'tauchen', true, 8, 8);
-%         mp_params = snw_mp_param('default_tiny');
+%     mp_params = snw_mp_param('default_small', false, 'tauchen', false, 8, 8);
+%       mp_params = snw_mp_param('default_tiny');
     
     
     % 2a. Simulation 1, e1m1, dense a and zh test
@@ -67,7 +70,7 @@ else
 %     mp_params = snw_mp_param('default_moredense_a65zh81zs5_e2m2');
     % mp_params = snw_mp_param('default_moredense_a100zh81zs5_e2m2');   
     % mp_params = snw_mp_param('default_moredense_a65zh133zs5_e2m2');
-    mp_params = snw_mp_param('default_moredense_a65zh266zs5_e2m2', false, 'tauchen', true, 8, 8);
+    mp_params = snw_mp_param('default_moredense_a65zh266zs5_e2m2', false, 'tauchen', false, 8, 8);
     
     % 3. Controls
     mp_controls = snw_mp_control('default_test');
@@ -75,8 +78,9 @@ else
     % 4. Unemployment
     % L283 LABEL B
     % set Unemployment Related Variables
+    
     xi=0.5; % Proportional reduction in income due to unemployment (xi=0 refers to 0 labor income; xi=1 refers to no drop in labor income)
-    b=1; % Unemployment insurance replacement rate (b=0 refers to no UI benefits; b=1 refers to 100 percent labor income replacement)
+    b=0; % Unemployment insurance replacement rate (b=0 refers to no UI benefits; b=1 refers to 100 percent labor income replacement)
     TR=100/58056; % Value of a wezlfare check (can receive multiple checks). TO DO: Update with alternative values
     
     mp_params('xi') = xi;
@@ -84,9 +88,17 @@ else
     mp_params('TR') = TR;
     
     % 5a. Check Count
-    % 89 checks to allow for both the first and the second round
-    n_welfchecksgrid = 245;
-    mp_params('n_welfchecksgrid') = n_welfchecksgrid;
+    xi=0; % Full income loss if get covid shock
+    b=1     ; % Fully unemployment insurance
+%     n_welfchecksgrid = 89; % 89 allows for double adults + double kids
+    n_welfchecksgrid = 245; % 245 max
+    mp_params('xi') = xi;
+    mp_params('b') = b;
+    mp_params('n_welfchecksgrid') = n_welfchecksgrid;    
+    
+    mp_params('a2_covidyr') = mp_params('a2_covidyr_tax_fully_pay');
+
+    snm_suffix = ['_b1_x0_fullypay_' num2str(n_welfchecksgrid-1)];
     
     % 5b. Income Grid
     % Income Groups
@@ -124,8 +136,10 @@ else
     mp_controls('bl_print_evuvw19_jaeemk') = false;
     mp_controls('bl_print_evuvw19_jaeemk_verbose') = false;
     mp_controls('bl_print_evuvw19_jmky') = false;
-    mp_controls('bl_print_evuvw19_jmky_verbose') = false;
-        
+    mp_controls('bl_print_evuvw19_jmky_verbose') = false;    
+    mp_controls('bl_print_evuvw19_jmky_mass') = false;
+    mp_controls('bl_print_evuvw19_jmky_mass_verbose') = false;
+            
 end
 
 %% Parse Model Parameters
@@ -146,38 +160,123 @@ params_group = values(mp_controls, ...
     {'bl_print_evuvw19_jmky_allchecks', 'bl_print_evuvw19_jmky_allchecks_verbose'});
 [bl_print_evuvw19_jmky_allchecks, bl_print_evuvw19_jmky_allchecks_verbose] = params_group{:};
 
+%% Mat and CSV store Names
+
+mp_path = snw_mp_path('fan');
+snm_invoke_suffix = strrep(mp_params('mp_params_name'), 'default_', '');
+snm_file = ['snwx_v_planner_' char(snm_invoke_suffix) char(snm_suffix)];
+spn_csv_path = fullfile(mp_path('spt_simu_outputs'), [snm_file '.csv']);
+spt_mat_path = fullfile(mp_path('spt_simu_outputs_mat'), [snm_file '.mat']);
+
 %% Timing and Profiling Start
 if (bl_timer)
     tm_start = tic;
 end
 
-%% A. Solve VFI
-% 2. Solve VFI and Distributon
-% Solve the Model to get V working and unemployed
-[V_ss,ap_ss,cons_ss] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
-% Solve unemployment
-[V_unemp,~,cons_unemp] = snw_vfi_main_bisec_vec(mp_params, mp_controls, V_ss);
+% pt_all = snw_mp_path('fan');
+% spt_mat_path = fullfile(pt_all('spt_simu_outputs_mat'), 'allchecks_vfi_dist.mat');
+% spt_mat_path = fullfile('C:\Users\fan\Documents\temp', 'allchecks_vfi_dist_7.mat');
 
-%% B. Solve Dist
-[Phi_true] = snw_ds_main_vec(mp_params, mp_controls, ap_ss, cons_ss);
+% if do not load mat or if the mat file does not exist
+if (~bl_load_mat || ~isfile(spt_mat_path))
+    %% A. Solve VFI
+    % 2. Solve VFI and Distributon
+    % Solve the Model to get V working and unemployed
+    % solved with calibrated regular a2
+    [V_ss,ap_ss,cons_ss] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
+    
+%     mp_params('xi') = 1;
+%     mp_params('b') = 0;
+%     [V_ss_2020,~,cons_ss_2020,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls, V_ss);
+%     
+%     % the difference should be zero if xi=1 and b=0
+%     V_ss_diff = min(V_ss_2020 - V_ss, [], 'all');
+%     if (V_ss_diff > 0)
+%         error('V_ss_diff > 0');
+%     end
+    
+    % 2020 V and C same as V_SS and cons_ss if tax the same
+    if (mp_params('a2_covidyr') == mp_params('a2'))
+        % mana from heaven
+        V_ss_2020 = V_ss;
+        cons_ss_2020 = cons_ss;
+    else
+        % change xi and b to for people without unemployment shock
+        % solving for employed but 2020 tax results
+        % a2_covidyr > a2, we increased tax in 2020 to pay for covid and other
+        % costs resolve for both employed and unemployed
+        xi = mp_params('xi');
+        b = mp_params('b');
+        mp_params('xi') = 1;
+        mp_params('b') = 0;
+        [V_ss_2020,~,cons_ss_2020,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls, V_ss);
+        mp_params('xi') = xi;
+        mp_params('b') = b;
+    end
+    
+    % Solve unemployment, with three input parameters, auto will use a2_covidyr
+    % as tax, similar for employed call above
+    [V_unemp_2020,~,cons_unemp_2020] = snw_vfi_main_bisec_vec(mp_params, mp_controls, V_ss);
+    
+    %% B. Solve Dist
+    [Phi_true] = snw_ds_main_vec(mp_params, mp_controls, ap_ss, cons_ss);
 
-%% C. Pre-compute
-% cl_st_precompute_list = {'a', ...
-%     'inc', 'inc_unemp', 'spouse_inc', 'spouse_inc_unemp', 'ref_earn_wageind_grid', ...
-%     'ap_idx_lower_ss', 'ap_idx_higher_ss', 'ap_idx_lower_weight_ss', ...
-%     'inc_tot_ygroup_grid', ''};
-cl_st_precompute_list = {'a', ...
-    'inc', 'inc_unemp', 'spouse_inc', 'spouse_inc_unemp', 'ref_earn_wageind_grid', ...
-    'inc_tot_ygroup_grid', 'ar_z_ctr_amz'};
-mp_controls('bl_print_precompute_verbose') = false;
+    %% C. Pre-compute
+    % cl_st_precompute_list = {'a', ...
+    %     'inc', 'inc_unemp', 'spouse_inc', 'spouse_inc_unemp', 'ref_earn_wageind_grid', ...
+    %     'ap_idx_lower_ss', 'ap_idx_higher_ss', 'ap_idx_lower_weight_ss', ...
+    %     'inc_tot_ygroup_grid', ''};
+    cl_st_precompute_list = {'a', ...
+        'inc', 'inc_unemp', 'spouse_inc', 'spouse_inc_unemp', 'ref_earn_wageind_grid', ...
+        'inc_tot_ygroup_grid', 'ar_z_ctr_amz'};
+    mp_controls('bl_print_precompute_verbose') = false;
+    % Pre-Compute Matrixes and YMKY Mass
+    % Pre-compute
+    [mp_precompute_res] = snw_hh_precompute(mp_params, mp_controls, cl_st_precompute_list, ap_ss, Phi_true);
+    
+    % Load Results and Save to MAT
+    ar_a_amz = mp_precompute_res('ar_a_amz');
+    ar_inc_amz = mp_precompute_res('ar_inc_amz');
+    ar_inc_unemp_amz = mp_precompute_res('ar_inc_unemp_amz');
+    ar_spouse_inc_amz = mp_precompute_res('ar_spouse_inc_amz');
+    ar_spouse_inc_unemp_amz = mp_precompute_res('ar_spouse_inc_unemp_amz');
+    ref_earn_wageind_grid = mp_precompute_res('ref_earn_wageind_grid');
+    inc_tot_ygroup_grid = mp_precompute_res('inc_tot_ygroup_grid');
+    ar_z_ctr_amz = mp_precompute_res('ar_z_ctr_amz');
+    
+    %% D. YMKY Mass
+    [Phi_true_jmky] = snw_evuvw19_jmky_mass(mp_params, mp_controls, Phi_true, inc_tot_ygroup_grid);
+    
+    %% save
+    save(spt_mat_path, 'Phi_true', 'ap_ss', 'V_ss_2020', 'cons_ss_2020', 'V_unemp_2020', 'cons_unemp_2020',...
+        'ar_a_amz', ...
+        'ar_inc_amz', 'ar_inc_unemp_amz', 'ar_spouse_inc_amz', 'ar_spouse_inc_unemp_amz', 'ref_earn_wageind_grid', ...
+        'inc_tot_ygroup_grid', 'ar_z_ctr_amz', ...
+        'Phi_true_jmky');
+    
+else
+    
+%     % Load
+%     load(spt_mat_path, 'Phi_true', 'ap_ss', 'V_ss_2020', 'cons_ss_2020', 'V_unemp_2020', 'cons_unemp_2020', ...
+%         'ar_a_amz', ...
+%         'ar_inc_amz', 'ar_inc_unemp_amz', 'ar_spouse_inc_amz', 'ar_spouse_inc_unemp_amz', 'ref_earn_wageind_grid', ...
+%         'inc_tot_ygroup_grid', 'ar_z_ctr_amz', ...
+%         'Phi_true_jmky');
+%     
+%     mp_precompute_res = containers.Map('KeyType', 'char', 'ValueType', 'any');
+%     mp_precompute_res('ar_a_amz') = ar_a_amz;
+%     mp_precompute_res('ar_inc_amz') = ar_inc_amz;
+%     mp_precompute_res('ar_inc_unemp_amz') = ar_inc_unemp_amz;
+%     mp_precompute_res('ar_spouse_inc_amz') = ar_spouse_inc_amz;
+%     mp_precompute_res('ar_spouse_inc_unemp_amz') = spouse_inc_unemp;
+%     mp_precompute_res('ref_earn_wageind_grid') = ref_earn_wageind_grid;
+%     mp_precompute_res('inc_tot_ygroup_grid') = inc_tot_ygroup_grid;
+%     mp_precompute_res('ar_z_ctr_amz') = ar_z_ctr_amz;
+%     
+%     clear ar_a_amz ar_inc_amz ar_inc_unemp_amz ar_spouse_inc_amz 
+%     clear spouse_inc_unemp ref_earn_wageind_grid ar_z_ctr_amz
+end
 
-% Pre-Compute Matrixes and YMKY Mass
-% Pre-compute
-[mp_precompute_res] = snw_hh_precompute(mp_params, mp_controls, cl_st_precompute_list, ap_ss, Phi_true);
-inc_tot_ygroup_grid = mp_precompute_res('inc_tot_ygroup_grid');
-
-%% D. YMKY Mass
-[Phi_true_jmky] = snw_evuvw19_jmky_mass(mp_params, mp_controls, Phi_true, inc_tot_ygroup_grid);
 
 %% E1. Start Cluster
 if (bl_parfor)
@@ -188,7 +287,6 @@ if (bl_parfor)
 end
 
 %% E2. Start Check Loop
-
 if (bl_print_evuvw19_jmky_allchecks)
     disp(strcat(['SNW_EVUVW19_JMKY_ALLCHECKS Start']));
 end
@@ -211,9 +309,7 @@ if (bl_parfor)
         [ev19_jmky_check, ec19_jmky_check] = ...
             snw_evuvw19_jmky_check(welf_checks, st_solu_type, ...
             mp_params, mp_controls_parfor, ...
-            V_ss, ap_ss, cons_ss, V_unemp, cons_unemp, ...
-            Phi_true, Phi_true_jmky, inc_tot_ygroup_grid,...
-            mp_precompute_res, bl_print_evuvw19_jmky_allchecks);
+            spt_mat_path, bl_print_evuvw19_jmky_allchecks);
 
         % Store Results
         ev19_jmky_allchecks(i,:,:,:,:) = ev19_jmky_check;
@@ -229,9 +325,7 @@ else
         [ev19_jmky_check, ec19_jmky_check] = ...
             snw_evuvw19_jmky_check(welf_checks, st_solu_type, ...
             mp_params, mp_controls, ...
-            V_ss, ap_ss, cons_ss, V_unemp, cons_unemp, ...
-            Phi_true, Phi_true_jmky, inc_tot_ygroup_grid,...
-            mp_precompute_res, bl_print_evuvw19_jmky_allchecks);
+            spt_mat_path, bl_print_evuvw19_jmky_allchecks);
 
         % Store Results
         ev19_jmky_allchecks(welf_checks+1,:,:,:,:) = ev19_jmky_check;
@@ -245,7 +339,15 @@ if (bl_parfor)
 end
 
 %% F1. Mass to Probability
+if exist('spt_mat_path','var')
+    load(spt_mat_path, 'Phi_true_jmky');
+end
+
 Phi_true_jmky_prob = Phi_true_jmky./sum(Phi_true_jmky, 'all');
+
+if exist('spt_mat_path','var')
+    clear Phi_true_jmky
+end
 
 %% F2. Output for computing optimal allocation
 Output=zeros((n_jgrid-1)*n_marriedgrid*n_kidsgrid*n_welfchecksgrid*n_incgrid,9);
@@ -281,10 +383,7 @@ Output = Output(Output(:,6) > 0,:);
 
 %% G. Save File
 if (bl_export)
-    mp_path = snw_mp_path('fan');
-    snm_invoke_suffix = strrep(mp_params('mp_params_name'), 'default_', '');
-    snm_file_csv = ['snwx_v_planner_' char(snm_invoke_suffix) char(snm_suffix) '_b1_spouseinc.csv'];
-    writematrix(Output, [mp_path('spt_simu_outputs') snm_file_csv]);
+    writematrix(Output, spn_csv_path);
 end
 
 %% Timing and Profiling End
@@ -328,27 +427,28 @@ end
 function [ev19_jmky_check, ec19_jmky_check] = ...
     snw_evuvw19_jmky_check(welf_checks, st_solu_type, ...
         mp_params, mp_controls, ...
-        V_ss, ap_ss, cons_ss, V_unemp, cons_unemp, ...
-        Phi_true, Phi_true_jmky, inc_tot_ygroup_grid,...
-        mp_precompute_res, bl_print_evuvw19_jmky_allchecks) 
+        spt_mat_path, bl_print_evuvw19_jmky_allchecks) 
 
     if (bl_print_evuvw19_jmky_allchecks) 
         disp('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX');        
         tm_start_check = tic; 
-    end
-    
+    end    
+        
     % Solve ev 19 JAEEMK
     [ev19_jaeemk_check, ec19_jaeemk_check] = snw_evuvw19_jaeemk_foc(...
         welf_checks, st_solu_type, ...
         mp_params, mp_controls, ...
-        V_ss, ap_ss, cons_ss, V_unemp, cons_unemp, mp_precompute_res);
+        spt_mat_path);
+%     clear V_ss_2020 ap_ss cons_ss_2020 V_unemp_2020 cons_unemp_2020
     
-    % Solve ev 19 JMKY
+    % Solve ev 19 JMKY    
+    load(spt_mat_path, 'Phi_true', 'inc_tot_ygroup_grid', 'Phi_true_jmky');
     [ev19_jmky_check, ec19_jmky_check] = snw_evuvw19_jmky(...
         mp_params, mp_controls, ...
         ev19_jaeemk_check, ec19_jaeemk_check, ...
         Phi_true, Phi_true_jmky, inc_tot_ygroup_grid);
-        
+    clear Phi_true Phi_true_jmky ev19_jaeemk_check ec19_jaeemk_check
+    
     if (bl_print_evuvw19_jmky_allchecks)
         tm_end_check = toc(tm_start_check);
         disp(strcat([...            

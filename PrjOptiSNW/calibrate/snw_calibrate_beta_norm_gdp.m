@@ -34,7 +34,7 @@ mp_controls('bl_print_ds_verbose') = false;
 err=1;
 tol=0.005;
 disp('Start calibration')
-it_counter = 1
+it_counter = 1;
 while err>tol
 
     it=1;

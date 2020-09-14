@@ -1,0 +1,1 @@
+Adjust Taxes in 2020 to Pay for Welfare Checks and Other Costs

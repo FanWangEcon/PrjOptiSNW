@@ -1,4 +1,4 @@
-book_filename: "SNW Dynamic Life Cycle and Welfare Checks Code Companion"
+book_filename: "NSW Dynamic Life Cycle and Welfare Checks Code Companion"
 output_dir: "bookdown"
 language:
   ui:
@@ -6,6 +6,11 @@ language:
 delete_merged_file: true
 rmd_files:
   - index.Rmd
+
+  - PrjOptiSNW/doc/intro/main.Rmd
+  - PrjOptiSNW/doc/intro/snwx_household.Rmd
+  - PrjOptiSNW/doc/intro/snwx_2019expectations.Rmd
+  - PrjOptiSNW/doc/intro/snwx_opti_allocate.Rmd
 
   - PrjOptiSNW/doc/params/main.Rmd
   - PrjOptiSNW/doc/params/snwx_mp_param.Rmd
@@ -40,11 +45,14 @@ rmd_files:
   - PrjOptiSNW/doc/splannerjmky/snwx_evuvw19_jmky.Rmd
   - PrjOptiSNW/doc/splannerjmky/snwx_evuvw19_jmky_allchecks.Rmd
 
-  # - PrjOptiSNW/doc/calibrate/main.Rmd
-  # - PrjOptiSNW/doc/calibrate/snwx_calibrate_beta_norm_gdp.Rmd
+  - PrjOptiSNW/doc/fgov/main.Rmd
+  - PrjOptiSNW/doc/fgov/snwx_find_tax_rate.Rmd
 
   - PrjOptiSNW/doc/calibrate/main.Rmd
   - PrjOptiSNW/doc/calibrate/snwx_calibrate_beta_norm_gdp.Rmd
+
+  - PrjOptiSNW/doc/stats/main.Rmd
+  - PrjOptiSNW/doc/stats/snwx_evuvw19_jaeemk_mky.Rmd
 
   - README_appendix.md
   - title.Rmd

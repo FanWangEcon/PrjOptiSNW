@@ -68,6 +68,7 @@ bl_print_evuvw19_jaeemk = true;
 bl_print_evuvw19_jymk = true;
 bl_print_evuvw19_jmky_mass = true;
 bl_print_evuvw19_jmky_allchecks = true;
+bl_print_find_tax_rate = true;
 
 if (strcmp(st_param_group, 'default_test')) 
     bl_print_ds_verbose = true;
@@ -81,6 +82,7 @@ if (strcmp(st_param_group, 'default_test'))
     bl_print_evuvw19_jmky_verbose = true;
     bl_print_evuvw19_jmky_mass_verbose = true;
     bl_print_evuvw19_jmky_allchecks_verbose = true;
+    bl_print_find_tax_rate_verbose = true;
 else
     bl_print_ds_verbose = false;
     bl_print_vfi_verbose = false;
@@ -93,6 +95,7 @@ else
     bl_print_evuvw19_jmky_verbose = false;
     bl_print_evuvw19_jmky_mass_verbose = false;
     bl_print_evuvw19_jmky_allchecks_verbose = false;
+    bl_print_find_tax_rate_verbose = false;
 end
 
 %% Control Optimization 
@@ -153,6 +156,9 @@ mp_display('bl_print_evuvw19_jmky_mass_verbose') = bl_print_evuvw19_jmky_mass_ve
 
 mp_display('bl_print_evuvw19_jmky_allchecks') = bl_print_evuvw19_jmky_allchecks;
 mp_display('bl_print_evuvw19_jmky_allchecks_verbose') = bl_print_evuvw19_jmky_allchecks_verbose;
+
+mp_display('bl_print_find_tax_rate') = bl_print_find_tax_rate;
+mp_display('bl_print_find_tax_rate_verbose') = bl_print_find_tax_rate_verbose;
 
 %% Combine Maps
 mp_controls = [mp_minimizer_controls; mp_m4check_controls; ...

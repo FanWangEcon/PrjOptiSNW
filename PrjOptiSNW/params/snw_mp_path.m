@@ -4,7 +4,11 @@
 %
 %    ST_COMPUTER, whose computer this is on: 'fan'
 %
-%    MP_PATHS = SNW_MP_PATH(ST_COMPUTER) returns paths 
+%    mp_paths = snw_mp_path('fan');
+%    spt_simu_codem = mp_paths('spt_simu_codem');
+%    spt_simu_outputs = mp_paths('spt_simu_outputs');
+%    spt_simu_outputs_log = mp_paths('spt_simu_outputs_log');
+%    spt_simu_results_csv = mp_paths('spt_simu_results_csv');
 %
 
 %%
@@ -29,19 +33,35 @@ end
 %% Dropbox Root Auto Detect by Computer
 if (strcmp(st_computer, 'fan'))
      if (exist('D:/Dropbox (UH-ECON)', 'dir')>0)
-         spt_dropbox_root = 'D:/Dropbox (UH-ECON)/PrjNygaardSorensenWang/';
+         spt_dropbox_root = fullfile('D:/Dropbox (UH-ECON)/PrjNygaardSorensenWang/');
      elseif (exist('C:/Users/fan/Documents/Dropbox (UH-ECON)/', 'dir')>0)
-         spt_dropbox_root = 'C:/Users/fan/Documents/Dropbox (UH-ECON)/PrjNygaardSorensenWang/';
+         spt_dropbox_root = fullfile('C:/Users/fan/Documents/Dropbox (UH-ECON)/PrjNygaardSorensenWang/');
      end
 end
 
 %% Parametesr Grid Points
-spt_simu_outputs = [spt_dropbox_root 'output/'];
-spt_simu_results_csv = [spt_dropbox_root 'Results/2020-08-20/csv/'];
+% store output mat files, this is to save speed during check calculation,
+% re-calculation
+
+spt_simu_codem = fullfile(spt_dropbox_root, 'PrjOptiSNW', filesep);
+spt_simu_codem_doc = fullfile(spt_dropbox_root, 'PrjOptiSNW', 'PrjOptiSNW', 'doc', filesep);
+spt_simu_outputs = fullfile(spt_dropbox_root, 'output', filesep);
+spt_simu_outputs_vig = fullfile(spt_dropbox_root, 'MatlabVig', '09-12-2020', filesep);
+spt_simu_outputs_log = fullfile(spt_simu_outputs, 'log', filesep);
+spt_simu_outputs_mat = fullfile(spt_simu_outputs, 'mat', filesep);
+% spt_simu_results_csv = fullfile(spt_dropbox_root, 'Results', '2020-08-23-b1_manna', 'csv_with_expmin_apc');
+spt_simu_results_csv = fullfile(spt_dropbox_root, 'Results', '2020-08-23-b1_manna', 'csv', filesep);
 
 %% Set Parameter Maps
 mp_path_external = containers.Map('KeyType', 'char', 'ValueType', 'any');
+mp_path_external('spt_dropbox_root') = spt_dropbox_root;
+mp_path_external('spt_simu_codem') = spt_simu_codem;
+mp_path_external('spt_simu_codem_doc') = spt_simu_codem_doc;
+
 mp_path_external('spt_simu_outputs') = spt_simu_outputs;
+mp_path_external('spt_simu_outputs_vig') = spt_simu_outputs_vig;
+mp_path_external('spt_simu_outputs_log') = spt_simu_outputs_log;
+mp_path_external('spt_simu_outputs_mat') = spt_simu_outputs_mat;
 mp_path_external('spt_simu_results_csv') = spt_simu_results_csv;
 
 %% Combine Maps

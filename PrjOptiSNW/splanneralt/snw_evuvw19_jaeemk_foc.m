@@ -18,10 +18,13 @@ function [varargout]=snw_evuvw19_jaeemk_foc(varargin)
 %% Default and Parse
 if (~isempty(varargin))
 
-    if (length(varargin)==10)
+    if (length(varargin)==5)
         [welf_checks, st_solu_type, mp_params, mp_controls, ...
-            V_ss, ap_ss, cons_ss, ...
-            V_unemp, cons_unemp, ...
+            spt_mat_path] = varargin{:};
+    elseif (length(varargin)==10)
+        [welf_checks, st_solu_type, mp_params, mp_controls, ...
+            V_ss_2020, ap_ss, cons_ss_2020, ...
+            V_unemp_2020, cons_unemp_2020, ...
             mp_precompute_res] = varargin{:};
     else
         error('Need to provide 10 parameter inputs');
@@ -66,7 +69,22 @@ else
 
     % Solve the Model to get V working and unemployed
     [V_ss,ap_ss,cons_ss,mp_valpol_more_ss] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
-    [V_unemp,~,cons_unemp,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls, V_ss);
+
+    % 2020 V and C same as V_SS and cons_ss if tax the same
+    if (mp_params('a2_covidyr') == mp_params('a2'))
+        V_ss_2020 = V_ss;
+        cons_ss_2020 = cons_ss;
+    else
+        % change xi and b to for people without unemployment shock
+        % solving for employed but 2020 tax results
+        mp_params('xi') = 1;
+        mp_params('b') = 0;
+        [V_ss_2020,~,cons_ss_2020,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls, V_ss);
+        mp_params('xi') = xi;
+        mp_params('b') = b;
+    end
+
+    [V_unemp_2020,~,cons_unemp_2020,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls, V_ss);
     [Phi_true] = snw_ds_main(mp_params, mp_controls, ap_ss, cons_ss, mp_valpol_more_ss);
 
     % Get Matrixes
@@ -77,11 +95,6 @@ else
     [mp_precompute_res] = snw_hh_precompute(mp_params, mp_controls, cl_st_precompute_list, ap_ss, Phi_true);
 
 end
-
-%% Parse Pre-Computes
-params_group = values(mp_precompute_res, ...
-    {'ar_z_ctr_amz'});
-[ar_z_ctr_amz] = params_group{:};
 
 %% Parse Model Parameters
 params_group = values(mp_params, {'agrid', 'eta_H_grid', 'eta_S_grid'});
@@ -105,21 +118,43 @@ params_group = values(mp_controls, {'bl_print_evuvw19_jaeemk', 'bl_print_evuvw19
 [bl_print_evuvw19_jaeemk, bl_print_evuvw19_jaeemk_verbose] = params_group{:};
 
 %% Solve evuvw19 Given Current Check
-[ev20_jaeemk, ec20_jaeemk] = snw_evuvw20_jaeemk(...
-    welf_checks, ...
-    st_solu_type, mp_params, mp_controls, ...
-    V_ss, cons_ss, ...
-    V_unemp, cons_unemp, ...
-    mp_precompute_res);
+if exist('spt_mat_path','var')
+    [ev20_jaeemk, ec20_jaeemk] = snw_evuvw20_jaeemk(...
+        welf_checks, ...
+        st_solu_type, mp_params, mp_controls, ...
+        spt_mat_path);
+else
+    [ev20_jaeemk, ec20_jaeemk] = snw_evuvw20_jaeemk(...
+        welf_checks, ...
+        st_solu_type, mp_params, mp_controls, ...
+        V_ss_2020, cons_ss_2020, ...
+        V_unemp_2020, cons_unemp_2020, ...
+        mp_precompute_res);
+end
 
 %% Timing and Profiling Start
 if (bl_timer)
     tm_start = tic;
 end
 
+
+%% Parse Pre-Computes
+if exist('spt_mat_path','var')
+    load(spt_mat_path, 'ar_z_ctr_amz');
+else
+    params_group = values(mp_precompute_res, ...
+        {'ar_z_ctr_amz'});
+    [ar_z_ctr_amz] = params_group{:};
+end
+
 %% Planner val2019(J,A,E,E,M,K) = E(val2020(J+1,A',E',E,M,K')) given trans.
+
 ev19_jaeemk=NaN(n_jgrid-1,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 ec19_jaeemk=NaN(n_jgrid-1,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
+
+if exist('spt_mat_path','var')
+    load(spt_mat_path, 'ap_ss');
+end
 
 for j=1:n_jgrid-1 % Age
 
@@ -243,6 +278,7 @@ ar_deri_lin_idx = sub2ind(size(mt_deri_dev_dap), ar_it_ap_near_lower_idx, ar_z_c
 ar_ev_lin_idx = sub2ind(size(mt_ev_ap_z), ar_it_ap_near_lower_idx, ar_z_ctr_amz);
 ar_deri_dev_dap = mt_deri_dev_dap(ar_deri_lin_idx);
 ar_ev_ap_lower_idx = mt_ev_ap_z(ar_ev_lin_idx);
+clear ar_ev_lin_idx
 
 % Ev(a_lower_idx,z) + slope*(fl_aprime - fl_a_lower)
 ar_ev_aprime_z = ar_ev_ap_lower_idx + (ar_aprime - ar_a(ar_it_ap_near_lower_idx)').*ar_deri_dev_dap;

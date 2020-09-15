@@ -2,9 +2,7 @@
   title: "Assets and Demographic Distributions with Continuous Exact Savings Choices (Loop)"
   titleshort: "Assets and Demographic Distributions with Continuous Exact Savings Choices (Loop)"
   description: |
-    Simulate the life cycle distribution of assets, consumptions, and demographic patterns up to age 100, given exogenous initial distributions at age 18.
-    Solves for budget clearing tax rates given distributional results.
-    Uses vectorized bisection to solve for exact savings choices, looped distribution code.
+    Simulate the life cycle distribution of assets, consumptions, and demographic patterns up to age 100, given exogenous initial distributions at age 18. Solves for budget clearing tax rates given distributional results. Uses vectorized bisection to solve for exact savings choices, looped distribution code.
   core :
     - package: PrjOptiSNW
       code: |
@@ -50,8 +48,7 @@
   title: "Assets and Demographic Distributions with Grid Search"
   titleshort: "Assets and Demographic Distributions with Grid Search"
   description: |
-    Grid search solution using grid search for savings choices, the savings state-space grid is the same as the savings choice-grid.
-    Exact choice solution from [snw_ds_main()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/sdist/snw_ds_main.m) generates significantly smoother distributions.
+    Grid search solution using grid search for savings choices, the savings state-space grid is the same as the savings choice-grid. Exact choice solution from [snw_ds_main()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/sdist/snw_ds_main.m) generates significantly smoother distributions.
   core :
     - package: PrjOptiSNW
       code: |

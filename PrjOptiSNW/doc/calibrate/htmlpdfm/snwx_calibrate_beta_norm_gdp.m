@@ -1,4 +1,4 @@
-%% Calibrate Beta and Normalize GDP
+%% Model Calibration
 % Taking advantage of <https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/calibrate/snw_calibrate_beta_norm_gdp.m 
 % *snw_calibrate_beta_norm_gdp*> from the <https://fanwangecon.github.io/PrjOptiSNW/ 
 % *PrjOptiSNW Package*,> this function calibrates the discount factor and also 
@@ -22,7 +22,7 @@ Pop = mp_params('Pop');
 % Set up print defaults
 
 mp_controls = snw_mp_control('default_test');
-mp_controls('bl_timer') = timer;
+mp_controls('bl_timer') = true;
 mp_controls('bl_print_vfi') = false;
 mp_controls('bl_print_vfi_verbose') = false;
 mp_controls('bl_print_ds') = false;
@@ -34,7 +34,7 @@ mp_controls('bl_print_ds_verbose') = false;
 err=1;
 tol=0.005;
 it_counter = 1;
-while err>tol && it_counter <= 3
+while err>tol && it_counter <= 10
     disp('');
     it=1;
 

@@ -1,5 +1,5 @@
 ---
-title: "SNW Dynamic Life Cycle and Welfare Checks Code Companion"
+title: "NSW Dynamic Life Cycle and Welfare Checks Code Companion"
 author: "Vegard M. Nygård, Bent E. Sørensen, and Fan Wang"
 date: '`r format(Sys.Date(), "%Y-%m-%d")`'
 site: bookdown::bookdown_site
@@ -7,7 +7,7 @@ documentclass: book
 bibliography: [book.bib, packages.bib]
 biblio-style: apalike
 link-citations: yes
-description: "SNW Dynamic Life Cycle and Welfare Checks Code Companion"
+description: "NSW Dynamic Life Cycle and Welfare Checks Code Companion"
 output:
   pdf_document:
     toc: true
@@ -38,7 +38,7 @@ All functions are parts of a matlab toolbox that can be installed:
 
 The Code Companion can also be accessed via the bookdown site and PDF linked below:
 
-> [**bookdown site**](https://fanwangecon.github.io/PrjOptiSNW/bookdown) and [**bookdown pdf**](https://fanwangecon.github.io/PrjOptiSNW/bookdown/SNW-Dynamic-Life-Cycle-and-Welfare-Checks-Code-Companion.pdf).
+> [**bookdown site**](https://fanwangecon.github.io/PrjOptiSNW/bookdown) and [**bookdown pdf**](https://fanwangecon.github.io/PrjOptiSNW/bookdown/NSW-Dynamic-Life-Cycle-and-Welfare-Checks-Code-Companion.pdf).
 
 This bookdown file is a collection of mlx based vignettes for functions that are available from [PrjOptiSNW](https://github.com/FanWangEcon/PrjOptiSNW). Each Vignette file contains various examples for invoking each function.
 

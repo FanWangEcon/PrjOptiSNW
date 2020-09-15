@@ -4,27 +4,33 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 4 Solution with Unemployment | SNW Dynamic Life Cycle and Welfare Checks Code Companion</title>
-  <meta name="description" content="Chapter 4 Solution with Unemployment | SNW Dynamic Life Cycle and Welfare Checks Code Companion" />
+  <title>Chapter 5 Solution with Unemployment | NSW Dynamic Life Cycle and Welfare Checks Code Companion</title>
+  <meta name="description" content="<p>Summarize overall model distributional and inequality statistics from covid-less times.
+Statistics, including first check MPC, by marital status, children count, and income groups.
+See <a href="https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/stats/snwx_evuvw19_jmky_mpc_allocated_m.m">snwx_evuvw19_jmky_mpc_allocated_m</a> for summarizing function over optimal allocation results.</p>" />
   <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 4 Solution with Unemployment | SNW Dynamic Life Cycle and Welfare Checks Code Companion" />
+  <meta property="og:title" content="Chapter 5 Solution with Unemployment | NSW Dynamic Life Cycle and Welfare Checks Code Companion" />
   <meta property="og:type" content="book" />
   
   
-  <meta property="og:description" content="Chapter 4 Solution with Unemployment | SNW Dynamic Life Cycle and Welfare Checks Code Companion" />
+  <meta property="og:description" content="<p>Summarize overall model distributional and inequality statistics from covid-less times.
+Statistics, including first check MPC, by marital status, children count, and income groups.
+See <a href="https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/stats/snwx_evuvw19_jmky_mpc_allocated_m.m">snwx_evuvw19_jmky_mpc_allocated_m</a> for summarizing function over optimal allocation results.</p>" />
   <meta name="github-repo" content="fanwangecon/PrjOptiSNW" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 4 Solution with Unemployment | SNW Dynamic Life Cycle and Welfare Checks Code Companion" />
+  <meta name="twitter:title" content="Chapter 5 Solution with Unemployment | NSW Dynamic Life Cycle and Welfare Checks Code Companion" />
   
-  <meta name="twitter:description" content="Chapter 4 Solution with Unemployment | SNW Dynamic Life Cycle and Welfare Checks Code Companion" />
+  <meta name="twitter:description" content="<p>Summarize overall model distributional and inequality statistics from covid-less times.
+Statistics, including first check MPC, by marital status, children count, and income groups.
+See <a href="https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/stats/snwx_evuvw19_jmky_mpc_allocated_m.m">snwx_evuvw19_jmky_mpc_allocated_m</a> for summarizing function over optimal allocation results.</p>" />
   
 
-<meta name="author" content="Vegard Nygård, Bent Sørensen, and Fan Wang" />
+<meta name="author" content="Vegard M. Nygård, Bent E. Sørensen, and Fan Wang" />
 
 
-<meta name="date" content="2020-08-12" />
+<meta name="date" content="2020-09-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,6 +39,7 @@
   
 <link rel="prev" href="alternative-value-function-solution-testing.html"/>
 <link rel="next" href="household-life-cycle-distribution.html"/>
+<script src="libs/header-attrs-2.3/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -50,7 +57,6 @@
 
 
 
-<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-92953468-10"></script>
 <script>
@@ -75,150 +81,237 @@
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">SNW Dynamic Life Cycle and Welfare Checks Code Companion</a></li>
+<li><a href="./">NSW Dynamic Life Cycle and Welfare Checks Code Companion</a></li>
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
-<li class="chapter" data-level="1" data-path="parameters.html"><a href="parameters.html"><i class="fa fa-check"></i><b>1</b> Parameters</a><ul>
-<li class="chapter" data-level="1.1" data-path="parameters.html"><a href="parameters.html#model-parameters"><i class="fa fa-check"></i><b>1.1</b> Model Parameters</a><ul>
-<li class="chapter" data-level="1.1.1" data-path="parameters.html"><a href="parameters.html#documentation-run-parameters-docdense"><i class="fa fa-check"></i><b>1.1.1</b> Documentation Run Parameters Docdense</a></li>
-<li class="chapter" data-level="1.1.2" data-path="parameters.html"><a href="parameters.html#parameters-used-for-test-simulation"><i class="fa fa-check"></i><b>1.1.2</b> Parameters Used for Test Simulation</a></li>
-<li class="chapter" data-level="1.1.3" data-path="parameters.html"><a href="parameters.html#parameters-used-for-paper-simulations"><i class="fa fa-check"></i><b>1.1.3</b> Parameters Used for Paper Simulations</a></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#household-problem-and-distributions"><i class="fa fa-check"></i><b>1.1</b> Household Problem and Distributions</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="introduction.html"><a href="introduction.html#flat-script-and-code-package"><i class="fa fa-check"></i><b>1.1.1</b> Flat Script and Code Package</a></li>
+<li class="chapter" data-level="1.1.2" data-path="introduction.html"><a href="introduction.html#dynamic-programming-solution-structure-covidless-world"><i class="fa fa-check"></i><b>1.1.2</b> Dynamic Programming Solution Structure COVIDless World</a></li>
+<li class="chapter" data-level="1.1.3" data-path="introduction.html"><a href="introduction.html#dynamic-programming-solution-structure-during-covid-year"><i class="fa fa-check"></i><b>1.1.3</b> Dynamic Programming Solution Structure during COVID Year</a></li>
 </ul></li>
-<li class="chapter" data-level="1.2" data-path="parameters.html"><a href="parameters.html#model-controls"><i class="fa fa-check"></i><b>1.2</b> Model Controls</a><ul>
-<li class="chapter" data-level="1.2.1" data-path="parameters.html"><a href="parameters.html#test-snw_mp_controls-defaults"><i class="fa fa-check"></i><b>1.2.1</b> Test SNW_MP_CONTROLS Defaults</a></li>
+<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#values-of-checks-conditional-on-2019-information"><i class="fa fa-check"></i><b>1.2</b> Values of Checks Conditional on 2019 Information</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="introduction.html"><a href="introduction.html#expected-outcomes-given-2019-information"><i class="fa fa-check"></i><b>1.2.1</b> Expected Outcomes given 2019 Information</a></li>
+<li class="chapter" data-level="1.2.2" data-path="introduction.html"><a href="introduction.html#dynamic-programming-timing"><i class="fa fa-check"></i><b>1.2.2</b> Dynamic Programming Timing</a></li>
 </ul></li>
-</ul></li>
-<li class="chapter" data-level="2" data-path="solving-the-dynamic-life-cycle-problem.html"><a href="solving-the-dynamic-life-cycle-problem.html"><i class="fa fa-check"></i><b>2</b> Solving the Dynamic Life Cycle Problem</a><ul>
-<li class="chapter" data-level="2.1" data-path="solving-the-dynamic-life-cycle-problem.html"><a href="solving-the-dynamic-life-cycle-problem.html#life-cycle-dynamic-programming-with-marital-status-children-and-savings"><i class="fa fa-check"></i><b>2.1</b> Life Cycle Dynamic Programming with Marital Status, Children and Savings</a><ul>
-<li class="chapter" data-level="2.1.1" data-path="solving-the-dynamic-life-cycle-problem.html"><a href="solving-the-dynamic-life-cycle-problem.html#test-snw_vfi_main_bisect_vec-defaults-more-dense"><i class="fa fa-check"></i><b>2.1.1</b> Test SNW_VFI_MAIN_BISECT_VEC Defaults More Dense</a></li>
-<li class="chapter" data-level="2.1.2" data-path="solving-the-dynamic-life-cycle-problem.html"><a href="solving-the-dynamic-life-cycle-problem.html#more-dense-param-results-define-frames"><i class="fa fa-check"></i><b>2.1.2</b> More Dense Param Results Define Frames</a></li>
-<li class="chapter" data-level="2.1.3" data-path="solving-the-dynamic-life-cycle-problem.html"><a href="solving-the-dynamic-life-cycle-problem.html#analyze-savings-and-shocks"><i class="fa fa-check"></i><b>2.1.3</b> Analyze Savings and Shocks</a></li>
-<li class="chapter" data-level="2.1.4" data-path="solving-the-dynamic-life-cycle-problem.html"><a href="solving-the-dynamic-life-cycle-problem.html#analyze-kids-and-marriage-and-age"><i class="fa fa-check"></i><b>2.1.4</b> Analyze Kids and Marriage and Age</a></li>
-<li class="chapter" data-level="2.1.5" data-path="solving-the-dynamic-life-cycle-problem.html"><a href="solving-the-dynamic-life-cycle-problem.html#analyze-education-and-marriage-and-age"><i class="fa fa-check"></i><b>2.1.5</b> Analyze Education and Marriage and Age</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="3" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html"><i class="fa fa-check"></i><b>3</b> Alternative Value Function Solution Testing</a><ul>
-<li class="chapter" data-level="3.1" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#small-test-exact-solution-looped-minimizer"><i class="fa fa-check"></i><b>3.1</b> Small Test Exact Solution Looped Minimizer</a><ul>
-<li class="chapter" data-level="3.1.1" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#test-snw_vfi_main-defaults-small"><i class="fa fa-check"></i><b>3.1.1</b> Test SNW_VFI_MAIN Defaults Small</a></li>
-<li class="chapter" data-level="3.1.2" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#small-param-results-define-frames"><i class="fa fa-check"></i><b>3.1.2</b> Small Param Results Define Frames</a></li>
-<li class="chapter" data-level="3.1.3" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#analyze-savings-and-shocks-1"><i class="fa fa-check"></i><b>3.1.3</b> Analyze Savings and Shocks</a></li>
-<li class="chapter" data-level="3.1.4" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#analyze-kids-and-marriage-and-age-1"><i class="fa fa-check"></i><b>3.1.4</b> Analyze Kids and Marriage and Age</a></li>
-<li class="chapter" data-level="3.1.5" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#analyze-education-and-marriage-and-age-1"><i class="fa fa-check"></i><b>3.1.5</b> Analyze Education and Marriage and Age</a></li>
-</ul></li>
-<li class="chapter" data-level="3.2" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#small-test-grid-search-solution"><i class="fa fa-check"></i><b>3.2</b> Small Test Grid Search Solution</a><ul>
-<li class="chapter" data-level="3.2.1" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#test-snw_vfi_main_grid_search-defaults-small"><i class="fa fa-check"></i><b>3.2.1</b> Test SNW_VFI_MAIN_GRID_SEARCH Defaults Small</a></li>
-<li class="chapter" data-level="3.2.2" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#small-param-results-define-frames-1"><i class="fa fa-check"></i><b>3.2.2</b> Small Param Results Define Frames</a></li>
-<li class="chapter" data-level="3.2.3" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#analyze-savings-and-shocks-2"><i class="fa fa-check"></i><b>3.2.3</b> Analyze Savings and Shocks</a></li>
-<li class="chapter" data-level="3.2.4" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#analyze-kids-and-marriage-and-age-2"><i class="fa fa-check"></i><b>3.2.4</b> Analyze Kids and Marriage and Age</a></li>
-<li class="chapter" data-level="3.2.5" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#analyze-education-and-marriage-and-age-2"><i class="fa fa-check"></i><b>3.2.5</b> Analyze Education and Marriage and Age</a></li>
-</ul></li>
-<li class="chapter" data-level="3.3" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#small-test-exact-solution-vectorized-bisection"><i class="fa fa-check"></i><b>3.3</b> Small Test Exact Solution Vectorized Bisection</a><ul>
-<li class="chapter" data-level="3.3.1" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#test-snw_vfi_main-defaults-small-1"><i class="fa fa-check"></i><b>3.3.1</b> Test SNW_VFI_MAIN Defaults Small</a></li>
-<li class="chapter" data-level="3.3.2" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#small-param-results-define-frames-2"><i class="fa fa-check"></i><b>3.3.2</b> Small Param Results Define Frames</a></li>
-<li class="chapter" data-level="3.3.3" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#analyze-savings-and-shocks-3"><i class="fa fa-check"></i><b>3.3.3</b> Analyze Savings and Shocks</a></li>
-<li class="chapter" data-level="3.3.4" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#analyze-kids-and-marriage-and-age-3"><i class="fa fa-check"></i><b>3.3.4</b> Analyze Kids and Marriage and Age</a></li>
-<li class="chapter" data-level="3.3.5" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#analyze-education-and-marriage-and-age-3"><i class="fa fa-check"></i><b>3.3.5</b> Analyze Education and Marriage and Age</a></li>
-</ul></li>
-<li class="chapter" data-level="3.4" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#small-test-exact-solution-spousal-shocks"><i class="fa fa-check"></i><b>3.4</b> Small Test Exact Solution Spousal Shocks</a><ul>
-<li class="chapter" data-level="3.4.1" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#test-snw_vfi_main-defaults-small-2"><i class="fa fa-check"></i><b>3.4.1</b> Test SNW_VFI_MAIN Defaults Small</a></li>
-<li class="chapter" data-level="3.4.2" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#small-param-results-define-frames-3"><i class="fa fa-check"></i><b>3.4.2</b> Small Param Results Define Frames</a></li>
-<li class="chapter" data-level="3.4.3" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#analyze-savings-and-shocks-4"><i class="fa fa-check"></i><b>3.4.3</b> Analyze Savings and Shocks</a></li>
-<li class="chapter" data-level="3.4.4" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#analyze-kids-and-marriage-and-age-4"><i class="fa fa-check"></i><b>3.4.4</b> Analyze Kids and Marriage and Age</a></li>
-<li class="chapter" data-level="3.4.5" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#analyze-education-and-marriage-and-age-4"><i class="fa fa-check"></i><b>3.4.5</b> Analyze Education and Marriage and Age</a></li>
+<li class="chapter" data-level="1.3" data-path="introduction.html"><a href="introduction.html#the-welfare-check-planning-problem"><i class="fa fa-check"></i><b>1.3</b> The Welfare Check Planning Problem</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="introduction.html"><a href="introduction.html#information-planning-problem"><i class="fa fa-check"></i><b>1.3.1</b> 2019 Information Planning Problem</a></li>
+<li class="chapter" data-level="1.3.2" data-path="introduction.html"><a href="introduction.html#allocation-functions"><i class="fa fa-check"></i><b>1.3.2</b> Allocation Functions</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="solution-with-unemployment.html"><a href="solution-with-unemployment.html"><i class="fa fa-check"></i><b>4</b> Solution with Unemployment</a><ul>
-<li class="chapter" data-level="4.1" data-path="solution-with-unemployment.html"><a href="solution-with-unemployment.html#life-cycle-dynamic-programming-under-unemployment-shock"><i class="fa fa-check"></i><b>4.1</b> Life Cycle Dynamic Programming under Unemployment Shock</a><ul>
-<li class="chapter" data-level="4.1.1" data-path="solution-with-unemployment.html"><a href="solution-with-unemployment.html#test-snw_vfi_unemp-defaults-dense"><i class="fa fa-check"></i><b>4.1.1</b> Test SNW_VFI_UNEMP Defaults Dense</a></li>
-<li class="chapter" data-level="4.1.2" data-path="solution-with-unemployment.html"><a href="solution-with-unemployment.html#dense-param-results-define-frames"><i class="fa fa-check"></i><b>4.1.2</b> Dense Param Results Define Frames</a></li>
-<li class="chapter" data-level="4.1.3" data-path="solution-with-unemployment.html"><a href="solution-with-unemployment.html#analyze-savings-and-shocks-5"><i class="fa fa-check"></i><b>4.1.3</b> Analyze Savings and Shocks</a></li>
-<li class="chapter" data-level="4.1.4" data-path="solution-with-unemployment.html"><a href="solution-with-unemployment.html#analyze-kids-and-marriage-and-age-5"><i class="fa fa-check"></i><b>4.1.4</b> Analyze Kids and Marriage and Age</a></li>
-<li class="chapter" data-level="4.1.5" data-path="solution-with-unemployment.html"><a href="solution-with-unemployment.html#analyze-education-and-marriage-and-age-5"><i class="fa fa-check"></i><b>4.1.5</b> Analyze Education and Marriage and Age</a></li>
+<li class="chapter" data-level="2" data-path="parameters.html"><a href="parameters.html"><i class="fa fa-check"></i><b>2</b> Parameters</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="parameters.html"><a href="parameters.html#model-parameters"><i class="fa fa-check"></i><b>2.1</b> Model Parameters</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="parameters.html"><a href="parameters.html#parameters-used-for-test-simulation"><i class="fa fa-check"></i><b>2.1.1</b> Parameters Used for Test Simulation</a></li>
+<li class="chapter" data-level="2.1.2" data-path="parameters.html"><a href="parameters.html#documentation-run-parameters-docdense"><i class="fa fa-check"></i><b>2.1.2</b> Documentation Run Parameters Docdense</a></li>
+<li class="chapter" data-level="2.1.3" data-path="parameters.html"><a href="parameters.html#parameters-used-for-paper-simulations"><i class="fa fa-check"></i><b>2.1.3</b> Parameters Used for Paper Simulations</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="parameters.html"><a href="parameters.html#model-controls"><i class="fa fa-check"></i><b>2.2</b> Model Controls</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="parameters.html"><a href="parameters.html#test-snw_mp_controls-defaults"><i class="fa fa-check"></i><b>2.2.1</b> Test SNW_MP_CONTROLS Defaults</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html"><i class="fa fa-check"></i><b>5</b> Household Life Cycle Distribution</a><ul>
-<li class="chapter" data-level="5.1" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#distribution-exact-savings-choices"><i class="fa fa-check"></i><b>5.1</b> Distribution Exact Savings Choices</a><ul>
-<li class="chapter" data-level="5.1.1" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#test-snw_ds_main-defaults-dense"><i class="fa fa-check"></i><b>5.1.1</b> Test SNW_DS_MAIN Defaults Dense</a></li>
-<li class="chapter" data-level="5.1.2" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#show-all-info-in-mp_dsvfi_results-more-dense"><i class="fa fa-check"></i><b>5.1.2</b> Show All Info in mp_dsvfi_results More Dense</a></li>
-<li class="chapter" data-level="5.1.3" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#more-dense-param-results-define-frames-1"><i class="fa fa-check"></i><b>5.1.3</b> More Dense Param Results Define Frames</a></li>
-<li class="chapter" data-level="5.1.4" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#analyze-probability-mass-along-age-dimensions"><i class="fa fa-check"></i><b>5.1.4</b> Analyze Probability Mass Along Age Dimensions</a></li>
-<li class="chapter" data-level="5.1.5" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#analyze-probability-mass-asset-and-shock-dimensions"><i class="fa fa-check"></i><b>5.1.5</b> Analyze Probability Mass Asset and Shock Dimensions</a></li>
-<li class="chapter" data-level="5.1.6" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#probability-statistics-a-c-and-v-conditional-on-ages"><i class="fa fa-check"></i><b>5.1.6</b> Probability Statistics A, C and V Conditional on Ages</a></li>
-</ul></li>
-<li class="chapter" data-level="5.2" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#distribution-exact-savings-choices-vectorized"><i class="fa fa-check"></i><b>5.2</b> Distribution Exact Savings Choices Vectorized</a><ul>
-<li class="chapter" data-level="5.2.1" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#test-snw_ds_main_vec-defaults-dense"><i class="fa fa-check"></i><b>5.2.1</b> Test SNW_DS_MAIN_VEC Defaults Dense</a></li>
-<li class="chapter" data-level="5.2.2" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#show-all-info-in-mp_dsvfi_results-more-dense-1"><i class="fa fa-check"></i><b>5.2.2</b> Show All Info in mp_dsvfi_results More Dense</a></li>
-</ul></li>
-<li class="chapter" data-level="5.3" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#distribution-grid-search"><i class="fa fa-check"></i><b>5.3</b> Distribution Grid Search</a><ul>
-<li class="chapter" data-level="5.3.1" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#test-snw_ds_main_grid_search-defaults-more-dense"><i class="fa fa-check"></i><b>5.3.1</b> Test SNW_DS_MAIN_GRID_SEARCH Defaults More Dense</a></li>
-<li class="chapter" data-level="5.3.2" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#show-all-info-in-mp_dsvfi_results-more-dense-2"><i class="fa fa-check"></i><b>5.3.2</b> Show All Info in mp_dsvfi_results More Dense</a></li>
-<li class="chapter" data-level="5.3.3" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#more-dense-param-results-define-frames-2"><i class="fa fa-check"></i><b>5.3.3</b> More Dense Param Results Define Frames</a></li>
-<li class="chapter" data-level="5.3.4" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#analyze-probability-mass-along-age-dimensions-1"><i class="fa fa-check"></i><b>5.3.4</b> Analyze Probability Mass Along Age Dimensions</a></li>
-<li class="chapter" data-level="5.3.5" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#analyze-probability-mass-asset-and-shock-dimensions-1"><i class="fa fa-check"></i><b>5.3.5</b> Analyze Probability Mass Asset and Shock Dimensions</a></li>
-<li class="chapter" data-level="5.3.6" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#probability-statistics-a-c-and-v-conditional-on-ages-1"><i class="fa fa-check"></i><b>5.3.6</b> Probability Statistics A, C and V Conditional on Ages</a></li>
+<li class="chapter" data-level="3" data-path="solving-the-dynamic-life-cycle-problem.html"><a href="solving-the-dynamic-life-cycle-problem.html"><i class="fa fa-check"></i><b>3</b> Solving the Dynamic Life Cycle Problem</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="solving-the-dynamic-life-cycle-problem.html"><a href="solving-the-dynamic-life-cycle-problem.html#life-cycle-dynamic-programming-with-marital-status-children-and-savings"><i class="fa fa-check"></i><b>3.1</b> Life Cycle Dynamic Programming with Marital Status, Children and Savings</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="solving-the-dynamic-life-cycle-problem.html"><a href="solving-the-dynamic-life-cycle-problem.html#test-snw_vfi_main_bisect_vec-defaults"><i class="fa fa-check"></i><b>3.1.1</b> Test SNW_VFI_MAIN_BISECT_VEC Defaults</a></li>
+<li class="chapter" data-level="3.1.2" data-path="solving-the-dynamic-life-cycle-problem.html"><a href="solving-the-dynamic-life-cycle-problem.html#define-parameters"><i class="fa fa-check"></i><b>3.1.2</b> Define Parameters</a></li>
+<li class="chapter" data-level="3.1.3" data-path="solving-the-dynamic-life-cycle-problem.html"><a href="solving-the-dynamic-life-cycle-problem.html#analyze-savings-and-shocks"><i class="fa fa-check"></i><b>3.1.3</b> Analyze Savings and Shocks</a></li>
+<li class="chapter" data-level="3.1.4" data-path="solving-the-dynamic-life-cycle-problem.html"><a href="solving-the-dynamic-life-cycle-problem.html#analyze-kids-and-marriage-and-age"><i class="fa fa-check"></i><b>3.1.4</b> Analyze Kids and Marriage and Age</a></li>
+<li class="chapter" data-level="3.1.5" data-path="solving-the-dynamic-life-cycle-problem.html"><a href="solving-the-dynamic-life-cycle-problem.html#analyze-education-and-marriage-and-age"><i class="fa fa-check"></i><b>3.1.5</b> Analyze Education and Marriage and Age</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="value-of-each-check.html"><a href="value-of-each-check.html"><i class="fa fa-check"></i><b>6</b> Value of Each Check</a><ul>
-<li class="chapter" data-level="6.1" data-path="value-of-each-check.html"><a href="value-of-each-check.html#v-and-c-without-unemployment"><i class="fa fa-check"></i><b>6.1</b> 2020 V and C without Unemployment</a><ul>
-<li class="chapter" data-level="6.1.1" data-path="value-of-each-check.html"><a href="value-of-each-check.html#test-snw_a4chk_wrk_bisec_vec-defaults-dense"><i class="fa fa-check"></i><b>6.1.1</b> Test SNW_A4CHK_WRK_BISEC_VEC Defaults Dense</a></li>
-<li class="chapter" data-level="6.1.2" data-path="value-of-each-check.html"><a href="value-of-each-check.html#dense-param-results-define-frames-1"><i class="fa fa-check"></i><b>6.1.2</b> Dense Param Results Define Frames</a></li>
-<li class="chapter" data-level="6.1.3" data-path="value-of-each-check.html"><a href="value-of-each-check.html#analyze-difference-in-v-and-c-with-check"><i class="fa fa-check"></i><b>6.1.3</b> Analyze Difference in V and C with Check</a></li>
-<li class="chapter" data-level="6.1.4" data-path="value-of-each-check.html"><a href="value-of-each-check.html#analyze-kids-and-marriage-and-age-6"><i class="fa fa-check"></i><b>6.1.4</b> Analyze Kids and Marriage and Age</a></li>
-<li class="chapter" data-level="6.1.5" data-path="value-of-each-check.html"><a href="value-of-each-check.html#analyze-education-and-marriage"><i class="fa fa-check"></i><b>6.1.5</b> Analyze Education and Marriage</a></li>
+<li class="chapter" data-level="4" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html"><i class="fa fa-check"></i><b>4</b> Alternative Value Function Solution Testing</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#small-test-exact-solution-looped-minimizer"><i class="fa fa-check"></i><b>4.1</b> Small Test Exact Solution Looped Minimizer</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#test-snw_vfi_main-defaults-small"><i class="fa fa-check"></i><b>4.1.1</b> Test SNW_VFI_MAIN Defaults Small</a></li>
+<li class="chapter" data-level="4.1.2" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#small-param-results-define-frames"><i class="fa fa-check"></i><b>4.1.2</b> Small Param Results Define Frames</a></li>
+<li class="chapter" data-level="4.1.3" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#analyze-savings-and-shocks-1"><i class="fa fa-check"></i><b>4.1.3</b> Analyze Savings and Shocks</a></li>
 </ul></li>
-<li class="chapter" data-level="6.2" data-path="value-of-each-check.html"><a href="value-of-each-check.html#v-and-c-with-unemployment"><i class="fa fa-check"></i><b>6.2</b> 2020 V and C with Unemployment</a><ul>
-<li class="chapter" data-level="6.2.1" data-path="value-of-each-check.html"><a href="value-of-each-check.html#test-snw_a4chk_unemp_bisec_vec-defaults"><i class="fa fa-check"></i><b>6.2.1</b> Test SNW_A4CHK_UNEMP_BISEC_VEC Defaults</a></li>
-<li class="chapter" data-level="6.2.2" data-path="value-of-each-check.html"><a href="value-of-each-check.html#dense-param-results-define-frames-2"><i class="fa fa-check"></i><b>6.2.2</b> Dense Param Results Define Frames</a></li>
-<li class="chapter" data-level="6.2.3" data-path="value-of-each-check.html"><a href="value-of-each-check.html#analyze-difference-in-v-and-c-with-check-1"><i class="fa fa-check"></i><b>6.2.3</b> Analyze Difference in V and C with Check</a></li>
-<li class="chapter" data-level="6.2.4" data-path="value-of-each-check.html"><a href="value-of-each-check.html#analyze-kids-and-marriage-and-age-7"><i class="fa fa-check"></i><b>6.2.4</b> Analyze Kids and Marriage and Age</a></li>
-<li class="chapter" data-level="6.2.5" data-path="value-of-each-check.html"><a href="value-of-each-check.html#analyze-education-and-marriage-1"><i class="fa fa-check"></i><b>6.2.5</b> Analyze Education and Marriage</a></li>
+<li class="chapter" data-level="4.2" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#small-test-grid-search-solution"><i class="fa fa-check"></i><b>4.2</b> Small Test Grid Search Solution</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#test-snw_vfi_main_grid_search-defaults-small"><i class="fa fa-check"></i><b>4.2.1</b> Test SNW_VFI_MAIN_GRID_SEARCH Defaults Small</a></li>
+<li class="chapter" data-level="4.2.2" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#small-param-results-define-frames-1"><i class="fa fa-check"></i><b>4.2.2</b> Small Param Results Define Frames</a></li>
+<li class="chapter" data-level="4.2.3" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#analyze-savings-and-shocks-2"><i class="fa fa-check"></i><b>4.2.3</b> Analyze Savings and Shocks</a></li>
+<li class="chapter" data-level="4.2.4" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#analyze-kids-and-marriage-and-age-1"><i class="fa fa-check"></i><b>4.2.4</b> Analyze Kids and Marriage and Age</a></li>
+<li class="chapter" data-level="4.2.5" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#analyze-education-and-marriage-and-age-1"><i class="fa fa-check"></i><b>4.2.5</b> Analyze Education and Marriage and Age</a></li>
 </ul></li>
+<li class="chapter" data-level="4.3" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#small-test-exact-solution-vectorized-bisection"><i class="fa fa-check"></i><b>4.3</b> Small Test Exact Solution Vectorized Bisection</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#test-snw_vfi_main-defaults-small-1"><i class="fa fa-check"></i><b>4.3.1</b> Test SNW_VFI_MAIN Defaults Small</a></li>
+<li class="chapter" data-level="4.3.2" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#small-param-results-define-frames-2"><i class="fa fa-check"></i><b>4.3.2</b> Small Param Results Define Frames</a></li>
+<li class="chapter" data-level="4.3.3" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#analyze-savings-and-shocks-3"><i class="fa fa-check"></i><b>4.3.3</b> Analyze Savings and Shocks</a></li>
+<li class="chapter" data-level="4.3.4" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#analyze-kids-and-marriage-and-age-2"><i class="fa fa-check"></i><b>4.3.4</b> Analyze Kids and Marriage and Age</a></li>
+<li class="chapter" data-level="4.3.5" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#analyze-education-and-marriage-and-age-2"><i class="fa fa-check"></i><b>4.3.5</b> Analyze Education and Marriage and Age</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html"><i class="fa fa-check"></i><b>7</b> 2020 Outcomes Full State Space with Savings, Shocks and Education</a><ul>
-<li class="chapter" data-level="7.1" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#full-states-ev-and-ec-of-one-check"><i class="fa fa-check"></i><b>7.1</b> 2020 Full States EV and EC of One Check</a><ul>
-<li class="chapter" data-level="7.1.1" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#test-snw_evuvw20_jaeemk-defaults-dense"><i class="fa fa-check"></i><b>7.1.1</b> Test SNW_EVUVW20_JAEEMK Defaults Dense</a></li>
-<li class="chapter" data-level="7.1.2" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#solve-for-2020-evuvw-with-0-and-2-checks"><i class="fa fa-check"></i><b>7.1.2</b> Solve for 2020 Evuvw With 0 and 2 Checks</a></li>
-<li class="chapter" data-level="7.1.3" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#dense-param-results-define-frames-3"><i class="fa fa-check"></i><b>7.1.3</b> Dense Param Results Define Frames</a></li>
-<li class="chapter" data-level="7.1.4" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#analyze-difference-in-v-and-c-with-check-2"><i class="fa fa-check"></i><b>7.1.4</b> Analyze Difference in V and C with Check</a></li>
-<li class="chapter" data-level="7.1.5" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#analyze-marginal-value-and-mpc-over-yaeta-conditional-on-kids-marry-age-education"><i class="fa fa-check"></i><b>7.1.5</b> Analyze Marginal Value and MPC over Y(a,eta), Conditional On Kids, Marry, Age, Education</a></li>
-<li class="chapter" data-level="7.1.6" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#marginal-value-gains-color-as-shock-conditional-on-age-marital-kids-and-education"><i class="fa fa-check"></i><b>7.1.6</b> Marginal Value Gains, Color as Shock, Conditional on Age, Marital, Kids, and Education</a></li>
-<li class="chapter" data-level="7.1.7" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#marginal-consumption-gains-color-as-shock-conditional-on-age-marital-kids-and-education"><i class="fa fa-check"></i><b>7.1.7</b> Marginal Consumption Gains, Color as Shock, Conditional on Age, Marital, Kids, and Education</a></li>
-<li class="chapter" data-level="7.1.8" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#analyze-kids-and-marriage-and-age-8"><i class="fa fa-check"></i><b>7.1.8</b> Analyze Kids and Marriage and Age</a></li>
-<li class="chapter" data-level="7.1.9" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#analyze-education-and-marriage-2"><i class="fa fa-check"></i><b>7.1.9</b> Analyze Education and Marriage</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="8" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html"><i class="fa fa-check"></i><b>8</b> 2019 Expectations Given Income, Age, Kids and Marital Status</a><ul>
-<li class="chapter" data-level="8.1" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#age-income-kids-marry-ev-and-ec-of-one-check"><i class="fa fa-check"></i><b>8.1</b> 2019 Age, Income, Kids, Marry EV and EC of One Check</a><ul>
-<li class="chapter" data-level="8.1.1" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#test-snw_evuvw19_jmky-defaults-dense"><i class="fa fa-check"></i><b>8.1.1</b> Test SNW_EVUVW19_JMKY Defaults Dense</a></li>
-<li class="chapter" data-level="8.1.2" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#solve-vfi-and-distributon"><i class="fa fa-check"></i><b>8.1.2</b> Solve VFI and Distributon</a></li>
-<li class="chapter" data-level="8.1.3" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#pre-compute-matrixes-and-ymky-mass"><i class="fa fa-check"></i><b>8.1.3</b> Pre-Compute Matrixes and YMKY Mass</a></li>
-<li class="chapter" data-level="8.1.4" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#solve-for-2019-evuvw-with-0-and-2-checks"><i class="fa fa-check"></i><b>8.1.4</b> Solve for 2019 Evuvw With 0 and 2 Checks</a></li>
-<li class="chapter" data-level="8.1.5" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#dense-param-results-define-frames-4"><i class="fa fa-check"></i><b>8.1.5</b> Dense Param Results Define Frames</a></li>
-<li class="chapter" data-level="8.1.6" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#analyze-marginal-value-and-mpc-over-yaeta-conditional-on-kids-marry-age-education-1"><i class="fa fa-check"></i><b>8.1.6</b> Analyze Marginal Value and MPC over Y(a,eta), Conditional On Kids, Marry, Age, Education</a></li>
-</ul></li>
-<li class="chapter" data-level="8.2" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#age-income-kids-marry-ev-and-ec-all-checks"><i class="fa fa-check"></i><b>8.2</b> 2019 Age, Income, Kids, Marry EV and EC All Checks</a><ul>
-<li class="chapter" data-level="8.2.1" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#test-snw_evuvw19_jmky_allchecks-parameters"><i class="fa fa-check"></i><b>8.2.1</b> Test SNW_EVUVW19_JMKY_ALLCHECKS Parameters</a></li>
-<li class="chapter" data-level="8.2.2" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#snw_evuvw19_jmky_allchecks-low-storage-invoke"><i class="fa fa-check"></i><b>8.2.2</b> SNW_EVUVW19_JMKY_ALLCHECKS Low Storage Invoke</a></li>
+<li class="chapter" data-level="4.4" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#small-test-exact-solution-spousal-shocks"><i class="fa fa-check"></i><b>4.4</b> Small Test Exact Solution Spousal Shocks</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#test-snw_vfi_main-defaults-small-2"><i class="fa fa-check"></i><b>4.4.1</b> Test SNW_VFI_MAIN Defaults Small</a></li>
+<li class="chapter" data-level="4.4.2" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#small-param-results-define-frames-3"><i class="fa fa-check"></i><b>4.4.2</b> Small Param Results Define Frames</a></li>
+<li class="chapter" data-level="4.4.3" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#analyze-savings-and-shocks-4"><i class="fa fa-check"></i><b>4.4.3</b> Analyze Savings and Shocks</a></li>
+<li class="chapter" data-level="4.4.4" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#analyze-kids-and-marriage-and-age-3"><i class="fa fa-check"></i><b>4.4.4</b> Analyze Kids and Marriage and Age</a></li>
+<li class="chapter" data-level="4.4.5" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#analyze-education-and-marriage-and-age-3"><i class="fa fa-check"></i><b>4.4.5</b> Analyze Education and Marriage and Age</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="calibration.html"><a href="calibration.html"><i class="fa fa-check"></i><b>9</b> Calibration</a><ul>
-<li class="chapter" data-level="9.1" data-path="calibration.html"><a href="calibration.html#calibrate-beta-and-normalize-gdp"><i class="fa fa-check"></i><b>9.1</b> Calibrate Beta and Normalize GDP</a><ul>
-<li class="chapter" data-level="9.1.1" data-path="calibration.html"><a href="calibration.html#calibrate-parameter-controls-for-snw-functions"><i class="fa fa-check"></i><b>9.1.1</b> Calibrate Parameter Controls for SNW Functions</a></li>
-<li class="chapter" data-level="9.1.2" data-path="calibration.html"><a href="calibration.html#calibrate-routine"><i class="fa fa-check"></i><b>9.1.2</b> Calibrate Routine</a></li>
+<li class="chapter" data-level="5" data-path="solution-with-unemployment.html"><a href="solution-with-unemployment.html"><i class="fa fa-check"></i><b>5</b> Solution with Unemployment</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="solution-with-unemployment.html"><a href="solution-with-unemployment.html#life-cycle-dynamic-programming-under-unemployment-shock"><i class="fa fa-check"></i><b>5.1</b> Life Cycle Dynamic Programming under Unemployment Shock</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="solution-with-unemployment.html"><a href="solution-with-unemployment.html#test-snw_vfi_unemp"><i class="fa fa-check"></i><b>5.1.1</b> Test SNW_VFI_UNEMP</a></li>
+<li class="chapter" data-level="5.1.2" data-path="solution-with-unemployment.html"><a href="solution-with-unemployment.html#define-parameter-frames"><i class="fa fa-check"></i><b>5.1.2</b> Define Parameter Frames</a></li>
+<li class="chapter" data-level="5.1.3" data-path="solution-with-unemployment.html"><a href="solution-with-unemployment.html#analyze-savings-and-shocks-5"><i class="fa fa-check"></i><b>5.1.3</b> Analyze Savings and Shocks</a></li>
+<li class="chapter" data-level="5.1.4" data-path="solution-with-unemployment.html"><a href="solution-with-unemployment.html#analyze-kids-and-marriage-and-age-4"><i class="fa fa-check"></i><b>5.1.4</b> Analyze Kids and Marriage and Age</a></li>
+<li class="chapter" data-level="5.1.5" data-path="solution-with-unemployment.html"><a href="solution-with-unemployment.html#analyze-education-and-marriage-and-age-4"><i class="fa fa-check"></i><b>5.1.5</b> Analyze Education and Marriage and Age</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html"><i class="fa fa-check"></i><b>6</b> Household Life Cycle Distribution</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#distribution-exact-savings-choices"><i class="fa fa-check"></i><b>6.1</b> Distribution Exact Savings Choices</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#test-snw_ds_main-defaults"><i class="fa fa-check"></i><b>6.1.1</b> Test SNW_DS_MAIN Defaults</a></li>
+<li class="chapter" data-level="6.1.2" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#show-all-info-in-mp_dsvfi_results-more-dense"><i class="fa fa-check"></i><b>6.1.2</b> Show All Info in mp_dsvfi_results More Dense</a></li>
+<li class="chapter" data-level="6.1.3" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#more-dense-param-results-define-frames"><i class="fa fa-check"></i><b>6.1.3</b> More Dense Param Results Define Frames</a></li>
+<li class="chapter" data-level="6.1.4" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#analyze-probability-mass-along-age-dimensions"><i class="fa fa-check"></i><b>6.1.4</b> Analyze Probability Mass Along Age Dimensions</a></li>
+<li class="chapter" data-level="6.1.5" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#analyze-probability-mass-asset-and-shock-dimensions"><i class="fa fa-check"></i><b>6.1.5</b> Analyze Probability Mass Asset and Shock Dimensions</a></li>
+<li class="chapter" data-level="6.1.6" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#probability-statistics-a-c-and-v-conditional-on-ages"><i class="fa fa-check"></i><b>6.1.6</b> Probability Statistics A, C and V Conditional on Ages</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#distribution-exact-savings-choices-vectorized"><i class="fa fa-check"></i><b>6.2</b> Distribution Exact Savings Choices Vectorized</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#test-snw_ds_main_vec"><i class="fa fa-check"></i><b>6.2.1</b> Test SNW_DS_MAIN_VEC</a></li>
+<li class="chapter" data-level="6.2.2" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#show-all-info-in-mp_dsvfi_results"><i class="fa fa-check"></i><b>6.2.2</b> Show All Info in mp_dsvfi_results</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#distribution-grid-search"><i class="fa fa-check"></i><b>6.3</b> Distribution Grid Search</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#test-snw_ds_main_grid_search-defaults-more-dense"><i class="fa fa-check"></i><b>6.3.1</b> Test SNW_DS_MAIN_GRID_SEARCH Defaults More Dense</a></li>
+<li class="chapter" data-level="6.3.2" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#show-all-info-in-mp_dsvfi_results-more-dense-1"><i class="fa fa-check"></i><b>6.3.2</b> Show All Info in mp_dsvfi_results More Dense</a></li>
+<li class="chapter" data-level="6.3.3" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#more-dense-param-results-define-frames-1"><i class="fa fa-check"></i><b>6.3.3</b> More Dense Param Results Define Frames</a></li>
+<li class="chapter" data-level="6.3.4" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#analyze-probability-mass-along-age-dimensions-1"><i class="fa fa-check"></i><b>6.3.4</b> Analyze Probability Mass Along Age Dimensions</a></li>
+<li class="chapter" data-level="6.3.5" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#analyze-probability-mass-asset-and-shock-dimensions-1"><i class="fa fa-check"></i><b>6.3.5</b> Analyze Probability Mass Asset and Shock Dimensions</a></li>
+<li class="chapter" data-level="6.3.6" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#probability-statistics-a-c-and-v-conditional-on-ages-1"><i class="fa fa-check"></i><b>6.3.6</b> Probability Statistics A, C and V Conditional on Ages</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="value-of-each-check.html"><a href="value-of-each-check.html"><i class="fa fa-check"></i><b>7</b> Value of Each Check</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="value-of-each-check.html"><a href="value-of-each-check.html#v-and-c-without-unemployment"><i class="fa fa-check"></i><b>7.1</b> 2020 V and C without Unemployment</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="value-of-each-check.html"><a href="value-of-each-check.html#test-snw_a4chk_wrk_bisec_vec-defaults-dense"><i class="fa fa-check"></i><b>7.1.1</b> Test SNW_A4CHK_WRK_BISEC_VEC Defaults Dense</a></li>
+<li class="chapter" data-level="7.1.2" data-path="value-of-each-check.html"><a href="value-of-each-check.html#dense-param-results-define-frames"><i class="fa fa-check"></i><b>7.1.2</b> Dense Param Results Define Frames</a></li>
+<li class="chapter" data-level="7.1.3" data-path="value-of-each-check.html"><a href="value-of-each-check.html#analyze-difference-in-v-and-c-with-check"><i class="fa fa-check"></i><b>7.1.3</b> Analyze Difference in V and C with Check</a></li>
+<li class="chapter" data-level="7.1.4" data-path="value-of-each-check.html"><a href="value-of-each-check.html#analyze-kids-and-marriage-and-age-5"><i class="fa fa-check"></i><b>7.1.4</b> Analyze Kids and Marriage and Age</a></li>
+<li class="chapter" data-level="7.1.5" data-path="value-of-each-check.html"><a href="value-of-each-check.html#analyze-education-and-marriage"><i class="fa fa-check"></i><b>7.1.5</b> Analyze Education and Marriage</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="value-of-each-check.html"><a href="value-of-each-check.html#v-and-c-with-unemployment"><i class="fa fa-check"></i><b>7.2</b> 2020 V and C with Unemployment</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="value-of-each-check.html"><a href="value-of-each-check.html#test-snw_a4chk_unemp_bisec_vec-defaults"><i class="fa fa-check"></i><b>7.2.1</b> Test SNW_A4CHK_UNEMP_BISEC_VEC Defaults</a></li>
+<li class="chapter" data-level="7.2.2" data-path="value-of-each-check.html"><a href="value-of-each-check.html#dense-param-results-define-frames-1"><i class="fa fa-check"></i><b>7.2.2</b> Dense Param Results Define Frames</a></li>
+<li class="chapter" data-level="7.2.3" data-path="value-of-each-check.html"><a href="value-of-each-check.html#analyze-difference-in-v-and-c-with-check-1"><i class="fa fa-check"></i><b>7.2.3</b> Analyze Difference in V and C with Check</a></li>
+<li class="chapter" data-level="7.2.4" data-path="value-of-each-check.html"><a href="value-of-each-check.html#analyze-kids-and-marriage-and-age-6"><i class="fa fa-check"></i><b>7.2.4</b> Analyze Kids and Marriage and Age</a></li>
+<li class="chapter" data-level="7.2.5" data-path="value-of-each-check.html"><a href="value-of-each-check.html#analyze-education-and-marriage-1"><i class="fa fa-check"></i><b>7.2.5</b> Analyze Education and Marriage</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html"><i class="fa fa-check"></i><b>8</b> 2020 Outcomes Full State Space with Savings, Shocks and Education</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#full-states-ev-and-ec-of-one-check"><i class="fa fa-check"></i><b>8.1</b> 2020 Full States EV and EC of One Check</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#test-snw_evuvw20_jaeemk-defaults"><i class="fa fa-check"></i><b>8.1.1</b> Test SNW_EVUVW20_JAEEMK Defaults</a></li>
+<li class="chapter" data-level="8.1.2" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#precompute"><i class="fa fa-check"></i><b>8.1.2</b> Precompute</a></li>
+<li class="chapter" data-level="8.1.3" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#solve-for-2020-evuvw-with-0-and-2-checks"><i class="fa fa-check"></i><b>8.1.3</b> Solve for 2020 Evuvw With 0 and 2 Checks</a></li>
+<li class="chapter" data-level="8.1.4" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#param-results-define-frames"><i class="fa fa-check"></i><b>8.1.4</b> Param Results Define Frames</a></li>
+<li class="chapter" data-level="8.1.5" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#analyze-difference-in-v-and-c-with-check-2"><i class="fa fa-check"></i><b>8.1.5</b> Analyze Difference in V and C with Check</a></li>
+<li class="chapter" data-level="8.1.6" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#analyze-marginal-value-and-mpc-over-yaeta-conditional-on-kids-marry-age-education"><i class="fa fa-check"></i><b>8.1.6</b> Analyze Marginal Value and MPC over Y(a,eta), Conditional On Kids, Marry, Age, Education</a></li>
+<li class="chapter" data-level="8.1.7" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#marginal-value-gains-color-as-shock-conditional-on-age-marital-kids-and-education"><i class="fa fa-check"></i><b>8.1.7</b> Marginal Value Gains, Color as Shock, Conditional on Age, Marital, Kids, and Education</a></li>
+<li class="chapter" data-level="8.1.8" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#marginal-consumption-gains-color-as-shock-conditional-on-age-marital-kids-and-education"><i class="fa fa-check"></i><b>8.1.8</b> Marginal Consumption Gains, Color as Shock, Conditional on Age, Marital, Kids, and Education</a></li>
+<li class="chapter" data-level="8.1.9" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#analyze-kids-and-marriage-and-age-7"><i class="fa fa-check"></i><b>8.1.9</b> Analyze Kids and Marriage and Age</a></li>
+<li class="chapter" data-level="8.1.10" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#analyze-education-and-marriage-2"><i class="fa fa-check"></i><b>8.1.10</b> Analyze Education and Marriage</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#full-states-ev-and-ec-of-one-check-1"><i class="fa fa-check"></i><b>8.2</b> 2019 Full States EV and EC of One Check</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#test-snw_evuvw19_jaeemk-defaults"><i class="fa fa-check"></i><b>8.2.1</b> Test SNW_EVUVW19_JAEEMK Defaults</a></li>
+<li class="chapter" data-level="8.2.2" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#solve-for-2019-evuvw-with-0-and-2-checks"><i class="fa fa-check"></i><b>8.2.2</b> Solve for 2019 Evuvw With 0 and 2 Checks</a></li>
+<li class="chapter" data-level="8.2.3" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#param-results-define-frames-1"><i class="fa fa-check"></i><b>8.2.3</b> Param Results Define Frames</a></li>
+<li class="chapter" data-level="8.2.4" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#analyze-difference-in-v-and-c-with-check-3"><i class="fa fa-check"></i><b>8.2.4</b> Analyze Difference in V and C with Check</a></li>
+<li class="chapter" data-level="8.2.5" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#analyze-marginal-value-and-mpc-over-yaeta-conditional-on-kids-marry-age-education-1"><i class="fa fa-check"></i><b>8.2.5</b> Analyze Marginal Value and MPC over Y(a,eta), Conditional On Kids, Marry, Age, Education</a></li>
+<li class="chapter" data-level="8.2.6" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#marginal-value-gains-color-as-shock-conditional-on-age-marital-kids-and-education-1"><i class="fa fa-check"></i><b>8.2.6</b> Marginal Value Gains, Color as Shock, Conditional on Age, Marital, Kids, and Education</a></li>
+<li class="chapter" data-level="8.2.7" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#marginal-consumption-gains-color-as-shock-conditional-on-age-marital-kids-and-education-1"><i class="fa fa-check"></i><b>8.2.7</b> Marginal Consumption Gains, Color as Shock, Conditional on Age, Marital, Kids, and Education</a></li>
+<li class="chapter" data-level="8.2.8" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#analyze-kids-and-marriage-and-age-8"><i class="fa fa-check"></i><b>8.2.8</b> Analyze Kids and Marriage and Age</a></li>
+<li class="chapter" data-level="8.2.9" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#analyze-education-and-marriage-3"><i class="fa fa-check"></i><b>8.2.9</b> Analyze Education and Marriage</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html"><i class="fa fa-check"></i><b>9</b> 2019 Expectations Given Income, Age, Kids and Marital Status</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#age-income-kids-marry-ev-and-ec-of-one-check"><i class="fa fa-check"></i><b>9.1</b> 2019 Age, Income, Kids, Marry EV and EC of One Check</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#test-snw_evuvw19_jmky-defaults-dense"><i class="fa fa-check"></i><b>9.1.1</b> Test SNW_EVUVW19_JMKY Defaults Dense</a></li>
+<li class="chapter" data-level="9.1.2" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#solve-vfi-and-distributon"><i class="fa fa-check"></i><b>9.1.2</b> Solve VFI and Distributon</a></li>
+<li class="chapter" data-level="9.1.3" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#pre-compute-matrixes-and-ymky-mass"><i class="fa fa-check"></i><b>9.1.3</b> Pre-Compute Matrixes and YMKY Mass</a></li>
+<li class="chapter" data-level="9.1.4" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#solve-for-2019-evuvw-with-0-and-2-checks-1"><i class="fa fa-check"></i><b>9.1.4</b> Solve for 2019 Evuvw With 0 and 2 Checks</a></li>
+<li class="chapter" data-level="9.1.5" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#dense-param-results-define-frames-2"><i class="fa fa-check"></i><b>9.1.5</b> Dense Param Results Define Frames</a></li>
+<li class="chapter" data-level="9.1.6" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#analyze-marginal-value-and-mpc-over-yaeta-conditional-on-kids-marry-age-education-2"><i class="fa fa-check"></i><b>9.1.6</b> Analyze Marginal Value and MPC over Y(a,eta), Conditional On Kids, Marry, Age, Education</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#age-income-kids-marry-ev-and-ec-all-checks"><i class="fa fa-check"></i><b>9.2</b> 2019 Age, Income, Kids, Marry EV and EC All Checks</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#test-snw_evuvw19_jmky_allchecks-parameters"><i class="fa fa-check"></i><b>9.2.1</b> Test SNW_EVUVW19_JMKY_ALLCHECKS Parameters</a></li>
+<li class="chapter" data-level="9.2.2" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#snw_evuvw19_jmky_allchecks-low-storage-invoke"><i class="fa fa-check"></i><b>9.2.2</b> SNW_EVUVW19_JMKY_ALLCHECKS Low Storage Invoke</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="taxes.html"><a href="taxes.html"><i class="fa fa-check"></i><b>10</b> Taxes</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="taxes.html"><a href="taxes.html#compute-for-equilibrium-tax"><i class="fa fa-check"></i><b>10.1</b> Compute for Equilibrium Tax</a>
+<ul>
+<li class="chapter" data-level="10.1.1" data-path="taxes.html"><a href="taxes.html#parameter-controls"><i class="fa fa-check"></i><b>10.1.1</b> Parameter Controls</a></li>
+<li class="chapter" data-level="10.1.2" data-path="taxes.html"><a href="taxes.html#solve-for-new-tax-rate"><i class="fa fa-check"></i><b>10.1.2</b> Solve for New Tax Rate</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="calibration.html"><a href="calibration.html"><i class="fa fa-check"></i><b>11</b> Calibration</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="calibration.html"><a href="calibration.html#model-calibration"><i class="fa fa-check"></i><b>11.1</b> Model Calibration</a>
+<ul>
+<li class="chapter" data-level="11.1.1" data-path="calibration.html"><a href="calibration.html#calibrate-parameter-controls-for-snw-functions"><i class="fa fa-check"></i><b>11.1.1</b> Calibrate Parameter Controls for SNW Functions</a></li>
+<li class="chapter" data-level="11.1.2" data-path="calibration.html"><a href="calibration.html#calibrate-routine"><i class="fa fa-check"></i><b>11.1.2</b> Calibrate Routine</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="summary-statistics.html"><a href="summary-statistics.html"><i class="fa fa-check"></i><b>12</b> Summary Statistics</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="summary-statistics.html"><a href="summary-statistics.html#full-states-mpc-and-distributional-statistics-by-marital-kids-and-income-groups."><i class="fa fa-check"></i><b>12.1</b> 2019 Full States MPC and Distributional Statistics by Marital, Kids, and Income Groups.</a>
+<ul>
+<li class="chapter" data-level="12.1.1" data-path="summary-statistics.html"><a href="summary-statistics.html#test-snw_evuvw19_jaeemk-defaults-dense"><i class="fa fa-check"></i><b>12.1.1</b> Test SNW_EVUVW19_JAEEMK Defaults Dense</a></li>
+<li class="chapter" data-level="12.1.2" data-path="summary-statistics.html"><a href="summary-statistics.html#solve-for-2019-evuvw-with-0-and-1-checks"><i class="fa fa-check"></i><b>12.1.2</b> Solve for 2019 Evuvw With 0 and 1 Checks</a></li>
+<li class="chapter" data-level="12.1.3" data-path="summary-statistics.html"><a href="summary-statistics.html#additional-variables"><i class="fa fa-check"></i><b>12.1.3</b> Additional Variables</a></li>
+<li class="chapter" data-level="12.1.4" data-path="summary-statistics.html"><a href="summary-statistics.html#adjust-to-probability-mass-function"><i class="fa fa-check"></i><b>12.1.4</b> Adjust to Probability Mass Function</a></li>
+<li class="chapter" data-level="12.1.5" data-path="summary-statistics.html"><a href="summary-statistics.html#age-bounds"><i class="fa fa-check"></i><b>12.1.5</b> Age Bounds</a></li>
+<li class="chapter" data-level="12.1.6" data-path="summary-statistics.html"><a href="summary-statistics.html#scale-statistics-to-thousands-of-dollars"><i class="fa fa-check"></i><b>12.1.6</b> Scale Statistics to Thousands of Dollars</a></li>
+<li class="chapter" data-level="12.1.7" data-path="summary-statistics.html"><a href="summary-statistics.html#distributional-statistics-overall-all-ages"><i class="fa fa-check"></i><b>12.1.7</b> Distributional Statistics Overall All Ages</a></li>
+<li class="chapter" data-level="12.1.8" data-path="summary-statistics.html"><a href="summary-statistics.html#distributional-statistics-overall-18-to-64"><i class="fa fa-check"></i><b>12.1.8</b> Distributional Statistics Overall 18 to 64</a></li>
+<li class="chapter" data-level="12.1.9" data-path="summary-statistics.html"><a href="summary-statistics.html#distributional-statistics-by-kids-count"><i class="fa fa-check"></i><b>12.1.9</b> Distributional Statistics By Kids Count</a></li>
+<li class="chapter" data-level="12.1.10" data-path="summary-statistics.html"><a href="summary-statistics.html#distributional-statistics-by-marital-status-and-kids-count"><i class="fa fa-check"></i><b>12.1.10</b> Distributional Statistics By Marital Status and Kids Count</a></li>
+<li class="chapter" data-level="12.1.11" data-path="summary-statistics.html"><a href="summary-statistics.html#distributional-statistics-by-marital-status-kids-count-and-income-bins"><i class="fa fa-check"></i><b>12.1.11</b> Distributional Statistics By Marital Status, Kids Count and Income Bins</a></li>
+<li class="chapter" data-level="12.1.12" data-path="summary-statistics.html"><a href="summary-statistics.html#store-aggregate-to-file"><i class="fa fa-check"></i><b>12.1.12</b> Store Aggregate To File</a></li>
+<li class="chapter" data-level="12.1.13" data-path="summary-statistics.html"><a href="summary-statistics.html#store-key-stats-to-compare-to-key-us-distributional-statistics"><i class="fa fa-check"></i><b>12.1.13</b> Store Key Stats to Compare to Key US Distributional Statistics</a></li>
 </ul></li>
 </ul></li>
 <li class="appendix"><span><b>Appendix</b></span></li>
-<li class="chapter" data-level="A" data-path="index-and-code-links.html"><a href="index-and-code-links.html"><i class="fa fa-check"></i><b>A</b> Index and Code Links</a><ul>
-<li class="chapter" data-level="A.1" data-path="index-and-code-links.html"><a href="index-and-code-links.html#parameters-links"><i class="fa fa-check"></i><b>A.1</b> Parameters links</a></li>
-<li class="chapter" data-level="A.2" data-path="index-and-code-links.html"><a href="index-and-code-links.html#solving-the-dynamic-life-cycle-problem-links"><i class="fa fa-check"></i><b>A.2</b> Solving the Dynamic Life Cycle Problem links</a></li>
-<li class="chapter" data-level="A.3" data-path="index-and-code-links.html"><a href="index-and-code-links.html#alternative-value-function-solution-testing-links"><i class="fa fa-check"></i><b>A.3</b> Alternative Value Function Solution Testing links</a></li>
-<li class="chapter" data-level="A.4" data-path="index-and-code-links.html"><a href="index-and-code-links.html#solution-with-unemployment-links"><i class="fa fa-check"></i><b>A.4</b> Solution with Unemployment links</a></li>
-<li class="chapter" data-level="A.5" data-path="index-and-code-links.html"><a href="index-and-code-links.html#household-life-cycle-distribution-links"><i class="fa fa-check"></i><b>A.5</b> Household Life Cycle Distribution links</a></li>
-<li class="chapter" data-level="A.6" data-path="index-and-code-links.html"><a href="index-and-code-links.html#value-of-each-check-links"><i class="fa fa-check"></i><b>A.6</b> Value of Each Check links</a></li>
-<li class="chapter" data-level="A.7" data-path="index-and-code-links.html"><a href="index-and-code-links.html#outcomes-full-state-space-with-savings-shocks-and-education-links"><i class="fa fa-check"></i><b>A.7</b> Outcomes Full State Space with Savings, Shocks and Education links</a></li>
-<li class="chapter" data-level="A.8" data-path="index-and-code-links.html"><a href="index-and-code-links.html#expectations-given-income-age-kids-and-marital-status-links"><i class="fa fa-check"></i><b>A.8</b> Expectations Given Income, Age, Kids and Marital Status links</a></li>
-<li class="chapter" data-level="A.9" data-path="index-and-code-links.html"><a href="index-and-code-links.html#calibration-links"><i class="fa fa-check"></i><b>A.9</b> Calibration links</a></li>
+<li class="chapter" data-level="A" data-path="index-and-code-links.html"><a href="index-and-code-links.html"><i class="fa fa-check"></i><b>A</b> Index and Code Links</a>
+<ul>
+<li class="chapter" data-level="A.1" data-path="index-and-code-links.html"><a href="index-and-code-links.html#introduction-links"><i class="fa fa-check"></i><b>A.1</b> Introduction links</a></li>
+<li class="chapter" data-level="A.2" data-path="index-and-code-links.html"><a href="index-and-code-links.html#parameters-links"><i class="fa fa-check"></i><b>A.2</b> Parameters links</a></li>
+<li class="chapter" data-level="A.3" data-path="index-and-code-links.html"><a href="index-and-code-links.html#solving-the-dynamic-life-cycle-problem-links"><i class="fa fa-check"></i><b>A.3</b> Solving the Dynamic Life Cycle Problem links</a></li>
+<li class="chapter" data-level="A.4" data-path="index-and-code-links.html"><a href="index-and-code-links.html#alternative-value-function-solution-testing-links"><i class="fa fa-check"></i><b>A.4</b> Alternative Value Function Solution Testing links</a></li>
+<li class="chapter" data-level="A.5" data-path="index-and-code-links.html"><a href="index-and-code-links.html#solution-with-unemployment-links"><i class="fa fa-check"></i><b>A.5</b> Solution with Unemployment links</a></li>
+<li class="chapter" data-level="A.6" data-path="index-and-code-links.html"><a href="index-and-code-links.html#household-life-cycle-distribution-links"><i class="fa fa-check"></i><b>A.6</b> Household Life Cycle Distribution links</a></li>
+<li class="chapter" data-level="A.7" data-path="index-and-code-links.html"><a href="index-and-code-links.html#value-of-each-check-links"><i class="fa fa-check"></i><b>A.7</b> Value of Each Check links</a></li>
+<li class="chapter" data-level="A.8" data-path="index-and-code-links.html"><a href="index-and-code-links.html#outcomes-full-state-space-with-savings-shocks-and-education-links"><i class="fa fa-check"></i><b>A.8</b> Outcomes Full State Space with Savings, Shocks and Education links</a></li>
+<li class="chapter" data-level="A.9" data-path="index-and-code-links.html"><a href="index-and-code-links.html#expectations-given-income-age-kids-and-marital-status-links"><i class="fa fa-check"></i><b>A.9</b> Expectations Given Income, Age, Kids and Marital Status links</a></li>
+<li class="chapter" data-level="A.10" data-path="index-and-code-links.html"><a href="index-and-code-links.html#taxes-links"><i class="fa fa-check"></i><b>A.10</b> Taxes links</a></li>
+<li class="chapter" data-level="A.11" data-path="index-and-code-links.html"><a href="index-and-code-links.html#calibration-links"><i class="fa fa-check"></i><b>A.11</b> Calibration links</a></li>
+<li class="chapter" data-level="A.12" data-path="index-and-code-links.html"><a href="index-and-code-links.html#summary-statistics-links"><i class="fa fa-check"></i><b>A.12</b> Summary Statistics links</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://fanwangecon.github.io/PrjOptiSNW/bookdown/index.html" target="blank">PrjOptiSNW Bookdown</a></li>
@@ -232,7 +325,7 @@
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">SNW Dynamic Life Cycle and Welfare Checks Code Companion</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">NSW Dynamic Life Cycle and Welfare Checks Code Companion</a>
           </h1>
         </div>
 
@@ -240,21 +333,22 @@
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="solution-with-unemployment" class="section level1">
-<h1><span class="header-section-number">Chapter 4</span> Solution with Unemployment</h1>
+<div id="solution-with-unemployment" class="section level1" number="5">
+<h1><span class="header-section-number">Chapter 5</span> Solution with Unemployment</h1>
 
-<div id="life-cycle-dynamic-programming-under-unemployment-shock" class="section level2">
-<h2><span class="header-section-number">4.1</span> Life Cycle Dynamic Programming under Unemployment Shock</h2>
+<div id="life-cycle-dynamic-programming-under-unemployment-shock" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> Life Cycle Dynamic Programming under Unemployment Shock</h2>
 <p>This is the example vignette for function:
 <a href="https://github.com/FanWangEcon/PrjOptiSNW/tree/master/PrjOptiSNW/svalpol/snw_vfi_main_bisec_vec.m"><strong>snw_vfi_main_bisec_vec</strong></a>
 from the <a href="https://fanwangecon.github.io/PrjOptiSNW/"><strong>PrjOptiSNW
 Package</strong></a><strong>.</strong> This function
-solves for policy function using Exact Vectorized Solution. Dense
-Solution Analysis. Unemployment Shock. The file focuses on the change in
-value function, asset choice, and consumption choice given a one period
+solves for policy function using Exact Vectorized Solution. Value in
+2020 with surprise COVID unemployment Shock, with non-covid year Value
+as the continuation function. The file focuses on the change in value
+function, asset choice, and consumption choice given a one period
 unemployment shock (that does not reappear in the future again).</p>
-<div id="test-snw_vfi_unemp-defaults-dense" class="section level3">
-<h3><span class="header-section-number">4.1.1</span> Test SNW_VFI_UNEMP Defaults Dense</h3>
+<div id="test-snw_vfi_unemp" class="section level3" number="5.1.1">
+<h3><span class="header-section-number">5.1.1</span> Test SNW_VFI_UNEMP</h3>
 <p>Solve the Regular Value and Also the Unemployment Value.</p>
 <p>First, solve for value without unemployment issue (use the vectorized
 code that was previously tested):</p>
@@ -263,90 +357,90 @@ mp_controls = snw_mp_control(&#39;default_test&#39;);
 [V_VFI_ss,ap_VFI_ss,cons_VFI_ss,mp_valpol_more_ss] = ...
     snw_vfi_main_bisec_vec(mp_params, mp_controls);
 
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:83 of 82, time-this-age:1.8205
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:82 of 82, time-this-age:3.1788
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:81 of 82, time-this-age:3.0847
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:80 of 82, time-this-age:3.0421
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:79 of 82, time-this-age:3.0229
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:78 of 82, time-this-age:3.075
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:77 of 82, time-this-age:3.0089
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:76 of 82, time-this-age:3.0223
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:75 of 82, time-this-age:3.0628
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:74 of 82, time-this-age:2.9162
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:73 of 82, time-this-age:2.8128
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:72 of 82, time-this-age:2.8287
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:71 of 82, time-this-age:2.8302
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:70 of 82, time-this-age:2.8056
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:69 of 82, time-this-age:2.7875
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:68 of 82, time-this-age:2.9285
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:67 of 82, time-this-age:2.9005
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:66 of 82, time-this-age:2.8196
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:65 of 82, time-this-age:2.791
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:64 of 82, time-this-age:2.8039
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:63 of 82, time-this-age:2.7649
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:62 of 82, time-this-age:2.8592
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:61 of 82, time-this-age:2.7595
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:60 of 82, time-this-age:2.7984
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:59 of 82, time-this-age:2.8238
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:58 of 82, time-this-age:2.8372
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:57 of 82, time-this-age:2.847
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:56 of 82, time-this-age:2.8287
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:55 of 82, time-this-age:2.8489
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:54 of 82, time-this-age:2.8663
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:53 of 82, time-this-age:2.8091
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:52 of 82, time-this-age:2.8397
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:51 of 82, time-this-age:2.8433
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:50 of 82, time-this-age:2.8445
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:49 of 82, time-this-age:2.7143
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:48 of 82, time-this-age:2.6729
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:47 of 82, time-this-age:2.9111
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:46 of 82, time-this-age:2.8268
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:45 of 82, time-this-age:2.8303
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:44 of 82, time-this-age:2.8012
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:43 of 82, time-this-age:2.7892
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:42 of 82, time-this-age:2.8242
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:41 of 82, time-this-age:2.9846
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:40 of 82, time-this-age:2.8347
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:39 of 82, time-this-age:2.8005
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:38 of 82, time-this-age:2.7936
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:37 of 82, time-this-age:2.8617
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:36 of 82, time-this-age:2.8021
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:35 of 82, time-this-age:2.821
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:34 of 82, time-this-age:2.8082
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:33 of 82, time-this-age:2.7967
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:32 of 82, time-this-age:2.8976
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:31 of 82, time-this-age:2.8975
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:30 of 82, time-this-age:3.0965
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:29 of 82, time-this-age:3.169
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:28 of 82, time-this-age:3.148
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:27 of 82, time-this-age:3.1235
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:26 of 82, time-this-age:3.1654
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:25 of 82, time-this-age:3.0846
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:24 of 82, time-this-age:3.2605
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:23 of 82, time-this-age:2.8673
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:22 of 82, time-this-age:2.8366
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:21 of 82, time-this-age:2.9026
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:20 of 82, time-this-age:2.8865
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:19 of 82, time-this-age:2.8479
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:18 of 82, time-this-age:2.8406
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:17 of 82, time-this-age:2.9797
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:16 of 82, time-this-age:3.2286
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:15 of 82, time-this-age:3.0905
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:14 of 82, time-this-age:2.9062
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:13 of 82, time-this-age:2.8862
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:12 of 82, time-this-age:2.948
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:11 of 82, time-this-age:2.9553
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:10 of 82, time-this-age:2.9076
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:9 of 82, time-this-age:2.9098
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:8 of 82, time-this-age:2.8502
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:7 of 82, time-this-age:2.8649
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:6 of 82, time-this-age:2.8968
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:5 of 82, time-this-age:2.8606
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:4 of 82, time-this-age:2.835
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:3 of 82, time-this-age:2.8988
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:2 of 82, time-this-age:2.8594
-SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:1 of 82, time-this-age:2.867
-Completed SNW_VFI_MAIN_BISEC_VEC;SNW_MP_PARAM=default_docdense;SNW_MP_CONTROL=default_test;time=240.5285
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:83 of 82, time-this-age:7.0273
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:82 of 82, time-this-age:5.7228
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:81 of 82, time-this-age:5.7083
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:80 of 82, time-this-age:5.7427
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:79 of 82, time-this-age:5.6962
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:78 of 82, time-this-age:5.7223
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:77 of 82, time-this-age:5.7035
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:76 of 82, time-this-age:5.8126
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:75 of 82, time-this-age:5.7166
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:74 of 82, time-this-age:5.6915
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:73 of 82, time-this-age:5.6971
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:72 of 82, time-this-age:5.7128
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:71 of 82, time-this-age:5.6819
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:70 of 82, time-this-age:5.7212
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:69 of 82, time-this-age:5.6814
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:68 of 82, time-this-age:5.6867
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:67 of 82, time-this-age:5.6787
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:66 of 82, time-this-age:5.7367
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:65 of 82, time-this-age:5.7251
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:64 of 82, time-this-age:5.7155
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:63 of 82, time-this-age:5.6715
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:62 of 82, time-this-age:6.3362
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:61 of 82, time-this-age:5.6611
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:60 of 82, time-this-age:5.6816
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:59 of 82, time-this-age:5.6858
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:58 of 82, time-this-age:5.6664
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:57 of 82, time-this-age:5.7059
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:56 of 82, time-this-age:5.6912
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:55 of 82, time-this-age:5.7074
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:54 of 82, time-this-age:5.7189
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:53 of 82, time-this-age:5.8154
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:52 of 82, time-this-age:6.2071
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:51 of 82, time-this-age:5.7038
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:50 of 82, time-this-age:5.7383
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:49 of 82, time-this-age:5.7201
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:48 of 82, time-this-age:5.7148
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:47 of 82, time-this-age:5.8791
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:46 of 82, time-this-age:5.8699
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:45 of 82, time-this-age:5.9276
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:44 of 82, time-this-age:5.8993
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:43 of 82, time-this-age:5.9322
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:42 of 82, time-this-age:5.8956
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:41 of 82, time-this-age:5.892
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:40 of 82, time-this-age:5.941
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:39 of 82, time-this-age:5.9249
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:38 of 82, time-this-age:5.9262
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:37 of 82, time-this-age:5.9554
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:36 of 82, time-this-age:5.9082
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:35 of 82, time-this-age:5.8864
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:34 of 82, time-this-age:5.846
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:33 of 82, time-this-age:5.9126
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:32 of 82, time-this-age:5.918
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:31 of 82, time-this-age:5.873
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:30 of 82, time-this-age:5.9253
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:29 of 82, time-this-age:5.8694
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:28 of 82, time-this-age:5.9057
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:27 of 82, time-this-age:5.9302
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:26 of 82, time-this-age:5.9329
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:25 of 82, time-this-age:6.1905
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:24 of 82, time-this-age:5.9237
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:23 of 82, time-this-age:5.9634
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:22 of 82, time-this-age:5.8632
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:21 of 82, time-this-age:6.2308
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:20 of 82, time-this-age:5.9032
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:19 of 82, time-this-age:5.916
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:18 of 82, time-this-age:5.9014
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:17 of 82, time-this-age:5.852
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:16 of 82, time-this-age:5.8767
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:15 of 82, time-this-age:5.9424
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:14 of 82, time-this-age:5.8916
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:13 of 82, time-this-age:5.9423
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:12 of 82, time-this-age:5.8851
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:11 of 82, time-this-age:5.8739
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:10 of 82, time-this-age:5.8917
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:9 of 82, time-this-age:5.9436
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:8 of 82, time-this-age:5.9345
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:7 of 82, time-this-age:5.9111
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:6 of 82, time-this-age:5.9251
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:5 of 82, time-this-age:5.9407
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:4 of 82, time-this-age:5.9242
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:3 of 82, time-this-age:5.9242
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:2 of 82, time-this-age:5.8728
+SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:1 of 82, time-this-age:5.9204
+Completed SNW_VFI_MAIN_BISEC_VEC;SNW_MP_PARAM=default_docdense;SNW_MP_CONTROL=default_test;time=486.9799
 ----------------------------------------
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 CONTAINER NAME: mp_outcomes ND Array (Matrix etc)
@@ -403,97 +497,102 @@ xxx TABLE:cons_VFI xxxxxxxxxxxxxxxxxx
     r82      0.2179     0.21844     0.22216     0.23228     0.25197    66.755     69.238      71.77     76.192     80.765 
     r83      0.2179     0.21844     0.22216     0.23228     0.25197    116.87     122.69     128.71     134.92     141.34 </code></pre>
 <p>Second, solve for the unemployment value, use the exact-bisec result
-code, call the snw_vfi_main_bisec_vec.m function with a third input
-of existing value:</p>
+code, call the snw_vfi_main_bisec_vec.m function with a third input of
+existing value. xi is the share of income lost during covid year given
+surprise covid shock, b is the share of income loss that is covered by
+unemployment insurance. xi=0.5 and b=0 means will lose 50 percent of
+income given COVID shocks, and the loss will not be covered at all by
+unemployment insurance.</p>
 <pre><code>mp_params(&#39;xi&#39;) = 0.5;
 mp_params(&#39;b&#39;) = 0;
+mp_params(&#39;a2_covidyr&#39;) = mp_params(&#39;a2_covidyr_manna_heaven&#39;);
 [V_VFI_unemp,ap_VFI_unemp,cons_VFI_unemp,mp_valpol_more_unemp] = ...
     snw_vfi_main_bisec_vec(mp_params, mp_controls, V_VFI_ss);
 
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 1 of 82, time-this-age:2.8563
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 2 of 82, time-this-age:3.0648
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 3 of 82, time-this-age:2.7929
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 4 of 82, time-this-age:2.8051
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 5 of 82, time-this-age:2.8264
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 6 of 82, time-this-age:2.836
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 7 of 82, time-this-age:2.8277
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 8 of 82, time-this-age:2.7941
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 9 of 82, time-this-age:2.8232
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 10 of 82, time-this-age:2.7723
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 11 of 82, time-this-age:2.8291
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 12 of 82, time-this-age:2.7968
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 13 of 82, time-this-age:2.848
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 14 of 82, time-this-age:2.8093
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 15 of 82, time-this-age:2.8312
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 16 of 82, time-this-age:2.8063
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 17 of 82, time-this-age:2.8041
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 18 of 82, time-this-age:2.8034
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 19 of 82, time-this-age:2.796
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 20 of 82, time-this-age:2.8926
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 21 of 82, time-this-age:3.4005
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 22 of 82, time-this-age:3.0663
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 23 of 82, time-this-age:2.839
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 24 of 82, time-this-age:3.0613
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 25 of 82, time-this-age:3.1482
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 26 of 82, time-this-age:2.9432
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 27 of 82, time-this-age:2.964
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 28 of 82, time-this-age:2.9991
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 29 of 82, time-this-age:2.7389
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 30 of 82, time-this-age:2.8259
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 31 of 82, time-this-age:2.7929
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 32 of 82, time-this-age:2.7872
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 33 of 82, time-this-age:2.8341
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 34 of 82, time-this-age:2.9876
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 35 of 82, time-this-age:3.0836
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 36 of 82, time-this-age:2.7955
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 37 of 82, time-this-age:2.9634
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 38 of 82, time-this-age:2.7022
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 39 of 82, time-this-age:2.6388
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 40 of 82, time-this-age:2.6754
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 41 of 82, time-this-age:2.6157
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 42 of 82, time-this-age:2.7739
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 43 of 82, time-this-age:3.0513
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 44 of 82, time-this-age:2.6043
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 45 of 82, time-this-age:2.6203
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 46 of 82, time-this-age:2.9099
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 47 of 82, time-this-age:2.8328
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 48 of 82, time-this-age:2.5949
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 49 of 82, time-this-age:2.5623
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 50 of 82, time-this-age:2.4733
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 51 of 82, time-this-age:2.4966
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 52 of 82, time-this-age:2.4712
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 53 of 82, time-this-age:2.5194
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 54 of 82, time-this-age:2.5973
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 55 of 82, time-this-age:2.6167
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 56 of 82, time-this-age:2.8954
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 57 of 82, time-this-age:2.6303
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 58 of 82, time-this-age:2.5062
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 59 of 82, time-this-age:2.8318
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 60 of 82, time-this-age:3.1076
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 61 of 82, time-this-age:2.4185
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 62 of 82, time-this-age:2.5062
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 63 of 82, time-this-age:3.0883
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 64 of 82, time-this-age:2.715
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 65 of 82, time-this-age:2.5774
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 66 of 82, time-this-age:2.6634
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 67 of 82, time-this-age:2.4816
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 68 of 82, time-this-age:2.4953
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 69 of 82, time-this-age:2.7169
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 70 of 82, time-this-age:2.5446
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 71 of 82, time-this-age:2.6734
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 72 of 82, time-this-age:2.5802
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 73 of 82, time-this-age:2.5602
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 74 of 82, time-this-age:2.5524
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 75 of 82, time-this-age:2.5331
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 76 of 82, time-this-age:2.5831
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 77 of 82, time-this-age:2.5422
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 78 of 82, time-this-age:2.5236
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 79 of 82, time-this-age:2.5017
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 80 of 82, time-this-age:2.4577
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 81 of 82, time-this-age:2.7372
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 82 of 82, time-this-age:2.71
-SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 83 of 82, time-this-age:1.6049
-Completed SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock;SNW_MP_PARAM=default_docdense;SNW_MP_CONTROL=default_test;time=227.9458
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 1 of 82, time-this-age:5.8952
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 2 of 82, time-this-age:5.8156
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 3 of 82, time-this-age:5.8749
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 4 of 82, time-this-age:6.0917
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 5 of 82, time-this-age:5.8328
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 6 of 82, time-this-age:5.8616
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 7 of 82, time-this-age:5.8821
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 8 of 82, time-this-age:5.8446
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 9 of 82, time-this-age:5.8487
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 10 of 82, time-this-age:5.8319
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 11 of 82, time-this-age:5.8572
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 12 of 82, time-this-age:5.884
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 13 of 82, time-this-age:5.84
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 14 of 82, time-this-age:5.8824
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 15 of 82, time-this-age:5.8512
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 16 of 82, time-this-age:5.8691
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 17 of 82, time-this-age:5.8793
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 18 of 82, time-this-age:5.8426
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 19 of 82, time-this-age:5.8459
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 20 of 82, time-this-age:5.8282
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 21 of 82, time-this-age:5.833
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 22 of 82, time-this-age:5.825
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 23 of 82, time-this-age:5.8161
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 24 of 82, time-this-age:5.816
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 25 of 82, time-this-age:5.8359
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 26 of 82, time-this-age:5.865
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 27 of 82, time-this-age:5.8444
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 28 of 82, time-this-age:5.8535
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 29 of 82, time-this-age:5.8373
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 30 of 82, time-this-age:5.839
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 31 of 82, time-this-age:7.5134
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 32 of 82, time-this-age:5.8543
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 33 of 82, time-this-age:5.9343
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 34 of 82, time-this-age:5.8427
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 35 of 82, time-this-age:5.8876
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 36 of 82, time-this-age:5.866
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 37 of 82, time-this-age:5.8107
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 38 of 82, time-this-age:6.3797
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 39 of 82, time-this-age:5.8577
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 40 of 82, time-this-age:5.8751
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 41 of 82, time-this-age:7.5158
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 42 of 82, time-this-age:5.8538
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 43 of 82, time-this-age:5.8376
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 44 of 82, time-this-age:5.8281
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 45 of 82, time-this-age:5.8513
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 46 of 82, time-this-age:5.7947
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 47 of 82, time-this-age:5.8408
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 48 of 82, time-this-age:6.7877
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 49 of 82, time-this-age:5.5985
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 50 of 82, time-this-age:5.5925
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 51 of 82, time-this-age:5.634
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 52 of 82, time-this-age:5.6392
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 53 of 82, time-this-age:5.6292
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 54 of 82, time-this-age:5.7258
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 55 of 82, time-this-age:5.6309
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 56 of 82, time-this-age:5.6201
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 57 of 82, time-this-age:5.664
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 58 of 82, time-this-age:5.6269
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 59 of 82, time-this-age:5.6471
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 60 of 82, time-this-age:5.6017
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 61 of 82, time-this-age:5.6667
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 62 of 82, time-this-age:5.6161
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 63 of 82, time-this-age:5.6465
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 64 of 82, time-this-age:5.7106
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 65 of 82, time-this-age:5.6156
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 66 of 82, time-this-age:5.5758
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 67 of 82, time-this-age:5.6609
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 68 of 82, time-this-age:5.6021
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 69 of 82, time-this-age:5.6702
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 70 of 82, time-this-age:5.6106
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 71 of 82, time-this-age:5.6488
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 72 of 82, time-this-age:5.6466
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 73 of 82, time-this-age:5.6387
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 74 of 82, time-this-age:5.6332
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 75 of 82, time-this-age:5.6365
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 76 of 82, time-this-age:5.6274
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 77 of 82, time-this-age:5.6614
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 78 of 82, time-this-age:5.6463
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 79 of 82, time-this-age:5.6609
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 80 of 82, time-this-age:5.6158
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 81 of 82, time-this-age:5.6678
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 82 of 82, time-this-age:5.6513
+SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age 83 of 82, time-this-age:6.9657
+Completed SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock;SNW_MP_PARAM=default_docdense;SNW_MP_CONTROL=default_test;time=485.1951
 ----------------------------------------
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 CONTAINER NAME: mp_outcomes ND Array (Matrix etc)
@@ -554,8 +653,8 @@ xxx TABLE:cons_VFI xxxxxxxxxxxxxxxxxx
 ap_VFI_unemp_drop = ap_VFI_ss - ap_VFI_unemp;
 cons_VFI_unemp_drop = cons_VFI_ss - cons_VFI_unemp;</code></pre>
 </div>
-<div id="dense-param-results-define-frames" class="section level3">
-<h3><span class="header-section-number">4.1.2</span> Dense Param Results Define Frames</h3>
+<div id="define-parameter-frames" class="section level3" number="5.1.2">
+<h3><span class="header-section-number">5.1.2</span> Define Parameter Frames</h3>
 <p>Define the matrix dimensions names and dimension vector values. Policy
 and Value Functions share the same ND dimensional structure.</p>
 <pre><code>% Grids:
@@ -576,8 +675,8 @@ cl_mp_datasetdesc{4} = containers.Map({&#39;name&#39;, &#39;labval&#39;}, {&#39;
 cl_mp_datasetdesc{5} = containers.Map({&#39;name&#39;, &#39;labval&#39;}, {&#39;marry&#39;, marry_grid});
 cl_mp_datasetdesc{6} = containers.Map({&#39;name&#39;, &#39;labval&#39;}, {&#39;kids&#39;, kids_grid});</code></pre>
 </div>
-<div id="analyze-savings-and-shocks-5" class="section level3">
-<h3><span class="header-section-number">4.1.3</span> Analyze Savings and Shocks</h3>
+<div id="analyze-savings-and-shocks-5" class="section level3" number="5.1.3">
+<h3><span class="header-section-number">5.1.3</span> Analyze Savings and Shocks</h3>
 <p>First, analyze Savings Levels and Shocks, Aggregate Over All Others, and
 do various other calculations.</p>
 <pre><code>% Generate some Data
@@ -619,11 +718,12 @@ xxx  MEAN(AP(A,Z) - AP(A,Z|unemp))  xxxxxxxxxxxxxxxxxxxxxxxxxxx
       3       0.0041199    1.1212e-05    3.4693e-05    5.9476e-05    6.9903e-05    7.1182e-05    6.7854e-05    6.2365e-05    5.6389e-05    5.0657e-05     4.854e-05     4.7976e-05     4.8328e-05      4.929e-05     5.0776e-05     5.3465e-05      5.943e-05     7.0254e-05     8.8901e-05     0.00011009     0.00014825       0.000218     0.00033466     0.00052182     0.00078985      0.0011817      0.0016899      0.0023392        0.00317      0.0041587      0.0054078      0.0069112      0.0086097      0.010621       0.012908       0.015497       0.018457       0.021907       0.025696       0.030096       0.034978       0.040411       0.046618       0.053448       0.061199       0.069814       0.079476       0.090134        0.10214        0.11529        0.12991        0.14619        0.16412        0.18415        0.20623        0.23074        0.25789        0.28775        0.32086        0.35713        0.39703        0.44076        0.48861        0.54098        0.59791        0.65971         0.7264         0.7988         0.8766         0.9606        1.0512         1.1484         1.2536         1.3662          1.488         1.6187         1.7601         1.9129         2.0783         2.2593         2.4588         2.6784       1.1212e-05     3.4693e-05     5.9476e-05     6.9903e-05     7.1182e-05     6.7854e-05     6.2365e-05     5.6389e-05     5.0657e-05      4.854e-05     4.7976e-05     4.8328e-05      4.929e-05     5.0776e-05     5.3465e-05      5.943e-05     7.0254e-05     8.8901e-05      0.00011009      0.00014825        0.000218      0.00033466      0.00052182      0.00078985       0.0011817      0.0016924       0.0023475       0.0032042       0.0042369        0.005508       0.0070413        0.008767        0.010823        0.013191        0.015828        0.018977        0.022521        0.026514        0.031085        0.036169        0.041884        0.048301        0.055522         0.06355        0.072604        0.082663        0.093753        0.10624         0.11996         0.13524         0.15211         0.17073         0.19153         0.21442         0.23978         0.26775         0.29858         0.33235         0.36942         0.41006         0.45442         0.50292         0.55574         0.61304         0.67508         0.74205         0.81457         0.89253         0.97672          1.0674          1.1649          1.2701          1.3829          1.5045          1.6354          1.7765          1.9292          2.0946          2.2754          2.4745          2.6934         0.017149        0.017357        0.017469        0.017494        0.017469        0.017417        0.017351        0.017276        0.017196        0.017113        0.017023        0.016934        0.016837        0.016723        0.016621        0.016519         0.01641        0.016306        0.016212        0.016159         0.01613        0.016144        0.016293        0.016522        0.016929        0.017463        0.018266        0.019311        0.020617         0.02221        0.024094        0.026284        0.028883        0.031876        0.035305        0.039302        0.043854        0.048916        0.054741        0.061237        0.068446         0.07662        0.085618        0.095578        0.10667         0.11882         0.13223         0.14709         0.16336         0.18124         0.20087         0.22222         0.24566         0.27132         0.29927         0.32975         0.36296         0.39897          0.4382         0.48058         0.52662         0.57646         0.63037         0.68857          0.7514         0.81914         0.89205         0.97076          1.0552          1.1464          1.2442          1.3495          1.4625          1.5839          1.7148          1.8554          2.0077          2.1722          2.3518          2.5488          2.7653         0.18146         0.18313         0.18483         0.18652         0.18823         0.18995         0.19172         0.19353         0.19541         0.19736         0.19941         0.20154         0.20373         0.20599         0.20832         0.21072         0.21319         0.21575         0.21844         0.22128         0.22428         0.22741         0.23076         0.23433         0.23819         0.24224         0.24661         0.25142          0.2567         0.26254         0.26886         0.27547          0.2826         0.29029         0.29858          0.3074         0.31682         0.32667         0.33727         0.34846         0.36068         0.37354         0.38743         0.40236         0.41813         0.43491         0.45273         0.47209         0.49255         0.51435         0.53767         0.56245         0.58946         0.61835         0.64905         0.68213         0.71777         0.75647         0.79774         0.84177         0.88972         0.94121         0.99657          1.0557          1.1196          1.1882          1.2616          1.3407          1.4256          1.5165          1.6139          1.7188          1.8305          1.9509          2.0798          2.2185          2.3677          2.5286          2.7028          2.8927          3.0994          0.9482         0.95486         0.96159         0.96834         0.97547         0.98254         0.98956          0.9968          1.0044          1.0121          1.0198          1.0278          1.0358          1.0439           1.052          1.0604          1.0687          1.0775          1.0863          1.0953          1.1047          1.1142          1.1239           1.134          1.1443          1.1551           1.166          1.1775          1.1895          1.2017          1.2146          1.2278          1.2419          1.2563          1.2716          1.2876          1.3043          1.3217            1.34          1.3587          1.3784          1.3992          1.4212          1.4442          1.4682          1.4934          1.5199          1.5481          1.5776          1.6086          1.6414           1.676          1.7123          1.7508          1.7917          1.8353          1.8808           1.929          1.9804          2.0348          2.0923          2.1533          2.2185          2.2883          2.3617           2.439          2.5218          2.6096          2.7036          2.8038          2.9104          3.0232           3.144          3.2732          3.4088          3.5559          3.7128          3.8806          4.0619          4.2547           4.468   
       4        0.013905     0.0011498     0.0012034     0.0012469      0.001273     0.0012824     0.0012822     0.0012782      0.001273     0.0012678     0.0012624       0.001255      0.0012457      0.0012345      0.0012226      0.0012118      0.0012035      0.0011998       0.001204      0.0012215      0.0012487      0.0013285      0.0014829      0.0017088      0.0020419      0.0024692      0.0030209      0.0037378      0.0046231       0.005686      0.0070026      0.0085375       0.010345      0.012391       0.014753       0.017401       0.020445       0.023938        0.02777       0.032263       0.037139       0.042669       0.048885       0.055818       0.063606       0.072289        0.08205       0.092752        0.10483        0.11803        0.13274        0.14904        0.16701        0.18716        0.20935        0.23393        0.26115        0.29111        0.32429        0.36056         0.4006        0.44446        0.49234         0.5448        0.60176        0.66354        0.73027        0.80264         0.8804        0.96439        1.0549         1.1521         1.2572         1.3698         1.4914         1.6222         1.7635         1.9161         2.0814         2.2622         2.4616         2.6808        0.0011498      0.0012034      0.0012469       0.001273      0.0012824      0.0012822      0.0012782       0.001273      0.0012678      0.0012624       0.001255      0.0012457      0.0012345      0.0012226      0.0012118      0.0012035      0.0011998       0.001204       0.0012215       0.0012487       0.0013285       0.0014829       0.0017088       0.0020419       0.0024692      0.0030287       0.0037538       0.0046701       0.0057843       0.0071104       0.0086979        0.010497        0.012646        0.015034        0.017806         0.02101        0.024591        0.028663        0.033269        0.038408        0.044201        0.050652           0.058        0.066026        0.075191        0.085306        0.096491        0.10904         0.12278         0.13815         0.15509         0.17381         0.19462         0.21768         0.24313         0.27118         0.30206         0.33587         0.37298         0.41374         0.45824         0.50675         0.55956         0.61693         0.67888         0.74596          0.8184         0.89635         0.98047          1.0711          1.1685          1.2737          1.3864           1.508          1.6388          1.7799          1.9324          2.0976          2.2784          2.4771          2.6957         0.020322         0.02059        0.020734        0.020779         0.02076        0.020707        0.020639        0.020561        0.020475        0.020381        0.020287        0.020188        0.020072         0.01997        0.019877        0.019776        0.019682        0.019606        0.019555        0.019528        0.019522        0.019619         0.01981        0.020145        0.020584        0.021208        0.022064        0.023154        0.024449        0.026041        0.027936        0.030226         0.03286        0.035919        0.039483        0.043516         0.04812        0.053256        0.059109        0.065625        0.072908        0.081095        0.090163         0.10012        0.11122         0.12343         0.13686         0.15175         0.16801         0.18586         0.20551         0.22684         0.25031         0.27601         0.30396         0.33448         0.36763         0.40368         0.44278         0.48521          0.5313         0.58104         0.63496         0.69318         0.75586         0.82361         0.89652         0.97522          1.0596          1.1507          1.2484          1.3537          1.4667          1.5879          1.7188          1.8592          2.0114          2.1757          2.3553          2.5519           2.768         0.18309         0.18476         0.18647         0.18817         0.18987         0.19162         0.19339         0.19522         0.19714         0.19912         0.20117          0.2033         0.20548          0.2077            0.21         0.21237         0.21481         0.21737         0.22008         0.22296         0.22595         0.22913         0.23251         0.23616         0.24001         0.24414         0.24864         0.25357         0.25896         0.26488         0.27123         0.27801         0.28521         0.29274         0.30105         0.31008         0.31962         0.32954         0.34025         0.35134         0.36362         0.37663         0.39065         0.40539         0.42129         0.43818         0.45606         0.47543         0.49593         0.51784         0.54113         0.56593         0.59297         0.62198         0.65261         0.68562         0.72132            0.76         0.80117         0.84518          0.8932         0.94459         0.99996           1.059          1.1229          1.1915          1.2648          1.3438          1.4287          1.5195          1.6169          1.7217          1.8334          1.9536          2.0825          2.2211          2.3702          2.5309           2.705          2.8947          3.1011         0.94945         0.95608         0.96283         0.96964         0.97675         0.98381         0.99085         0.99815          1.0058          1.0135          1.0211          1.0291          1.0371          1.0452          1.0533          1.0616          1.0699          1.0787          1.0875          1.0966          1.1059          1.1154          1.1251          1.1353          1.1456          1.1566          1.1675          1.1791          1.1911          1.2034          1.2163          1.2295          1.2437          1.2582          1.2735          1.2895          1.3062          1.3237           1.342          1.3607          1.3804          1.4013          1.4233          1.4462          1.4702          1.4955           1.522          1.5502          1.5797          1.6106          1.6436          1.6781          1.7143           1.753          1.7938          1.8374          1.8828          1.9311          1.9823          2.0367          2.0943          2.1553          2.2205          2.2901          2.3635          2.4408          2.5236          2.6114          2.7053          2.8056           2.912          3.0249          3.1456          3.2748          3.4103          3.5575          3.7142           3.882          4.0631          4.2558           4.469   
       5        0.032959     0.0039015     0.0041225     0.0043159     0.0044467     0.0045114     0.0045317     0.0045236     0.0045082     0.0044941     0.0044675      0.0044416       0.004417      0.0043966      0.0043802      0.0043689      0.0043642      0.0043689      0.0043859      0.0044265      0.0044993      0.0046043      0.0047934      0.0050555      0.0054326      0.0059347      0.0065687       0.007361      0.0083089      0.0094969       0.010907       0.012496        0.01436      0.016482       0.018892         0.0216       0.024785       0.028229       0.032276       0.036745       0.041673       0.047369       0.053579       0.060632       0.068505       0.077316       0.087102       0.097993        0.11012        0.12345        0.13832         0.1547        0.17284        0.19311        0.21544        0.24016         0.2675        0.29765        0.33096         0.3674        0.40766        0.45167        0.49971        0.55219        0.60917          0.671        0.73779        0.81003        0.88771        0.97171        1.0621         1.1593         1.2642         1.3768         1.4982         1.6289         1.7699         1.9221         2.0873         2.2679         2.4668         2.6854        0.0039015      0.0041225      0.0043159      0.0044467      0.0045114      0.0045317      0.0045236      0.0045082      0.0044941      0.0044675      0.0044416       0.004417      0.0043966      0.0043802      0.0043689      0.0043642      0.0043689      0.0043859       0.0044265       0.0044993       0.0046043       0.0047934       0.0050555       0.0054326       0.0059406      0.0065816       0.0074048       0.0083934       0.0096049        0.011045        0.012663        0.014567        0.016787        0.019223        0.022135        0.025401        0.029022        0.033273        0.037867        0.043121         0.04899        0.055568        0.062917        0.071164        0.080391        0.090568         0.10197        0.11454         0.12837          0.1439         0.16102         0.17996         0.20088         0.22405         0.24964         0.27784         0.30875         0.34283         0.38013         0.42107         0.46566         0.51429         0.56703         0.62437         0.68645          0.7535          0.8258         0.90371         0.98772          1.0783          1.1756          1.2807          1.3933          1.5147          1.6453          1.7863          1.9385          2.1035           2.284          2.4822          2.7004         0.027147        0.027682        0.028055        0.028271        0.028366        0.028381        0.028322        0.028229        0.028137        0.028026        0.027902        0.027787        0.027679        0.027565        0.027455         0.02736        0.027274        0.027232        0.027207        0.027194        0.027266        0.027448        0.027752        0.028179         0.02876        0.029523        0.030499        0.031676        0.033133        0.034874        0.036933        0.039279        0.041991        0.045078        0.048677        0.052747        0.057282        0.062569          0.0684        0.074977        0.082353        0.090509         0.09951         0.10958        0.12062         0.13282         0.14631         0.16118         0.17735         0.19526         0.21491         0.23628         0.25979         0.28547         0.31335         0.34387         0.37698         0.41295         0.45209         0.49457          0.5406          0.5903         0.64409         0.70226         0.76486         0.83259         0.90538         0.98397          1.0683          1.1593          1.2569           1.362          1.4748          1.5959          1.7266           1.867          2.0188          2.1828           2.362          2.5582          2.7736          0.1867         0.18855         0.19038         0.19218         0.19394          0.1957         0.19749         0.19935         0.20125         0.20321         0.20526         0.20732         0.20945         0.21166          0.2139         0.21628         0.21878         0.22141         0.22419         0.22708         0.23011          0.2334         0.23688         0.24056          0.2445         0.24881         0.25349         0.25858         0.26411          0.2701          0.2765         0.28337         0.29063         0.29829         0.30646         0.31539         0.32512         0.33544         0.34611         0.35755         0.36939         0.38253         0.39673         0.41163         0.42737         0.44434         0.46241         0.48185         0.50237         0.52443         0.54782         0.57272         0.59979         0.62873         0.65935         0.69229           0.728         0.76668         0.80772         0.85186         0.89985         0.95121          1.0064          1.0653          1.1292          1.1977          1.2709          1.3499          1.4346          1.5253          1.6225          1.7272          1.8388           1.959          2.0876          2.2261          2.3748          2.5352          2.7092          2.8985          3.1043         0.95236         0.95914         0.96597         0.97303         0.98007         0.98721         0.99432          1.0017          1.0093          1.0169          1.0246          1.0325          1.0405          1.0484          1.0566          1.0648          1.0733          1.0821          1.0909          1.1001          1.1094          1.1188          1.1287          1.1388          1.1493          1.1603          1.1712          1.1831           1.195          1.2074          1.2202          1.2336          1.2478          1.2623          1.2776          1.2938          1.3104           1.328          1.3462           1.365          1.3847          1.4056          1.4275          1.4505          1.4744          1.4997          1.5262          1.5543          1.5838          1.6147          1.6477          1.6823          1.7185           1.757           1.798          1.8413          1.8867           1.935          1.9862          2.0405           2.098          2.1593          2.2243          2.2936           2.367          2.4444          2.5271          2.6151          2.7085          2.8091          2.9153          3.0281          3.1487          3.2777          3.4131          3.5604          3.7168          3.8846          4.0655           4.258          4.4711   
-      6        0.064373     0.0055048     0.0060139     0.0065548      0.007121      0.007606     0.0079089     0.0082748      0.008691     0.0090581     0.0093708      0.0095698       0.009807       0.010026       0.010163       0.010241       0.010298       0.010365       0.010454       0.010558       0.010703       0.010857       0.011143       0.011486       0.011948       0.012565       0.013295       0.014191       0.015286       0.016561       0.018012       0.019711       0.021654      0.023832       0.026281       0.029136       0.032289       0.035921       0.039992       0.044445       0.049596       0.055269       0.061664       0.068908       0.076897       0.085847       0.095805        0.10682        0.11903        0.13254        0.14758        0.16418        0.18258        0.20293        0.22552        0.25057        0.27812        0.30862        0.34208        0.37893        0.41939        0.46357        0.51193        0.56444         0.6214        0.68327        0.75003        0.82219        0.89978        0.98371        1.0739          1.171         1.2756         1.3881         1.5094         1.6397         1.7804         1.9322         2.0971         2.2773         2.4751         2.6927        0.0057033       0.006209      0.0067354      0.0072852       0.007751      0.0080361      0...</code></pre>
+      6        0.064373     0.0055048     0.0060139     0.0065548      0.007121      0.007606     0.0079089     0.0082748      0.008691     0.0090581     0.0093708      0.0095698       0.009807       0.010026       0.010163       0.010241       0.010298       0.010365       0.010454       0.010558       0.010703       0.010857       0.011143       0.011486       0.011948       0.012565       0.013295       0.014191       0.015286       0.016561       0.018012       0.019711       0.021654      0.023832       0.026281       0.029136       0.032289       0.035921       0.039992       0.044445       0.049596       0.055269       0.061664       0.068908       0.076897       0.085847       0.095805        0.10682        0.11903        0.13254        0.14758        0.16418        0.18258        0.20293        0.22552        0.25057        0.27812        0.30862        0.34208        0.37893        0.41939        0.46357        0.51193        0.56444         0.6214        0.68327        0.75003        0.82219        0.89978        0.98371        1.0739          1.171         1.2756         1.3881         1.5094         1.6397         1.7804         1.9322         2.0971         2.2773         2.4751         2.6927        0.0057033       0.006209      0.0067354      0.0072852       0.007751      0.0080361      0...
 
-<p>% Consumption Choices
-tb_az_c = ff_summ_nd_array(“MEAN(C(A,Z) - C(A,Z|unemp))”, cons_VFI_unemp_drop, true, [“mean”], 4, 1, cl_mp_datasetdesc, ar_permute);</p>
-<pre><code>xxx  MEAN(C(A,Z) - C(A,Z|unemp))  xxxxxxxxxxxxxxxxxxxxxxxxxxx
+% Consumption Choices
+tb_az_c = ff_summ_nd_array(&quot;MEAN(C(A,Z) - C(A,Z|unemp))&quot;, cons_VFI_unemp_drop, true, [&quot;mean&quot;], 4, 1, cl_mp_datasetdesc, ar_permute);
+
+xxx  MEAN(C(A,Z) - C(A,Z|unemp))  xxxxxxxxxxxxxxxxxxxxxxxxxxx
     group     savings      mean_eta_1    mean_eta_2    mean_eta_3    mean_eta_4    mean_eta_5    mean_eta_6    mean_eta_7    mean_eta_8    mean_eta_9    mean_eta_10    mean_eta_11    mean_eta_12    mean_eta_13    mean_eta_14    mean_eta_15    mean_eta_16    mean_eta_17    mean_eta_18    mean_eta_19    mean_eta_20    mean_eta_21    mean_eta_22    mean_eta_23    mean_eta_24    mean_eta_25    mean_eta_26    mean_eta_27    mean_eta_28    mean_eta_29    mean_eta_30    mean_eta_31    mean_eta_32    mean_eta_33    mean_eta_34    mean_eta_35    mean_eta_36    mean_eta_37    mean_eta_38    mean_eta_39    mean_eta_40    mean_eta_41    mean_eta_42    mean_eta_43    mean_eta_44    mean_eta_45    mean_eta_46    mean_eta_47    mean_eta_48    mean_eta_49    mean_eta_50    mean_eta_51    mean_eta_52    mean_eta_53    mean_eta_54    mean_eta_55    mean_eta_56    mean_eta_57    mean_eta_58    mean_eta_59    mean_eta_60    mean_eta_61    mean_eta_62    mean_eta_63    mean_eta_64    mean_eta_65    mean_eta_66    mean_eta_67    mean_eta_68    mean_eta_69    mean_eta_70    mean_eta_71    mean_eta_72    mean_eta_73    mean_eta_74    mean_eta_75    mean_eta_76    mean_eta_77    mean_eta_78    mean_eta_79    mean_eta_80    mean_eta_81    mean_eta_82    mean_eta_83    mean_eta_84    mean_eta_85    mean_eta_86    mean_eta_87    mean_eta_88    mean_eta_89    mean_eta_90    mean_eta_91    mean_eta_92    mean_eta_93    mean_eta_94    mean_eta_95    mean_eta_96    mean_eta_97    mean_eta_98    mean_eta_99    mean_eta_100    mean_eta_101    mean_eta_102    mean_eta_103    mean_eta_104    mean_eta_105    mean_eta_106    mean_eta_107    mean_eta_108    mean_eta_109    mean_eta_110    mean_eta_111    mean_eta_112    mean_eta_113    mean_eta_114    mean_eta_115    mean_eta_116    mean_eta_117    mean_eta_118    mean_eta_119    mean_eta_120    mean_eta_121    mean_eta_122    mean_eta_123    mean_eta_124    mean_eta_125    mean_eta_126    mean_eta_127    mean_eta_128    mean_eta_129    mean_eta_130    mean_eta_131    mean_eta_132    mean_eta_133    mean_eta_134    mean_eta_135    mean_eta_136    mean_eta_137    mean_eta_138    mean_eta_139    mean_eta_140    mean_eta_141    mean_eta_142    mean_eta_143    mean_eta_144    mean_eta_145    mean_eta_146    mean_eta_147    mean_eta_148    mean_eta_149    mean_eta_150    mean_eta_151    mean_eta_152    mean_eta_153    mean_eta_154    mean_eta_155    mean_eta_156    mean_eta_157    mean_eta_158    mean_eta_159    mean_eta_160    mean_eta_161    mean_eta_162    mean_eta_163    mean_eta_164    mean_eta_165    mean_eta_166    mean_eta_167    mean_eta_168    mean_eta_169    mean_eta_170    mean_eta_171    mean_eta_172    mean_eta_173    mean_eta_174    mean_eta_175    mean_eta_176    mean_eta_177    mean_eta_178    mean_eta_179    mean_eta_180    mean_eta_181    mean_eta_182    mean_eta_183    mean_eta_184    mean_eta_185    mean_eta_186    mean_eta_187    mean_eta_188    mean_eta_189    mean_eta_190    mean_eta_191    mean_eta_192    mean_eta_193    mean_eta_194    mean_eta_195    mean_eta_196    mean_eta_197    mean_eta_198    mean_eta_199    mean_eta_200    mean_eta_201    mean_eta_202    mean_eta_203    mean_eta_204    mean_eta_205    mean_eta_206    mean_eta_207    mean_eta_208    mean_eta_209    mean_eta_210    mean_eta_211    mean_eta_212    mean_eta_213    mean_eta_214    mean_eta_215    mean_eta_216    mean_eta_217    mean_eta_218    mean_eta_219    mean_eta_220    mean_eta_221    mean_eta_222    mean_eta_223    mean_eta_224    mean_eta_225    mean_eta_226    mean_eta_227    mean_eta_228    mean_eta_229    mean_eta_230    mean_eta_231    mean_eta_232    mean_eta_233    mean_eta_234    mean_eta_235    mean_eta_236    mean_eta_237    mean_eta_238    mean_eta_239    mean_eta_240    mean_eta_241    mean_eta_242    mean_eta_243    mean_eta_244    mean_eta_245    mean_eta_246    mean_eta_247    mean_eta_248    mean_eta_249    mean_eta_250    mean_eta_251    mean_eta_252    mean_eta_253    mean_eta_254    mean_eta_255    mean_eta_256    mean_eta_257    mean_eta_258    mean_eta_259    mean_eta_260    mean_eta_261    mean_eta_262    mean_eta_263    mean_eta_264    mean_eta_265    mean_eta_266    mean_eta_267    mean_eta_268    mean_eta_269    mean_eta_270    mean_eta_271    mean_eta_272    mean_eta_273    mean_eta_274    mean_eta_275    mean_eta_276    mean_eta_277    mean_eta_278    mean_eta_279    mean_eta_280    mean_eta_281    mean_eta_282    mean_eta_283    mean_eta_284    mean_eta_285    mean_eta_286    mean_eta_287    mean_eta_288    mean_eta_289    mean_eta_290    mean_eta_291    mean_eta_292    mean_eta_293    mean_eta_294    mean_eta_295    mean_eta_296    mean_eta_297    mean_eta_298    mean_eta_299    mean_eta_300    mean_eta_301    mean_eta_302    mean_eta_303    mean_eta_304    mean_eta_305    mean_eta_306    mean_eta_307    mean_eta_308    mean_eta_309    mean_eta_310    mean_eta_311    mean_eta_312    mean_eta_313    mean_eta_314    mean_eta_315    mean_eta_316    mean_eta_317    mean_eta_318    mean_eta_319    mean_eta_320    mean_eta_321    mean_eta_322    mean_eta_323    mean_eta_324    mean_eta_325    mean_eta_326    mean_eta_327    mean_eta_328    mean_eta_329    mean_eta_330    mean_eta_331    mean_eta_332    mean_eta_333    mean_eta_334    mean_eta_335    mean_eta_336    mean_eta_337    mean_eta_338    mean_eta_339    mean_eta_340    mean_eta_341    mean_eta_342    mean_eta_343    mean_eta_344    mean_eta_345    mean_eta_346    mean_eta_347    mean_eta_348    mean_eta_349    mean_eta_350    mean_eta_351    mean_eta_352    mean_eta_353    mean_eta_354    mean_eta_355    mean_eta_356    mean_eta_357    mean_eta_358    mean_eta_359    mean_eta_360    mean_eta_361    mean_eta_362    mean_eta_363    mean_eta_364    mean_eta_365    mean_eta_366    mean_eta_367    mean_eta_368    mean_eta_369    mean_eta_370    mean_eta_371    mean_eta_372    mean_eta_373    mean_eta_374    mean_eta_375    mean_eta_376    mean_eta_377    mean_eta_378    mean_eta_379    mean_eta_380    mean_eta_381    mean_eta_382    mean_eta_383    mean_eta_384    mean_eta_385    mean_eta_386    mean_eta_387    mean_eta_388    mean_eta_389    mean_eta_390    mean_eta_391    mean_eta_392    mean_eta_393    mean_eta_394    mean_eta_395    mean_eta_396    mean_eta_397    mean_eta_398    mean_eta_399    mean_eta_400    mean_eta_401    mean_eta_402    mean_eta_403    mean_eta_404    mean_eta_405
     _____    __________    __________    __________    __________    __________    __________    __________    __________    __________    __________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________    ____________
 
@@ -652,8 +752,8 @@ ff_graph_grid((tb_az_c{1:end, 3:end})&#39;, ar_st_eta_HS_grid, agrid, mp_support
 <p><img src="img/snwx_vfi_unemp_bisec_vec_images/figure_4.png" width="500" /></p>
 <p><img src="img/snwx_vfi_unemp_bisec_vec_images/figure_5.png" width="500" /></p>
 </div>
-<div id="analyze-kids-and-marriage-and-age-5" class="section level3">
-<h3><span class="header-section-number">4.1.4</span> Analyze Kids and Marriage and Age</h3>
+<div id="analyze-kids-and-marriage-and-age-4" class="section level3" number="5.1.4">
+<h3><span class="header-section-number">5.1.4</span> Analyze Kids and Marriage and Age</h3>
 <p>Aggregating over education, savings, and shocks, what are the
 differential effects of Marriage and Age.</p>
 <pre><code>% Generate some Data
@@ -711,11 +811,12 @@ xxx  MEAN(ap(KM,J) - ap(KM,J | unemp))  xxxxxxxxxxxxxxxxxxxxxxxxxxx
       7       2        1         1.0396         1.0753         1.1115         1.1942         1.2777          1.361         1.4437         1.5251         1.6045         1.6815         1.7554         1.8258         1.8923         1.9546         2.0123         2.0654         2.1136         2.1567         2.1949          2.228         2.256         2.2791         2.2974         2.3109         2.3199         2.3246         2.3252         2.3219         2.3149         2.3045         2.2908         2.2742         2.2547         2.2328         2.2084         2.1818         2.1533         2.1228         2.0907          2.057         2.0218         1.9853         1.9477          1.909          1.8691         1.8282         1.7845         0.6059        0.58653        0.56697        0.54739        0.52788        0.50831         0.4871        0.46916        0.45257        0.43546        0.41586        0.39583        0.37936        0.36598        0.35431        0.34425        0.33449        0.32347        0.31034         0.2928        0.28064        0.27357        0.26666        0.25727        0.24062         0.2341         0.2295        0.21557        0.20917        0.20016        0.19353        0.18327        0.16939        0.14529        0.10803           0      
       8       3        1        0.97097          1.002         1.0331         1.1097          1.187         1.2641         1.3406         1.4158         1.4892         1.5603         1.6286         1.6936          1.755         1.8126          1.866          1.915         1.9596         1.9995         2.0348         2.0655        2.0916         2.1132         2.1304         2.1433         2.1522         2.1572         2.1584         2.1561         2.1505         2.1418         2.1301         2.1158         2.0989         2.0796         2.0581         2.0346         2.0092          1.982         1.9533         1.9231         1.8916         1.8589         1.8251         1.7903          1.7546         1.7176         1.6775        0.62876        0.60782        0.58692        0.56536        0.54275        0.52196        0.50383        0.48626        0.46692        0.44577        0.42568        0.40758        0.39264        0.38083        0.36986        0.35909        0.34602        0.33255        0.31619        0.30043        0.29139        0.28383        0.27609        0.26275        0.24811        0.24228        0.23544        0.22076        0.21813        0.20417        0.20044        0.18863         0.1744        0.14794        0.11061           0      
       9       4        1        0.89591        0.92257        0.94909         1.0212         1.0937         1.1657         1.2365         1.3061         1.3736         1.4389         1.5017         1.5614         1.6177         1.6705         1.7194         1.7643         1.8052         1.8418         1.8742         1.9024        1.9265         1.9465         1.9626         1.9749         1.9834         1.9885         1.9901         1.9887         1.9842          1.977         1.9672         1.9549         1.9404         1.9238         1.9051         1.8847         1.8627         1.8391          1.814         1.7877         1.7602         1.7317         1.7021         1.6715          1.6398         1.6066         1.5702         0.6354        0.61295        0.59154        0.56808        0.54562        0.52731        0.50923        0.48955        0.46845        0.44705        0.42799        0.41115         0.3984        0.38655        0.37521         0.3634        0.34752        0.33458        0.31657        0.30356        0.29496        0.28718        0.27777        0.26249        0.25118        0.24476        0.23663        0.22273        0.22087        0.20638        0.20298        0.19035        0.17773        0.15235        0.11414           0      
-     10       5        1        0.78017        0.79798        0.81575        0.87811        0.94079         1.0033         1.0651          1.126         1.1852         1.2423          1.297         1.3491         1.3981         1.4439         1.4863         1.5253         1.5606         1.5924         1.6205         1.6451        1.6662         1.6839         1.6983         1.7095         1.7177          1.723         1.7256         1.7256         1.7232         1.7187          1.712         1.7034          1.693          1.681         1.6673         1.6523         1.6358          1.618          1.599         1.5789         1.5577         1.5355         1.5122         1.4878          1.4622         1.4349         1.4036        0.54615        0.52711        0.50699         0.4873        0.46982         0.4535        0.43684        0.41764        0.39824        0.38059        0.36605        0.35413        0.34372         0.3336        0.32379        0.31216        0.29849         0.2849        0.26992        0.26144        0.25391        0.24646        0.23805        0.22392        0.21658        0.21138        0.20343        0.19062        0.18946        0.17751        0.17562        0.16436        0.15526        0.13347        0.10113           0      </code></pre>
+     10       5        1        0.78017        0.79798        0.81575        0.87811        0.94079         1.0033         1.0651          1.126         1.1852         1.2423          1.297         1.3491         1.3981         1.4439         1.4863         1.5253         1.5606         1.5924         1.6205         1.6451        1.6662         1.6839         1.6983         1.7095         1.7177          1.723         1.7256         1.7256         1.7232         1.7187          1.712         1.7034          1.693          1.681         1.6673         1.6523         1.6358          1.618          1.599         1.5789         1.5577         1.5355         1.5122         1.4878          1.4622         1.4349         1.4036        0.54615        0.52711        0.50699         0.4873        0.46982         0.4535        0.43684        0.41764        0.39824        0.38059        0.36605        0.35413        0.34372         0.3336        0.32379        0.31216        0.29849         0.2849        0.26992        0.26144        0.25391        0.24646        0.23805        0.22392        0.21658        0.21138        0.20343        0.19062        0.18946        0.17751        0.17562        0.16436        0.15526        0.13347        0.10113           0      
 
-<p>% Consumption Choices
-tb_az_c = ff_summ_nd_array(“MEAN(c(KM,J) - c(KM,J | unemp))”, cons_VFI_unemp_drop, true, [“mean”], 3, 1, cl_mp_datasetdesc, ar_permute);</p>
-<pre><code>xxx  MEAN(c(KM,J) - c(KM,J | unemp))  xxxxxxxxxxxxxxxxxxxxxxxxxxx
+% Consumption Choices
+tb_az_c = ff_summ_nd_array(&quot;MEAN(c(KM,J) - c(KM,J | unemp))&quot;, cons_VFI_unemp_drop, true, [&quot;mean&quot;], 3, 1, cl_mp_datasetdesc, ar_permute);
+
+xxx  MEAN(c(KM,J) - c(KM,J | unemp))  xxxxxxxxxxxxxxxxxxxxxxxxxxx
     group    kids    marry    mean_age_18    mean_age_19    mean_age_20    mean_age_21    mean_age_22    mean_age_23    mean_age_24    mean_age_25    mean_age_26    mean_age_27    mean_age_28    mean_age_29    mean_age_30    mean_age_31    mean_age_32    mean_age_33    mean_age_34    mean_age_35    mean_age_36    mean_age_37    mean_age_38    mean_age_39    mean_age_40    mean_age_41    mean_age_42    mean_age_43    mean_age_44    mean_age_45    mean_age_46    mean_age_47    mean_age_48    mean_age_49    mean_age_50    mean_age_51    mean_age_52    mean_age_53    mean_age_54    mean_age_55    mean_age_56    mean_age_57    mean_age_58    mean_age_59    mean_age_60    mean_age_61    mean_age_62    mean_age_63    mean_age_64    mean_age_65    mean_age_66    mean_age_67    mean_age_68    mean_age_69    mean_age_70    mean_age_71    mean_age_72    mean_age_73    mean_age_74    mean_age_75    mean_age_76    mean_age_77    mean_age_78    mean_age_79    mean_age_80    mean_age_81    mean_age_82    mean_age_83    mean_age_84    mean_age_85    mean_age_86    mean_age_87    mean_age_88    mean_age_89    mean_age_90    mean_age_91    mean_age_92    mean_age_93    mean_age_94    mean_age_95    mean_age_96    mean_age_97    mean_age_98    mean_age_99    mean_age_100
     _____    ____    _____    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ___________    ____________
 
@@ -748,8 +849,8 @@ ff_graph_grid((tb_az_c{1:end, 4:end}), ar_row_grid, age_grid, mp_support_graph);
 <p><img src="img/snwx_vfi_unemp_bisec_vec_images/figure_10.png" width="500" /></p>
 <p><img src="img/snwx_vfi_unemp_bisec_vec_images/figure_11.png" width="500" /></p>
 </div>
-<div id="analyze-education-and-marriage-and-age-5" class="section level3">
-<h3><span class="header-section-number">4.1.5</span> Analyze Education and Marriage and Age</h3>
+<div id="analyze-education-and-marriage-and-age-4" class="section level3" number="5.1.5">
+<h3><span class="header-section-number">5.1.5</span> Analyze Education and Marriage and Age</h3>
 <p>Aggregating over education, savings, and shocks, what are the
 differential effects of Marriage and Age.</p>
 <pre><code>% Generate some Data
@@ -872,7 +973,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": [["SNW-Dynamic-Life-Cycle-and-Welfare-Checks-Code-Companion.pdf", "PDF"]],
+"download": [["NSW-Dynamic-Life-Cycle-and-Welfare-Checks-Code-Companion.pdf", "PDF"]],
 "toc": {
 "collapse": "subsection"
 }

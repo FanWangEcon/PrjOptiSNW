@@ -108,10 +108,10 @@ if(!is.null(spt_file_current)) {
 
   # Common Shared Text and Strings
   total_area <- (800 * 7) / 2
-  if (st_file_wno_suffix == 'SNW-Dynamic-Life-Cycle-and-Welfare-Checks-Code-Companion') {
-    text_shared_preamble_one <- paste0("> Go back to [SNW 2020 Code Companion](https://fanwangecon.github.io/PrjOptiSNW/) home page, [Wang 2020 Optimal Allocation](https://fanwangecon.github.io/PrjOptiAlloc/) project page, or the [MEconTools](https://fanwangecon.github.io/MEconTools/) Toolbox.")
+  if (st_file_wno_suffix == 'NSW-Dynamic-Life-Cycle-and-Welfare-Checks-Code-Companion') {
+    text_shared_preamble_one <- paste0("> Go back to [NSW 2020 Code Companion](https://fanwangecon.github.io/PrjOptiSNW/) home page, [Wang 2020 Optimal Allocation](https://fanwangecon.github.io/PrjOptiAlloc/) project page, or the [MEconTools](https://fanwangecon.github.io/MEconTools/) Toolbox.")
   } else {
-    text_shared_preamble_one <- paste0(st_head_link, " Go back to [SNW 2020 Code Companion](https://fanwangecon.github.io/PrjOptiSNW/) home page, [Wang 2020 Optimal Allocation](https://fanwangecon.github.io/PrjOptiAlloc/) project page, or the [MEconTools](https://fanwangecon.github.io/MEconTools/) Toolbox.")
+    text_shared_preamble_one <- paste0(st_head_link, " Go back to [NSW 2020 Code Companion](https://fanwangecon.github.io/PrjOptiSNW/) home page, [Wang 2020 Optimal Allocation](https://fanwangecon.github.io/PrjOptiAlloc/) project page, or the [MEconTools](https://fanwangecon.github.io/MEconTools/) Toolbox.")
   }
 }
 

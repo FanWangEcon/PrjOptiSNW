@@ -5,24 +5,27 @@
 % working. Dense solution. Bisection, most time for the test here taken to genereate 
 % the income matrixes. But these can be generated out of the check loops.
 %% Test SNW_A4CHK_UNEMP_BISEC_VEC Defaults
-% Call the function with defaults parameters.
+% Solve for Value/Policy in non-COVID years, then solve for covid year value/policy 
+% given covid shocks. COVID lasts one period.
 
-mp_params = snw_mp_param('default_docdense');
+mp_params = snw_mp_param('default_docdense', false, 'tauchen', true);
 mp_controls = snw_mp_control('default_test');
 mp_controls('bl_print_vfi') = false;
 mp_controls('bl_timer') = true;
 [V_ss,~,cons_ss,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
-welf_checks = 2;
-xi=0.5;
-b=0;
+welf_checks = 2; % 2 checks is $200 dollar of welfare checks
+xi=0.5; % xi=0 full income loss from covid shock, xi=1, no covid income losses
+b=0; % b=0 means no UI benefits compensating COVID, b=1 if full income replacement
 TR = 100/58056;
 mp_params('TR') = TR;
 mp_params('xi') = xi;
 mp_params('b') = b;
-[V_unemp,~,cons_unemp,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls, V_ss);
-[V_U, C_U] = snw_a4chk_unemp_bisec_vec(welf_checks, V_unemp, cons_unemp, mp_params, mp_controls);
-mn_V_U_gain_check = V_U - V_unemp;
-mn_MPC_U_gain_share_check = (C_U - cons_unemp)./(welf_checks*mp_params('TR'));
+mp_params('a2_covidyr') = mp_params('a2_covidyr_manna_heaven');
+% mp_params('a2_covidyr') = mp_params('a2_covidyr_tax_fully_pay');
+[V_unemp_2020,~,cons_unemp_2020,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls, V_ss);
+[V_U_2020, C_U_2020] = snw_a4chk_unemp_bisec_vec(welf_checks, V_unemp_2020, cons_unemp_2020, mp_params, mp_controls);
+mn_V_U_gain_check = V_U_2020 - V_unemp_2020;
+mn_MPC_U_gain_share_check = (C_U_2020 - cons_unemp_2020)./(welf_checks*mp_params('TR'));
 %% Dense Param Results Define Frames
 % Define the matrix dimensions names and dimension vector values. Policy and 
 % Value Functions share the same ND dimensional structure.

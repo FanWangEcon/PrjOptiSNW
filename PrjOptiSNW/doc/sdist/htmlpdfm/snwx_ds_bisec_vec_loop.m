@@ -2,9 +2,9 @@
 % This is the example vignette for function: <https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/sdist/snw_ds_main.m 
 % *snw_ds_main*> from the <https://fanwangecon.github.io/PrjOptiSNW/ *PrjOptiSNW 
 % Package*>*.* This function solves for vfi and gets distribution induced by policy 
-% functions and exogenous distributions.More Dense Simulation.  *Looped* to get 
-% distribution, but uses *bisect vec* for VFI.
-%% Test SNW_DS_MAIN Defaults Dense
+% functions and exogenous distributions.  Looped to get distribution, but uses 
+% bisect vec for VFI.
+%% Test SNW_DS_MAIN Defaults
 % Call the function with testing defaults.
 
 mp_params = snw_mp_param('default_docdense');

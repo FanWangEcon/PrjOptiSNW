@@ -1,10 +1,9 @@
 %% 2020 Full States EV and EC of One Check
 % This is the example vignette for function:  <https://github.com/FanWangEcon/PrjOptiSNW/tree/master/PrjOptiSNW/splanneralt/snw_evuvw20_jaeemk.m 
 % *snw_evuvw20_jaeemk*> from the <https://fanwangecon.github.io/PrjOptiSNW/ *PrjOptiSNW 
-% Package*>*.* 2020 integrated over VU and VW
-%% Test SNW_EVUVW20_JAEEMK Defaults Dense
-% Solve for policy functions and obtain distributions.
-% 
+% Package*>*.* 2020 integrated over VU and VW. Average C or V given unemployment 
+% probabilities.
+%% Test SNW_EVUVW20_JAEEMK Defaults
 % Call the function with defaults.
 
 clear all;
@@ -33,15 +32,53 @@ mp_controls('bl_print_a4chk') = false;
 mp_controls('bl_print_a4chk_verbose') = false;
 mp_controls('bl_print_evuvw20_jaeemk') = false;
 mp_controls('bl_print_evuvw20_jaeemk_verbose') = false;
+%% 
+% Solve the model:
 
+%% A. Solve VFI
+% 2. Solve VFI and Distributon
 % Solve the Model to get V working and unemployed
+% solved with calibrated regular a2
 [V_ss,ap_ss,cons_ss,mp_valpol_more_ss] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
+% COVID year tax
+mp_params('a2_covidyr') = mp_params('a2_covidyr_manna_heaven');
+% 2020 V and C same as V_SS and cons_ss if tax the same
+if (mp_params('a2_covidyr') == mp_params('a2'))
+    % mana from heaven
+    V_ss_2020 = V_ss;
+    cons_ss_2020 = cons_ss;
+else
+    % change xi and b to for people without unemployment shock
+    % solving for employed but 2020 tax results
+    % a2_covidyr > a2, we increased tax in 2020 to pay for covid and other
+    % costs resolve for both employed and unemployed
+    xi = mp_params('xi');
+    b = mp_params('b');
+    mp_params('xi') = 1;
+    mp_params('b') = 0;
+    [V_ss_2020,~,cons_ss_2020,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls, V_ss);
+    mp_params('xi') = xi;
+    mp_params('b') = b;
+end
+
+% Solve unemployment, with three input parameters, auto will use a2_covidyr
+% as tax, similar for employed call above
+[V_unemp_2020,~,cons_unemp_2020] = snw_vfi_main_bisec_vec(mp_params, mp_controls, V_ss);
+%% B. Solve Dist
+[Phi_true] = snw_ds_main_vec(mp_params, mp_controls, ap_ss, cons_ss);
+%% 
+% Previous code
+
+% % Solve the Model to get V working and unemployed
+% [V_ss,ap_ss,cons_ss,mp_valpol_more_ss] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
+% % Solve unemployment
+% [V_unemp,~,cons_unemp,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls, V_ss);
+% [Phi_true] = snw_ds_main(mp_params, mp_controls, ap_ss, cons_ss, mp_valpol_more_ss);
+%% Precompute
+
 inc_VFI = mp_valpol_more_ss('inc_VFI');
 spouse_inc_VFI = mp_valpol_more_ss('spouse_inc_VFI');
 total_inc_VFI = inc_VFI + spouse_inc_VFI;
-% Solve unemployment
-[V_unemp,~,cons_unemp,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls, V_ss);
-[Phi_true] = snw_ds_main(mp_params, mp_controls, ap_ss, cons_ss, mp_valpol_more_ss);
 % Get Matrixes
 cl_st_precompute_list = {'a', ...
     'inc', 'inc_unemp', 'spouse_inc', 'spouse_inc_unemp', 'ref_earn_wageind_grid'};        
@@ -53,18 +90,18 @@ mp_controls('bl_print_precompute_verbose') = false;
 welf_checks = 0;
 [ev20_jaeemk_check0, ec20_jaeemk_check0] = snw_evuvw20_jaeemk(...
     welf_checks, st_solu_type, mp_params, mp_controls, ...
-    V_ss, cons_ss, V_unemp, cons_unemp, mp_precompute_res);
+    V_ss_2020, cons_ss_2020, V_unemp_2020, cons_unemp_2020, mp_precompute_res);
 % Call Function
 welf_checks = 2;
 [ev20_jaeemk_check2, ec20_jaeemk_check2] = snw_evuvw20_jaeemk(...
     welf_checks, st_solu_type, mp_params, mp_controls, ...
-    V_ss, cons_ss, V_unemp, cons_unemp, mp_precompute_res);
+    V_ss_2020, cons_ss_2020, V_unemp_2020, cons_unemp_2020, mp_precompute_res);
 %% 
 % Differences between Checks in Expected Value and Expected Consumption
 
 mn_V_U_gain_check = ev20_jaeemk_check2 - ev20_jaeemk_check0;
 mn_MPC_U_gain_share_check = (ec20_jaeemk_check2 - ec20_jaeemk_check0)./(welf_checks*mp_params('TR'));
-%% Dense Param Results Define Frames
+%% Param Results Define Frames
 % Define the matrix dimensions names and dimension vector values. Policy and 
 % Value Functions share the same ND dimensional structure.
 

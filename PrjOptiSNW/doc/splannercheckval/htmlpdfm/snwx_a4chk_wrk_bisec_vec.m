@@ -5,17 +5,31 @@
 % working. Dense solution. Bisection, most time for the test here taken to genereate 
 % the income matrixes. But these can be generated out of the check loops.
 %% Test SNW_A4CHK_WRK_BISEC_VEC Defaults Dense
-% Call the function with default parameters.
+% Call the function with default parameters. Solve first for non-covid value 
+% and policy. Then depending on 2020 taxes, solve for 2020 policy and value.
 
 mp_params = snw_mp_param('default_docdense');
 mp_controls = snw_mp_control('default_test');
-mp_controls('bl_print_vfi') = true;
+mp_controls('bl_print_vfi') = false;
 mp_controls('bl_timer') = true;
 [V_ss,~,cons_ss,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
-welf_checks = 2;
-[V_W, C_W] = snw_a4chk_wrk_bisec_vec(welf_checks, V_ss, cons_ss, mp_params, mp_controls);
-mn_V_W_gain_check = V_W - V_ss;
-mn_MPC_W_gain_share_check = (C_W - cons_ss)./(welf_checks*mp_params('TR'));
+welf_checks = 2; % 2 checks is $200 dollar of welfare checks
+xi=1; % xi=0 full income loss from covid shock, xi=1, no covid income losses
+b=1; % when xi=1, b does not matter, no income losses
+TR = 100/58056;
+mp_params('TR') = TR;
+mp_params('xi') = xi;
+mp_params('b') = b;
+% if = mp_params('a2_covidyr_manna_heaven'), V_emp_2020 same as V_ss if b=1
+% or xi=1.
+% if = mp_params('a2_covidyr_tax_fully_pay'), V_emp_2020 differ due to 2020
+% tax differences
+mp_params('a2_covidyr') = mp_params('a2_covidyr_manna_heaven');
+% mp_params('a2_covidyr') = mp_params('a2_covidyr_tax_fully_pay');
+[V_emp_2020,~,cons_emp_2020,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls, V_ss);
+[V_W_2020, C_W_2020] = snw_a4chk_wrk_bisec_vec(welf_checks, V_emp_2020, cons_emp_2020, mp_params, mp_controls);
+mn_V_W_gain_check = V_W_2020 - V_emp_2020;
+mn_MPC_W_gain_share_check = (C_W_2020 - cons_emp_2020)./(welf_checks*mp_params('TR'));
 %% Dense Param Results Define Frames
 % Define the matrix dimensions names and dimension vector values. Policy and 
 % Value Functions share the same ND dimensional structure.

@@ -2,6 +2,15 @@
 
 # Index and Code Links
 
+## Introduction links
+
+1. [Household Problem and Distributions](https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/intro/htmlpdfm/snwx_household.html): [**mlx**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/intro/snwx_household.mlx) \| [**m**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/intro/htmlpdfm/snwx_household.m) \| [**pdf**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/intro/htmlpdfm/snwx_household.pdf) \| [**html**](https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/intro/htmlpdfm/snwx_household.html)
+	+ Summarize the household's dynamic programming problem and the distributions across heterogeneous households groups.
+2. [Values of Checks Conditional on 2019 Information](https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/intro/htmlpdfm/snwx_2019expectations.html): [**mlx**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/intro/snwx_2019expectations.mlx) \| [**m**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/intro/htmlpdfm/snwx_2019expectations.m) \| [**pdf**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/intro/htmlpdfm/snwx_2019expectations.pdf) \| [**html**](https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/intro/htmlpdfm/snwx_2019expectations.html)
+	+ Summarize the computation of expecations relevant for planning objectives given information avaiable in 2019.
+3. [The Welfare Check Planning Problem](https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/intro/htmlpdfm/snwx_opti_allocate.html): [**mlx**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/intro/snwx_opti_allocate.mlx) \| [**m**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/intro/htmlpdfm/snwx_opti_allocate.m) \| [**pdf**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/intro/htmlpdfm/snwx_opti_allocate.pdf) \| [**html**](https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/intro/htmlpdfm/snwx_opti_allocate.html)
+	+ Summarize several allocation problem that condition allocations on income, marital status, the number of children less than 18, and possibly age. 
+
 ## Parameters links
 
 1. [Model Parameters](https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/params/htmlpdfm/snwx_mp_param.html): [**mlx**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/params/snwx_mp_param.mlx) \| [**m**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/params/htmlpdfm/snwx_mp_param.m) \| [**pdf**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/params/htmlpdfm/snwx_mp_param.pdf) \| [**html**](https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/params/htmlpdfm/snwx_mp_param.html)
@@ -53,16 +62,13 @@
 ## Household Life Cycle Distribution links
 
 1. [Assets and Demographic Distributions with Continuous Exact Savings Choices (Loop)](https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/sdist/htmlpdfm/snwx_ds_bisec_vec_loop.html): [**mlx**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/sdist/snwx_ds_bisec_vec_loop.mlx) \| [**m**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/sdist/htmlpdfm/snwx_ds_bisec_vec_loop.m) \| [**pdf**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/sdist/htmlpdfm/snwx_ds_bisec_vec_loop.pdf) \| [**html**](https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/sdist/htmlpdfm/snwx_ds_bisec_vec_loop.html)
-	+ Simulate the life cycle distribution of assets, consumptions, and demographic patterns up to age 100, given exogenous initial distributions at age 18.
-	+ Solves for budget clearing tax rates given distributional results.
-	+ Uses vectorized bisection to solve for exact savings choices, looped distribution code.
+	+ Simulate the life cycle distribution of assets, consumptions, and demographic patterns up to age 100, given exogenous initial distributions at age 18. Solves for budget clearing tax rates given distributional results. Uses vectorized bisection to solve for exact savings choices, looped distribution code.
 	+ **PrjOptiSNW**: *[snw_ds_main()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/sdist/snw_ds_main.m)*
 2. [Assets and Demographic Distributions with Continuous Exact Savings Choices (Vectorized)](https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/sdist/htmlpdfm/snwx_ds_bisec_vec.html): [**mlx**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/sdist/snwx_ds_bisec_vec.mlx) \| [**m**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/sdist/htmlpdfm/snwx_ds_bisec_vec.m) \| [**pdf**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/sdist/htmlpdfm/snwx_ds_bisec_vec.pdf) \| [**html**](https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/sdist/htmlpdfm/snwx_ds_bisec_vec.html)
 	+ Simulate the life cycle distributions This is the fully vectorized version of [snw_ds_main()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/sdist/snw_ds_main.m).
 	+ **PrjOptiSNW**: *[snw_ds_main_vec()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/sdist/snw_ds_main_vec.m)*
 3. [Assets and Demographic Distributions with Grid Search](https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/sdist/htmlpdfm/snwx_ds_grid_search.html): [**mlx**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/sdist/snwx_ds_grid_search.mlx) \| [**m**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/sdist/htmlpdfm/snwx_ds_grid_search.m) \| [**pdf**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/sdist/htmlpdfm/snwx_ds_grid_search.pdf) \| [**html**](https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/sdist/htmlpdfm/snwx_ds_grid_search.html)
-	+ Grid search solution using grid search for savings choices, the savings state-space grid is the same as the savings choice-grid.
-	+ Exact choice solution from [snw_ds_main()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/sdist/snw_ds_main.m) generates significantly smoother distributions.
+	+ Grid search solution using grid search for savings choices, the savings state-space grid is the same as the savings choice-grid. Exact choice solution from [snw_ds_main()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/sdist/snw_ds_main.m) generates significantly smoother distributions.
 	+ **PrjOptiSNW**: *[snw_ds_main_grid_search()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/sdist/snw_ds_main_grid_search.m)*
 
 ## Value of Each Check links
@@ -97,9 +103,22 @@
 	+ This is the gateway function that solves policy functions, derive distributions, computes value in 2020 with and without unemployment shocks with varying check levels, derives 2019 planner expected values given household optimization and shocks, and finds the mass of individuals in different income/age/marital-status bins, and saves the simulated value of check results for the planner.
 	+ **PrjOptiSNW**: *[snw_evuvw19_jmky_allchecks()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/splanneralt/snw_evuvw19_jmky_allchecks.m)*
 
+## Taxes links
+
+1. [Solve for Budget Clearing Tax Rates](https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/fgov/htmlpdfm/snwx_find_tax_rate.html): [**mlx**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/fgov/snwx_find_tax_rate.mlx) \| [**m**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/fgov/htmlpdfm/snwx_find_tax_rate.m) \| [**pdf**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/fgov/htmlpdfm/snwx_find_tax_rate.pdf) \| [**html**](https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/fgov/htmlpdfm/snwx_find_tax_rate.html)
+	+ Given welfare checks and unemployment insurance costs, solve for tax rate that clears the budget given household resource availability.
+	+ **PrjOptiSNW**: *[snw_find_tax_rate()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/fgov/snw_find_tax_rate.m), [snw_tax_hh()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/fgov/snw_tax_hh.m)*
+
 ## Calibration links
 
 1. [Calibrate Discount Factor and Normalize GDP](https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/calibrate/htmlpdfm/snwx_calibrate_beta_norm_gdp.html): [**mlx**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/calibrate/snwx_calibrate_beta_norm_gdp.mlx) \| [**m**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/calibrate/htmlpdfm/snwx_calibrate_beta_norm_gdp.m) \| [**pdf**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/calibrate/htmlpdfm/snwx_calibrate_beta_norm_gdp.pdf) \| [**html**](https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/calibrate/htmlpdfm/snwx_calibrate_beta_norm_gdp.html)
 	+ We calibrate the model so that the Asset/Savings/Capital to GDP/Income ratio is 3.
 	+ We normalize the model so that median household income is equal to 1 in the model.
 	+ **PrjOptiSNW**: *[snw_calibrate_beta_norm_gdp()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/calibrate/snw_calibrate_beta_norm_gdp.m)*
+
+## Summary Statistics links
+
+1. [Distributional Statistcs by Household Structure and Income Groups](https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/stats/htmlpdfm/snwx_evuvw19_jaeemk_mky.html): [**mlx**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/stats/snwx_evuvw19_jaeemk_mky.mlx) \| [**m**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/stats/htmlpdfm/snwx_evuvw19_jaeemk_mky.m) \| [**pdf**](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/doc/stats/htmlpdfm/snwx_evuvw19_jaeemk_mky.pdf) \| [**html**](https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/stats/htmlpdfm/snwx_evuvw19_jaeemk_mky.html)
+	+ Summarize overall model distributional and inequality statistics from covid-less times.
+	+ Statistics, including first check MPC, by marital status, children count, and income groups.
+	+ See [snwx_evuvw19_jmky_mpc_allocated_m](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/stats/snwx_evuvw19_jmky_mpc_allocated_m.m) for summarizing function over optimal allocation results.

@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 1 Introduction | NSW Dynamic Life Cycle and Welfare Checks Code Companion</title>
+  <meta name="description" content="<p>Summarize overall model distributional and inequality statistics from covid-less times.
+Statistics, including first check MPC, by marital status, children count, and income groups.
+See <a href="https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/stats/snwx_evuvw19_jmky_mpc_allocated_m.m">snwx_evuvw19_jmky_mpc_allocated_m</a> for summarizing function over optimal allocation results.</p>" />
+  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 1 Introduction | NSW Dynamic Life Cycle and Welfare Checks Code Companion" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="<p>Summarize overall model distributional and inequality statistics from covid-less times.
+Statistics, including first check MPC, by marital status, children count, and income groups.
+See <a href="https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/stats/snwx_evuvw19_jmky_mpc_allocated_m.m">snwx_evuvw19_jmky_mpc_allocated_m</a> for summarizing function over optimal allocation results.</p>" />
+  <meta name="github-repo" content="fanwangecon/PrjOptiSNW" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 1 Introduction | NSW Dynamic Life Cycle and Welfare Checks Code Companion" />
+  
+  <meta name="twitter:description" content="<p>Summarize overall model distributional and inequality statistics from covid-less times.
+Statistics, including first check MPC, by marital status, children count, and income groups.
+See <a href="https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/stats/snwx_evuvw19_jmky_mpc_allocated_m.m">snwx_evuvw19_jmky_mpc_allocated_m</a> for summarizing function over optimal allocation results.</p>" />
+  
+
+<meta name="author" content="Vegard M. Nygård, Bent E. Sørensen, and Fan Wang" />
+
+
+<meta name="date" content="2020-09-14" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="parameters.html"/>
+<script src="libs/header-attrs-2.3/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-92953468-10"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-92953468-10');
+</script>
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">NSW Dynamic Life Cycle and Welfare Checks Code Companion</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#household-problem-and-distributions"><i class="fa fa-check"></i><b>1.1</b> Household Problem and Distributions</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="introduction.html"><a href="introduction.html#flat-script-and-code-package"><i class="fa fa-check"></i><b>1.1.1</b> Flat Script and Code Package</a></li>
+<li class="chapter" data-level="1.1.2" data-path="introduction.html"><a href="introduction.html#dynamic-programming-solution-structure-covidless-world"><i class="fa fa-check"></i><b>1.1.2</b> Dynamic Programming Solution Structure COVIDless World</a></li>
+<li class="chapter" data-level="1.1.3" data-path="introduction.html"><a href="introduction.html#dynamic-programming-solution-structure-during-covid-year"><i class="fa fa-check"></i><b>1.1.3</b> Dynamic Programming Solution Structure during COVID Year</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#values-of-checks-conditional-on-2019-information"><i class="fa fa-check"></i><b>1.2</b> Values of Checks Conditional on 2019 Information</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="introduction.html"><a href="introduction.html#expected-outcomes-given-2019-information"><i class="fa fa-check"></i><b>1.2.1</b> Expected Outcomes given 2019 Information</a></li>
+<li class="chapter" data-level="1.2.2" data-path="introduction.html"><a href="introduction.html#dynamic-programming-timing"><i class="fa fa-check"></i><b>1.2.2</b> Dynamic Programming Timing</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="introduction.html"><a href="introduction.html#the-welfare-check-planning-problem"><i class="fa fa-check"></i><b>1.3</b> The Welfare Check Planning Problem</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="introduction.html"><a href="introduction.html#information-planning-problem"><i class="fa fa-check"></i><b>1.3.1</b> 2019 Information Planning Problem</a></li>
+<li class="chapter" data-level="1.3.2" data-path="introduction.html"><a href="introduction.html#allocation-functions"><i class="fa fa-check"></i><b>1.3.2</b> Allocation Functions</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="parameters.html"><a href="parameters.html"><i class="fa fa-check"></i><b>2</b> Parameters</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="parameters.html"><a href="parameters.html#model-parameters"><i class="fa fa-check"></i><b>2.1</b> Model Parameters</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="parameters.html"><a href="parameters.html#parameters-used-for-test-simulation"><i class="fa fa-check"></i><b>2.1.1</b> Parameters Used for Test Simulation</a></li>
+<li class="chapter" data-level="2.1.2" data-path="parameters.html"><a href="parameters.html#documentation-run-parameters-docdense"><i class="fa fa-check"></i><b>2.1.2</b> Documentation Run Parameters Docdense</a></li>
+<li class="chapter" data-level="2.1.3" data-path="parameters.html"><a href="parameters.html#parameters-used-for-paper-simulations"><i class="fa fa-check"></i><b>2.1.3</b> Parameters Used for Paper Simulations</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="parameters.html"><a href="parameters.html#model-controls"><i class="fa fa-check"></i><b>2.2</b> Model Controls</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="parameters.html"><a href="parameters.html#test-snw_mp_controls-defaults"><i class="fa fa-check"></i><b>2.2.1</b> Test SNW_MP_CONTROLS Defaults</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="solving-the-dynamic-life-cycle-problem.html"><a href="solving-the-dynamic-life-cycle-problem.html"><i class="fa fa-check"></i><b>3</b> Solving the Dynamic Life Cycle Problem</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="solving-the-dynamic-life-cycle-problem.html"><a href="solving-the-dynamic-life-cycle-problem.html#life-cycle-dynamic-programming-with-marital-status-children-and-savings"><i class="fa fa-check"></i><b>3.1</b> Life Cycle Dynamic Programming with Marital Status, Children and Savings</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="solving-the-dynamic-life-cycle-problem.html"><a href="solving-the-dynamic-life-cycle-problem.html#test-snw_vfi_main_bisect_vec-defaults"><i class="fa fa-check"></i><b>3.1.1</b> Test SNW_VFI_MAIN_BISECT_VEC Defaults</a></li>
+<li class="chapter" data-level="3.1.2" data-path="solving-the-dynamic-life-cycle-problem.html"><a href="solving-the-dynamic-life-cycle-problem.html#define-parameters"><i class="fa fa-check"></i><b>3.1.2</b> Define Parameters</a></li>
+<li class="chapter" data-level="3.1.3" data-path="solving-the-dynamic-life-cycle-problem.html"><a href="solving-the-dynamic-life-cycle-problem.html#analyze-savings-and-shocks"><i class="fa fa-check"></i><b>3.1.3</b> Analyze Savings and Shocks</a></li>
+<li class="chapter" data-level="3.1.4" data-path="solving-the-dynamic-life-cycle-problem.html"><a href="solving-the-dynamic-life-cycle-problem.html#analyze-kids-and-marriage-and-age"><i class="fa fa-check"></i><b>3.1.4</b> Analyze Kids and Marriage and Age</a></li>
+<li class="chapter" data-level="3.1.5" data-path="solving-the-dynamic-life-cycle-problem.html"><a href="solving-the-dynamic-life-cycle-problem.html#analyze-education-and-marriage-and-age"><i class="fa fa-check"></i><b>3.1.5</b> Analyze Education and Marriage and Age</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html"><i class="fa fa-check"></i><b>4</b> Alternative Value Function Solution Testing</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#small-test-exact-solution-looped-minimizer"><i class="fa fa-check"></i><b>4.1</b> Small Test Exact Solution Looped Minimizer</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#test-snw_vfi_main-defaults-small"><i class="fa fa-check"></i><b>4.1.1</b> Test SNW_VFI_MAIN Defaults Small</a></li>
+<li class="chapter" data-level="4.1.2" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#small-param-results-define-frames"><i class="fa fa-check"></i><b>4.1.2</b> Small Param Results Define Frames</a></li>
+<li class="chapter" data-level="4.1.3" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#analyze-savings-and-shocks-1"><i class="fa fa-check"></i><b>4.1.3</b> Analyze Savings and Shocks</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#small-test-grid-search-solution"><i class="fa fa-check"></i><b>4.2</b> Small Test Grid Search Solution</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#test-snw_vfi_main_grid_search-defaults-small"><i class="fa fa-check"></i><b>4.2.1</b> Test SNW_VFI_MAIN_GRID_SEARCH Defaults Small</a></li>
+<li class="chapter" data-level="4.2.2" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#small-param-results-define-frames-1"><i class="fa fa-check"></i><b>4.2.2</b> Small Param Results Define Frames</a></li>
+<li class="chapter" data-level="4.2.3" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#analyze-savings-and-shocks-2"><i class="fa fa-check"></i><b>4.2.3</b> Analyze Savings and Shocks</a></li>
+<li class="chapter" data-level="4.2.4" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#analyze-kids-and-marriage-and-age-1"><i class="fa fa-check"></i><b>4.2.4</b> Analyze Kids and Marriage and Age</a></li>
+<li class="chapter" data-level="4.2.5" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#analyze-education-and-marriage-and-age-1"><i class="fa fa-check"></i><b>4.2.5</b> Analyze Education and Marriage and Age</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#small-test-exact-solution-vectorized-bisection"><i class="fa fa-check"></i><b>4.3</b> Small Test Exact Solution Vectorized Bisection</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#test-snw_vfi_main-defaults-small-1"><i class="fa fa-check"></i><b>4.3.1</b> Test SNW_VFI_MAIN Defaults Small</a></li>
+<li class="chapter" data-level="4.3.2" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#small-param-results-define-frames-2"><i class="fa fa-check"></i><b>4.3.2</b> Small Param Results Define Frames</a></li>
+<li class="chapter" data-level="4.3.3" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#analyze-savings-and-shocks-3"><i class="fa fa-check"></i><b>4.3.3</b> Analyze Savings and Shocks</a></li>
+<li class="chapter" data-level="4.3.4" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#analyze-kids-and-marriage-and-age-2"><i class="fa fa-check"></i><b>4.3.4</b> Analyze Kids and Marriage and Age</a></li>
+<li class="chapter" data-level="4.3.5" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#analyze-education-and-marriage-and-age-2"><i class="fa fa-check"></i><b>4.3.5</b> Analyze Education and Marriage and Age</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#small-test-exact-solution-spousal-shocks"><i class="fa fa-check"></i><b>4.4</b> Small Test Exact Solution Spousal Shocks</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#test-snw_vfi_main-defaults-small-2"><i class="fa fa-check"></i><b>4.4.1</b> Test SNW_VFI_MAIN Defaults Small</a></li>
+<li class="chapter" data-level="4.4.2" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#small-param-results-define-frames-3"><i class="fa fa-check"></i><b>4.4.2</b> Small Param Results Define Frames</a></li>
+<li class="chapter" data-level="4.4.3" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#analyze-savings-and-shocks-4"><i class="fa fa-check"></i><b>4.4.3</b> Analyze Savings and Shocks</a></li>
+<li class="chapter" data-level="4.4.4" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#analyze-kids-and-marriage-and-age-3"><i class="fa fa-check"></i><b>4.4.4</b> Analyze Kids and Marriage and Age</a></li>
+<li class="chapter" data-level="4.4.5" data-path="alternative-value-function-solution-testing.html"><a href="alternative-value-function-solution-testing.html#analyze-education-and-marriage-and-age-3"><i class="fa fa-check"></i><b>4.4.5</b> Analyze Education and Marriage and Age</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="solution-with-unemployment.html"><a href="solution-with-unemployment.html"><i class="fa fa-check"></i><b>5</b> Solution with Unemployment</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="solution-with-unemployment.html"><a href="solution-with-unemployment.html#life-cycle-dynamic-programming-under-unemployment-shock"><i class="fa fa-check"></i><b>5.1</b> Life Cycle Dynamic Programming under Unemployment Shock</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="solution-with-unemployment.html"><a href="solution-with-unemployment.html#test-snw_vfi_unemp"><i class="fa fa-check"></i><b>5.1.1</b> Test SNW_VFI_UNEMP</a></li>
+<li class="chapter" data-level="5.1.2" data-path="solution-with-unemployment.html"><a href="solution-with-unemployment.html#define-parameter-frames"><i class="fa fa-check"></i><b>5.1.2</b> Define Parameter Frames</a></li>
+<li class="chapter" data-level="5.1.3" data-path="solution-with-unemployment.html"><a href="solution-with-unemployment.html#analyze-savings-and-shocks-5"><i class="fa fa-check"></i><b>5.1.3</b> Analyze Savings and Shocks</a></li>
+<li class="chapter" data-level="5.1.4" data-path="solution-with-unemployment.html"><a href="solution-with-unemployment.html#analyze-kids-and-marriage-and-age-4"><i class="fa fa-check"></i><b>5.1.4</b> Analyze Kids and Marriage and Age</a></li>
+<li class="chapter" data-level="5.1.5" data-path="solution-with-unemployment.html"><a href="solution-with-unemployment.html#analyze-education-and-marriage-and-age-4"><i class="fa fa-check"></i><b>5.1.5</b> Analyze Education and Marriage and Age</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html"><i class="fa fa-check"></i><b>6</b> Household Life Cycle Distribution</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#distribution-exact-savings-choices"><i class="fa fa-check"></i><b>6.1</b> Distribution Exact Savings Choices</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#test-snw_ds_main-defaults"><i class="fa fa-check"></i><b>6.1.1</b> Test SNW_DS_MAIN Defaults</a></li>
+<li class="chapter" data-level="6.1.2" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#show-all-info-in-mp_dsvfi_results-more-dense"><i class="fa fa-check"></i><b>6.1.2</b> Show All Info in mp_dsvfi_results More Dense</a></li>
+<li class="chapter" data-level="6.1.3" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#more-dense-param-results-define-frames"><i class="fa fa-check"></i><b>6.1.3</b> More Dense Param Results Define Frames</a></li>
+<li class="chapter" data-level="6.1.4" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#analyze-probability-mass-along-age-dimensions"><i class="fa fa-check"></i><b>6.1.4</b> Analyze Probability Mass Along Age Dimensions</a></li>
+<li class="chapter" data-level="6.1.5" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#analyze-probability-mass-asset-and-shock-dimensions"><i class="fa fa-check"></i><b>6.1.5</b> Analyze Probability Mass Asset and Shock Dimensions</a></li>
+<li class="chapter" data-level="6.1.6" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#probability-statistics-a-c-and-v-conditional-on-ages"><i class="fa fa-check"></i><b>6.1.6</b> Probability Statistics A, C and V Conditional on Ages</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#distribution-exact-savings-choices-vectorized"><i class="fa fa-check"></i><b>6.2</b> Distribution Exact Savings Choices Vectorized</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#test-snw_ds_main_vec"><i class="fa fa-check"></i><b>6.2.1</b> Test SNW_DS_MAIN_VEC</a></li>
+<li class="chapter" data-level="6.2.2" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#show-all-info-in-mp_dsvfi_results"><i class="fa fa-check"></i><b>6.2.2</b> Show All Info in mp_dsvfi_results</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#distribution-grid-search"><i class="fa fa-check"></i><b>6.3</b> Distribution Grid Search</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#test-snw_ds_main_grid_search-defaults-more-dense"><i class="fa fa-check"></i><b>6.3.1</b> Test SNW_DS_MAIN_GRID_SEARCH Defaults More Dense</a></li>
+<li class="chapter" data-level="6.3.2" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#show-all-info-in-mp_dsvfi_results-more-dense-1"><i class="fa fa-check"></i><b>6.3.2</b> Show All Info in mp_dsvfi_results More Dense</a></li>
+<li class="chapter" data-level="6.3.3" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#more-dense-param-results-define-frames-1"><i class="fa fa-check"></i><b>6.3.3</b> More Dense Param Results Define Frames</a></li>
+<li class="chapter" data-level="6.3.4" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#analyze-probability-mass-along-age-dimensions-1"><i class="fa fa-check"></i><b>6.3.4</b> Analyze Probability Mass Along Age Dimensions</a></li>
+<li class="chapter" data-level="6.3.5" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#analyze-probability-mass-asset-and-shock-dimensions-1"><i class="fa fa-check"></i><b>6.3.5</b> Analyze Probability Mass Asset and Shock Dimensions</a></li>
+<li class="chapter" data-level="6.3.6" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#probability-statistics-a-c-and-v-conditional-on-ages-1"><i class="fa fa-check"></i><b>6.3.6</b> Probability Statistics A, C and V Conditional on Ages</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="value-of-each-check.html"><a href="value-of-each-check.html"><i class="fa fa-check"></i><b>7</b> Value of Each Check</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="value-of-each-check.html"><a href="value-of-each-check.html#v-and-c-without-unemployment"><i class="fa fa-check"></i><b>7.1</b> 2020 V and C without Unemployment</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="value-of-each-check.html"><a href="value-of-each-check.html#test-snw_a4chk_wrk_bisec_vec-defaults-dense"><i class="fa fa-check"></i><b>7.1.1</b> Test SNW_A4CHK_WRK_BISEC_VEC Defaults Dense</a></li>
+<li class="chapter" data-level="7.1.2" data-path="value-of-each-check.html"><a href="value-of-each-check.html#dense-param-results-define-frames"><i class="fa fa-check"></i><b>7.1.2</b> Dense Param Results Define Frames</a></li>
+<li class="chapter" data-level="7.1.3" data-path="value-of-each-check.html"><a href="value-of-each-check.html#analyze-difference-in-v-and-c-with-check"><i class="fa fa-check"></i><b>7.1.3</b> Analyze Difference in V and C with Check</a></li>
+<li class="chapter" data-level="7.1.4" data-path="value-of-each-check.html"><a href="value-of-each-check.html#analyze-kids-and-marriage-and-age-5"><i class="fa fa-check"></i><b>7.1.4</b> Analyze Kids and Marriage and Age</a></li>
+<li class="chapter" data-level="7.1.5" data-path="value-of-each-check.html"><a href="value-of-each-check.html#analyze-education-and-marriage"><i class="fa fa-check"></i><b>7.1.5</b> Analyze Education and Marriage</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="value-of-each-check.html"><a href="value-of-each-check.html#v-and-c-with-unemployment"><i class="fa fa-check"></i><b>7.2</b> 2020 V and C with Unemployment</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="value-of-each-check.html"><a href="value-of-each-check.html#test-snw_a4chk_unemp_bisec_vec-defaults"><i class="fa fa-check"></i><b>7.2.1</b> Test SNW_A4CHK_UNEMP_BISEC_VEC Defaults</a></li>
+<li class="chapter" data-level="7.2.2" data-path="value-of-each-check.html"><a href="value-of-each-check.html#dense-param-results-define-frames-1"><i class="fa fa-check"></i><b>7.2.2</b> Dense Param Results Define Frames</a></li>
+<li class="chapter" data-level="7.2.3" data-path="value-of-each-check.html"><a href="value-of-each-check.html#analyze-difference-in-v-and-c-with-check-1"><i class="fa fa-check"></i><b>7.2.3</b> Analyze Difference in V and C with Check</a></li>
+<li class="chapter" data-level="7.2.4" data-path="value-of-each-check.html"><a href="value-of-each-check.html#analyze-kids-and-marriage-and-age-6"><i class="fa fa-check"></i><b>7.2.4</b> Analyze Kids and Marriage and Age</a></li>
+<li class="chapter" data-level="7.2.5" data-path="value-of-each-check.html"><a href="value-of-each-check.html#analyze-education-and-marriage-1"><i class="fa fa-check"></i><b>7.2.5</b> Analyze Education and Marriage</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html"><i class="fa fa-check"></i><b>8</b> 2020 Outcomes Full State Space with Savings, Shocks and Education</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#full-states-ev-and-ec-of-one-check"><i class="fa fa-check"></i><b>8.1</b> 2020 Full States EV and EC of One Check</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#test-snw_evuvw20_jaeemk-defaults"><i class="fa fa-check"></i><b>8.1.1</b> Test SNW_EVUVW20_JAEEMK Defaults</a></li>
+<li class="chapter" data-level="8.1.2" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#precompute"><i class="fa fa-check"></i><b>8.1.2</b> Precompute</a></li>
+<li class="chapter" data-level="8.1.3" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#solve-for-2020-evuvw-with-0-and-2-checks"><i class="fa fa-check"></i><b>8.1.3</b> Solve for 2020 Evuvw With 0 and 2 Checks</a></li>
+<li class="chapter" data-level="8.1.4" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#param-results-define-frames"><i class="fa fa-check"></i><b>8.1.4</b> Param Results Define Frames</a></li>
+<li class="chapter" data-level="8.1.5" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#analyze-difference-in-v-and-c-with-check-2"><i class="fa fa-check"></i><b>8.1.5</b> Analyze Difference in V and C with Check</a></li>
+<li class="chapter" data-level="8.1.6" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#analyze-marginal-value-and-mpc-over-yaeta-conditional-on-kids-marry-age-education"><i class="fa fa-check"></i><b>8.1.6</b> Analyze Marginal Value and MPC over Y(a,eta), Conditional On Kids, Marry, Age, Education</a></li>
+<li class="chapter" data-level="8.1.7" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#marginal-value-gains-color-as-shock-conditional-on-age-marital-kids-and-education"><i class="fa fa-check"></i><b>8.1.7</b> Marginal Value Gains, Color as Shock, Conditional on Age, Marital, Kids, and Education</a></li>
+<li class="chapter" data-level="8.1.8" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#marginal-consumption-gains-color-as-shock-conditional-on-age-marital-kids-and-education"><i class="fa fa-check"></i><b>8.1.8</b> Marginal Consumption Gains, Color as Shock, Conditional on Age, Marital, Kids, and Education</a></li>
+<li class="chapter" data-level="8.1.9" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#analyze-kids-and-marriage-and-age-7"><i class="fa fa-check"></i><b>8.1.9</b> Analyze Kids and Marriage and Age</a></li>
+<li class="chapter" data-level="8.1.10" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#analyze-education-and-marriage-2"><i class="fa fa-check"></i><b>8.1.10</b> Analyze Education and Marriage</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#full-states-ev-and-ec-of-one-check-1"><i class="fa fa-check"></i><b>8.2</b> 2019 Full States EV and EC of One Check</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#test-snw_evuvw19_jaeemk-defaults"><i class="fa fa-check"></i><b>8.2.1</b> Test SNW_EVUVW19_JAEEMK Defaults</a></li>
+<li class="chapter" data-level="8.2.2" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#solve-for-2019-evuvw-with-0-and-2-checks"><i class="fa fa-check"></i><b>8.2.2</b> Solve for 2019 Evuvw With 0 and 2 Checks</a></li>
+<li class="chapter" data-level="8.2.3" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#param-results-define-frames-1"><i class="fa fa-check"></i><b>8.2.3</b> Param Results Define Frames</a></li>
+<li class="chapter" data-level="8.2.4" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#analyze-difference-in-v-and-c-with-check-3"><i class="fa fa-check"></i><b>8.2.4</b> Analyze Difference in V and C with Check</a></li>
+<li class="chapter" data-level="8.2.5" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#analyze-marginal-value-and-mpc-over-yaeta-conditional-on-kids-marry-age-education-1"><i class="fa fa-check"></i><b>8.2.5</b> Analyze Marginal Value and MPC over Y(a,eta), Conditional On Kids, Marry, Age, Education</a></li>
+<li class="chapter" data-level="8.2.6" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#marginal-value-gains-color-as-shock-conditional-on-age-marital-kids-and-education-1"><i class="fa fa-check"></i><b>8.2.6</b> Marginal Value Gains, Color as Shock, Conditional on Age, Marital, Kids, and Education</a></li>
+<li class="chapter" data-level="8.2.7" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#marginal-consumption-gains-color-as-shock-conditional-on-age-marital-kids-and-education-1"><i class="fa fa-check"></i><b>8.2.7</b> Marginal Consumption Gains, Color as Shock, Conditional on Age, Marital, Kids, and Education</a></li>
+<li class="chapter" data-level="8.2.8" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#analyze-kids-and-marriage-and-age-8"><i class="fa fa-check"></i><b>8.2.8</b> Analyze Kids and Marriage and Age</a></li>
+<li class="chapter" data-level="8.2.9" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#analyze-education-and-marriage-3"><i class="fa fa-check"></i><b>8.2.9</b> Analyze Education and Marriage</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html"><i class="fa fa-check"></i><b>9</b> 2019 Expectations Given Income, Age, Kids and Marital Status</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#age-income-kids-marry-ev-and-ec-of-one-check"><i class="fa fa-check"></i><b>9.1</b> 2019 Age, Income, Kids, Marry EV and EC of One Check</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#test-snw_evuvw19_jmky-defaults-dense"><i class="fa fa-check"></i><b>9.1.1</b> Test SNW_EVUVW19_JMKY Defaults Dense</a></li>
+<li class="chapter" data-level="9.1.2" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#solve-vfi-and-distributon"><i class="fa fa-check"></i><b>9.1.2</b> Solve VFI and Distributon</a></li>
+<li class="chapter" data-level="9.1.3" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#pre-compute-matrixes-and-ymky-mass"><i class="fa fa-check"></i><b>9.1.3</b> Pre-Compute Matrixes and YMKY Mass</a></li>
+<li class="chapter" data-level="9.1.4" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#solve-for-2019-evuvw-with-0-and-2-checks-1"><i class="fa fa-check"></i><b>9.1.4</b> Solve for 2019 Evuvw With 0 and 2 Checks</a></li>
+<li class="chapter" data-level="9.1.5" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#dense-param-results-define-frames-2"><i class="fa fa-check"></i><b>9.1.5</b> Dense Param Results Define Frames</a></li>
+<li class="chapter" data-level="9.1.6" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#analyze-marginal-value-and-mpc-over-yaeta-conditional-on-kids-marry-age-education-2"><i class="fa fa-check"></i><b>9.1.6</b> Analyze Marginal Value and MPC over Y(a,eta), Conditional On Kids, Marry, Age, Education</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#age-income-kids-marry-ev-and-ec-all-checks"><i class="fa fa-check"></i><b>9.2</b> 2019 Age, Income, Kids, Marry EV and EC All Checks</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#test-snw_evuvw19_jmky_allchecks-parameters"><i class="fa fa-check"></i><b>9.2.1</b> Test SNW_EVUVW19_JMKY_ALLCHECKS Parameters</a></li>
+<li class="chapter" data-level="9.2.2" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#snw_evuvw19_jmky_allchecks-low-storage-invoke"><i class="fa fa-check"></i><b>9.2.2</b> SNW_EVUVW19_JMKY_ALLCHECKS Low Storage Invoke</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="taxes.html"><a href="taxes.html"><i class="fa fa-check"></i><b>10</b> Taxes</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="taxes.html"><a href="taxes.html#compute-for-equilibrium-tax"><i class="fa fa-check"></i><b>10.1</b> Compute for Equilibrium Tax</a>
+<ul>
+<li class="chapter" data-level="10.1.1" data-path="taxes.html"><a href="taxes.html#parameter-controls"><i class="fa fa-check"></i><b>10.1.1</b> Parameter Controls</a></li>
+<li class="chapter" data-level="10.1.2" data-path="taxes.html"><a href="taxes.html#solve-for-new-tax-rate"><i class="fa fa-check"></i><b>10.1.2</b> Solve for New Tax Rate</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="calibration.html"><a href="calibration.html"><i class="fa fa-check"></i><b>11</b> Calibration</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="calibration.html"><a href="calibration.html#model-calibration"><i class="fa fa-check"></i><b>11.1</b> Model Calibration</a>
+<ul>
+<li class="chapter" data-level="11.1.1" data-path="calibration.html"><a href="calibration.html#calibrate-parameter-controls-for-snw-functions"><i class="fa fa-check"></i><b>11.1.1</b> Calibrate Parameter Controls for SNW Functions</a></li>
+<li class="chapter" data-level="11.1.2" data-path="calibration.html"><a href="calibration.html#calibrate-routine"><i class="fa fa-check"></i><b>11.1.2</b> Calibrate Routine</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="summary-statistics.html"><a href="summary-statistics.html"><i class="fa fa-check"></i><b>12</b> Summary Statistics</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="summary-statistics.html"><a href="summary-statistics.html#full-states-mpc-and-distributional-statistics-by-marital-kids-and-income-groups."><i class="fa fa-check"></i><b>12.1</b> 2019 Full States MPC and Distributional Statistics by Marital, Kids, and Income Groups.</a>
+<ul>
+<li class="chapter" data-level="12.1.1" data-path="summary-statistics.html"><a href="summary-statistics.html#test-snw_evuvw19_jaeemk-defaults-dense"><i class="fa fa-check"></i><b>12.1.1</b> Test SNW_EVUVW19_JAEEMK Defaults Dense</a></li>
+<li class="chapter" data-level="12.1.2" data-path="summary-statistics.html"><a href="summary-statistics.html#solve-for-2019-evuvw-with-0-and-1-checks"><i class="fa fa-check"></i><b>12.1.2</b> Solve for 2019 Evuvw With 0 and 1 Checks</a></li>
+<li class="chapter" data-level="12.1.3" data-path="summary-statistics.html"><a href="summary-statistics.html#additional-variables"><i class="fa fa-check"></i><b>12.1.3</b> Additional Variables</a></li>
+<li class="chapter" data-level="12.1.4" data-path="summary-statistics.html"><a href="summary-statistics.html#adjust-to-probability-mass-function"><i class="fa fa-check"></i><b>12.1.4</b> Adjust to Probability Mass Function</a></li>
+<li class="chapter" data-level="12.1.5" data-path="summary-statistics.html"><a href="summary-statistics.html#age-bounds"><i class="fa fa-check"></i><b>12.1.5</b> Age Bounds</a></li>
+<li class="chapter" data-level="12.1.6" data-path="summary-statistics.html"><a href="summary-statistics.html#scale-statistics-to-thousands-of-dollars"><i class="fa fa-check"></i><b>12.1.6</b> Scale Statistics to Thousands of Dollars</a></li>
+<li class="chapter" data-level="12.1.7" data-path="summary-statistics.html"><a href="summary-statistics.html#distributional-statistics-overall-all-ages"><i class="fa fa-check"></i><b>12.1.7</b> Distributional Statistics Overall All Ages</a></li>
+<li class="chapter" data-level="12.1.8" data-path="summary-statistics.html"><a href="summary-statistics.html#distributional-statistics-overall-18-to-64"><i class="fa fa-check"></i><b>12.1.8</b> Distributional Statistics Overall 18 to 64</a></li>
+<li class="chapter" data-level="12.1.9" data-path="summary-statistics.html"><a href="summary-statistics.html#distributional-statistics-by-kids-count"><i class="fa fa-check"></i><b>12.1.9</b> Distributional Statistics By Kids Count</a></li>
+<li class="chapter" data-level="12.1.10" data-path="summary-statistics.html"><a href="summary-statistics.html#distributional-statistics-by-marital-status-and-kids-count"><i class="fa fa-check"></i><b>12.1.10</b> Distributional Statistics By Marital Status and Kids Count</a></li>
+<li class="chapter" data-level="12.1.11" data-path="summary-statistics.html"><a href="summary-statistics.html#distributional-statistics-by-marital-status-kids-count-and-income-bins"><i class="fa fa-check"></i><b>12.1.11</b> Distributional Statistics By Marital Status, Kids Count and Income Bins</a></li>
+<li class="chapter" data-level="12.1.12" data-path="summary-statistics.html"><a href="summary-statistics.html#store-aggregate-to-file"><i class="fa fa-check"></i><b>12.1.12</b> Store Aggregate To File</a></li>
+<li class="chapter" data-level="12.1.13" data-path="summary-statistics.html"><a href="summary-statistics.html#store-key-stats-to-compare-to-key-us-distributional-statistics"><i class="fa fa-check"></i><b>12.1.13</b> Store Key Stats to Compare to Key US Distributional Statistics</a></li>
+</ul></li>
+</ul></li>
+<li class="appendix"><span><b>Appendix</b></span></li>
+<li class="chapter" data-level="A" data-path="index-and-code-links.html"><a href="index-and-code-links.html"><i class="fa fa-check"></i><b>A</b> Index and Code Links</a>
+<ul>
+<li class="chapter" data-level="A.1" data-path="index-and-code-links.html"><a href="index-and-code-links.html#introduction-links"><i class="fa fa-check"></i><b>A.1</b> Introduction links</a></li>
+<li class="chapter" data-level="A.2" data-path="index-and-code-links.html"><a href="index-and-code-links.html#parameters-links"><i class="fa fa-check"></i><b>A.2</b> Parameters links</a></li>
+<li class="chapter" data-level="A.3" data-path="index-and-code-links.html"><a href="index-and-code-links.html#solving-the-dynamic-life-cycle-problem-links"><i class="fa fa-check"></i><b>A.3</b> Solving the Dynamic Life Cycle Problem links</a></li>
+<li class="chapter" data-level="A.4" data-path="index-and-code-links.html"><a href="index-and-code-links.html#alternative-value-function-solution-testing-links"><i class="fa fa-check"></i><b>A.4</b> Alternative Value Function Solution Testing links</a></li>
+<li class="chapter" data-level="A.5" data-path="index-and-code-links.html"><a href="index-and-code-links.html#solution-with-unemployment-links"><i class="fa fa-check"></i><b>A.5</b> Solution with Unemployment links</a></li>
+<li class="chapter" data-level="A.6" data-path="index-and-code-links.html"><a href="index-and-code-links.html#household-life-cycle-distribution-links"><i class="fa fa-check"></i><b>A.6</b> Household Life Cycle Distribution links</a></li>
+<li class="chapter" data-level="A.7" data-path="index-and-code-links.html"><a href="index-and-code-links.html#value-of-each-check-links"><i class="fa fa-check"></i><b>A.7</b> Value of Each Check links</a></li>
+<li class="chapter" data-level="A.8" data-path="index-and-code-links.html"><a href="index-and-code-links.html#outcomes-full-state-space-with-savings-shocks-and-education-links"><i class="fa fa-check"></i><b>A.8</b> Outcomes Full State Space with Savings, Shocks and Education links</a></li>
+<li class="chapter" data-level="A.9" data-path="index-and-code-links.html"><a href="index-and-code-links.html#expectations-given-income-age-kids-and-marital-status-links"><i class="fa fa-check"></i><b>A.9</b> Expectations Given Income, Age, Kids and Marital Status links</a></li>
+<li class="chapter" data-level="A.10" data-path="index-and-code-links.html"><a href="index-and-code-links.html#taxes-links"><i class="fa fa-check"></i><b>A.10</b> Taxes links</a></li>
+<li class="chapter" data-level="A.11" data-path="index-and-code-links.html"><a href="index-and-code-links.html#calibration-links"><i class="fa fa-check"></i><b>A.11</b> Calibration links</a></li>
+<li class="chapter" data-level="A.12" data-path="index-and-code-links.html"><a href="index-and-code-links.html#summary-statistics-links"><i class="fa fa-check"></i><b>A.12</b> Summary Statistics links</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://fanwangecon.github.io/PrjOptiSNW/bookdown/index.html" target="blank">PrjOptiSNW Bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">NSW Dynamic Life Cycle and Welfare Checks Code Companion</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="introduction" class="section level1" number="1">
+<h1><span class="header-section-number">Chapter 1</span> Introduction</h1>
+
+<div id="household-problem-and-distributions" class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> Household Problem and Distributions</h2>
+<p>In <a href="https://cepr.org/active/publications/discussion_papers/dp.php?dpno=15283">Nygaard, Sorensen and Wang
+(2020)</a>,
+we study the optimal allocation of COVID-19 welfare checks. Congress
+spent $250 billion sending checks to individuals in March 2020 to
+provide economic stimulus. Could the same amount of stimulus have been
+achieved for less money? Using a life-cycle consumption-saving model
+with heterogeneous consumers, we calculate the consumption responses to
+cash transfers for, e.g., couples and singles with different levels of
+income and number of children. We calculate the aggregate consumption
+response for all feasible allocations of $250 billion and, using a new
+algorithm that allows for the ranking of an arbitrarily large number of
+allocations, we find the optimal allocation under alternative
+constraints. The optimal policy allocates more toward low-income and
+younger consumers and can achieve the same stimulus effect at almost
+half the cost.</p>
+<p>This Matlab based programming guide, package, and associated vignettes,
+provide examples and instructions on how the dynamic programming problem
+in Nygaard, Sorensen and Wang (2020) is solved. The R optimal allocation
+package <a href="https://fanwangecon.github.io/PrjOptiAlloc/">PrjOptiAlloc</a>
+takes inputs from the dynamic programming problems and solves for
+optimal allocations given varying planner objectives and constraints.</p>
+<div id="flat-script-and-code-package" class="section level3" number="1.1.1">
+<h3><span class="header-section-number">1.1.1</span> Flat Script and Code Package</h3>
+<p>There are two broad versions of the code. A number of files are included
+in the
+<a href="https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/zflat/">zflat</a>
+folder, including the operation gateway file
+<a href="https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/zflat/Main.m">main</a>.
+Files in the zflat folder provides a linear, easier to understand
+illustration/demonstration of the overall code structure. It is useful
+to review the overall algorithm design. However, it should not be called
+to implement the programs. Programs in the folder were written to help
+test out algorithm ideas.</p>
+<p>The rest of the files inside
+<a href="https://github.com/FanWangEcon/PrjOptiSNW/tree/master/PrjOptiSNW">PrjOptiSNW</a>
+form a matlab
+<a href="https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW.mltbx">package</a>
+that can be downloaded and installed. Each component of the overall code
+program is programmed up separately with its own testing vignette and
+default parameter structure. Various solution algorithms are provided at
+each step, with the final checks problem relying on efficient and
+precise solution methods.</p>
+</div>
+<div id="dynamic-programming-solution-structure-covidless-world" class="section level3" number="1.1.2">
+<h3><span class="header-section-number">1.1.2</span> Dynamic Programming Solution Structure COVIDless World</h3>
+<p>First we solve for the optimal consumption/savings problem in the
+COVID-less world:</p>
+<ul>
+<li><p><strong>83</strong>: 2020 age groups, age 18 to 100 age groups</p></li>
+<li><p><strong>65</strong>: grid of savings state-space grid, and exact continuous
+optimal savings choices using the
+<a href="https://fanwangecon.github.io/MEconTools/MEconTools/doc/vfi/htmlpdfm/fx_vfi_az_bisec_vec.html"><strong>FF_VFI_AZ_BISEC_VEC</strong></a>
+function from
+<a href="https://fanwangecon.github.io/MEconTools/"><strong>MEconTools</strong></a>.</p></li>
+<li><p><strong>6650 shocks</strong>: 1330 productivity shocks for household head and
+sposue and 5 kids transition count shocks</p></li>
+<li><p><strong>2</strong> permanent education states</p></li>
+<li><p><strong>2</strong> permanent marital states</p></li>
+</ul>
+<p>The state-space has: 2*2*6650*65*83= 143,507,000 elements. The
+choice-space is is continuous. Two important things two note:</p>
+<ol style="list-style-type: decimal">
+<li><p>The large number of shocks are needed to obtain accurate
+group-specific marginal propensity effects for small income bins
+that define the choice-set of the allocation problem.</p></li>
+<li><p>While a choice-grid-based solution algorithm might sufficiently
+approximate the value function, but its policy function zig-zags.
+For the welfare checks problem, where welfare checks come in small
+increments, the zig-zags lead to fluctuating (negative and positive)
+marginal propensities to consume as resource availability increases
+for very small amounts of check increments. To deal with this
+challenge, we rely on the
+<a href="https://fanwangecon.github.io/MEconTools/MEconTools/doc/vfi/htmlpdfm/fx_vfi_az_bisec_vec.html"><strong>FF_VFI_AZ_BISEC_VEC</strong></a>
+function from
+<a href="https://fanwangecon.github.io/MEconTools/"><strong>MEconTools</strong></a> to
+provides efficient exact savings choices.</p></li>
+</ol>
+<p>Solving this dynamic life-cycle programming problem requires
+approximately 10 to 20 minutes on a home-pc depending on computer speed.
+There is no processor requirements. Memory requirement is approximately
+20GB. There are two core associated functions vignettes that solves the
+dynamic programming problem to obtain value/policy and distributions
+induceds by exogenous processes and the policy function:</p>
+<ul>
+<li><p>Core dynamic programming code:
+<a href="https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/svalpol/htmlpdfm/snwx_vfi_bisec_vec.html">snwx_vfi_bisec_vec</a></p></li>
+<li><p>Core distribution code:
+<a href="https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/sdist/htmlpdfm/snwx_ds_bisec_vec.html">snwx_ds_bisec_vec</a></p></li>
+</ul>
+<p>Small testing vignettes of alternative solution algorithms for
+policy/value:</p>
+<ul>
+<li><p>Small test using matlab minimizer (very slow but identical results
+as core program):
+<a href="https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/svalpolsmall/htmlpdfm/snwx_vfi_test.html">snwx_vfi_test</a></p></li>
+<li><p>Small test using grid-search-based solution algorithm
+(insufficiently precise for welfare checks):
+<a href="https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/svalpolsmall/htmlpdfm/snwx_vfi_test_grid_search.html">snwx_vfi_test_grid_search</a></p></li>
+<li><p>Small test of core dynamic programming code:
+<a href="https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/svalpolsmall/htmlpdfm/snwx_vfi_test_bisec_vec.html">snwx_vfi_test_bisec_vec</a></p></li>
+<li><p>Small test of core dynamic programming code with spousal shock:
+<a href="https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/svalpolsmall/htmlpdfm/snwx_vfi_test_bisec_vec_spousalshock.html">snwx_vfi_test_bisec_vec_spousalshock</a></p></li>
+</ul>
+<p>Testing vignettes for alternative solution algorithm for distribution:</p>
+<ul>
+<li><p>Grid serach distributional code (insufficiently precise)
+:<a href="https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/sdist/htmlpdfm/snwx_ds_grid_search.html">snwx_ds_grid_search</a></p></li>
+<li><p>Core solution distribution code (vectorized for policy/value, looped
+for dist):
+<a href="https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/sdist/htmlpdfm/snwx_ds_bisec_vec_loop.html">snwx_ds_bisec_vec_loop</a></p></li>
+<li><p>Core solution distribution code (vectorized fully):
+<a href="https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/sdist/htmlpdfm/snwx_ds_bisec_vec.html">snwx_ds_bisec_vec</a></p></li>
+</ul>
+</div>
+<div id="dynamic-programming-solution-structure-during-covid-year" class="section level3" number="1.1.3">
+<h3><span class="header-section-number">1.1.3</span> Dynamic Programming Solution Structure during COVID Year</h3>
+<p>During the COVID year, we use the value function from the COVID-less
+world as the continuation value, and solve for consumption-savings
+policy/value functions during the COVID year. We solve once for
+households facing realized COVID surprise unemployment shocks, one more
+time for households who do not experience COVID unemployment shocks.</p>
+<p>We solve for the marginal consumption differences and value given 244
+increments of checks ($100) each check. This is done again by using the
+<a href="https://fanwangecon.github.io/MEconTools/MEconTools/doc/vfi/htmlpdfm/fx_vfi_az_bisec_vec.html"><strong>FF_VFI_AZ_BISEC_VEC</strong></a>
+function from
+<a href="https://fanwangecon.github.io/MEconTools/"><strong>MEconTools</strong></a>. While
+checks could be viewed as an additional state variable, we evaluate the
+marginal effects of check by solving for the equivalent
+household-specpfic variation in savings state that has the same effect
+as a welfare check transfer. The process takes into account the
+nonlinear tax-schedule that households face as well as return on
+savings.</p>
+<p>Overall:</p>
+<ul>
+<li><p>286 million: Solve 143 million state-space points twice under COVID
+unemployment and COVID employment world</p></li>
+<li><p>70 billion: Solve at the 143 million state-space elements 244 + 1
+times for all possible check levels (244 checks + no check
+value/consumption) to arrive at 70 billion marginal propensity to
+consume for households with heterogeneities in education level,
+marital status, children below 18 count (0 to 4), age, savings
+levels, household head and spouse shocks.</p></li>
+</ul>
+<p>Associated functions vignettes: the core dynamic programming code:
+<a href="https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/svalpol/htmlpdfm/snwx_vfi_bisec_vec.html">snwx_vfi_bisec_vec</a>,
+has a third input which is the existing future value function. When this
+is provided, the dynamical programming problems solves for one period
+given already computed future value, and so the dynamic programming
+solution solves forward. When it is not provided, solves for
+value/policy backwards.</p>
+<ul>
+<li><p><a href="https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/svalpolunemploy/htmlpdfm/snwx_vfi_unemp_bisec_vec.html">snwx_vfi_unemp_bisec_vec</a>
+provides the vignette given unemployment shock.</p></li>
+<li><p><a href="https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/splannercheckval/htmlpdfm/snwx_a4chk_wrk_bisec_vec.html">snwx_a4chk_wrk_bisec_vec</a>
+computes the marginal impacts of a particular welfare check
+increment for those without unemployment shock in COVID year.</p></li>
+<li><p><a href="https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/splannercheckval/htmlpdfm/snwx_a4chk_unemp_bisec_vec.html">snwx_a4chk_unemp_bisec_vec</a>
+computes the marginal impacts of a particular welfare check
+increment for those with unemployment shock in COVID year.</p></li>
+<li><p><a href="https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/splannerjaeemk/htmlpdfm/snwx_evuvw20_jaeemk.html">snwx_evuvw20_jaeemk</a>
+considers probabilities for getting hit with the COVID shock and
+considers the expected value conditional on age, savings level,
+shocks, educational status, kids count and marital status in 2020.</p></li>
+</ul>
+
+</div>
+</div>
+<div id="values-of-checks-conditional-on-2019-information" class="section level2" number="1.2">
+<h2><span class="header-section-number">1.2</span> Values of Checks Conditional on 2019 Information</h2>
+<p>Eligibility for the stimulus checks was tied to each household’s income
+and family size in the year prior to COVID-19. Consistent with this, we
+focus on the optimal allocation of stimulus checks given household
+characteristics in 2019.</p>
+<div id="expected-outcomes-given-2019-information" class="section level3" number="1.2.1">
+<h3><span class="header-section-number">1.2.1</span> Expected Outcomes given 2019 Information</h3>
+<p>In the actual welfare checks allocation policy setting, 2020 realized
+individual level COVID shocks and other productivity shocks were not
+used by the IRS to determine allocation eligibility. Instead, the IRS
+used information available from 2019. Given the persistence of
+productivity shocks, as well as the correlation between surprised COVID
+shock and household income and age from 2019, 2019 information are good
+predicators of household status in 2020.</p>
+<p>We compute the expected outcomes from 2019 perspective conditional on
+household attributes that are observed to the IRS in 2020 given
+information they gathered in 2019. The planner does not observe the full
+state-space so we intergrate from 2019 perspective given 2019 to 2020
+COVID transition probabilities (conditional on state-space) and kids and
+shock transitions.</p>
+<ul>
+<li><p>82 age groups: Age 18 to 99</p></li>
+<li><p>5 kids groups: Children 0 to 4</p></li>
+<li><p>2 marital groups: Marital Status 0 or 1</p></li>
+<li><p>509 Income Groups: 476 bins below max actual phaseout: solved at
+$500 intervals between $0 and $238,000, and 33 bins after max
+actual phaseout: solved at $5000 interval after $238,000, where
+the 33rd final bin is between $401,130 and Maximum.</p></li>
+</ul>
+<p>Together, these are: 5*2*83*509 = 422,470 groups/bins in 2019. We
+have (244+1) marginal average consumption gain, and value gain for each
+of the groups, so from 2019 planner perspective, we have 103.5 million
+expected MPCs (and expected value changes): 422470*(244+1)=103,505,150.</p>
+<p>Each income group is composed of individuals of with different 2019
+productivity shocks and savings levels. Given the transition
+probabilities, policy functions, and covid-less distributions across
+household types, we can compute the joint distribution of education
+type, shocks, and savings levels condition on income bins, martial
+status, kids count and age. This joint distribution is only well
+approximated when sufficient number of shocks were used when solving for
+value/policy in the covid-less world and covid-year world.</p>
+<ul>
+<li><p><a href="https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/splannerjaeemk/htmlpdfm/snwx_evuvw19_jaeemk.html">snwx_evuvw19_jaeemk</a>
+provides the expected outcomes conditional on 2019 age, savings
+levels, shocks, educational status, marital status and kids under 18
+count, given the transition probabilities that incorporate the
+surprise COVID shock. Households do not optimize in 2019 given COVID
+shock probabilities, the shock is a surprise. But expected value in
+2019 given 2019 state-space for consumption and value depends on
+COVID shock and the non-covid households dynamic consumption/savings
+choices in 2019.</p></li>
+<li><p><a href="https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/splannerjmky/htmlpdfm/snwx_evuvw19_jmky.html">snwx_evuvw19_jmky</a>
+provides the expected value in 2019 given not the full state-space,
+but the state-space that is potentially known to the IRS in 2019:
+age, marital status, kids count and 2019 household income. Household
+income is a function of savings, shock and educational status.</p></li>
+<li><p><a href="https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/splannerjmky/htmlpdfm/snwx_evuvw19_jmky_allchecks.html">snwx_evuvw19_jmky_allchecks</a>
+solves for the marginal incremental effects of a vector of checks
+for all household types, and stores the results to file. This
+operation is fully parallelizable.</p></li>
+</ul>
+<p>Given the solution,
+<a href="https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/splannerjaeemk/htmlpdfm/snwx_evuvw19_jaeemk_mky.html">snwx_evuvw19_jaeemk_mky</a>
+shows key overall distributional statistics, and distributional
+statistics by kids, marital and income bins.</p>
+</div>
+<div id="dynamic-programming-timing" class="section level3" number="1.2.2">
+<h3><span class="header-section-number">1.2.2</span> Dynamic Programming Timing</h3>
+<p>Overall time requirements for solving the checks problem on a standard
+($1000) dollar desktop with 4 cores:</p>
+<ul>
+<li><p>30 minutes to 1 hour: solving the dynamic programming problem 3
+times for covid-less world, for covid-world with unemployement shock
+and without.</p></li>
+<li><p>3 hours: derive the distributions induced by policy functions and
+shock processes.</p></li>
+<li><p>650 seconds: the time it takes to compute the marginal effects of
+one check. This step is fully scalable. With a cloud computer with
+larger memory and cores, the problem over all checks could be solved
+fully parallelly.</p></li>
+</ul>
+<p>Due to the large state-space, especially the large shock-grid, the
+memory requirement for storing the various multi-dimensional matrixes is
+high. Solving the problem requires 20GB of memory.</p>
+<p>On a workstation with 12 cores with 190 GB of memory (12 workers same
+time), the computer is able to fully solve the problem from start to
+finish for 244 check increments in less than 24 hours. On a computer
+with 4 to 6 cores and 36 GB of memory, the computer is able to fully
+solve the problem from start to finish for 244 check increments in about
+48 hours.</p>
+
+</div>
+</div>
+<div id="the-welfare-check-planning-problem" class="section level2" number="1.3">
+<h2><span class="header-section-number">1.3</span> The Welfare Check Planning Problem</h2>
+<p>The planner chooses the amount of stimulus checks for each group, where
+groups are defined by marital status, number of children, income, and
+age in 2019.</p>
+<div id="information-planning-problem" class="section level3" number="1.3.1">
+<h3><span class="header-section-number">1.3.1</span> 2019 Information Planning Problem</h3>
+<p>Given the expected outcomes we computed conditional on 2019 information,
+we can solve the planning problem. We have a number of different
+planning problems that we solve given different individual level
+constraints and what the planner can condition allocations on.</p>
+<p>For FEASIBLE allocation, there are <strong>970=5*2*97</strong> types/cells of
+households:</p>
+<ul>
+<li><p>5 children groups</p></li>
+<li><p>2 spousal groups</p></li>
+<li><p>97 income bins: the allocation planner sees approximately $2500
+income bins between $0 and $238,800, and 1 bin after $238,800.
+There are 97 bins</p></li>
+</ul>
+<p>for OPTIMAL G4 (4 age groups 18 to 64) allocation, there are
+<strong>3880=5*2*97*4</strong> types/cells of households:</p>
+<ul>
+<li><p>5 children groups</p></li>
+<li><p>2 spousal groups</p></li>
+<li><p>4 age groups</p></li>
+<li><p>97 income bins</p></li>
+</ul>
+<p>for OPTIMAL G47 (47 age groups) allocation, there are
+<strong>45590=5*2*97*47</strong> types/cells of households:</p>
+<ul>
+<li><p>5 children groups</p></li>
+<li><p>2 spousal groups</p></li>
+<li><p>47 age groups</p></li>
+<li><p>97 income bins</p></li>
+</ul>
+<p>Optimal G4 has a + 1 version where we allocate for a fifth age group of
+individuals older than 64 years of age. Optimal G47 has a + 35 version
+where optimal allocation for all age groups are determined.</p>
+</div>
+<div id="allocation-functions" class="section level3" number="1.3.2">
+<h3><span class="header-section-number">1.3.2</span> Allocation Functions</h3>
+<p>Functions in the
+<a href="https://github.com/FanWangEcon/PrjOptiSNW/tree/master/AllocateR/alloc_discrete_fun_R">AllocateR/alloc_discrete_fun_R</a>
+folder of the project repository page is responsible for feeding the
+dynamic programming results into the allocation functions. The functions
+in this folder call the
+<a href="https://fanwangecon.github.io/PrjOptiAlloc/reference/ffp_snw_process_inputs.html">ffp_snw_process_inputs</a>
+function to solve the allocation problems and compute REV, and call the
+<a href="https://fanwangecon.github.io/PrjOptiAlloc/reference/ffp_snw_graph_feasible.html">ffp_snw_graph_feasible</a>
+function to generate allocation graphs. These two functions are a part
+of the <a href="https://fanwangecon.github.io/PrjOptiAlloc/">PrjOptiAlloc</a>
+package.</p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="parameters.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": [["NSW-Dynamic-Life-Cycle-and-Welfare-Checks-Code-Companion.pdf", "PDF"]],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

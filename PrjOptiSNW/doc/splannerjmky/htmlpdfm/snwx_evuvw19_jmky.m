@@ -11,7 +11,6 @@ clear all;
 st_solu_type = 'bisec_vec';
 
 % Solve the VFI Problem and get Value Function
-% mp_params = snw_mp_param('default_moredense_a100z266_e0m0');
 % mp_params = snw_mp_param('default_tiny');
 % mp_params = snw_mp_param('default_dense');
 mp_params = snw_mp_param('default_docdense');
@@ -38,6 +37,7 @@ mp_params('inc_grid') = inc_grid;
 
 % Solve for Unemployment Values
 mp_controls('bl_print_vfi') = false;
+mp_controls('bl_print_vfi_verbose') = false;
 mp_controls('bl_print_ds') = false;
 mp_controls('bl_print_ds_verbose') = false;    
 mp_controls('bl_print_precompute') = false;
@@ -56,8 +56,29 @@ mp_controls('bl_print_evuvw19_jmky') = false;
 inc_VFI = mp_valpol_more_ss('inc_VFI');
 spouse_inc_VFI = mp_valpol_more_ss('spouse_inc_VFI');
 total_inc_VFI = inc_VFI + spouse_inc_VFI;
+
+% COVID year tax
+mp_params('a2_covidyr') = mp_params('a2_covidyr_manna_heaven');
+% 2020 V and C same as V_SS and cons_ss if tax the same
+if (mp_params('a2_covidyr') == mp_params('a2'))
+    % mana from heaven
+    V_ss_2020 = V_ss;
+    cons_ss_2020 = cons_ss;
+else
+    % change xi and b to for people without unemployment shock
+    % solving for employed but 2020 tax results
+    % a2_covidyr > a2, we increased tax in 2020 to pay for covid and other
+    % costs resolve for both employed and unemployed
+    xi = mp_params('xi');
+    b = mp_params('b');
+    mp_params('xi') = 1;
+    mp_params('b') = 0;
+    [V_ss_2020,~,cons_ss_2020,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls, V_ss);
+    mp_params('xi') = xi;
+    mp_params('b') = b;
+end
 % Solve unemployment
-[V_unemp,~,cons_unemp,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls, V_ss);
+[V_unemp_2020,~,cons_unemp_2020] = snw_vfi_main_bisec_vec(mp_params, mp_controls, V_ss);
 [Phi_true] = snw_ds_main(mp_params, mp_controls, ap_ss, cons_ss, mp_valpol_more_ss);
 % Get Matrixes
 cl_st_precompute_list = {'a', ...
@@ -80,7 +101,7 @@ welf_checks = 0;
 [ev19_jaeemk_check0, ec19_jaeemk_check0, ev20_jaeemk_check0, ec20_jaeemk_check0] = ...
     snw_evuvw19_jaeemk(...
     welf_checks, st_solu_type, mp_params, mp_controls, ...
-    V_ss, cons_ss, V_unemp, cons_unemp, mp_precompute_res);
+    V_ss_2020, cons_ss_2020, V_unemp_2020, cons_unemp_2020, mp_precompute_res);
 % Solve ev 19 JMKY
 [ev19_jmky_check0, ec19_jmky_check0] = snw_evuvw19_jmky(...
     mp_params, mp_controls, ...
@@ -94,7 +115,7 @@ welf_checks = 1;
 [ev19_jaeemk_check2, ec19_jaeemk_check2, ev20_jaeemk_check2, ec20_jaeemk_check2] = ...
     snw_evuvw19_jaeemk(...
     welf_checks, st_solu_type, mp_params, mp_controls, ...
-    V_ss, cons_ss, V_unemp, cons_unemp, mp_precompute_res);
+    V_ss_2020, cons_ss_2020, V_unemp_2020, cons_unemp_2020, mp_precompute_res);
 % Solve ev 19 JMKY
 [ev19_jmky_check2, ec19_jmky_check2] = snw_evuvw19_jmky(...
     mp_params, mp_controls, ...

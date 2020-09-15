@@ -8,7 +8,7 @@ All functions are parts of a matlab toolbox that can be installed:
 
 The Code Companion can also be accessed via the bookdown site and PDF linked below:
 
-> [**bookdown site**](https://fanwangecon.github.io/PrjOptiSNW/bookdown) and [**bookdown pdf**](https://fanwangecon.github.io/PrjOptiSNW/bookdown/SNW-Dynamic-Life-Cycle-and-Welfare-Checks-Code-Companion.pdf).
+> [**bookdown site**](https://fanwangecon.github.io/PrjOptiSNW/bookdown) and [**bookdown pdf**](https://fanwangecon.github.io/PrjOptiSNW/bookdown/NSW-Dynamic-Life-Cycle-and-Welfare-Checks-Code-Companion.pdf).
 
 This files below consistsw of a collection of mlx based vignettes for functions that are available from [PrjOptiSNW](https://github.com/FanWangEcon/PrjOptiSNW). Each Vignette file contains various examples for invoking each function.
 

@@ -2,10 +2,11 @@
 % This is the example vignette for function:  <https://github.com/FanWangEcon/PrjOptiSNW/tree/master/PrjOptiSNW/svalpol/snw_vfi_main_bisec_vec.m 
 % *snw_vfi_main_bisec_vec*> from the <https://fanwangecon.github.io/PrjOptiSNW/ 
 % *PrjOptiSNW Package*>*.* This function solves for policy function using Exact 
-% Vectorized Solution. Dense Solution Analysis. Unemployment Shock. The file focuses 
-% on the change in value function, asset choice, and consumption choice given 
-% a one period unemployment shock (that does not reappear in the future again).
-%% Test SNW_VFI_UNEMP Defaults Dense
+% Vectorized Solution. Value in 2020 with surprise COVID unemployment Shock, with 
+% non-covid year Value as the continuation function. The file focuses on the change 
+% in value function, asset choice, and consumption choice given a one period unemployment 
+% shock (that does not reappear in the future again).
+%% Test SNW_VFI_UNEMP
 % Solve the Regular Value and Also the Unemployment Value.
 % 
 % First, solve for value without unemployment issue (use the vectorized code 
@@ -17,10 +18,15 @@ mp_controls = snw_mp_control('default_test');
     snw_vfi_main_bisec_vec(mp_params, mp_controls);
 %% 
 % Second, solve for the unemployment value, use the exact-bisec result code, 
-% call the snw_vfi_main_bisec_vec.m function with a third input of existing value:
+% call the snw_vfi_main_bisec_vec.m function with a third input of existing value. 
+% xi is the share of income lost during covid year given surprise covid shock, 
+% b is the share of income loss that is covered by unemployment insurance. xi=0.5 
+% and b=0 means will lose 50 percent of income given COVID shocks, and the loss 
+% will not be covered at all by unemployment insurance.
 
 mp_params('xi') = 0.5;
 mp_params('b') = 0;
+mp_params('a2_covidyr') = mp_params('a2_covidyr_manna_heaven');
 [V_VFI_unemp,ap_VFI_unemp,cons_VFI_unemp,mp_valpol_more_unemp] = ...
     snw_vfi_main_bisec_vec(mp_params, mp_controls, V_VFI_ss);
 %% 
@@ -29,7 +35,7 @@ mp_params('b') = 0;
 V_VFI_unemp_drop = V_VFI_ss - V_VFI_unemp;
 ap_VFI_unemp_drop = ap_VFI_ss - ap_VFI_unemp;
 cons_VFI_unemp_drop = cons_VFI_ss - cons_VFI_unemp;
-%% Dense Param Results Define Frames
+%% Define Parameter Frames
 % Define the matrix dimensions names and dimension vector values. Policy and 
 % Value Functions share the same ND dimensional structure.
 

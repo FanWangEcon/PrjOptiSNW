@@ -2,12 +2,14 @@
 % This is the example vignette for function: <https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/sdist/snw_ds_main_grid_search.m 
 % *snw_ds_main_grid_search*> from the <https://fanwangecon.github.io/PrjOptiSNW/ 
 % *PrjOptiSNW Package*>*.* This function solves for vfi and gets distribution 
-% induced by policy functions and exogenous distributions. *Grid Search* for VFI 
-% and *Grid Search* also for Distribution. The results are illustrative of the 
-% differences between using grid search and exact solution. The grid search solution 
-% here is not fully vectorized but loops over the state-space.
+% induced by policy functions and exogenous distributions. Grid Search for VFI 
+% and Grid Search also for Distribution. The results are illustrative of the differences 
+% between using grid search and exact solution. The grid search solution here 
+% is not fully vectorized but loops over the state-space.
 %% Test SNW_DS_MAIN_GRID_SEARCH Defaults More Dense
-% Due to the speed of running this, the example below only uses dense grid
+% Rather than solving for "docdense", this solves for "moredense", which has 
+% fewer shocks, in order to save time given the relatively slow speed of this 
+% algorithm. 
 
 mp_params = snw_mp_param('default_moredense');
 mp_controls = snw_mp_control('default_test');

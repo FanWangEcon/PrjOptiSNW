@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><meta name="generator" content="MATLAB R2019b"><title>Values of Checks Conditional on 2019 Information</title><style type="text/css">.rtcContent { padding: 30px; } .S0 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 28.8px; min-height: 0px; white-space: pre-wrap; color: rgb(213, 80, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 24px; font-weight: 400; text-align: left;  }
+.S1 { margin: 2px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: pre-wrap; color: rgb(0, 0, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: 400; text-align: left;  }
+.S2 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 20px; min-height: 0px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: 700; text-align: left;  }
+.S3 { margin: 10px 0px 20px; padding-left: 0px; font-family: Helvetica, Arial, sans-serif; font-size: 14px;  }
+.S4 { margin-left: 56px; line-height: 21px; min-height: 0px; text-align: left; white-space: pre-wrap;  }
+.S5 { margin: 20px 10px 5px 4px; padding: 0px; line-height: 20px; min-height: 0px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: 700; text-align: left;  }</style></head><body><div class = rtcContent><h1  class = 'S0'><span>Values of Checks Conditional on 2019 Information</span></h1><div  class = 'S1'><span>Eligibility for the stimulus checks was tied to each household’s income and family size in the year prior to COVID-19. Consistent with this, we focus on the optimal allocation of stimulus checks given household characteristics in 2019.</span></div><h2  class = 'S2'><span>Expected Outcomes given 2019 Information</span></h2><div  class = 'S1'><span>In the actual welfare checks allocation policy setting, 2020 realized individual level COVID shocks and other productivity shocks were not used by the IRS to determine allocation eligibility. Instead, the IRS used information available from 2019. Given the persistence of productivity shocks, as well as the correlation between surprised COVID shock and household income and age from 2019, 2019 information are good predicators of household status in 2020. </span></div><div  class = 'S1'><span>We compute the expected outcomes from 2019 perspective conditional on household attributes that are observed to the IRS in 2020 given information they gathered in 2019.  The planner does not observe the full state-space so we intergrate from 2019 perspective given 2019 to 2020 COVID transition probabilities (conditional on state-space) and kids and shock transitions.</span></div><ul  class = 'S3'><li  class = 'S4'><span>82 age groups: Age 18 to 99</span></li><li  class = 'S4'><span>5 kids groups: Children 0 to 4</span></li><li  class = 'S4'><span>2 marital groups: Marital Status 0 or 1</span></li><li  class = 'S4'><span>509 Income Groups: 476 bins below max actual phaseout: solved at $500 intervals between $0 and $238,000, and 33 bins after max actual phaseout: solved at $5000 interval after $238,000, where the 33rd final bin is between $401,130 and Maximum.</span></li></ul><div  class = 'S1'><span>Together, these are: 5*2*83*509 = 422,470 groups/bins in 2019. We have (244+1) marginal average consumption gain, and value gain for each of the groups, so from 2019 planner perspective, we have 103.5 million expected MPCs (and expected value changes): 422470*(244+1)=103,505,150.</span></div><div  class = 'S1'><span>Each income group is composed of individuals of with different 2019 productivity shocks and savings levels. Given the transition probabilities, policy functions, and covid-less distributions across household types, we can compute the joint distribution of education type, shocks, and savings levels condition on income bins, martial status, kids count and age. This joint distribution is only well approximated when sufficient number of shocks were used when solving for value/policy in the covid-less world and covid-year world.</span></div><ul  class = 'S3'><li  class = 'S4'><a href = "https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/splannerjaeemk/htmlpdfm/snwx_evuvw19_jaeemk.html"><span>snwx_evuvw19_jaeemk</span></a><span> provides the expected outcomes conditional on 2019 age, savings levels, shocks, educational status, marital status and kids under 18 count, given the transition probabilities that incorporate the surprise COVID shock. Households do not optimize in 2019 given COVID shock probabilities, the shock is a surprise. But expected value in 2019 given 2019 state-space for consumption and value depends on COVID shock and the non-covid households dynamic consumption/savings choices in 2019.</span></li><li  class = 'S4'><a href = "https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/splannerjmky/htmlpdfm/snwx_evuvw19_jmky.html"><span>snwx_evuvw19_jmky</span></a><span> provides the expected value in 2019 given not the full state-space, but the state-space that is potentially known to the IRS in 2019: age, marital status, kids count and 2019 household income. Household income is a function of savings, shock and educational status. </span></li><li  class = 'S4'><a href = "https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/splannerjmky/htmlpdfm/snwx_evuvw19_jmky_allchecks.html"><span>snwx_evuvw19_jmky_allchecks</span></a><span> solves for the marginal incremental effects of a vector of checks for all household types, and stores the results to file. This operation is fully parallelizable. </span></li></ul><div  class = 'S1'><span>Given the solution, </span><a href = "https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/splannerjaeemk/htmlpdfm/snwx_evuvw19_jaeemk_mky.html"><span>snwx_evuvw19_jaeemk_mky</span></a><span> shows key overall distributional statistics, and distributional statistics by kids, marital and income bins.</span></div><h2  class = 'S2'><span>Dynamic Programming Timing</span></h2><div  class = 'S1'><span>Overall time requirements for solving the checks problem on a standard ($1000) dollar desktop with 4 cores:</span></div><ul  class = 'S3'><li  class = 'S4'><span>30 minutes to 1 hour: solving the dynamic programming problem 3 times for covid-less world, for covid-world with unemployement shock and without.  </span></li><li  class = 'S4'><span>3 hours: derive the distributions induced by policy functions and shock processes. </span></li><li  class = 'S4'><span>650 seconds: the time it takes to compute the marginal effects of one check. This step is fully scalable. With a cloud computer with larger memory and cores, the problem over all checks could be solved fully parallelly. </span></li></ul><div  class = 'S1'><span>Due to the large state-space, especially the large shock-grid, the memory requirement for storing the various multi-dimensional matrixes is high. Solving the problem requires 20GB of memory.</span></div><div  class = 'S1'><span>On a workstation with 12 cores with 190 GB of memory (12 workers same time), the computer is able to fully solve the problem from start to finish for 244 check increments in less than 24 hours. On a computer with 4 to 6 cores and 36 GB of memory, the computer is able to fully solve the problem from start to finish for 244 check increments in about 48 hours.</span></div><h2  class = 'S5'></h2></div>
+<br>
+<!-- 
+##### SOURCE BEGIN #####
+%% Values of Checks Conditional on 2019 Information
+% Eligibility for the stimulus checks was tied to each household’s income and 
+% family size in the year prior to COVID-19. Consistent with this, we focus on 
+% the optimal allocation of stimulus checks given household characteristics in 
+% 2019.
+%% Expected Outcomes given 2019 Information
+% In the actual welfare checks allocation policy setting, 2020 realized individual 
+% level COVID shocks and other productivity shocks were not used by the IRS to 
+% determine allocation eligibility. Instead, the IRS used information available 
+% from 2019. Given the persistence of productivity shocks, as well as the correlation 
+% between surprised COVID shock and household income and age from 2019, 2019 information 
+% are good predicators of household status in 2020. 
+% 
+% We compute the expected outcomes from 2019 perspective conditional on household 
+% attributes that are observed to the IRS in 2020 given information they gathered 
+% in 2019.  The planner does not observe the full state-space so we intergrate 
+% from 2019 perspective given 2019 to 2020 COVID transition probabilities (conditional 
+% on state-space) and kids and shock transitions.
+%% 
+% * 82 age groups: Age 18 to 99
+% * 5 kids groups: Children 0 to 4
+% * 2 marital groups: Marital Status 0 or 1
+% * 509 Income Groups: 476 bins below max actual phaseout: solved at $500 intervals 
+% between $0 and $238,000, and 33 bins after max actual phaseout: solved at $5000 
+% interval after $238,000, where the 33rd final bin is between $401,130 and Maximum.
+%% 
+% Together, these are: 5*2*83*509 = 422,470 groups/bins in 2019. We have (244+1) 
+% marginal average consumption gain, and value gain for each of the groups, so 
+% from 2019 planner perspective, we have 103.5 million expected MPCs (and expected 
+% value changes): 422470*(244+1)=103,505,150.
+% 
+% Each income group is composed of individuals of with different 2019 productivity 
+% shocks and savings levels. Given the transition probabilities, policy functions, 
+% and covid-less distributions across household types, we can compute the joint 
+% distribution of education type, shocks, and savings levels condition on income 
+% bins, martial status, kids count and age. This joint distribution is only well 
+% approximated when sufficient number of shocks were used when solving for value/policy 
+% in the covid-less world and covid-year world.
+%% 
+% * <https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/splannerjaeemk/htmlpdfm/snwx_evuvw19_jaeemk.html 
+% snwx_evuvw19_jaeemk> provides the expected outcomes conditional on 2019 age, 
+% savings levels, shocks, educational status, marital status and kids under 18 
+% count, given the transition probabilities that incorporate the surprise COVID 
+% shock. Households do not optimize in 2019 given COVID shock probabilities, the 
+% shock is a surprise. But expected value in 2019 given 2019 state-space for consumption 
+% and value depends on COVID shock and the non-covid households dynamic consumption/savings 
+% choices in 2019.
+% * <https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/splannerjmky/htmlpdfm/snwx_evuvw19_jmky.html 
+% snwx_evuvw19_jmky> provides the expected value in 2019 given not the full state-space, 
+% but the state-space that is potentially known to the IRS in 2019: age, marital 
+% status, kids count and 2019 household income. Household income is a function 
+% of savings, shock and educational status. 
+% * <https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/splannerjmky/htmlpdfm/snwx_evuvw19_jmky_allchecks.html 
+% snwx_evuvw19_jmky_allchecks> solves for the marginal incremental effects of 
+% a vector of checks for all household types, and stores the results to file. 
+% This operation is fully parallelizable. 
+%% 
+% Given the solution, <https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/splannerjaeemk/htmlpdfm/snwx_evuvw19_jaeemk_mky.html 
+% snwx_evuvw19_jaeemk_mky> shows key overall distributional statistics, and distributional 
+% statistics by kids, marital and income bins.
+%% Dynamic Programming Timing
+% Overall time requirements for solving the checks problem on a standard ($1000) 
+% dollar desktop with 4 cores:
+%% 
+% * 30 minutes to 1 hour: solving the dynamic programming problem 3 times for 
+% covid-less world, for covid-world with unemployement shock and without.  
+% * 3 hours: derive the distributions induced by policy functions and shock 
+% processes. 
+% * 650 seconds: the time it takes to compute the marginal effects of one check. 
+% This step is fully scalable. With a cloud computer with larger memory and cores, 
+% the problem over all checks could be solved fully parallelly. 
+%% 
+% Due to the large state-space, especially the large shock-grid, the memory 
+% requirement for storing the various multi-dimensional matrixes is high. Solving 
+% the problem requires 20GB of memory.
+% 
+% On a workstation with 12 cores with 190 GB of memory (12 workers same time), 
+% the computer is able to fully solve the problem from start to finish for 244 
+% check increments in less than 24 hours. On a computer with 4 to 6 cores and 
+% 36 GB of memory, the computer is able to fully solve the problem from start 
+% to finish for 244 check increments in about 48 hours.
+%%
+##### SOURCE END #####
+--></body></html>

@@ -11,10 +11,11 @@ clear all;
 % Start mp contorls
 mp_controls = snw_mp_control('default_test');
 % Solve for Unemployment Values
+mp_controls('bl_timer') = true;
 mp_controls('bl_print_vfi') = false;
 mp_controls('bl_print_vfi_verbose') = false;
 mp_controls('bl_print_ds') = false;
-mp_controls('bl_print_ds_verbose') = false;
+mp_controls('bl_print_ds_verbose') = true;
 mp_controls('bl_print_precompute') = false;
 mp_controls('bl_print_precompute_verbose') = false;
 mp_controls('bl_print_a4chk') = false;
@@ -29,6 +30,7 @@ mp_controls('bl_print_evuvw19_jmky_verbose') = false;
 % Dense default, and unemployment parameters:
 
 % default dense load
+% mp_params = snw_mp_param('default_dense');
 mp_params = snw_mp_param('default_docdense');
 % Unemployment
 xi=0.5; % Proportional reduction in income due to unemployment (xi=0 refers to 0 labor income; xi=1 refers to no drop in labor income)
@@ -40,6 +42,7 @@ mp_params('TR') = TR;
 % Check Count: 89 checks to allow for both the first and the second round
 n_welfchecksgrid = 3;
 mp_params('n_welfchecksgrid') = n_welfchecksgrid;
+mp_params('a2_covidyr') = mp_params('a2_covidyr_manna_heaven');
 %% 
 % Income bins:
 
@@ -67,7 +70,9 @@ st_solu_type = 'bisec_vec';
 bl_parfor = false;
 it_workers = 1;
 bl_export = false; 
-snm_suffix = ['_ybin' num2str(it_bin_dollar_before_phaseout)];
+bl_load_mat = false;
+snm_suffix = ['_test_ybin' num2str(it_bin_dollar_before_phaseout)];
 [ev19_jmky_allchecks, ec19_jmky_allchecks, output] = ...
-    snw_evuvw19_jmky_allchecks(mp_params, mp_controls, ...
-    st_solu_type, bl_parfor, it_workers, bl_export, snm_suffix);
+    snw_evuvw19_jmky_allchecks(mp_params, mp_controls, st_solu_type, ...
+    bl_parfor, it_workers, ...
+    bl_export, bl_load_mat, snm_suffix);

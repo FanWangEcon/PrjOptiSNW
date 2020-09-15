@@ -2,13 +2,13 @@
 % This is the example vignette for function: <https://github.com/FanWangEcon/PrjOptiSNW/tree/master/PrjOptiSNW/svalpol/snw_vfi_main_bisec_vec.m 
 % *snw_vfi_main_bisec_vec*> from the <https://fanwangecon.github.io/PrjOptiSNW/ 
 % *PrjOptiSNW Package*>*.* This function solves for policy function with vectorized 
-% bisection. More Dense Solution Analysis.
-%% Test SNW_VFI_MAIN_BISECT_VEC Defaults More Dense
+% bisection. Value function during COVIDless year.
+%% Test SNW_VFI_MAIN_BISECT_VEC Defaults
 % Call the function with defaults.
 
 mp_param = snw_mp_param('default_docdense');
 [V_VFI,ap_VFI,cons_VFI] = snw_vfi_main_bisec_vec(mp_param);
-%% More Dense Param Results Define Frames
+%% Define Parameters
 % Define the matrix dimensions names and dimension vector values. Policy and 
 % Value Functions share the same ND dimensional structure.
 

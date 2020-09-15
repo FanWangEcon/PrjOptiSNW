@@ -3,9 +3,7 @@
 % *snw_evuvw19_jaeemk*> from the <https://fanwangecon.github.io/PrjOptiSNW/ *PrjOptiSNW 
 % Package*>*.* 2019 integrated over VU and VW, given optimal savings choices, 
 % unemployment shocks and various expectations.
-%% Test SNW_EVUVW19_JAEEMK Defaults Dense
-% VFI and Distribution
-% 
+%% Test SNW_EVUVW19_JAEEMK Defaults
 % Call the function with defaults.
 
 clear all;
@@ -16,16 +14,12 @@ mp_params = snw_mp_param('default_docdense');
 mp_controls = snw_mp_control('default_test');
 
 % set Unemployment Related Variables
-xi=0.5; % Proportional reduction in income due to unemployment (xi=0 refers to 0 labor income; xi=1 refers to no drop in labor income)
-b=0; % Unemployment insurance replacement rate (b=0 refers to no UI benefits; b=1 refers to 100 percent labor income replacement)
-TR=100/58056; % Value of a welfare check (can receive multiple checks). TO DO: Update with alternative values
-
-mp_params('xi') = xi;
-mp_params('b') = b;
-mp_params('TR') = TR;
+mp_params('a2_covidyr') = mp_params('a2_covidyr_manna_heaven');
+% mp_params('a2_covidyr') = mp_params('a2_covidyr_tax_fully_pay');
 
 % Solve for Unemployment Values
 mp_controls('bl_print_vfi') = false;
+mp_controls('bl_print_vfi_verbose') = true;
 mp_controls('bl_print_ds') = false;
 mp_controls('bl_print_ds_verbose') = false;    
 mp_controls('bl_print_precompute') = false;
@@ -40,9 +34,15 @@ mp_controls('bl_print_evuvw20_jaeemk_verbose') = false;
 inc_VFI = mp_valpol_more_ss('inc_VFI');
 spouse_inc_VFI = mp_valpol_more_ss('spouse_inc_VFI');
 total_inc_VFI = inc_VFI + spouse_inc_VFI;
-% Solve unemployment
-[V_unemp,~,cons_unemp,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls, V_ss);
-[Phi_true] = snw_ds_main(mp_params, mp_controls, ap_ss, cons_ss, mp_valpol_more_ss);
+% Solve employment, same as 2020, except with possible change in tax
+mp_params('xi') = 1;
+mp_params('b') = 0;
+[V_emp_2020,~,cons_emp_2020,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls, V_ss);
+% Solve unemployment, different income than under ss due to income losses
+mp_params('xi') = 0.50;
+mp_params('b') = 0.50;
+[V_unemp_2020,~,cons_unemp_2020,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls, V_ss);
+[Phi_true] = snw_ds_main(mp_params, mp_controls, ap_ss, cons_emp_2020, mp_valpol_more_ss);
 % Get Matrixes
 cl_st_precompute_list = {'a', ...
     'inc', 'inc_unemp', 'spouse_inc', 'spouse_inc_unemp', 'ref_earn_wageind_grid',...
@@ -55,18 +55,18 @@ mp_controls('bl_print_precompute_verbose') = false;
 welf_checks = 0;
 [ev19_jaeemk_check0, ec19_jaeemk_check0, ev20_jaeemk_check0, ec20_jaeemk_check0] = snw_evuvw19_jaeemk(...
     welf_checks, st_solu_type, mp_params, mp_controls, ...
-    V_ss, cons_ss, V_unemp, cons_unemp, mp_precompute_res);
+    V_emp_2020, cons_emp_2020, V_unemp_2020, cons_unemp_2020, mp_precompute_res);
 % Call Function
 welf_checks = 2;
 [ev19_jaeemk_check2, ec19_jaeemk_check2, ev20_jaeemk_check2, ec20_jaeemk_check2] = snw_evuvw19_jaeemk(...
     welf_checks, st_solu_type, mp_params, mp_controls, ...
-    V_ss, cons_ss, V_unemp, cons_unemp, mp_precompute_res);
+    V_emp_2020, cons_emp_2020, V_unemp_2020, cons_unemp_2020, mp_precompute_res);
 %% 
 % Differences between Checks in Expected Value and Expected Consumption
 
 mn_V_U_gain_check = ev19_jaeemk_check2 - ev19_jaeemk_check0;
 mn_MPC_U_gain_share_check = (ec19_jaeemk_check2 - ec19_jaeemk_check0)./(welf_checks*mp_params('TR'));
-%% Dense Param Results Define Frames
+%% Param Results Define Frames
 % Define the matrix dimensions names and dimension vector values. Policy and 
 % Value Functions share the same ND dimensional structure.
 

@@ -30,7 +30,7 @@ See <a href="https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/st
 <meta name="author" content="Vegard M. Nygård, Bent E. Sørensen, and Fan Wang" />
 
 
-<meta name="date" content="2020-09-14" />
+<meta name="date" content="2020-11-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -39,7 +39,7 @@ See <a href="https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/st
   
 
 <link rel="next" href="introduction.html"/>
-<script src="libs/header-attrs-2.3/header-attrs.js"></script>
+<script src="libs/header-attrs-2.5/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -57,6 +57,8 @@ See <a href="https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/st
 
 
 
+<link href="libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0/anchor-sections.js"></script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-92953468-10"></script>
 <script>
@@ -336,12 +338,12 @@ See <a href="https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/st
 <div id="header">
 <h1 class="title">NSW Dynamic Life Cycle and Welfare Checks Code Companion</h1>
 <p class="author"><em>Vegard M. Nygård, Bent E. Sørensen, and Fan Wang</em></p>
-<p class="date"><em>2020-09-14</em></p>
+<p class="date"><em>2020-11-11</em></p>
 </div>
 <div id="preface" class="section level1 unnumbered">
 <h1>Preface</h1>
-<p><a href="https://github.com/FanWangEcon/PrjOptiSNW"><img src="http://hits.dwyl.io/fanwangecon/PrjOptiSNW.svg" alt="HitCount" /></a> <a href="https://github.com/FanWangEcon/PrjOptiSNW/stargazers"><img src="https://img.shields.io/github/stars/fanwangecon/PrjOptiSNW?style=social" alt="Star" /></a> <a href="https://github.com/FanWangEcon/PrjOptiSNW/network/members"><img src="https://img.shields.io/github/forks/fanwangecon/PrjOptiSNW?style=social" alt="Fork" /></a> <a href="https://github.com/FanWangEcon/PrjOptiSNW/watchers"><img src="https://img.shields.io/github/watchers/fanwangecon/PrjOptiSNW?style=social" alt="Star" /></a></p>
-<p>This is a work-in-progress Matlab package consisting of functions that solve the dynamic life cycle model in <a href="https://sites.google.com/site/vegardmokleivnygaard/">Nygård</a>, <a href="https://uh.edu/~bsorense/">Sørensen</a> and <a href="https://fanwangecon.github.io/">Wang</a> (2020) <span class="citation">(Nygård, Sørensen, and Wang <a href="#ref-SNW2020" role="doc-biblioref">2020</a>)</span>. The code companion presents solutions to the dynamic life-cycle problem, and methods for evaluating the marginal gains from allocating additional welfare checks. Tested with <a href="https://www.mathworks.com/products/matlab.html">Matlab</a> 2019a <span class="citation">(The MathWorks Inc <a href="#ref-matlab" role="doc-biblioref">2019</a>)</span>.</p>
+<p><a href="https://github.com/FanWangEcon/PrjOptiSNW"><img src="https://views.whatilearened.today/views/github/FanWangEcon/PrjOptiSNW.svg" alt="ViewCount" /></a> <a href="https://github.com/FanWangEcon/PrjOptiSNW/stargazers"><img src="https://img.shields.io/github/stars/fanwangecon/PrjOptiSNW?style=social" alt="Star" /></a> <a href="https://github.com/FanWangEcon/PrjOptiSNW/network/members"><img src="https://img.shields.io/github/forks/fanwangecon/PrjOptiSNW?style=social" alt="Fork" /></a> <a href="https://github.com/FanWangEcon/PrjOptiSNW/watchers"><img src="https://img.shields.io/github/watchers/fanwangecon/PrjOptiSNW?style=social" alt="Star" /></a> <a href="https://zenodo.org/badge/latestdoi/273278814"><img src="https://zenodo.org/badge/273278814.svg" alt="DOI" /></a></p>
+<p>This is a work-in-progress Matlab package consisting of functions that solve the dynamic life cycle model in <a href="https://sites.google.com/site/vegardmokleivnygaard/">Nygård</a>, <a href="https://uh.edu/~bsorense/">Sørensen</a> and <a href="https://fanwangecon.github.io/">Wang</a> (2020) <span class="citation">(<a href="index-and-code-links.html#ref-SNW2020" role="doc-biblioref">Nygård, Sørensen, and Wang 2020</a>)</span>. The code companion presents solutions to the dynamic life-cycle problem, and methods for evaluating the marginal gains from allocating additional welfare checks. Tested with <a href="https://www.mathworks.com/products/matlab.html">Matlab</a> 2019a <span class="citation">(<a href="index-and-code-links.html#ref-matlab" role="doc-biblioref">The MathWorks Inc 2019</a>)</span>.</p>
 <p>All functions are parts of a matlab toolbox that can be installed:</p>
 <blockquote>
 <p>Download and install the Matlab toolbox: <a href="https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW.mltbx">PrjOptiSNW.mltbx</a></p>
@@ -352,22 +354,10 @@ See <a href="https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/st
 </blockquote>
 <p>This bookdown file is a collection of mlx based vignettes for functions that are available from <a href="https://github.com/FanWangEcon/PrjOptiSNW">PrjOptiSNW</a>. Each Vignette file contains various examples for invoking each function.</p>
 <p>The package relies on <a href="https://fanwangecon.github.io/MEconTools/">MEconTools</a>, which needs to be installed first. The package does not include allocation functions, only simulation code to generate the value of each welfare check increments for households. Allocation functions rely the R optimal allocation package <a href="https://fanwangecon.github.io/PrjOptiAlloc">PrjOptiAlloc</a>.</p>
-<p>The site is built using <a href="https://bookdown.org/">Bookdown</a> <span class="citation">(Xie <a href="#ref-R-bookdown" role="doc-biblioref">2020</a>)</span>.</p>
+<p>The site is built using <a href="https://bookdown.org/">Bookdown</a> <span class="citation">(<a href="index-and-code-links.html#ref-R-bookdown" role="doc-biblioref">Xie 2020</a>)</span>.</p>
 <p>Please contact <a href="https://fanwangecon.github.io/">FanWangEcon</a> for issues or problems.</p>
 <p><a href="https://github.com/FanWangEcon/PrjOptiSNW/commits/master"><img src="https://img.shields.io/github/last-commit/fanwangecon/PrjOptiSNW" /></a> <a href="https://github.com/FanWangEcon/PrjOptiSNW/graphs/commit-activity"><img src="https://img.shields.io/github/commit-activity/m/fanwangecon/PrjOptiSNW" /></a> <a href="https://github.com/FanWangEcon/PrjOptiSNW/issues"><img src="https://img.shields.io/github/issues/fanwangecon/PrjOptiSNW" /></a> <a href="https://github.com/FanWangEcon/PrjOptiSNW/pulls"><img src="https://img.shields.io/github/issues-pr/fanwangecon/PrjOptiSNW" /></a></p>
 
-</div>
-<h3>References</h3>
-<div id="refs" class="references">
-<div id="ref-SNW2020">
-<p>Nygård, Vegard, Bent Sørensen, and Fan Wang. 2020. “Optimal Allocation of the Covid-19 Stimulus Checks.” <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3691091">https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3691091</a>.</p>
-</div>
-<div id="ref-matlab">
-<p>The MathWorks Inc. 2019. <em>MATLAB</em>. <a href="https://www.mathworks.com/products/matlab.html">https://www.mathworks.com/products/matlab.html</a>.</p>
-</div>
-<div id="ref-R-bookdown">
-<p>Xie, Yihui. 2020. <em>Bookdown: Authoring Books and Technical Documents with R Markdown</em>. <a href="https://CRAN.R-project.org/package=bookdown">https://CRAN.R-project.org/package=bookdown</a>.</p>
-</div>
 </div>
             </section>
 

@@ -81,6 +81,10 @@ if (~isempty(varargin))
     elseif (length(varargin)==6)
         [st_param_group, bl_print_mp_params, st_shock_method, bl_store_shock_trans, ...
             it_row_n_keep, it_col_n_keep] = varargin{:};
+    elseif (length(varargin)==7)
+        % mp_more_inputs added, when realized that more inputs are needed
+        [st_param_group, bl_print_mp_params, st_shock_method, bl_store_shock_trans, ...
+            it_row_n_keep, it_col_n_keep, mp_more_inputs_ex] = varargin{:};
     end
 
 else
@@ -95,6 +99,20 @@ else
     [it_row_n_keep, it_col_n_keep] = deal(20, 8);
 
 end
+
+%% Extra Inputs Default
+mp_more_inputs = containers.Map('KeyType','char', 'ValueType','any');
+% both: simulate for both high and low education groups; low: simulate only
+% for the low education group; high: simulate only for the high education
+% group. 
+mp_more_inputs('st_edu_simu_type') = 'both'; % possible values are both, low, vs high
+if (length(varargin)>=7)
+    mp_more_inputs = [mp_more_inputs; mp_more_inputs_ex];
+end
+
+% Parse parameters
+params_group = values(mp_more_inputs, {'st_edu_simu_type'});
+[st_edu_simu_type] = params_group{:};
 
 %% Parametesr Grid Points
 % Number of grid points
@@ -115,7 +133,7 @@ elseif(strcmp(st_param_group, "default_moredense"))
     n_eta_H_grid=9; % 9; % No. of grid points for persistent labor productivity shocks
     n_eta_S_grid=5; % 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
     n_kidsgrid=5; % No. of grid points for children (0 to 4+ children)
-elseif(strcmp(st_param_group, "default_docdense"))
+elseif(strcmp(st_param_group, "default_docdense") || contains(st_param_group, 'default_docdense_'))
 %     use default_moredense_a65zh81zs5_e2m2
     n_jgrid  =83;
     jret     =48;
@@ -123,7 +141,6 @@ elseif(strcmp(st_param_group, "default_docdense"))
     n_eta_H_grid=81;
     n_eta_S_grid=5;
     n_kidsgrid=5;
-    n_educgrid=2;
     n_marriedgrid=2;
 elseif(strcmp(st_param_group, "default_moredense_a100zh266_e1m1"))
     % 15 workers
@@ -144,7 +161,6 @@ elseif(strcmp(st_param_group, "default_moredense_a100zh266_e2m2"))
     n_eta_H_grid=266;
     n_eta_S_grid=1;
     n_kidsgrid=5;
-    n_educgrid=2;
     n_marriedgrid=2;
 elseif(strcmp(st_param_group, "default_moredense_a100zh81zs5_e2m2"))
     % 6 workers on Precision
@@ -155,7 +171,6 @@ elseif(strcmp(st_param_group, "default_moredense_a100zh81zs5_e2m2"))
     n_eta_H_grid=81;
     n_eta_S_grid=5;
     n_kidsgrid=5;
-    n_educgrid=2;
     n_marriedgrid=2;
 elseif(strcmp(st_param_group, "default_moredense_a65zh21zs5_e2m2"))
     % 5 workers
@@ -175,7 +190,6 @@ elseif(strcmp(st_param_group, "default_moredense_a65zh81zs5_e2m2"))
     n_eta_H_grid=81;
     n_eta_S_grid=5;
     n_kidsgrid=5;
-    n_educgrid=2;
     n_marriedgrid=2;
 elseif(strcmp(st_param_group, "default_moredense_a65zh133zs5_e2m2"))
     % 1 workers on Precision
@@ -185,9 +199,9 @@ elseif(strcmp(st_param_group, "default_moredense_a65zh133zs5_e2m2"))
     n_eta_H_grid=133;
     n_eta_S_grid=5;
     n_kidsgrid=5;
-    n_educgrid=2;
     n_marriedgrid=2;
-elseif(strcmp(st_param_group, "default_moredense_a65zh266zs5_e2m2"))
+elseif(contains(st_param_group, 'default_moredense_a65zh266zs5'))
+% elseif(strcmp(st_param_group, "default_moredense_a65zh266zs5_e2m2"))    
     % 1 workers on Precision
     n_jgrid  =83;
     jret     =48;
@@ -195,16 +209,15 @@ elseif(strcmp(st_param_group, "default_moredense_a65zh266zs5_e2m2"))
     n_eta_H_grid=266;
     n_eta_S_grid=5;
     n_kidsgrid=5;
-    n_educgrid=2;
     n_marriedgrid=2;
-elseif(strcmp(st_param_group, "default_dense"))
+elseif(strcmp(st_param_group, "default_dense") || contains(st_param_group, 'default_dense_'))       
     n_jgrid  =83; % Age runs from 18 to 100 (a period is 2 years)
     jret     =48;
     n_agrid  =55; % No. of grid points for assets
     n_eta_H_grid=7; % 9; % No. of grid points for persistent labor productivity shocks
     n_eta_S_grid=3; % 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
     n_kidsgrid=5; % No. of grid points for children (0 to 4+ children)
-elseif(strcmp(st_param_group, "default_base"))
+elseif(strcmp(st_param_group, "default_base") || contains(st_param_group, 'default_base_'))    
     n_jgrid  =42; % Age runs from 18 to 100 (a period is 2 years)
     jret=25;
     n_agrid  =40; % No. of grid points for assets
@@ -239,7 +252,7 @@ elseif(strcmp(st_param_group, "default_tiny53"))
     n_eta_H_grid=5; % 9; % No. of grid points for persistent labor productivity shocks
     n_eta_S_grid=3; % 3; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
     n_kidsgrid=3; % No. of grid points for children (0 to 5+ children)
-elseif(strcmp(st_param_group, "default_tiny"))
+elseif(strcmp(st_param_group, "default_tiny") || contains(st_param_group, 'default_tiny_'))
     n_jgrid   =7; % Age runs from 18 to 100 (5 periods of 16 years + terminal)
     jret =5;
     n_agrid   =10; % No. of grid points for assets
@@ -255,6 +268,45 @@ if (n_jgrid == 83)
 else
     it_yrs_per_period = (80/(n_jgrid-2));
 end
+
+%% Education Groups
+% How many education groups to solve for
+% it_edu_select, which "column" to select out. 
+if(strcmp(st_edu_simu_type, "both"))
+    n_educgrid=2;
+    it_edu_select=NaN;
+%     if(~contains(st_param_group, "_e2"))
+%        error('st_param_group should contain e2')
+%     end    
+    run('snw_hh_spousal_income_generator_bothlow');
+elseif(strcmp(st_edu_simu_type, "low"))
+    n_educgrid=1;
+    % Column 1 is non-college educated
+    it_edu_select=1;
+    if(~contains(st_param_group, "_e1l"))
+        error('st_param_group should contain e1l')
+    end
+    run('snw_hh_spousal_income_generator_bothlow');
+elseif(strcmp(st_edu_simu_type, "high"))    
+
+%     % discovered bug
+%     n_educgrid=2;
+%     % Column 2 is college educated
+%     it_edu_select=NaN;
+%     if(~contains(st_param_group, "_e2h"))
+%         error('st_param_group should contain e1h')
+%     end
+
+    n_educgrid=1;
+    % Column 2 is college educated
+    it_edu_select=2;
+    if(~contains(st_param_group, "_e2h"))
+        error('st_param_group should contain e1h')
+    end
+    run('snw_hh_spousal_income_generator_high');
+    
+end
+
 
 %% Planning and Unemployment Parameters
 % ADDITIONAL PARAMETERS/VARIABLES for planner problem are given in the following sections:
@@ -363,10 +415,10 @@ theta=0.565228521783443; % TFP parameter to normalize units such that average ho
 % Consumption allocation rule (1=uniform; 2=square root)
 cons_allocation_rule=2;
 
-% Social Security benefits
-SS=zeros(n_jgrid,2);
-SS(jret:end,1)=0.24433; % Average SS non-college 2005-2009 as a share of GDP per capita
-SS(jret:end,2)=0.29263; % Average SS college 2005-2009 as a share of GDP per capita
+% Social Security benefits, edu-specific
+SS=zeros(n_jgrid, 2);
+SS(jret:end, 1)=0.24433; % Average SS non-college 2005-2009 as a share of GDP per capita
+SS(jret:end, 2)=0.29263; % Average SS college 2005-2009 as a share of GDP per capita
 
 %% PARAM Mortality
 % Assume MORT_PROB will have 80 rows. Average based on Resulting Dataframes
@@ -389,7 +441,7 @@ clear mort_prob psi_full
 % Generate epsilon matrix
 % A1. load external
 load('Life_cycle_prod_by_educ.mat','life_cycle_prod_by_educ') % Life-cycle labor productivity for 20-100 year-olds by education (non-college vs. college)
-% Set Annual
+% Set Annual, edu-specific
 epsilon_full=NaN(83,2);
 epsilon_full(3:end,:)=life_cycle_prod_by_educ(:,:);
 
@@ -466,9 +518,10 @@ else
 end
 
 % Ensure that all rows sum to 1 in case of rounding error
+% edu-specific
 for kids=1:n_kidsgrid % No. of kids in year 1
     for j=1:n_jgrid % Age in year 1
-        for educ=1:n_educgrid % Educational level
+        for educ=1:2 % Educational level
             for married=1:n_marriedgrid % Marital status
                 aux_sum=sum(pi_kids(kids,:,j,educ,married));
                 pi_kids(kids,:,j,educ,married)=pi_kids(kids,:,j,educ,married)/aux_sum;
@@ -567,10 +620,20 @@ end
 
 
 %% Initial conditions for marital status, college attainment, and number of kids
+% edu-specific
 % Distribution of educational attainment from PSID
 % tab Rcollege if RAGE>=18 & RAGE!=. [aweight=WEIGHT]
 stat_distr_educ(1,1)=0.6970; % No college
 stat_distr_educ(1,2)=0.3030; % College
+% stat_distr_educ(1,1)=1.0; % No college
+% stat_distr_educ(1,2)=0.0; % College
+% stat_distr_educ(1,1)=0.0; % No college
+% stat_distr_educ(1,2)=1.0; % College
+
+% if(strcmp(st_edu_simu_type, "high"))    
+%     stat_distr_educ(1,1)=0.0; % No college
+%     stat_distr_educ(1,2)=1.0; % College
+% end
 
 % Distribution of marital status conditional on college attainment from PSID
 % tab  Rmarried if RAGE>=18 & RAGE!=. & Rcollege==0 [aweight=WEIGHT]
@@ -651,6 +714,18 @@ end
 name='Old-age dependency ratio (ratio of 65+/(18-64))=';
 st_old_age_depend =[name,num2str(sum(Pop(jret:end))/sum(Pop(1:(jret-1))))];
 % disp(st_old_age_depend);
+
+%% Education Selection
+% is not NaN select
+if ~isnan(it_edu_select)
+    SS = SS(:, it_edu_select);
+    epsilon = epsilon(:, it_edu_select);
+    pi_kids = pi_kids(:, :, :, it_edu_select, :);
+    
+    stat_distr_educ = stat_distr_educ(:, it_edu_select);
+    stat_distr_married = stat_distr_married(it_edu_select, :);
+    stat_distr_kids = stat_distr_kids(it_edu_select, :, :);    
+end
 
 %% Set Parameter Maps
 mp_params_covid_unemploy = containers.Map('KeyType', 'char', 'ValueType', 'any');

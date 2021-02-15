@@ -75,7 +75,15 @@ else
     
     clc;
     bl_covid_year = false;
-    mp_params = snw_mp_param('default_tiny', false, 'tauchen', false, 8, 8);
+    
+    mp_more_inputs = containers.Map('KeyType','char', 'ValueType','any');
+    mp_more_inputs('st_edu_simu_type') = 'both';
+    mp_params = snw_mp_param('default_tiny', false, 'tauchen', false, 8, 8, mp_more_inputs);
+%     mp_more_inputs('st_edu_simu_type') = 'low';
+%     mp_params = snw_mp_param('default_tiny_e1l', false, 'tauchen', false, 8, 8, mp_more_inputs);
+%     mp_more_inputs('st_edu_simu_type') = 'high';
+%     mp_params = snw_mp_param('default_tiny_e2h', false, 'tauchen', false, 8, 8, mp_more_inputs);
+    
     mp_controls = snw_mp_control('default_test');
     false;
 

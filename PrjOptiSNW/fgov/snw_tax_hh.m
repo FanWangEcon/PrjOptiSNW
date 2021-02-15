@@ -46,26 +46,26 @@ if(bl_snw_tax_hh_verbose)
     x_high = 5;
     a2 = 1.5286;
     fplot(@(x) a0*(x-(((x.^(-a1))+a2).^(-1/a1)))/x, [x_low, x_high]);
-    a2 = 12.7176;
+    a2 = 1.6213;
     fplot(@(x) a0*(x-(((x.^(-a1))+a2).^(-1/a1)))/x, [x_low, x_high]);
     xlabel('income');
     ylabel('tax rate');
     title(['Tax Rate and Income'])
-    legend('a2=1.5286','a2=12.7176');
+    legend('prior-0.97beta-a2=1.5286','in-progress-new-a2=1.6213');
     grid on
     
-    figure();
-    hold on;
-    a2 = 1.5286;
-    a0 = 0.258;
-    fplot(@(x) a0*(x-(((x.^(-a1))+a2).^(-1/a1)))/x, [x_low, x_high]);
-    a0 = 0.31739;
-    fplot(@(x) a0*(x-(((x.^(-a1))+a2).^(-1/a1)))/x, [x_low, x_high]);
-    xlabel('income');
-    ylabel('tax rate');
-    title(['Tax Rate and Income'])
-    legend('a2 = 1.5286, a0 = 0.258','a2 = 1.5286, a0 = 0.31739');
-    grid on    
+%     figure();
+%     hold on;
+%     a2 = 1.5286;
+%     a0 = 0.258;
+%     fplot(@(x) a0*(x-(((x.^(-a1))+a2).^(-1/a1)))/x, [x_low, x_high]);
+%     a0 = 0.31739;
+%     fplot(@(x) a0*(x-(((x.^(-a1))+a2).^(-1/a1)))/x, [x_low, x_high]);
+%     xlabel('income');
+%     ylabel('tax rate');
+%     title(['Tax Rate and Income'])
+%     legend('a2 = 1.5286, a0 = 0.258','a2 = 1.5286, a0 = 0.31739');
+%     grid on    
     
 end
 

@@ -35,8 +35,10 @@ else
     clear all;
     
     % 1a. Parfor controls
+%      bl_parfor = true;
+%      it_workers = 14;
      bl_parfor = true;
-     it_workers = 14;
+     it_workers = 4;
 %     bl_parfor = false;
 %     it_workers = 1;
 
@@ -70,7 +72,8 @@ else
 %     mp_params = snw_mp_param('default_moredense_a65zh81zs5_e2m2');
     % mp_params = snw_mp_param('default_moredense_a100zh81zs5_e2m2');   
     % mp_params = snw_mp_param('default_moredense_a65zh133zs5_e2m2');
-    mp_params = snw_mp_param('default_moredense_a65zh266zs5_e2m2', false, 'tauchen', false, 8, 8);
+%     mp_params = snw_mp_param('default_moredense_a65zh266zs5_e2m2', false, 'tauchen', false, 8, 8);
+    mp_params = snw_mp_param('default_base', false, 'tauchen', false, 8, 8);
     
     % 3. Controls
     mp_controls = snw_mp_control('default_test');
@@ -90,15 +93,16 @@ else
     % 5a. Check Count
     xi=0; % Full income loss if get covid shock
     b=1     ; % Fully unemployment insurance
-%     n_welfchecksgrid = 89; % 89 allows for double adults + double kids
-    n_welfchecksgrid = 245; % 245 max
+    n_welfchecksgrid = 89; % 89 allows for double adults + double kids
+    % n_welfchecksgrid = 245; % 245 max
     mp_params('xi') = xi;
     mp_params('b') = b;
     mp_params('n_welfchecksgrid') = n_welfchecksgrid;    
     
-    mp_params('a2_covidyr') = mp_params('a2_covidyr_tax_fully_pay');
+    mp_params('a2_covidyr') = mp_params('a2_covidyr_manna_heaven');
 
-    snm_suffix = ['_b1_x0_fullypay_' num2str(n_welfchecksgrid-1)];
+    snm_suffix = ['_b1_xi0_mannna_' num2str(n_welfchecksgrid-1)];
+%     snm_suffix = ['_b1_xi0_fullypay_' num2str(n_welfchecksgrid-1)];
     
     % 5b. Income Grid
     % Income Groups

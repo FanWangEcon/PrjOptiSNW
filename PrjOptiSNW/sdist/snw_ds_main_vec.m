@@ -37,12 +37,22 @@ if (~isempty(varargin))
 
 else
 
-%     clc;
+    clc;
     clear all;
+    mp_more_inputs = containers.Map('KeyType','char', 'ValueType','any');
+    mp_more_inputs('st_edu_simu_type') = 'both';
+    mp_params = snw_mp_param('default_tiny', false, 'tauchen', false, 8, 8, mp_more_inputs);
+%     mp_more_inputs('st_edu_simu_type') = 'low';
+%     mp_params = snw_mp_param('default_tiny_e1l', false, 'tauchen', false, 8, 8, mp_more_inputs);
+%     mp_more_inputs('st_edu_simu_type') = 'high';
+%     mp_params = snw_mp_param('default_tiny_e2h', false, 'tauchen', false, 8, 8, mp_more_inputs);
+
 %     mp_params = snw_mp_param('default_docdense');
-%     mp_params = snw_mp_param('default_small');
-    mp_params = snw_mp_param('default_tiny', false, 'tauchen', true, 8, 8);    
-%     mp_params = snw_mp_param('default_tiny');
+       
+    mp_params('a2') = 1.528571486531964;
+    mp_params('theta') = 0.565228521783443;
+    mp_params('beta') = 0.971162552785405;
+
     mp_controls = snw_mp_control('default_test');
     [v_ss, ap_ss, cons_ss, mp_valpol_more_ss] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
 
@@ -68,6 +78,7 @@ end
 if (~exist('ap_ss','var'))
     [v_ss, ap_ss, cons_ss] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
 end
+% ff_container_map_display(mp_params, 2, 3);
 
 %% Reset All globals
 % globals = who('global');
@@ -116,7 +127,6 @@ params_group = values(mp_controls, {'bl_print_ds', 'bl_print_ds_verbose'});
 [bl_print_ds, bl_print_ds_verbose] = params_group{:};
 
 %% Timer
-
 if (bl_timer)
     tm_start = tic;
 end
@@ -305,10 +315,17 @@ if (bl_loop_aggregate)
     Tax_revenues=0;
     SS_spend=0;
     Bequests_aux=0;
-
+    
+    
+    n_educgrid_aggregator = n_educgrid;
+%     n_educgrid_aggregator = 1;
+    n_educgrid_start = 1;
+%     n_educgrid_aggregator = 2;
+%     n_educgrid_start = 2;
+    
     for j=1:n_jgrid
         for eta=1:n_etagrid
-            for educ=1:n_educgrid
+            for educ=n_educgrid_start:n_educgrid_aggregator
                 for married=1:n_marriedgrid
                     for kids=1:n_kidsgrid
 
@@ -364,7 +381,11 @@ if (bl_loop_aggregate)
     tol=10^-4; %10^-3; %5*10^-4;
     err=abs((Tax_revenues/(SS_spend+g_cons*Y_inc_agg))-1);
 
+    a2_init = a2;
     a2_update=a2;
+    ar_a2_store = NaN([100+1,1]);
+    ar_a2_store(1,1) = a2_init;    
+%     a2_update=a2;
 
     it=0;
 
@@ -376,7 +397,7 @@ if (bl_loop_aggregate)
 
         for j=1:n_jgrid
             for eta=1:n_etagrid
-                for educ=1:n_educgrid
+                for educ=n_educgrid_start:n_educgrid_aggregator
                     for married=1:n_marriedgrid
                         for kids=1:n_kidsgrid
 
@@ -411,8 +432,12 @@ if (bl_loop_aggregate)
                 ], ";");
             disp(st_tax_iter);
         end
+        % Track/store
+        ar_a2_store(it+1,1) = a2;
     end
-
+    
+    % keep non NaN
+%     ar_a2_store = ar_a2_store(~isnan(ar_a2_store));
 
     if (bl_print_ds)
         name='SNW_DS_MAIN_VEC: Number of a2-adjustments (for taxation) used to balance the government budget= ';

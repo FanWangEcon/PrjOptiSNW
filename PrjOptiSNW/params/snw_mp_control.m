@@ -59,6 +59,7 @@ bl_timer = true;
 %% Controls Print
 bl_print_vfi = true;
 bl_print_ds = true;
+bl_print_ds_aggregation = true;
 bl_print_a4chk = true;
 bl_print_vu_vw = true;
 bl_print_v_planner = true;
@@ -69,9 +70,10 @@ bl_print_evuvw19_jymk = true;
 bl_print_evuvw19_jmky_mass = true;
 bl_print_evuvw19_jmky_allchecks = true;
 bl_print_find_tax_rate = true;
-
+ 
 if (strcmp(st_param_group, 'default_test')) 
     bl_print_ds_verbose = true;
+    bl_print_ds_aggregation_verbose = true;
     bl_print_vfi_verbose = true;
     bl_print_a4chk_verbose = true;
     bl_print_vu_vw_verbose = true;
@@ -85,6 +87,7 @@ if (strcmp(st_param_group, 'default_test'))
     bl_print_find_tax_rate_verbose = true;
 else
     bl_print_ds_verbose = false;
+    bl_print_ds_aggregation_verbose = false;
     bl_print_vfi_verbose = false;
     bl_print_a4chk_verbose = false;
     bl_print_vu_vw_verbose = false;
@@ -129,6 +132,9 @@ mp_display('bl_print_vfi_verbose') = bl_print_vfi_verbose;
 
 mp_display('bl_print_ds') = bl_print_ds;
 mp_display('bl_print_ds_verbose') = bl_print_ds_verbose;
+
+mp_display('bl_print_ds_aggregation') = bl_print_ds_aggregation;
+mp_display('bl_print_ds_aggregation_verbose') = bl_print_ds_aggregation_verbose;
 
 mp_display('bl_print_a4chk') = bl_print_a4chk;
 mp_display('bl_print_a4chk_verbose') = bl_print_a4chk_verbose;

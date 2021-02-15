@@ -1,5 +1,5 @@
 %% Zero Unemployment Benefits
-% Mana from Heaven (no COVID check Tax Adjustments
+% Mana from Heaven (no COVID check Tax Adjustments)
 
 clc;
 clear all;

@@ -5,7 +5,7 @@
 % the normalizing constant. 
 %% Calibrate Parameter Controls for SNW Functions
 % Set up controls for shock process and tiny/small/dense/densemore
-
+clc;
 clear all;
 bl_print_mp_params = false;
 % st_shock_method = 'rouwenhorst';
@@ -19,6 +19,15 @@ st_shock_method = 'tauchen';
 st_param_group = 'default_moredense_a65zh81zs5_e2m2';
 mp_params = snw_mp_param(st_param_group, bl_print_mp_params, st_shock_method);
 Pop = mp_params('Pop');
+
+% mp_more_inputs = containers.Map('KeyType','char', 'ValueType','any');
+% mp_more_inputs('st_edu_simu_type') = 'both';
+% mp_params = snw_mp_param('default_base', false, 'tauchen', false, 8, 8, mp_more_inputs);
+% mp_more_inputs('st_edu_simu_type') = 'low';
+% mp_params = snw_mp_param('default_tiny_e1l', false, 'tauchen', false, 8, 8, mp_more_inputs);
+%     mp_more_inputs('st_edu_simu_type') = 'high';
+%     mp_params = snw_mp_param('default_base_e2h', false, 'tauchen', true, 8, 8, mp_more_inputs);
+
 %% 
 % Set up print defaults
 
@@ -44,7 +53,8 @@ while err>tol
         % Solve optimization problem and get the distribution
         tic;
         a2_old = mp_params('a2');
-        [Phi_true,~,A_agg,Y_inc_agg,it,mp_dsvfi_results, a2] = snw_ds_main(mp_params, mp_controls);
+%         mp_params('beta') = 0.971162552785405;
+        [Phi_true,~,A_agg,Y_inc_agg,it,mp_dsvfi_results, a2] = snw_ds_main_vec(mp_params, mp_controls);
         mp_params('a2') = a2;
         disp(['a2_old:' num2str(a2_old) ', a2_new:' num2str(a2)])
         toc;

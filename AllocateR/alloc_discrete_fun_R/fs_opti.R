@@ -5,11 +5,12 @@ library(REconTools)
 # library(PrjOptiAlloc)
 library(forcats)
 #
-library(foreach)
+# library(foreach)
 library(doParallel)
 
 # File Names, Paths Etc -------
 st_which_solu <- 'b0_xi0p25_manna'
+st_which_solu <- 'b1_xi0_manna_88_gm300'
 ls_output <- fs_opti_support(st_which_solu)
 st_file_type_withspouse_shock <- ls_output$st_file_type_withspouse_shock
 snm_simu_csv_withspouse_shock <- ls_output$snm_simu_csv_withspouse_shock
@@ -99,17 +100,17 @@ if (!exists('df_plan_v_tilde_full')) {
 
 # All Allocations
 # all allocationt results, takes more time solves g47 for all
-ar_double_triple_alloc <- c(1, 2, 3,
-                            12,13,
-                            22,23,
-                            32,33,
-                            42,43,
-                            52,53,
-                            62,63,
-                            72,73,
-                            82,83,
-                            4,14,24,34,44,54,64,74,84,
-                            5,15,25,35,45,55,65,75,85)
+# ar_double_triple_alloc <- c(1, 2, 3,
+#                             12,13,
+#                             22,23,
+#                             32,33,
+#                             42,43,
+#                             52,53,
+#                             62,63,
+#                             72,73,
+#                             82,83,
+#                             4,14,24,34,44,54,64,74,84,
+#                             5,15,25,35,45,55,65,75,85)
 
 # # Here is a list of the 17 key results included in The Paper Tables
 # ar_double_triple_alloc <- c(12,13,
@@ -122,7 +123,8 @@ ar_double_triple_alloc <- c(1, 2, 3,
 #                             82,83,
 #                             24)
 
-ar_double_triple_alloc <- c(4,14,24,34,64,84)
+# ar_double_triple_alloc <- c(4,14,24,34,64,84)
+ar_double_triple_alloc <- c(22, 32, 42)
 
 # ar_double_triple_alloc <- c(2)
 # 22 is mulone feasible

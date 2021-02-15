@@ -28,36 +28,68 @@ fs_opti_support <- function(st_which_solu='b1_manna') {
 
   srn_csv <- 'csv/'
   # Allocation Type specific folder etc
-  if (st_which_solu == 'b1_manna') {
-    st_b0b1 <- 'b1'
-    srt_folder <- '2020-08-23-b1_manna'
-    st_file_type_withspouse_shock <- paste0('moredense_a65zh266zs5_e2m2_', st_which_solu, '_244')
-  } else if (st_which_solu == 'b1_manna_expmin') {
-    st_b0b1 <- 'b1'
-    srt_folder <- '2020-08-23-b1_manna'
-    st_file_type_withspouse_shock <- paste0('moredense_a65zh266zs5_e2m2_', st_which_solu, '_244')
-    srn_csv <- 'csv_with_expmin_apc/'
-    bl_save_img <- FALSE
-    ar_rho <- c(1)
-  } else if (st_which_solu == 'b1_xi0_tax') {
-    st_b0b1 <- 'b1'
-    srt_folder <- '2020-08-23-b1_xi0_tax'
-    st_file_type_withspouse_shock <- paste0('moredense_a65zh266zs5_e2m2_', st_which_solu, '_244')
-  } else if (st_which_solu == 'b0_xi0p25_manna') {
-    st_b0b1 <- 'b0'
-    srt_folder <- '2020-08-23-b0_xi0p25_manna'
-    st_file_type_withspouse_shock <- paste0('moredense_a65zh266zs5_e2m2_', st_which_solu, '_244')
+  ls_st_submit2020 <- c('b1_manna', 'b1_manna_expmin', 'b1_xi0_tax', 'b0_xi0p25_manna')
+
+  if (grepl('snwx_v_planner_', st_which_solu)) {
+    # supplying full string names
+    # started doing this when docdense files are been used.
+
+    if (grepl('b1_', st_which_solu)) {
+      st_b0b1 <- 'b1'
+    }
+    if (grepl('docdense_e1lm2_b1_xi0_manna', st_which_solu) ||
+        grepl('docdense_e2hm2_b1_xi0_manna', st_which_solu)) {
+      srt_folder <- paste0('20210106_', st_which_solu)
+    }
+
+    st_file_type_withspouse_shock <- gsub(x = st_which_solu,pattern = "snwx_v_planner_", replacement = "")
+
+  } else {
+    # use string prefix
+
+    if (st_which_solu %in% ls_st_submit2020) {
+        if (st_which_solu == 'b1_manna') {
+          st_b0b1 <- 'b1'
+          srt_folder <- '2020-08-23-b1_manna'
+          st_file_type_withspouse_shock <- paste0('moredense_a65zh266zs5_e2m2_', st_which_solu, '_244')
+        } else if (st_which_solu == 'b1_manna_expmin') {
+          st_b0b1 <- 'b1'
+          srt_folder <- '2020-08-23-b1_manna'
+          st_file_type_withspouse_shock <- paste0('moredense_a65zh266zs5_e2m2_', st_which_solu, '_244')
+          srn_csv <- 'csv_with_expmin_apc/'
+          bl_save_img <- FALSE
+          ar_rho <- c(1)
+        } else if (st_which_solu == 'b1_xi0_tax') {
+          st_b0b1 <- 'b1'
+          srt_folder <- '2020-08-23-b1_xi0_tax'
+          st_file_type_withspouse_shock <- paste0('moredense_a65zh266zs5_e2m2_', st_which_solu, '_244')
+        } else if (st_which_solu == 'b0_xi0p25_manna') {
+          st_b0b1 <- 'b0'
+          srt_folder <- '2020-08-23-b0_xi0p25_manna'
+          st_file_type_withspouse_shock <- paste0('moredense_a65zh266zs5_e2m2_', st_which_solu, '_244')
+        }
+    } else {
+        st_b0b1 <- 'b1'
+        srt_folder <- paste0('20210106_', st_which_solu)
+        st_file_type_withspouse_shock <- paste0('moredense_a65zh266zs5_e2m2_', st_which_solu)
+    }
   }
 
   # st_file_type_withspouse_shock <- paste0('dense_ybin2500')
   snm_simu_csv_withspouse_shock <- paste0('snwx_v_planner_',st_file_type_withspouse_shock,'.csv')
 
-  srt_results_root <- paste0(srt_root, 'Results')
-  srt_img_save_root <- paste0(srt_root, 'Results/', srt_folder, '/Graphs/')
-  srt_csv_path_root <- paste0(srt_root, 'Results/', srt_folder, '/', srn_csv)
-
-  # Output folder
-  srt_simu_path <- paste0(srt_root, 'Output/')
+  # Results and Output folder
+  if (st_which_solu %in% ls_st_submit2020) {
+      srt_results_root <- paste0(srt_root, 'Results')
+      srt_img_save_root <- paste0(srt_root, 'Results/', srt_folder, '/Graphs/')
+      srt_csv_path_root <- paste0(srt_root, 'Results/', srt_folder, '/', srn_csv)
+      srt_simu_path <- paste0(srt_root, 'Output/')
+  } else {
+      srt_results_root <- paste0(srt_root, 'Results202101')
+      srt_img_save_root <- paste0(srt_root, 'Results202101/', srt_folder, '/Graphs/')
+      srt_csv_path_root <- paste0(srt_root, 'Results202101/', srt_folder, '/', srn_csv)
+      srt_simu_path <- paste0(srt_root, 'Output202101/')
+  }
 
   srt_paper_main_textgraph <- paste0(srt_root, 'Paper/Main_text_graphs_and_tables/')
   srt_paper_appendix_textgraph <- paste0(srt_root, 'Paper/Appendix_graphs_and_tables/')

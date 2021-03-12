@@ -191,7 +191,7 @@ elseif(strcmp(st_param_group, "default_moredense_a65zh81zs5_e2m2"))
     n_eta_S_grid=5;
     n_kidsgrid=5;
     n_marriedgrid=2;
-elseif(strcmp(st_param_group, "default_moredense_a65zh133zs5_e2m2"))
+elseif(strcmp(st_param_group, "default_moredense_a65zh133zs5") || contains(st_param_group, 'default_moredense_a65zh133zs5_'))
     % 1 workers on Precision
     n_jgrid  =83;
     jret     =48;
@@ -200,7 +200,8 @@ elseif(strcmp(st_param_group, "default_moredense_a65zh133zs5_e2m2"))
     n_eta_S_grid=5;
     n_kidsgrid=5;
     n_marriedgrid=2;
-elseif(contains(st_param_group, 'default_moredense_a65zh266zs5'))
+elseif(strcmp(st_param_group, "default_moredense_a65zh266zs5") || contains(st_param_group, 'default_moredense_a65zh266zs5_'))    
+% elseif(contains(st_param_group, 'default_moredense_a65zh266zs5'))
 % elseif(strcmp(st_param_group, "default_moredense_a65zh266zs5_e2m2"))    
     % 1 workers on Precision
     n_jgrid  =83;
@@ -210,7 +211,7 @@ elseif(contains(st_param_group, 'default_moredense_a65zh266zs5'))
     n_eta_S_grid=5;
     n_kidsgrid=5;
     n_marriedgrid=2;
-elseif(strcmp(st_param_group, "default_dense") || contains(st_param_group, 'default_dense_'))       
+elseif(strcmp(st_param_group, "default_dense") || contains(st_param_group, 'default_dense_'))
     n_jgrid  =83; % Age runs from 18 to 100 (a period is 2 years)
     jret     =48;
     n_agrid  =55; % No. of grid points for assets
@@ -224,7 +225,8 @@ elseif(strcmp(st_param_group, "default_base") || contains(st_param_group, 'defau
     n_eta_H_grid=5; % 9; % No. of grid points for persistent labor productivity shocks
     n_eta_S_grid=3; % 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
     n_kidsgrid=5; % No. of grid points for children (0 to 4+ children)
-elseif(strcmp(st_param_group, "default_small53"))
+% elseif(strcmp(st_param_group, "default_small53"))
+elseif(strcmp(st_param_group, "default_small53") || contains(st_param_group, 'default_small53_'))    
     n_jgrid   =18; % Age runs from 18 to 100 (16 periods of 5 years + terminal)
     jret      =13;
     n_agrid   =25;
@@ -373,6 +375,10 @@ else
     % Calibrated with: default_moredense_a65zh81zs5_e2m2, using snwx_calibrate_beta_norm_gdp_m
     beta=0.971162552785405^it_yrs_per_period;
 end
+
+% stimulus amounts
+[fl_stimulus_adult_first, fl_stimulus_child_first] = deal(1200, 500);
+[fl_stimulus_adult_second, fl_stimulus_child_second] = deal(600, 600);
 
 % Spousal Shocks
 rho_eta_spouse=0; % Persistence of spousal AR(1) productivity shocks
@@ -737,6 +743,11 @@ mp_params_covid_unemploy('n_welfchecksgrid') = n_welfchecksgrid;
 mp_params_covid_unemploy('pi_unemp') = pi_unemp;
 mp_params_covid_unemploy('n_incgrid') = n_incgrid;
 mp_params_covid_unemploy('inc_grid') = inc_grid;
+
+mp_params_covid_unemploy('fl_stimulus_adult_first') = fl_stimulus_adult_first;
+mp_params_covid_unemploy('fl_stimulus_child_first') = fl_stimulus_child_first;
+mp_params_covid_unemploy('fl_stimulus_adult_second') = fl_stimulus_adult_second;
+mp_params_covid_unemploy('fl_stimulus_child_second') = fl_stimulus_child_second;
 
 mp_params_preftechpricegov = containers.Map('KeyType', 'char', 'ValueType', 'any');
 mp_params_preftechpricegov('gamma') = gamma;

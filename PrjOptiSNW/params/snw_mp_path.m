@@ -45,13 +45,14 @@ end
 
 spt_simu_codem = fullfile(spt_dropbox_root, 'PrjOptiSNW', filesep);
 spt_simu_codem_doc = fullfile(spt_dropbox_root, 'PrjOptiSNW', 'PrjOptiSNW', 'doc', filesep);
-spt_simu_outputs = fullfile(spt_dropbox_root, 'Output202101', filesep);
-spt_simu_outputs_vig = fullfile(spt_dropbox_root, 'MatlabVig', '01-02-2021', filesep);
+spt_simu_outputs = fullfile(spt_dropbox_root, 'Output202102', filesep);
+spt_simu_outputs_vig = fullfile(spt_dropbox_root, 'MatlabVig', '02-21-2021', filesep);
 spt_simu_outputs_log = fullfile(spt_simu_outputs, 'log', filesep);
 spt_simu_outputs_mat = fullfile(spt_simu_outputs, 'mat', filesep);
 % spt_simu_results_csv = fullfile(spt_dropbox_root, 'Results', '2020-08-23-b1_manna', 'csv_with_expmin_apc');
 % spt_simu_results_csv = fullfile(spt_dropbox_root, 'Results', '2020-08-23-b1_manna', 'csv', filesep);
-spt_simu_results_csv = fullfile(spt_dropbox_root, 'Results', '2021-01-02-b1_manna', 'csv', filesep);
+% spt_simu_results_csv = fullfile(spt_dropbox_root, 'Results', '2021-01-02-b1_manna', 'csv', filesep);
+spt_simu_results_csv = fullfile(spt_dropbox_root, 'Results', '2021-02-21-b1_manna', 'csv', filesep);
 
 %% Set Parameter Maps
 mp_path_external = containers.Map('KeyType', 'char', 'ValueType', 'any');

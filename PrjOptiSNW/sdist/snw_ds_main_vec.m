@@ -5,12 +5,30 @@
 %    This is the vectorized version of SNW_DS_MAIN with significant speed
 %    gains.
 %
+%    * PHI_ADJ_BASE: matrix that is the PHI_ADJ output from invokoving
+%    SNW_DS_MAIN_VEC. Solve for distribution first using one policy
+%    function, this distribution is PHI_ADJ_BASE. When this input is
+%    provided, if the AP_SS, CONS_SS policy functions are from the same
+%    problem, output PHI_ADJ will be identical. However, now AP_SS, CONS_SS
+%    can also be a different one period policy function, solved based on
+%    same continuation value as under PHI_ADJ_BASE, but different one
+%    period choice due to stimulus checks. This allows for obtaining the
+%    distributional impact of a one period policy, allowing for deviation
+%    from "steady-state" distribution. 
+%
 %    [Phi_true,Phi_adj,A_agg,Y_inc_agg,it,mp_dsvfi_results] =
 %    SNW_DS_MAIN_VEC() invoke model with externally set parameter map and
 %    control map. Results outputed to a map containing various output
 %    matrixes in mp_dsvfi_results, and also distributional matrixes.
 %
-%    See also SNW_DS_MAIN, SNW_DS_GRID_SEARCH
+%    [Phi_true,Phi_adj,A_agg,Y_inc_agg,it,mp_dsvfi_results] =
+%    SNW_DS_MAIN_VEC(MP_PARAMS, MP_CONTROLS, AP_SS, CONS_SS,
+%    MP_VALPOL_MORE_SS, PHI_ADJ_BASE) solves for distribution induces by
+%    AP_SS, CONS_SS policy functions and given existing distribution
+%    PHI_ADJ_BASE
+%
+%    See also SNW_DS_MAIN, SNW_DS_GRID_SEARCH, SNWX_DS_BISEC_VEC,
+%    SNWX_DS_BISEC_VEC_ONEPERIODPOLSHIFT
 %
 
 %%
@@ -29,6 +47,9 @@ if (~isempty(varargin))
     elseif (length(varargin)==5)
         % This will produce extra statistics outputs
         [mp_params, mp_controls, ap_ss, cons_ss, mp_valpol_more_ss] = varargin{:};
+    elseif (length(varargin)==6)
+        % externally provided Phi_adj matrix as "base" distribution
+        [mp_params, mp_controls, ap_ss, cons_ss, mp_valpol_more_ss, Phi_adj_base] = varargin{:};
     else
         error('Need to provide 2/4 parameter inputs');
     end
@@ -41,7 +62,7 @@ else
     clear all;
     mp_more_inputs = containers.Map('KeyType','char', 'ValueType','any');
     mp_more_inputs('st_edu_simu_type') = 'both';
-    mp_params = snw_mp_param('default_tiny', false, 'tauchen', false, 8, 8, mp_more_inputs);
+    mp_params = snw_mp_param('default_dense', false, 'tauchen', false, 8, 8, mp_more_inputs);
 %     mp_more_inputs('st_edu_simu_type') = 'low';
 %     mp_params = snw_mp_param('default_tiny_e1l', false, 'tauchen', false, 8, 8, mp_more_inputs);
 %     mp_more_inputs('st_edu_simu_type') = 'high';
@@ -180,7 +201,18 @@ for j=1:(n_jgrid-1) % Age
             % transformed matrix rows are savings, columns are shocks
             % column shocks include productivity as well kids shocks
             mt_ap_ss_jem = reshape(ap_ss(j,:,:,educ,married,:), n_agrid, []);
-            mt_Phiss_jem = reshape(Phiss(j,:,:,educ,married,:), n_agrid, []);
+                        
+            if ~exist('Phi_adj_base','var')
+                % Solve for dist with current policy functions
+                mt_Phiss_jem = reshape(Phiss(j,:,:,educ,married,:), n_agrid, []);
+            else
+                % Solve for next round distribution given existing
+                % distribution. Distributional impact of a one round policy
+                % function change. Imagine all other periods of life
+                % operating under policy function A, but switch to policy
+                % function B for one period
+                mt_Phiss_jem = reshape(Phi_adj_base(j,:,:,educ,married,:), n_agrid, []);
+            end
 
             % C3a. lower/upper ratio and lower index for savings choices
             % These determine where do mass from age j land at at j+1
@@ -258,6 +290,7 @@ for j=1:(n_jgrid-1) % Age
 
 end
 
+
 %% Normalize distribution of idiosyncratic states to sum to 1 for each age
 Phi_adj=zeros(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 Phi_true=zeros(n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
@@ -303,6 +336,19 @@ check_asset_distr=sum(sum(sum(sum(sum(Phi_true(:,n_agrid,:,:,:,:))))));
 if (bl_print_ds)
     disp(strcat(['SNW_DS_MAIN: Share of population with assets equal to upper bound on asset grid:' ...
         num2str(check_asset_distr/sum(Pop))]));
+end
+
+%% Check
+
+if (bl_print_ds_verbose)    
+    disp(['sum of Phi_adj:' num2str(sum(Phi_adj, 'all'))]);
+    disp(['sum of Phi_true:' num2str(sum(Phi_true, 'all'))]);
+    disp(['sum of Phiss:' num2str(sum(Phiss, 'all'))]);
+    disp(['summ of diff of Phiss and Phi_adj:' num2str(sum(Phiss-Phi_adj, 'all'))]);
+    disp(['summ of diff of Phiss and Phi_true:' num2str(sum(Phiss-Phi_true, 'all'))]);
+    if exist('Phi_adj_base','var')
+        disp(['summ of diff of Phi_adj_base and Phiss:' num2str(sum(Phi_adj_base-Phiss, 'all'))]);
+    end
 end
 
 %% Explicit Looped Aggregate variables Calculation

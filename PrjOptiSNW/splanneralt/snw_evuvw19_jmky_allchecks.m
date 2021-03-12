@@ -4,13 +4,30 @@
 %    check at a time. Uses pre-stored matrixes that are re-used across
 %    check calculations
 %
+%    WARNING: DO NOT run other files that will shift
+%    snw_hh_spousal_income.m if running this file, otherwise will over-ride
+%    low vs high education income equation specifications. Go work on a
+%    different computer for example, or some other task. multiple beta/edu
+%    jobs can not be run jointly under current "dynamic" file generation
+%    structure. 
+%      
+%    * ST_BIDEN_OR_TRUMP string with values trumpchk or bidenchk
 %    * BL_LOAD_MAT boolean if true load saving mat file with VFI and
 %    distributiona results if the file exists
 %
 %    [EV19_JMKY_ALLCHECKS, EC19_JMKY_ALLCHECKS, OUTPUT] =
 %    SNW_EVUVW19_JMKY_ALLCHECKS(MP_PARAMS, MP_CONTROLS, ST_SOLU_TYPE,
 %    BL_PARFOR, IT_WORKERS, BL_EXPORT, SNM_SUFFIX) provide V_SS and V_UNEMP
-%    solved out elsewhere, and only get two outputs out.
+%    solved out elsewhere, and only get two outputs out. Solves for Trump
+%    check. 
+%
+%    [EV19_JMKY_ALLCHECKS, EC19_JMKY_ALLCHECKS, OUTPUT] =
+%    SNW_EVUVW19_JMKY_ALLCHECKS(MP_PARAMS, MP_CONTROLS, ST_BIDEN_OR_TRUMP,
+%    ST_SOLU_TYPE, BL_PARFOR, IT_WORKERS, BL_EXPORT, SNM_SUFFIX) parameter
+%    ST_BIDEN_OR_TRUMP is added to consider optionally either trump or
+%    biden check. For biden check, will assume: (1) Trump check manna from
+%    heaven (so same tax rate as under steady state; (2) Trump check fully
+%    replaces income loss due to covid; (3) Double MIT shock. 
 %
 %    See also SNW_EVUVW19_JMKY, SNW_EVUVW19_JMKY_MASS, SNW_EVUVW19_JAEEMK_FOC,
 %    SNW_EVUVW20_JAEEMK, SNW_HH_PRECOMPUTE
@@ -22,10 +39,58 @@ function [varargout]=snw_evuvw19_jmky_allchecks(varargin)
 %% Default and Parse
 if (~isempty(varargin))
     
+    st_biden_or_trump = 'trumpchk';
+    
     if (length(varargin)==8)
+        % Original invokation structure, solves for optimal Trump check
+        % policy
         [mp_params, mp_controls, st_solu_type, ...
             bl_parfor, it_workers, ...
             bl_export, bl_load_mat, snm_suffix] = varargin{:};
+        
+    elseif (length(varargin)==9)
+        % Modified inputs to allow for solving for optimal Biden check
+        % policy. The difference from prior is that the distributional code
+        % will be based on optimal policy from 1 period MIT shock but also
+        % given the Trump stimulus, assuming by default that there is manna
+        % from heaven, and by default for year 1 of covid there is full
+        % wage replacement. 
+        
+        % From Trump to Biden Checks For Biden policy, (2b) provides
+        % mass/weights at state-space elements, and (3a) provides optimal
+        % choices and corresponding MPCs at each check level. We have four
+        % files with the MPC at each check for
+        % income-bin/marital/kids-count (2020 info for 2021 policy), each
+        % for a different beta/edu group:
+        % 
+        % * 1a, solve for "steady-state" policy/value function. (think
+        % 2019, 2022, and after)
+        % * 1b, solve for distributions given "steady-state" policy.value
+        % functions.
+        % * 2a. (first MIT shock), given "steady-state" value function as
+        % continuation value, solve for Trump-stimulus policy/value
+        % functions. (2020 choices)
+        % * 2b. conditional (1b) distribution, one-period forward
+        % post-trump-policy distribution with (2a) policy functions. (start
+        % of 2021 distribution given 2020 choices)
+        % * 3a. (second MIT shock), given "steady-state" value function as
+        % continuation value, solve for Biden-stimulus policy/value
+        % functions (2021 choices)
+        % 
+        % Following our benchmark in the prior draft and to simplify, when
+        % solving for (2a) as well as (3a), making these assumptions:
+        % * AS1: Assume manna-from-heaven and same tax in year-1 and year-2
+        % of covid as under steady-state.
+        % * AS2: Assume income loss is fully covered by in covid year-1 and
+        % year-2, b=1, meaning xi does not matter
+        % * AS3: For (2a) Approximating in effect income in 2019, which is
+        % used to determine stimulus checks, with income in 2020, and in
+        % effect ignoring one year kids transition probability as well.
+        
+        [mp_params, mp_controls, st_biden_or_trump, st_solu_type, ...
+            bl_parfor, it_workers, ...
+            bl_export, bl_load_mat, snm_suffix] = varargin{:};
+        
     else
         error('Need to provide 8 parameter inputs');
     end
@@ -49,6 +114,8 @@ else
     
 
     % 1c. Solution Type
+    % st_biden_or_trump = 'trumpchk';
+    st_biden_or_trump = 'bidenchk';
     st_solu_type = 'bisec_vec';
         
     % 2. Set Up Parameters
@@ -168,7 +235,7 @@ params_group = values(mp_controls, ...
 
 mp_path = snw_mp_path('fan');
 snm_invoke_suffix = strrep(mp_params('mp_params_name'), 'default_', '');
-snm_file = ['snwx_v_planner_' char(snm_invoke_suffix) char(snm_suffix)];
+snm_file = ['snwx_' char(st_biden_or_trump) '_' char(snm_invoke_suffix) char(snm_suffix)];
 spn_csv_path = fullfile(mp_path('spt_simu_outputs'), [snm_file '.csv']);
 spt_mat_path = fullfile(mp_path('spt_simu_outputs_mat'), [snm_file '.mat']);
 
@@ -199,6 +266,7 @@ if (~bl_load_mat || ~isfile(spt_mat_path))
 %         error('V_ss_diff > 0');
 %     end
     
+    % 2020 if employed, same as steady state unless tax differs
     % 2020 V and C same as V_SS and cons_ss if tax the same
     if (mp_params('a2_covidyr') == mp_params('a2'))
         % mana from heaven
@@ -218,13 +286,59 @@ if (~bl_load_mat || ~isfile(spt_mat_path))
         mp_params('b') = b;
     end
     
-    % Solve unemployment, with three input parameters, auto will use a2_covidyr
-    % as tax, similar for employed call above
+    % 2020 if unemployed, can differ from steady state because xi and b
+    % even if tax is the same. Solve unemployment, with three input
+    % parameters, auto will use a2_covidyr as tax, similar for employed
+    % call above
     [V_unemp_2020,~,cons_unemp_2020] = snw_vfi_main_bisec_vec(mp_params, mp_controls, V_ss);
     
-    %% B. Solve Dist
-    [Phi_true] = snw_ds_main_vec(mp_params, mp_controls, ap_ss, cons_ss);
-
+    %% B. Solve Dist COVID year 1 or COVID year 2 (with year one stimulus)
+    
+    % Solve for steady-state distribution     
+    [Phi_true, Phi_adj_ss] = snw_ds_main_vec(mp_params, mp_controls, ap_ss, cons_ss);
+    
+    % One-shot MIT shock, distribution at the beginning of 2020 and in 2019
+    % determined by non MIT year steady-state policy functions.
+    if strcmp(st_biden_or_trump, 'trumpchk')
+        % no actions needed
+        disp('Trump Check, do not need to resolve distribution')
+        
+    elseif strcmp(st_biden_or_trump, 'bidenchk')
+        % Use steady-state continuation value, to solve for optimal choices
+        % given stimulus checks
+        % Assume manna-from-heaven, (1) same tax in year-1 of covid as under
+        % steady state. (2) assume income loss is fully covered by
+        % "unemployment benefits". Because of this, do not have to solve
+        % for unemployed and employed separately, their
+        % resource-availability are identical. Approximating in effect
+        % income in 2019, which is used to determine stimulus checks, with
+        % income in 2020, and in effect ignoring one year kids transition
+        % probability. Because of these assumptions, the effects of the
+        % Trump-stimulus is to strictly increase resources availability for
+        % households receiving stimulus, and no impact on those not
+        % receiving stimulus. And those that do receive can save more,
+        % leading to more savings than under steady-state. 
+        
+        disp('Biden Check, resolve for distributions given Trump check')
+        
+        xi = mp_params('xi');
+        b = mp_params('b');
+        mp_params('xi') = 0;
+        mp_params('b') = 1;        
+        [~,ap_xi0b1_trumpchecks,cons_xi0b1_trumpchecks, mp_valpol_more_trumpchecks] = ...
+            snw_vfi_main_bisec_vec_stimulus(mp_params, mp_controls, V_ss);
+        mp_params('xi') = xi;
+        mp_params('b') = b;
+        
+        % Distribution upon arrival in 2nd-covid year, the biden year, update Phi_true_ss        
+        [Phi_true] = snw_ds_main_vec(mp_params, mp_controls, ...
+            ap_xi0b1_trumpchecks,cons_xi0b1_trumpchecks, ...
+            mp_valpol_more_trumpchecks, ...
+            Phi_adj_ss);
+    else 
+        error(['st_biden_or_trump=' char(st_biden_or_trump) ' is not allowed, has to be trumpchk or bidenchk'])
+    end
+    
     %% C. Pre-compute
     % cl_st_precompute_list = {'a', ...
     %     'inc', 'inc_unemp', 'spouse_inc', 'spouse_inc_unemp', 'ref_earn_wageind_grid', ...

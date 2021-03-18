@@ -5,16 +5,16 @@
 %    distributions induced by induced by the four separate policy
 %    functions, and generate a joint distributional that properly accounts
 %    for different policy functions under beta/edu heterogeneities, and the
-%    jointly induced distributional outcomes. 
+%    jointly induced distributional outcomes.
 %
 %    The simple version for this is straight-forward to implement, solve the
 %    model four times, and combine the resulting state-space, as well as
 %    the resulting distributions with proper weights. This is already done
-%    in the function SNW_TAX_STEADY_MULTITYPES, so can copy the code over. 
+%    in the function SNW_TAX_STEADY_MULTITYPES, so can copy the code over.
 %
 %    Several features needed: (1) allow for adjusting parameters, this is
 %    straight-forward; (2) allow for considering TRUMP check; (3) same
-%    output structure as current, but with expanded state-space. 
+%    output structure as current, but with expanded state-space.
 %
 %    [Phi_true,Phi_adj,A_agg,Y_inc_agg,it,mp_dsvfi_results] =
 %    SNW_DS_MAIN_VEC_MULTITYPES() invoke model with externally set parameter map and
@@ -37,13 +37,13 @@ function varargout=snw_ds_main_vec_multitypes(varargin)
 %% Default and Parse Inputs
 if (~isempty(varargin))
     
-    if (length(varargin)==8)
+    if (length(varargin)==9)
         [st_param_group_base, st_biden_or_trump, ...
             mp_params_ext, mp_controls_ext, ...
             ls_fl_beta_val, ls_it_edu_simu_type, ...
             fl_wgt_college_frac, fl_wgt_low_beta_college, fl_wgt_low_beta_non_college] = varargin{:};
     else
-        error('Need to provide 8 parameter inputs');
+        error('Need to provide 9 parameter inputs');
     end
     
 else
@@ -97,28 +97,41 @@ mt_grp_wgt = zeros(length(ls_fl_beta_val), length(ls_it_edu_simu_type));
 it_beta_ctr = 0;
 for fl_beta_val = ls_fl_beta_val
     it_beta_ctr = it_beta_ctr + 1;
-
+    
     it_edu_ctr = 0;
     for it_edu_simu_type = ls_it_edu_simu_type
         it_edu_ctr = it_edu_ctr + 1;
-
+        
         % parameter method 1
         [mp_params, mp_controls] = get_param_maps(...
             st_param_group_base, it_edu_simu_type, ...
             fl_beta_val, mp_params_ext, mp_controls_ext);
-
-        % Solve for distributions and policies
+        
+        % Solve for distributions and policies, steady-state
+        if isKey(mp_params_ext, 'invbtlock')
+            invbtlock = mp_params('invbtlock');
+            mp_params('invbtlock') = 1;
+        end
         [v_ss, ap_ss, cons_ss, mp_valpol_more_ss] = snw_vfi_main_bisec_vec(...
             mp_params, mp_controls);
-        % solve for distributions
         [Phi_true_ss, ~, A_agg_ss, Y_inc_agg_ss, ~, mp_dsvfi_results_ss] = snw_ds_main_vec(...
             mp_params, mp_controls, ap_ss, cons_ss, mp_valpol_more_ss);
+        
+        % One period adjustments if there is a utility shock
+        if isKey(mp_params_ext, 'invbtlock')
+            mp_params('invbtlock') = invbtlock;
+            [v_ss, ap_ss, cons_ss, mp_valpol_more_ss] = snw_vfi_main_bisec_vec(...
+                mp_params, mp_controls, v_ss);
+            [Phi_true_ss, ~, A_agg_ss, Y_inc_agg_ss, ~, mp_dsvfi_results_ss] = snw_ds_main_vec(...
+                mp_params, mp_controls, ap_ss, cons_ss, mp_valpol_more_ss, ...
+                Phi_true_ss);
+        end
         
         % Trump of Biden Check Related Problems
         if strcmp(st_biden_or_trump, 'trumpchk')
             % no actions needed
             disp('Trump Check, do not need to resolve distribution')
-
+            
             % Update policies
             Phi_true = Phi_true_ss;
             
@@ -141,19 +154,19 @@ for fl_beta_val = ls_fl_beta_val
             % Trump-stimulus is to strictly increase resources availability for
             % households receiving stimulus, and no impact on those not
             % receiving stimulus. And those that do receive can save more,
-            % leading to more savings than under steady-state. 
-
+            % leading to more savings than under steady-state.
+            
             disp('Biden Check, resolve for distributions given Trump check')
             xi = mp_params('xi');
             b = mp_params('b');
             mp_params('xi') = 0;
-            mp_params('b') = 1;        
+            mp_params('b') = 1;
             [~,ap_xi0b1_trumpchecks, cons_xi0b1_trumpchecks, mp_valpol_more_trumpchecks] = ...
                 snw_vfi_main_bisec_vec_stimulus(mp_params, mp_controls, v_ss);
             mp_params('xi') = xi;
             mp_params('b') = b;
-
-            % Distribution upon arrival in 2nd-covid year, the biden year, update Phi_true_ss        
+            
+            % Distribution upon arrival in 2nd-covid year, the biden year, update Phi_true_ss
             [Phi_true_trumpcheck, ~, A_agg_trumpchecks, Y_inc_agg_trumpchecks, ~, mp_dsvfi_results_trumpchecks] = ...
                 snw_ds_main_vec(mp_params, mp_controls, ...
                 ap_xi0b1_trumpchecks, cons_xi0b1_trumpchecks, ...
@@ -162,13 +175,13 @@ for fl_beta_val = ls_fl_beta_val
             
             % Update policies
             Phi_true = Phi_true_trumpcheck;
-
+            
             % Aggregate outcomes
             A_agg = A_agg_trumpchecks;
             Y_inc_agg = Y_inc_agg_trumpchecks;
             mp_dsvfi_results = mp_dsvfi_results_trumpchecks;
-
-        else 
+            
+        else
             error(['st_biden_or_trump=' char(st_biden_or_trump) ' is not allowed, has to be trumpchk or bidenchk'])
         end
         
@@ -177,11 +190,11 @@ for fl_beta_val = ls_fl_beta_val
         tb_outcomes = mp_cl_mt_xyz_of_s('tb_outcomes');
         % Stats stored from snw_ds_main_vec
         Y_inc_median = tb_outcomes{'y_all', 'p50'};
-
+        
         % Compute the same statistics here. (debug code)
         y_all_ss = mp_dsvfi_results('y_all_ss');
         mn_a_ss = mp_dsvfi_results('a_ss');
-
+        
         % Store results
         cl_mp_params{it_beta_ctr, it_edu_ctr} = mp_params;
         cl_mp_controls{it_beta_ctr, it_edu_ctr} = mp_controls;
@@ -190,12 +203,12 @@ for fl_beta_val = ls_fl_beta_val
         cl_cons_ss{it_beta_ctr, it_edu_ctr} = cons_ss;
         cl_y_all_ss{it_beta_ctr, it_edu_ctr} = y_all_ss;
         cl_Phi_true{it_beta_ctr, it_edu_ctr} = Phi_true;
-
+        
         % Compute the same statistics here. (debug code)
         bl_check_stats = true;
         if (bl_check_stats)
             mp_cl_ar_xyz_of_s = containers.Map('KeyType','char', 'ValueType','any');
-            mp_cl_ar_xyz_of_s('y_all') = {y_all_ss(:), zeros(1)};            
+            mp_cl_ar_xyz_of_s('y_all') = {y_all_ss(:), zeros(1)};
             mp_cl_ar_xyz_of_s('ap') = {ap_ss(:), zeros(1)};
             mp_cl_ar_xyz_of_s('mn_a') = {mn_a_ss(:), zeros(1)};
             mp_cl_ar_xyz_of_s('cons') = {cons_ss(:), zeros(1)};
@@ -219,7 +232,7 @@ for fl_beta_val = ls_fl_beta_val
             ap_mean_here = tb_outcomes{'ap', 'mean'};
             a_mean_here = tb_outcomes{'mn_a', 'mean'};
             cons_mean_here = tb_outcomes{'cons', 'mean'};
-
+            
             if (Y_inc_median_here ~= Y_inc_median)
                 error('error Y_inc_median_here ~= Y_inc_median');
             end
@@ -229,7 +242,7 @@ for fl_beta_val = ls_fl_beta_val
             
             rel_tol=1e-09;
             abs_tol=0.0;
-            if_is_close = @(a,b) (abs(a-b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol));            
+            if_is_close = @(a,b) (abs(a-b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol));
             if (~if_is_close((a_mean_here*sum(Pop)), A_agg))
                 error('error Y_inc_mean_here ~= Y_inc_agg');
             end
@@ -240,7 +253,7 @@ for fl_beta_val = ls_fl_beta_val
         mt_a_mean(it_beta_ctr, it_edu_ctr) = a_mean_here;
         mt_ap_mean(it_beta_ctr, it_edu_ctr) = ap_mean_here;
         mt_cons_mean(it_beta_ctr, it_edu_ctr) = cons_mean_here;
-        mt_Y_inc_mean(it_beta_ctr, it_edu_ctr) = Y_inc_mean_here;        
+        mt_Y_inc_mean(it_beta_ctr, it_edu_ctr) = Y_inc_mean_here;
         
         % Construct weights
         if it_edu_ctr == 1 && it_beta_ctr == 1
@@ -255,7 +268,7 @@ for fl_beta_val = ls_fl_beta_val
         mt_grp_wgt(it_beta_ctr, it_edu_ctr) = fl_wgt;
         
     end
-end    
+end
 
 % Compute Distributional Statistics for All Groups given Converged policy and tax
 % Average Output and Savings
@@ -271,12 +284,12 @@ if (it_d4 ~= 1)
 end
 
 %% Expand Policy And States by One Dimension, weight Beta
-% Note beta are rows, edu are columns. 
+% Note beta are rows, edu are columns.
 % first combine betas together for the same edu group
 % sufficient for distributional statistics based on the state-space as well
 % as the choice space, for weighted average type information, but actually
 % not accurate for policy function related percentile, distributional
-% non-mean information. Hiding within beta variations. 
+% non-mean information. Hiding within beta variations.
 
 % Initialize
 a_wgtbeta = NaN([it_d1, it_d2, it_d3, 2, it_d5, it_d6]);
@@ -296,10 +309,10 @@ for it_edu_simu_type = ls_it_edu_simu_type
     ap_beta_weighted = 0;
     cons_beta_weighted = 0;
     y_all_beta_weighted = 0;
-    Phi_true_beta_weighted = 0;    
+    Phi_true_beta_weighted = 0;
     for fl_beta_val = ls_fl_beta_val
         it_beta_ctr = it_beta_ctr + 1;
-            
+        
         fl_wgt = mt_grp_wgt(it_beta_ctr, it_edu_ctr);
         fl_beta_condi_edu = fl_wgt/sum(mt_grp_wgt(:, it_edu_ctr), 'all');
         
@@ -307,7 +320,7 @@ for it_edu_simu_type = ls_it_edu_simu_type
         mn_y_all_ss = cl_y_all_ss{it_beta_ctr, it_edu_ctr};
         mn_a_ss = cl_a_ss{it_beta_ctr, it_edu_ctr};
         mn_ap_ss = cl_ap_ss{it_beta_ctr, it_edu_ctr};
-        mn_cons_ss = cl_cons_ss{it_beta_ctr, it_edu_ctr};        
+        mn_cons_ss = cl_cons_ss{it_beta_ctr, it_edu_ctr};
         mn_Phi_true = cl_Phi_true{it_beta_ctr, it_edu_ctr};
         % mn_Phi_true_1 = mn_Phi_true/sum(mn_Phi_true, 'all');
         
@@ -315,14 +328,14 @@ for it_edu_simu_type = ls_it_edu_simu_type
         a_beta_weighted = a_beta_weighted + mn_a_ss*fl_beta_condi_edu;
         ap_beta_weighted = ap_beta_weighted + mn_ap_ss*fl_beta_condi_edu;
         cons_beta_weighted = cons_beta_weighted + mn_cons_ss*fl_beta_condi_edu;
-        Phi_true_beta_weighted = Phi_true_beta_weighted + mn_Phi_true*fl_beta_condi_edu;        
+        Phi_true_beta_weighted = Phi_true_beta_weighted + mn_Phi_true*fl_beta_condi_edu;
     end
     
     % Fill edu 1 and 2 as 4th dimension of outputs
     y_all_wgtbeta(:,:,:,it_edu_ctr,:,:) = y_all_beta_weighted;
     a_wgtbeta(:,:,:,it_edu_ctr,:,:) = a_beta_weighted;
     ap_VFI_wgtbeta(:,:,:,it_edu_ctr,:,:) = ap_beta_weighted;
-    cons_VFI_wgtbeta(:,:,:,it_edu_ctr,:,:) = cons_beta_weighted;    
+    cons_VFI_wgtbeta(:,:,:,it_edu_ctr,:,:) = cons_beta_weighted;
     Phi_true_wgtbeta(:,:,:,it_edu_ctr,:,:) = Phi_true_beta_weighted*sum(mt_grp_wgt(:, it_edu_ctr), 'all');
     
 end
@@ -367,14 +380,14 @@ for it_edu_simu_type = ls_it_edu_simu_type
     % Weighted averaging over beta types
     it_beta_ctr = 0;
     for fl_beta_val = ls_fl_beta_val
-        it_beta_ctr = it_beta_ctr + 1;           
+        it_beta_ctr = it_beta_ctr + 1;
         
         y_all_betaedu(it_beta_ctr, :,:,:,it_edu_ctr,:,:) = cl_y_all_ss{it_beta_ctr, it_edu_ctr};
         a_betaedu(it_beta_ctr, :,:,:,it_edu_ctr,:,:) = cl_a_ss{it_beta_ctr, it_edu_ctr};
         ap_VFI_betaedu(it_beta_ctr, :,:,:,it_edu_ctr,:,:) = cl_ap_ss{it_beta_ctr, it_edu_ctr};
-        cons_VFI_betaedu(it_beta_ctr, :,:,:,it_edu_ctr,:,:) = cl_cons_ss{it_beta_ctr, it_edu_ctr};    
+        cons_VFI_betaedu(it_beta_ctr, :,:,:,it_edu_ctr,:,:) = cl_cons_ss{it_beta_ctr, it_edu_ctr};
         Phi_true_betaedu(it_beta_ctr, :,:,:,it_edu_ctr,:,:) = cl_Phi_true{it_beta_ctr, it_edu_ctr}*mt_grp_wgt(it_beta_ctr, it_edu_ctr);
-    end    
+    end
 end
 
 % Aggregate weighted average, note mn_a is state-space, common across types

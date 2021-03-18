@@ -61,7 +61,7 @@ end
 % globals = who('global');
 % clear(globals{:});
 % Parameters used in this code directly
-global beta theta r agrid epsilon SS pi_eta pi_kids psi n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
+global beta invbtlock theta r agrid epsilon SS pi_eta pi_kids psi n_jgrid n_agrid n_etagrid n_educgrid n_marriedgrid n_kidsgrid
 % Used in functions that are called by this code
 global gamma g_n g_cons a2 cons_allocation_rule jret
 % July 1st new parameters
@@ -69,9 +69,9 @@ global eta_H_grid eta_S_grid Bequests bequests_option throw_in_ocean
 
 %% Parse Model Parameters
 params_group = values(mp_params, {...
-    'gamma', 'beta', 'theta', 'cons_allocation_rule', ...
+    'gamma', 'beta', 'invbtlock', 'theta', 'cons_allocation_rule', ...
     'r', 'g_n', 'g_cons', 'a2', 'jret'});
-[gamma, beta, theta, cons_allocation_rule, ...
+[gamma, beta, invbtlock, theta, cons_allocation_rule, ...
     r, g_n, g_cons, a2, jret] = params_group{:};
 
 params_group = values(mp_params, {'Bequests', 'bequests_option', 'throw_in_ocean'});
@@ -156,7 +156,7 @@ for j=n_jgrid:(-1):1 % Age
                                 error('Non-positive consumption')
                             end
 
-                            V_VFI(j,a,eta,educ,married,kids)=utility(cons_VFI(j,a,eta,educ,married,kids),married,kids);
+                            V_VFI(j,a,eta,educ,married,kids)=invbtlock*utility(cons_VFI(j,a,eta,educ,married,kids),married,kids);
                             exit_flag = 0;
                         else
 
@@ -215,7 +215,7 @@ for j=n_jgrid:(-1):1 % Age
                             ap_VFI(j,a,eta,educ,married,kids)=ap_aux;
                             cons_VFI(j,a,eta,educ,married,kids)=c_aux;
 
-                            V_VFI(j,a,eta,educ,married,kids)=utility(c_aux,married,kids)+beta*psi(j)*cont;
+                            V_VFI(j,a,eta,educ,married,kids)=invbtlock*utility(c_aux,married,kids)+beta*psi(j)*cont;
 
                             c_aux3=consumption(j,a,eta,educ,married,kids,0);
 
@@ -225,7 +225,7 @@ for j=n_jgrid:(-1):1 % Age
                                     cont=cont+pi_eta(eta,etap)*pi_kids(kids,kidsp,j,educ,married)*V_VFI(j+1,1,etap,educ,married,kidsp);
                                 end
                             end
-                            V_aux3=utility(c_aux3,married,kids)+beta*psi(j)*cont;
+                            V_aux3=invbtlock*utility(c_aux3,married,kids)+beta*psi(j)*cont;
 
                             if V_aux3>V_VFI(j,a,eta,educ,married,kids)
                                 ap_VFI(j,a,eta,educ,married,kids)=0;

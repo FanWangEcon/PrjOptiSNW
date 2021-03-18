@@ -358,6 +358,10 @@ inc_grid=[inc_grid1;linspace(4+((7-4)/(n_incgrid-n_incgrid_aux)),7,n_incgrid-n_i
 
 %% Preferences, Technologies, etc.
 
+% Lockdown parameters, 1 if no lock-down, lower with lock-down. 
+% this is to model consumption changes during lock-down.
+invbtlock = 1;
+
 % Non-calibrated parameters
 gamma=2; % Risk aversion parameter
 if(contains(st_param_group, "dense"))
@@ -750,6 +754,7 @@ mp_params_covid_unemploy('fl_stimulus_adult_second') = fl_stimulus_adult_second;
 mp_params_covid_unemploy('fl_stimulus_child_second') = fl_stimulus_child_second;
 
 mp_params_preftechpricegov = containers.Map('KeyType', 'char', 'ValueType', 'any');
+mp_params_preftechpricegov('invbtlock') = invbtlock;
 mp_params_preftechpricegov('gamma') = gamma;
 mp_params_preftechpricegov('beta') = beta;
 mp_params_preftechpricegov('theta') = theta;

@@ -62,9 +62,9 @@ global eta_H_grid eta_S_grid Bequests bequests_option throw_in_ocean
 
 %% Parse Model Parameters
 params_group = values(mp_params, {...
-    'gamma', 'beta', 'theta', 'cons_allocation_rule', ...
+    'gamma', 'beta', 'invbtlock', 'theta', 'cons_allocation_rule', ...
     'r', 'g_n', 'g_cons', 'a2', 'jret'});
-[gamma, beta, theta, cons_allocation_rule, ...
+[gamma, beta, invbtlock, theta, cons_allocation_rule, ...
     r, g_n, g_cons, a2, jret] = params_group{:};
 
 params_group = values(mp_params, {'Bequests', 'bequests_option', 'throw_in_ocean'});
@@ -193,7 +193,7 @@ for j=1:n_jgrid % Age
                             ap_VFI(j,a,eta,educ,married,kids)=ap_aux;
                             cons_VFI(j,a,eta,educ,married,kids)=c_aux;
                             
-                            V_VFI(j,a,eta,educ,married,kids)=utility(c_aux,married,kids)+beta*psi(j)*cont;
+                            V_VFI(j,a,eta,educ,married,kids)=invbtlock*utility(c_aux,married,kids)+beta*psi(j)*cont;
                             
                             % Check end point of asset grid (ap=0)
                             c_aux3=consumption(j,a,eta,educ,married,kids,0,xi,b);
@@ -205,7 +205,7 @@ for j=1:n_jgrid % Age
                                     cont=cont+pi_eta(eta,etap)*pi_kids(kids,kidsp,j,educ,married)*V_ss(j+1,1,etap,educ,married,kidsp);
                                 end
                             end
-                            V_aux3=utility(c_aux3,married,kids)+beta*psi(j)*cont;
+                            V_aux3=invbtlock*utility(c_aux3,married,kids)+beta*psi(j)*cont;
                             
                             if V_aux3>V_VFI(j,a,eta,educ,married,kids)
                                 ap_VFI(j,a,eta,educ,married,kids)=0;
@@ -233,7 +233,7 @@ for j=1:n_jgrid % Age
                                 error('Non-positive consumption')
                             end
                             
-                            V_VFI(j,a,eta,educ,married,kids)=utility(cons_VFI(j,a,eta,educ,married,kids),married,kids);
+                            V_VFI(j,a,eta,educ,married,kids)=invbtlock*utility(cons_VFI(j,a,eta,educ,married,kids),married,kids);
                             exit_flag = 0;
                             
                         end

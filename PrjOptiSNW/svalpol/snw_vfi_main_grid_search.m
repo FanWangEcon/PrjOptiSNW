@@ -53,9 +53,9 @@ global eta_H_grid eta_S_grid Bequests bequests_option throw_in_ocean
 
 %% Parse Model Parameters
 params_group = values(mp_params, {...
-    'gamma', 'beta', 'theta', 'cons_allocation_rule', ...
+    'gamma', 'beta', 'invbtlock', 'theta', 'cons_allocation_rule', ...
     'r', 'g_n', 'g_cons', 'a2', 'jret'});
-[gamma, beta, theta, cons_allocation_rule, ...
+[gamma, beta, invbtlock, theta, cons_allocation_rule, ...
     r, g_n, g_cons, a2, jret] = params_group{:};
 
 params_group = values(mp_params, {'Bequests', 'bequests_option', 'throw_in_ocean'});
@@ -159,7 +159,7 @@ for j=ar_j_seq % Age
                                 error('Non-positive consumption')
                             end
                             
-                            V_VFI(j,a,eta,educ,married,kids)=utility_grid_search(cons_VFI(j,a,eta,educ,married,kids),married,kids);
+                            V_VFI(j,a,eta,educ,married,kids)=invbtlock*utility_grid_search(cons_VFI(j,a,eta,educ,married,kids),married,kids);
                             
                         else
                             
@@ -176,7 +176,7 @@ for j=ar_j_seq % Age
                             
                             cont=pi_eta(eta,:)*cont(1:n_agrid,:)';
                             
-                            V_VFI_aux=utility_grid_search(c_aux,married,kids)+beta*psi(j)*cont';
+                            V_VFI_aux=invbtlock*utility_grid_search(c_aux,married,kids)+beta*psi(j)*cont';
                             
                             [max_val,max_ind]=max(V_VFI_aux);
                             

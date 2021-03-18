@@ -118,9 +118,9 @@ end
 
 %% Parse Model Parameters
 params_group = values(mp_params, {...
-    'gamma', 'beta', 'theta', 'cons_allocation_rule', ...
+    'gamma', 'beta', 'invbtlock', 'theta', 'cons_allocation_rule', ...
     'r', 'g_n', 'g_cons', 'a2', 'a2_covidyr', 'jret'});
-[gamma, beta, theta, cons_allocation_rule, ...
+[gamma, beta, invbtlock, theta, cons_allocation_rule, ...
     r, g_n, g_cons, a2, a2_covidyr, jret] = params_group{:};
 
 params_group = values(mp_params, {'Bequests', 'bequests_option', 'throw_in_ocean'});
@@ -166,11 +166,11 @@ end
 % Current Function and their Derivatives
 hh_power=1/cons_allocation_rule;
 if(gamma == 1)
-    f_util = @(c,hh_size) log(c./(hh_size.^hh_power));
-    f_du_da = @(c,hh_size) (-1)./(c);
+    f_util = @(c,hh_size) invbtlock.*(log(c./(hh_size.^hh_power)));
+    f_du_da = @(c,hh_size) invbtlock.*((-1)./(c));
 else
-    f_util = @(c,hh_size) ((c./(hh_size.^hh_power)).^(1-gamma)-1)./(1-gamma);
-    f_du_da = @(c,hh_size) (-(hh_size.^(hh_power.*(gamma-1))))./(c.^gamma);
+    f_util = @(c,hh_size) invbtlock.*(((c./(hh_size.^hh_power)).^(1-gamma)-1)./(1-gamma));
+    f_du_da = @(c,hh_size) invbtlock.*((-(hh_size.^(hh_power.*(gamma-1))))./(c.^gamma));
 end
 
 % Utility
@@ -430,7 +430,7 @@ for j=ar_j_seq % Age
                                     error('Non-positive consumption')
                                 end
 
-                                V_VFI(j,a,eta,educ,married,kids)=snw_hh_utility(...
+                                V_VFI(j,a,eta,educ,married,kids)= invbtlock.*snw_hh_utility(...
                                     cons_VFI(j,a,eta,educ,married,kids),married,kids,...
                                     gamma, cons_allocation_rule);
 

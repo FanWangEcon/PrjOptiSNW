@@ -56,7 +56,7 @@ else
     if cons<=0
         F=-10E30;
     else
-        F=(((cons/hh_size^hh_power).^(1-gamma))-1)/(1-gamma);
+        F=((((cons/hh_size^hh_power).^(1-gamma))-1)/(1-gamma));
     end
 end
 

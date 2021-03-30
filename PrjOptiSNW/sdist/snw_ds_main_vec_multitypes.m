@@ -120,8 +120,11 @@ for fl_beta_val = ls_fl_beta_val
         % One period adjustments if there is a utility shock
         if isKey(mp_params_ext, 'invbtlock')
             mp_params('invbtlock') = invbtlock;
+            % COVID year policy functions, with one-period adjustment in
+            % current utility
             [v_ss, ap_ss, cons_ss, mp_valpol_more_ss] = snw_vfi_main_bisec_vec(...
                 mp_params, mp_controls, v_ss);
+            % Distributional given lockdown choices (end of lock down year)
             [Phi_true_ss, ~, A_agg_ss, Y_inc_agg_ss, ~, mp_dsvfi_results_ss] = snw_ds_main_vec(...
                 mp_params, mp_controls, ap_ss, cons_ss, mp_valpol_more_ss, ...
                 Phi_true_ss);
@@ -133,6 +136,8 @@ for fl_beta_val = ls_fl_beta_val
             disp('Trump Check, do not need to resolve distribution')
             
             % Update policies
+            % This is the distributional outcome in MIT shock 1 year, given
+            % the lockdown, but without the covid stimulus checks
             Phi_true = Phi_true_ss;
             
             % Aggregate outcomes

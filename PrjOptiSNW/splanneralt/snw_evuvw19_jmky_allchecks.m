@@ -254,7 +254,15 @@ if (~bl_load_mat || ~isfile(spt_mat_path))
     % 2. Solve VFI and Distributon
     % Solve the Model to get V working and unemployed
     % solved with calibrated regular a2
+    
+    if strcmp(st_biden_or_trump, 'bchklock')
+        invbtlock = mp_params('invbtlock');
+        mp_params('invbtlock') = 1;
+    end
     [V_ss,ap_ss,cons_ss] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
+    if strcmp(st_biden_or_trump, 'bchklock')
+        mp_params('invbtlock') = invbtlock;
+    end
     
 %     mp_params('xi') = 1;
 %     mp_params('b') = 0;
@@ -269,14 +277,21 @@ if (~bl_load_mat || ~isfile(spt_mat_path))
     % 2020 if employed, same as steady state unless tax differs
     % 2020 V and C same as V_SS and cons_ss if tax the same
     if (mp_params('a2_covidyr') == mp_params('a2'))
-        % mana from heaven
-        V_ss_2020 = V_ss;
-        cons_ss_2020 = cons_ss;
+        if strcmp(st_biden_or_trump, 'bchklock')
+            % need to resolve for MIT Shock Year 1 with LOCKDOWN
+            [V_ss_2020, ~, cons_ss_2020] = ...
+                snw_vfi_main_bisec_vec(mp_params, mp_controls, V_ss);
+        else
+            % mana from heaven
+            V_ss_2020 = V_ss;
+            cons_ss_2020 = cons_ss;
+        end
     else
         % change xi and b to for people without unemployment shock
         % solving for employed but 2020 tax results
         % a2_covidyr > a2, we increased tax in 2020 to pay for covid and other
         % costs resolve for both employed and unemployed
+        % since resolving, if lockdown will have invbtlock used.
         xi = mp_params('xi');
         b = mp_params('b');
         mp_params('xi') = 1;
@@ -292,18 +307,21 @@ if (~bl_load_mat || ~isfile(spt_mat_path))
     % call above
     [V_unemp_2020,~,cons_unemp_2020] = snw_vfi_main_bisec_vec(mp_params, mp_controls, V_ss);
     
-    %% B. Solve Dist COVID year 1 or COVID year 2 (with year one stimulus)
-    
-    % Solve for steady-state distribution     
+    %% B. Solve Dist COVID year 1 or COVID year 2 (with year one stimulus)   
+       
+    % Solve for steady-state distribution before COVID year start-of-year
     [Phi_true, Phi_adj_ss] = snw_ds_main_vec(mp_params, mp_controls, ap_ss, cons_ss);
     
     % One-shot MIT shock, distribution at the beginning of 2020 and in 2019
     % determined by non MIT year steady-state policy functions.
     if strcmp(st_biden_or_trump, 'trumpchk')
         % no actions needed
+        % unlike in SNW_DS_MAIN_VEC_MULTITYPES, not solving for end of the
+        % year post COVID distribution. Just need the policy functions
+        % given lock-down which are already solved. 
         disp('Trump Check, do not need to resolve distribution')
         
-    elseif strcmp(st_biden_or_trump, 'bidenchk')
+    elseif strcmp(st_biden_or_trump, 'bidenchk') || strcmp(st_biden_or_trump, 'bchklock')
         % Use steady-state continuation value, to solve for optimal choices
         % given stimulus checks
         % Assume manna-from-heaven, (1) same tax in year-1 of covid as under
@@ -325,18 +343,20 @@ if (~bl_load_mat || ~isfile(spt_mat_path))
         b = mp_params('b');
         mp_params('xi') = 0;
         mp_params('b') = 1;        
+        % lockdown parameter potentially activated already here
         [~,ap_xi0b1_trumpchecks,cons_xi0b1_trumpchecks, mp_valpol_more_trumpchecks] = ...
             snw_vfi_main_bisec_vec_stimulus(mp_params, mp_controls, V_ss);
         mp_params('xi') = xi;
         mp_params('b') = b;
         
-        % Distribution upon arrival in 2nd-covid year, the biden year, update Phi_true_ss        
+        % Distribution upon arrival in 2nd-covid year, the biden year, update Phi_true_ss
         [Phi_true] = snw_ds_main_vec(mp_params, mp_controls, ...
             ap_xi0b1_trumpchecks,cons_xi0b1_trumpchecks, ...
             mp_valpol_more_trumpchecks, ...
             Phi_adj_ss);
     else 
-        error(['st_biden_or_trump=' char(st_biden_or_trump) ' is not allowed, has to be trumpchk or bidenchk'])
+        error(['st_biden_or_trump=' char(st_biden_or_trump) ...
+            ' is not allowed, has to be trumpchk or bidenchk or bchklock'])
     end
     
     %% C. Pre-compute

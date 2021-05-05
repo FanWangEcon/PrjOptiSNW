@@ -4,16 +4,16 @@
 # The code/loop structure follows AllocateR\alloc_discrete_fun_R\fs_mpc_tables_increments_202103.R
 # fs_mpc_tables_increments_202103.R generates the A and alpha inputs needed here.
 
-try(dev.off(dev.list()["RStudioGD"]),silent=TRUE)
-try(dev.off(),silent=TRUE)
+# try(dev.off(dev.list()["RStudioGD"]),silent=TRUE)
+# try(dev.off(),silent=TRUE)
 
 library(tidyverse)
 library(REconTools)
 # library(PrjOptiAlloc)
 
-library(forcats)
-library(foreach)
-library(doParallel)
+# library(forcats)
+# library(foreach)
+# library(doParallel)
 
 # it_no_cores <- detectCores(logical = TRUE)
 # cl <- makeCluster(5)
@@ -21,6 +21,7 @@ library(doParallel)
 
 # Number of ways to cut income bins
 ls_it_income_cuts <- c(1,2,3,4)
+ls_it_income_cuts <- c(1,3)
 
 # Types of allocation files to consider
 ls_st_file_suffix_trumpchk <-
@@ -38,6 +39,16 @@ ls_st_file_suffix_bidenchk <-
     'snwx_bidenchk_moredense_a65zh266zs5_b1_xi0_manna_168_unmarried',
     'snwx_bidenchk_moredense_a65zh266zs5_b1_xi0_manna_168')
 ls_st_file_suffix_bidenchk <- rev(ls_st_file_suffix_bidenchk)
+
+ls_st_file_suffix_bidenchk_mixturealter <-
+  c('snwx_bidenchk_moredense_a65zh266zs5_b1_xi0_manna_168_3o6',
+    'snwx_bidenchk_moredense_a65zh266zs5_b1_xi0_manna_168_4o6',
+    'snwx_bidenchk_moredense_a65zh266zs5_b1_xi0_manna_168_8o6',
+    'snwx_bidenchk_moredense_a65zh266zs5_b1_xi0_manna_168_9o6')
+ls_st_file_suffix_bidenchk_mixturealter <- rev(ls_st_file_suffix_bidenchk_mixturealter)
+
+ls_st_file_suffix_bchkbnoui <-
+  c('snwx_bchknoui_moredense_a65zh266zs5_b1_xi0_manna_168')
 
 ls_st_file_suffix_bchklock <-
   c('snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168_bt95',
@@ -58,7 +69,7 @@ ls_st_file_suffix <- c(ls_st_file_suffix_bidenchk,
 #                        ls_st_file_suffix_bidenchk_betaedu, ls_st_file_suffix_trumpchk_betaedu)
 # ls_st_file_suffix_test <- "snwx_bidenchk_moredense_a65zh266zs5_b1_xi0_manna_168"
 
-# ls_st_file_suffix <- c(ls_st_file_suffix_test)
+ls_st_file_suffix <- c(ls_st_file_suffix_bchkbnoui)
 
 for (it_income_cuts in ls_it_income_cuts) {
   if (it_income_cuts == 1) {
@@ -118,6 +129,7 @@ for (it_income_cuts in ls_it_income_cuts) {
                       fl_bin_final_end)
   # Solve iteratively
   for (st_which_solu in ls_st_file_suffix) {
+  # foreach (st_which_solu=ls_st_file_suffix) %dopar% {
 
     # Files:
     # source('fs_opti_support.R')
@@ -292,6 +304,7 @@ for (it_income_cuts in ls_it_income_cuts) {
               st_x_label <- 'Log average consumption per household member before receiving stimulus checks'
             } else {
               st_x_label <- 'Average consumption per household member before receiving stimulus checks'
+              st_x_label <- 'Minimum household income given income bin'
             }
             st_y_label <- 'MPC out of first $100 in stimulus checks (percent)'
 

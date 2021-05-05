@@ -48,7 +48,7 @@ ls_st_file_suffix_bchklock <- rev(ls_st_file_suffix_bchklock)
 ls_st_file_suffix <- c(ls_st_file_suffix_trumpchk,
                        ls_st_file_suffix_bidenchk,
                        ls_st_file_suffix_bchklock)
-# ls_st_file_suffix <- c('snwx_trumpchk_moredense_a65zh266zs5_b1_xi0_manna_168')
+ls_st_file_suffix <- c('snwx_bidenchk_moredense_a65zh266zs5_b1_xi0_manna_168')
 # Per capita or per household results
 ls_bl_per_capita <- c(TRUE)
 
@@ -206,11 +206,20 @@ for (bl_per_capita in ls_bl_per_capita) {
                       100000/58056,
                       150000/58056,
                       200000/58056)
+        x.bounds <- c(0, 200000/58056)
+
+        y.labels <- c('0', '2000', '4000', '6000', '8000')
+        y.breaks <- c(0,
+                      2000,
+                      4000,
+                      6000,
+                      8000)
+        y.bounds <- c(0, 8000)
 
         # x-axis labeling
         plt_cur <- plt_cur +
           scale_x_continuous(labels = x.labels, breaks = x.breaks,
-                             limits = c(0, 200000/58056))
+                             limits = x.bounds)
         # limits = c(0, 240000/58056)
 
         # Legend Labeling
@@ -219,7 +228,7 @@ for (bl_per_capita in ls_bl_per_capita) {
         st_actual_color <- "#F8766D"
         it_actual_shape <- 16
 
-        st_util <- "Utilitarian"
+        st_util <- "Stimulus"
         st_util_color <- "#33cc33"
         it_util_shape <- 17
 
@@ -253,14 +262,29 @@ for (bl_per_capita in ls_bl_per_capita) {
 
         }
 
+        # custom theme
+        theme_custom <- theme(
+          text = element_text(size = 12),
+          legend.title = element_blank(),
+          legend.position = c(0.14, 0.9),
+          legend.background = element_rect(fill = "white", colour = "black", linetype='solid'))
+        # custom theme for single plot
+        theme_custom_single <- theme(
+          text = element_text(size = 12),
+          legend.title = element_blank(),
+          legend.position = c(0.35, 0.85),
+          legend.background = element_rect(fill = "white", colour = "black", linetype='solid'))
+        theme_custom_single_nolabels <- theme(
+          text = element_text(size = 12),
+          legend.title = element_blank(),
+          legend.position = "none",
+          axis.title.y=element_blank(),
+          axis.text.y=element_blank(),
+          axis.ticks.y=element_blank())
+
         # color #F8766D is default red
         # color #F8766D is default bluish color
-        plt_cur <- plt_cur +
-          theme(
-            text = element_text(size = 12),
-            legend.title = element_blank(),
-            legend.position = c(0.14, 0.9),
-            legend.background = element_rect(fill = "white", colour = "black", linetype='solid')) +
+        plt_cur <- plt_cur + theme_custom +
           scale_colour_manual(values=ar_st_colours, labels=ar_st_age_group_leg_labels) +
           scale_shape_manual(values=ar_it_shape_val, labels=ar_st_age_group_leg_labels)
 
@@ -298,9 +322,86 @@ for (bl_per_capita in ls_bl_per_capita) {
 #           dev.off()
 #         }
 
+        for (it_subplot_as_own_vsr in c(1,2)) {
+
+          if (it_subplot_as_own_vsr == 1) {
+            theme_custom_single_use <- theme_custom_single
+            st_file_suffix <- '_haslegend'
+            it_width <- 100
+          } else if (it_subplot_as_own_vsr == 2) {
+            theme_custom_single_use <- theme_custom_single_nolabels
+            st_file_suffix <- '_nolegend'
+            it_width <- 87
+          }
+
+          # Generate 1 by 1 figures ----------------------------
+          df_alloc_cur_long_grps <- df_alloc_cur_long %>%
+            group_by(marital, kids) %>% summarize(checks=mean(checks)) %>% ungroup()
+          ls_plots <- apply(df_alloc_cur_long_grps, 1, function(ar_row_unique) {
+            # 1. Graph main
+            # plt_mtcars_scatter <-
+            #   ggplot(tb_mtcars %>% filter(vs == st_vs_cate),
+            #          aes(x=hp, y=qsec,
+            #              colour=am, shape=am, linetype=am)) +
+            #   geom_smooth(se = FALSE, lwd = 1.5) + # Lwd = line width
+            #   geom_point(size = 5, stroke = 2)
+            plt_cur <- df_alloc_cur_long %>%
+              filter(marital == ar_row_unique[1], kids == ar_row_unique[2]) %>%
+              ggplot(aes(x=y_group_min, y=checks*100,
+                         colour=allocatetype,
+                         shape=allocatetype)) +
+              facet_wrap(~ marital + kids,
+                         ncol=1,
+                         scales = "free_x",
+                         labeller = label_wrap_gen(multi_line=FALSE))
+            plt_cur <- plt_cur + geom_line() + geom_point(size=3)
+
+            # 2. Add titles and labels
+            plt_cur <- plt_cur + labs(x = stg_x_title_hhinc, y = stg_y_title_checks)
+
+            # 3. x and y ticks
+            plt_cur <- plt_cur +
+              scale_x_continuous(labels = x.labels, breaks = x.breaks,
+                                 limits = x.bounds) +
+              scale_y_continuous(labels = y.labels, breaks = y.breaks,
+                                 limits = y.bounds)
+
+            # 4. Color, shape and linetype controls
+            plt_cur <- plt_cur +
+              scale_colour_manual(values=ar_st_colours, labels=ar_st_age_group_leg_labels) +
+              scale_shape_manual(values=ar_it_shape_val, labels=ar_st_age_group_leg_labels)
+
+            # 5. replace the default labels for each legend segment)
+            plt_cur <- plt_cur + theme_custom_single_use
+          })
+
+          it_fig_ctr <- 0
+          for (plt_cur in ls_plots) {
+            if (bl_save_img) {
+              # png(paste0(srt_img_aggregator_save_root,
+              #            st_img_name_full),
+              #     width = 270,
+              #     height = 216, units='mm',
+              #     res = 300, pointsize=7)
+              it_fig_ctr <- it_fig_ctr + 1
+
+              srt_img_aggcsvsolu_save_subfolder <- file.path(srt_img_aggregator_save_root,
+                                                             paste0(srt_csv_allocate_subfolder, '_v', it_rho_combo_type),
+                                                             '/')
+              dir.create(file.path(srt_img_aggcsvsolu_save_subfolder), showWarnings = FALSE, recursive = TRUE)
+
+              st_img_name_full_subfigure <- paste0(srt_csv_allocate_subfolder,
+                                                   '_v', it_rho_combo_type, '_subfig', it_fig_ctr, st_file_suffix, '.png')
+              ggsave(plt_cur, file=paste0(srt_img_aggcsvsolu_save_subfolder,
+                                          st_img_name_full_subfigure),
+                     width = it_width,
+                     height = 118.8, units='mm',
+                     dpi = 150, pointsize=7)
+            }
+          }
+        }
 
       }
     }
   }
 }
-

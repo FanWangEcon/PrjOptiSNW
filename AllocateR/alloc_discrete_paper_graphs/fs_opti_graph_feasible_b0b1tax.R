@@ -6,11 +6,13 @@
 # Libraries
 library(tidyverse)
 library(REconTools)
+library(scales)
 
 # File Names, Paths Etc -------
 ls_output <- fs_opti_support('b1_manna')
 srt_results_root <- ls_output$srt_results_root
 bl_save_img <- ls_output$bl_save_img
+bl_save_img <- FALSE
 srt_paper_appendix_textgraph <- ls_output$srt_paper_appendix_textgraph
 # bl_save_img <- TRUE
 

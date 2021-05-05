@@ -1,5 +1,5 @@
 ---
-title: "NSW Dynamic Life Cycle and Welfare Checks Code Companion"
+title: "NSW Dynamic Life Cycle and Stimulus Checks Code Companion"
 author: "Vegard M. Nygård, Bent E. Sørensen, and Fan Wang"
 date: '`r format(Sys.Date(), "%Y-%m-%d")`'
 site: bookdown::bookdown_site
@@ -7,7 +7,7 @@ documentclass: book
 bibliography: [book.bib, packages.bib]
 biblio-style: apalike
 link-citations: yes
-description: "NSW Dynamic Life Cycle and Welfare Checks Code Companion"
+description: "NSW Dynamic Life Cycle and Stimulus Checks Code Companion"
 output:
   pdf_document:
     toc: true

@@ -1,0 +1,23 @@
+- file: snwx_vfi_bisec_vec_stimulus
+  title: "Policy and Value Functions Dynamic Life Cycle Given Trump Stimulus"
+  titleshort: "Policy and Value Functions Dynamic Life Cycle Given Trump Stimulus"
+  description: |
+    Solve for policy and value functions given the first two rounds of CARES Act checks.
+    The distribution induced by the CARES Act policy functions are used as the distribtuion of savings for households receiving the 3rd round of checks from the American Rescue Plan
+  core :
+    - package: PrjOptiSNW
+      code: |
+        [snw_vfi_main_bisec_vec_stimulus()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/svalpol/snw_vfi_main_bisec_vec_stimulus.m)
+  date: 2021-05-11
+  date_start: 2020-05-11
+  output:
+    pdf_document:
+      pandoc_args: '../../../_output_kniti_pdf.yaml'
+      includes:
+        in_header: '../../../preamble.tex'
+    html_document:
+      pandoc_args: '../../../_output_kniti_html.yaml'
+      includes:
+        in_header: '../../../hdga.html'
+  always_allow_html: true
+  urlcolor: blue

@@ -55,7 +55,7 @@ disp(['ls_fl_beta_val=' num2str(ls_fl_beta_val)]);
 %% 
 % Set up print defaults
 % mp_params = containers.Map('KeyType', 'char', 'ValueType', 'any');
-% mp_params = snw_mp_param(st_param_group_base);
+mp_params = snw_mp_param(st_param_group_base);
 mp_controls = snw_mp_control('default_test');
 mp_controls('bl_timer') = true;
 mp_controls('bl_print_vfi') = false;

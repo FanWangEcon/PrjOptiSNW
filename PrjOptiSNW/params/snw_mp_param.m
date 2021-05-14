@@ -331,23 +331,53 @@ scaleconvertor = 58056;
 TR=100/scaleconvertor; % Value of a welfare check (can receive multiple checks). TO DO: Update with alternative values
 n_welfchecksgrid=45; % Number of welfare checks. 0 refers to 0 dollars; 51 refers to 5000 dollars
 
-% Probability of unemployment
+% Probability of unemployment (rectilinear restrictions, see R4E and
+% REconTools)
+
+% 2020 April Parameters
 % pi_j=[0.22;0.175;0.16;0.165;0.22]; % Probability of unemployment in 2020 by age groups from Cajner et al. (2020, NBER)
 % pi_w=[0.360;0.22;0.17;0.14;0.09]; % Probability of unemployment in 2020 by wage quintiles from Cajner et al. (2020, NBER)
-
 % Columns are wage groups; rows are age groups.
-pi_unemp=zeros(n_jgrid,5);
-aux_mat=[0.08027790 0.05170647 0.04150239 0.03537994 0.02517586];
-pi_unemp(1:13,:)=repmat(aux_mat,13,1);
-aux_mat=[0.07070343 0.04213200 0.03192792 0.02580547 0.01560139];
-pi_unemp(14:23,:)=repmat(aux_mat,10,1);
-aux_mat=[0.06751194 0.03894051 0.02873643 0.02261398 0.01240990];
-pi_unemp(24:33,:)=repmat(aux_mat,10,1);
-aux_mat=[0.06857577 0.04000434 0.02980026 0.02367781 0.01347373];
-pi_unemp(34:43,:)=repmat(aux_mat,10,1);
-aux_mat=[0.08027790 0.05170647 0.04150239 0.03537994 0.02517586];
-pi_unemp(44:48,:)=repmat(aux_mat,5,1);
+pi_unemp_2020_april=zeros(n_jgrid,5);
+% 18 to 30
+aux_mat=[0.3619408 0.2223709 0.1726170 0.1426521 0.08313332];
+pi_unemp_2020_april(1:13,:)=repmat(aux_mat,13,1);
+% 31 to 40
+aux_mat=[0.3533995 0.2138296 0.1640757 0.1341108 0.07459202];
+pi_unemp_2020_april(14:23,:)=repmat(aux_mat,10,1);
+% 41 to 50
+aux_mat=[0.3491687 0.2095989 0.1598450 0.1298800 0.07036131];
+pi_unemp_2020_april(24:33,:)=repmat(aux_mat,10,1);
+% 51 to 60
+aux_mat=[0.3565567 0.2169868 0.1672330 0.1372680 0.07774929];
+pi_unemp_2020_april(34:43,:)=repmat(aux_mat,10,1);
+% 61 to 65
+aux_mat=[0.4098855 0.2703156 0.2205617 0.1905968 0.13107803];
+pi_unemp_2020_april(44:48,:)=repmat(aux_mat,5,1);
+clear aux_mat
 
+% 2020 June based 2021 Adjustments Parameters
+% ar_E_marginal <- c(0.105,0.10,0.08,0.10,0.17)
+% ar_E_marginal <- ar_E_marginal*0.617
+% ar_A_marginal <- c(0.19,0.11,0.085,0.07,0.03)
+% ar_A_marginal <- ar_A_marginal*0.617
+% Columns are wage groups; rows are age groups.
+pi_unemp_2020_juneadj=zeros(n_jgrid,5);
+% 18 to 30
+aux_mat=[0.1125704 0.06228280 0.04602585 0.03617334 0.03547091];
+pi_unemp_2020_juneadj(1:13,:)=repmat(aux_mat,13,1);
+% 31 to 40
+aux_mat=[0.1199418 0.06965421 0.05339726 0.04354475 0.04284232];
+pi_unemp_2020_juneadj(14:23,:)=repmat(aux_mat,10,1);
+% 41 to 50
+aux_mat=[0.1103846 0.06009698 0.04384003 0.03398751 0.03328509];
+pi_unemp_2020_juneadj(24:33,:)=repmat(aux_mat,10,1);
+% 51 to 60
+aux_mat=[0.1232569 0.07296927 0.05671232 0.04685980 0.04615737];
+pi_unemp_2020_juneadj(34:43,:)=repmat(aux_mat,10,1);
+% 61 to 65
+aux_mat=[0.1659668 0.11567916 0.09942221 0.08956969 0.08886727];
+pi_unemp_2020_juneadj(44:48,:)=repmat(aux_mat,5,1);
 clear aux_mat
 
 % Solve planner's problem
@@ -744,7 +774,10 @@ mp_params_covid_unemploy('b') = b;
 mp_params_covid_unemploy('scaleconvertor') = scaleconvertor;
 mp_params_covid_unemploy('TR') = TR;
 mp_params_covid_unemploy('n_welfchecksgrid') = n_welfchecksgrid;
-mp_params_covid_unemploy('pi_unemp') = pi_unemp;
+mp_params_covid_unemploy('pi_unemp') = pi_unemp_2020_april;
+mp_params_covid_unemploy('pi_unemp_2020_april') = pi_unemp_2020_april;
+mp_params_covid_unemploy('pi_unemp_2020_juneadj') = pi_unemp_2020_juneadj;
+
 mp_params_covid_unemploy('n_incgrid') = n_incgrid;
 mp_params_covid_unemploy('inc_grid') = inc_grid;
 

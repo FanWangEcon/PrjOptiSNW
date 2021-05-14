@@ -1,10 +1,10 @@
 %% Values of Checks Conditional on 2019 Information
-% Eligibility for the stimulus checks was tied to each household’s income and 
+% Eligibility for the stimulus checks was tied to each householdâ€™s income and 
 % family size in the year prior to COVID-19. Consistent with this, we focus on 
 % the optimal allocation of stimulus checks given household characteristics in 
 % 2019.
 %% Expected Outcomes given 2019 Information
-% In the actual welfare checks allocation policy setting, 2020 realized individual 
+% In the actual stimulus checks allocation policy setting, 2020 realized individual 
 % level COVID shocks and other productivity shocks were not used by the IRS to 
 % determine allocation eligibility. Instead, the IRS used information available 
 % from 2019. Given the persistence of productivity shocks, as well as the correlation 

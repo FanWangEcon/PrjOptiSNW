@@ -28,7 +28,7 @@
   titleshort: "Small Test Looped over States Grid Search Solution"
   description: |
     The savings choice grid is the same as the savings states grid. Solve for optimal savings choices using grid-search. Loop over the state space, at each state-space point, vectorized optimization.
-    Our problem requires very high precision to solve for the marginal gains to households from each increment of welfare checks. We rely on the exact solution method from [snwx_vfi_bisec_vec()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/svalpol/snw_vfi_main_bisec_vec.m) for the working code.
+    Our problem requires very high precision to solve for the marginal gains to households from each increment of stimulus checks. We rely on the exact solution method from [snwx_vfi_bisec_vec()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/svalpol/snw_vfi_main_bisec_vec.m) for the working code.
     Due to speed, only show testing results at small grid without spousal shocks.
   core :
     - package: PrjOptiSNW

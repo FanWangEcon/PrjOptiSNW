@@ -34,8 +34,10 @@ end
 if (strcmp(st_computer, 'fan'))
      if (exist('D:/Dropbox (UH-ECON)', 'dir')>0)
          spt_dropbox_root = fullfile('D:/Dropbox (UH-ECON)/PrjNygaardSorensenWang/');
+         spt_rootlocal_root = fullfile('G:/repos/');
      elseif (exist('C:/Users/fan/Documents/Dropbox (UH-ECON)/', 'dir')>0)
          spt_dropbox_root = fullfile('C:/Users/fan/Documents/Dropbox (UH-ECON)/PrjNygaardSorensenWang/');
+         spt_rootlocal_root = fullfile('C:/Users/fan/');
      end
 end
 
@@ -43,10 +45,10 @@ end
 % store output mat files, this is to save speed during check calculation,
 % re-calculation
 
-spt_simu_codem = fullfile(spt_dropbox_root, 'PrjOptiSNW', filesep);
-spt_simu_codem_doc = fullfile(spt_dropbox_root, 'PrjOptiSNW', 'PrjOptiSNW', 'doc', filesep);
+spt_simu_codem = fullfile(spt_rootlocal_root, 'PrjOptiSNW', filesep);
+spt_simu_codem_doc = fullfile(spt_rootlocal_root, 'PrjOptiSNW', 'PrjOptiSNW', 'doc', filesep);
 spt_simu_outputs = fullfile(spt_dropbox_root, 'Output202102', filesep);
-spt_simu_outputs_vig = fullfile(spt_dropbox_root, 'MatlabVig', '02-21-2021', filesep);
+spt_simu_outputs_vig = fullfile(spt_dropbox_root, 'MatlabVig', '05-11-2021', filesep);
 spt_simu_outputs_log = fullfile(spt_simu_outputs, 'log', filesep);
 spt_simu_outputs_mat = fullfile(spt_simu_outputs, 'mat', filesep);
 % spt_simu_results_csv = fullfile(spt_dropbox_root, 'Results', '2020-08-23-b1_manna', 'csv_with_expmin_apc');

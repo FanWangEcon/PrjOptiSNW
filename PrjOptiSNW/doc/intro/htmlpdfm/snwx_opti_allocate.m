@@ -1,4 +1,4 @@
-%% The Welfare Check Planning Problem
+%% The Stimulus Check Planning Problem
 % The planner chooses the amount of stimulus checks for each group, where groups 
 % are defined by marital status, number of children, income, and age in 2019.
 %% 2019 Information Planning Problem

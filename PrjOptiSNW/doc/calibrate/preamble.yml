@@ -21,3 +21,27 @@
         in_header: '../../../hdga.html'
   always_allow_html: true
   urlcolor: blue
+
+- file: snwx_calibrate_lockdown_c
+  title: "Calibrate Lockdown Period Proportional Utility Loss MIT Shock COVID"
+  titleshort: "Calibrate Lockdown Period Proportional Utility Loss MIT Shock COVID"
+  description: |
+    There is one MIT shock period in which households face a one-period change in the current utility of consumption due to lock down.
+    Solve the model and evaluate the effects on aggregate consumption (during the MIT shock period) with different proportional adjustments on consumption given differing intertemperal preference assumptions.
+  core :
+    - package: PrjOptiSNW
+      code: |
+        [snw_calibrate_beta_norm_gdp()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/calibrate/snw_calibrate_lockdown_c.m)
+  date: 2021-05-14
+  date_start: 2021-05-14
+  output:
+    pdf_document:
+      pandoc_args: '../../../_output_kniti_pdf.yaml'
+      includes:
+        in_header: '../../../preamble.tex'
+    html_document:
+      pandoc_args: '../../../_output_kniti_html.yaml'
+      includes:
+        in_header: '../../../hdga.html'
+  always_allow_html: true
+  urlcolor: blue

@@ -1,12 +1,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><meta name="generator" content="MATLAB R2019b"><title>Distribution Exact Savings Choices Vectorized</title><style type="text/css">.rtcContent { padding: 30px; } .S0 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 28.8px; min-height: 0px; white-space: pre-wrap; color: rgb(213, 80, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 24px; font-weight: 400; text-align: left;  }
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><meta name="generator" content="MATLAB 2020b"><title>Distribution Exact Savings Choices Vectorized</title><style type="text/css">.rtcContent { padding: 30px; } .S0 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 28.8px; min-height: 0px; white-space: pre-wrap; color: rgb(213, 80, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 24px; font-weight: 400; text-align: left;  }
 .S1 { margin: 2px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: pre-wrap; color: rgb(0, 0, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: 400; text-align: left;  }
 .S2 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 20px; min-height: 0px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: 700; text-align: left;  }
 .CodeBlock { background-color: #F7F7F7; margin: 10px 0 10px 0;}
-.S3 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 0px none rgb(0, 0, 0); border-radius: 4px 4px 0px 0px; padding: 6px 45px 0px 13px; line-height: 16.996px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
-.S4 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 0px none rgb(0, 0, 0); border-radius: 0px; padding: 0px 45px 0px 13px; line-height: 16.996px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
-.S5 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 0px; padding: 0px 45px 4px 13px; line-height: 16.996px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
-.S6 { color: rgb(64, 64, 64); padding: 10px 0px 6px 17px; background: rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box border-box; font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px; overflow-x: hidden; line-height: 16.996px;  }
+.S3 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 0px none rgb(0, 0, 0); border-radius: 4px 4px 0px 0px; padding: 6px 45px 0px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S4 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 0px none rgb(0, 0, 0); border-radius: 0px; padding: 0px 45px 0px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S5 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 0px; padding: 0px 45px 4px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S6 { color: rgb(64, 64, 64); padding: 10px 0px 6px 17px; background: rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box border-box; font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px; overflow-x: hidden; line-height: 17.234px;  }
 .embeddedOutputsErrorElement {min-height: 18px; max-height: 250px; overflow: auto;}
 .embeddedOutputsErrorElement.inlineElement {}
 .embeddedOutputsErrorElement.rightPaneElement {}
@@ -26,8 +26,8 @@
 .inlineElement .textElement {}
 .embeddedOutputsTextElement.rightPaneElement,.embeddedOutputsVariableStringElement.rightPaneElement {min-height: 16px;}
 .rightPaneElement .textElement {padding-top: 2px; padding-left: 9px;}
-.S7 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 0px none rgb(0, 0, 0); border-radius: 0px; padding: 6px 45px 0px 13px; line-height: 16.996px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
-.S8 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 0px 0px 4px 4px; padding: 0px 45px 4px 13px; line-height: 16.996px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }</style></head><body><div class = rtcContent><h1  class = 'S0'><span>Distribution Exact Savings Choices Vectorized</span></h1><div  class = 'S1'><span>This is the example vignette for function: </span><a href = "https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/sdist/snw_ds_main_vec.m"><span style=' font-weight: bold;'>snw_ds_main_vec</span></a><span> from the </span><a href = "https://fanwangecon.github.io/PrjOptiSNW/"><span style=' font-weight: bold;'>PrjOptiSNW Package</span></a><span style=' font-weight: bold;'>. </span><span>This function solves for vfi and gets distribution induced by policy functions and exogenous distributions. Vectorized vfi and distribution methods.</span></div><h2  class = 'S2'><span>Test SNW_DS_MAIN_VEC</span></h2><div  class = 'S1'><span>Call the function with testing defaults.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre;"><span>mp_params = snw_mp_param(</span><span style="color: rgb(160, 32, 240);">'default_docdense'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_controls = snw_mp_control(</span><span style="color: rgb(160, 32, 240);">'default_test'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_controls(</span><span style="color: rgb(160, 32, 240);">'bl_print_vfi'</span><span>) = false;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_controls(</span><span style="color: rgb(160, 32, 240);">'bl_print_ds'</span><span>) = true;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_controls(</span><span style="color: rgb(160, 32, 240);">'bl_print_ds_verbose'</span><span>) = false;</span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S5'><span style="white-space: pre;"><span>[Phi_true,Phi_adj,A_agg,Y_inc_agg,it,mp_dsvfi_results] = snw_ds_main_vec(mp_params, mp_controls);</span></span></div><div  class = 'S6'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="2378ED0A" data-testid="output_0" data-width="428" data-height="4329" data-hashorizontaloverflow="true" style="width: 458px; max-height: 261px;"><div class="textElement">Completed SNW_VFI_MAIN_BISEC_VEC;SNW_MP_PARAM=default_docdense;SNW_MP_CONTROL=default_test;time=495.7322
+.S7 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 0px none rgb(0, 0, 0); border-radius: 0px; padding: 6px 45px 0px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S8 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 0px 0px 4px 4px; padding: 0px 45px 4px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }</style></head><body><div class = rtcContent><h1  class = 'S0'><span>Distribution Exact Savings Choices Vectorized</span></h1><div  class = 'S1'><span>This is the example vignette for function: </span><a href = "https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/sdist/snw_ds_main_vec.m"><span style=' font-weight: bold;'>snw_ds_main_vec</span></a><span> from the </span><a href = "https://fanwangecon.github.io/PrjOptiSNW/"><span style=' font-weight: bold;'>PrjOptiSNW Package</span></a><span style=' font-weight: bold;'>. </span><span>This function solves for vfi and gets distribution induced by policy functions and exogenous distributions. Vectorized vfi and distribution methods.</span></div><h2  class = 'S2'><span>Test SNW_DS_MAIN_VEC</span></h2><div  class = 'S1'><span>Call the function with testing defaults.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre;"><span>mp_params = snw_mp_param(</span><span style="color: rgb(170, 4, 249);">'default_docdense'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_controls = snw_mp_control(</span><span style="color: rgb(170, 4, 249);">'default_test'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_controls(</span><span style="color: rgb(170, 4, 249);">'bl_print_vfi'</span><span>) = false;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_controls(</span><span style="color: rgb(170, 4, 249);">'bl_print_ds'</span><span>) = true;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_controls(</span><span style="color: rgb(170, 4, 249);">'bl_print_ds_verbose'</span><span>) = false;</span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S5'><span style="white-space: pre;"><span>[Phi_true,Phi_adj,A_agg,Y_inc_agg,it,mp_dsvfi_results] = snw_ds_main_vec(mp_params, mp_controls);</span></span></div><div  class = 'S6'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="C48E45C6" data-testid="output_0" data-width="1128" data-height="4329" data-hashorizontaloverflow="true" style="width: 1158px; max-height: 261px;"><div class="textElement">Completed SNW_VFI_MAIN_BISEC_VEC;SNW_MP_PARAM=default_docdense;SNW_MP_CONTROL=default_test;time=521.9152
 ----------------------------------------
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 CONTAINER NAME: mp_outcomes ND Array (Matrix etc)
@@ -84,178 +84,178 @@ xxx TABLE:cons_VFI xxxxxxxxxxxxxxxxxx
     <strong>r82</strong>      0.2179     0.21844     0.22216     0.23228     0.25197    66.755     69.238      71.77     76.192     80.765 
     <strong>r83</strong>      0.2179     0.21844     0.22216     0.23228     0.25197    116.87     122.69     128.71     134.92     141.34 
 
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:1 of 82, time-this-age:0.38533
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:2 of 82, time-this-age:4.8535
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:3 of 82, time-this-age:5.4245
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:4 of 82, time-this-age:5.9426
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:5 of 82, time-this-age:6.1288
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:6 of 82, time-this-age:6.5704
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:7 of 82, time-this-age:6.8969
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:8 of 82, time-this-age:6.9897
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:9 of 82, time-this-age:7.1947
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:10 of 82, time-this-age:8.6388
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:11 of 82, time-this-age:9.0845
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:12 of 82, time-this-age:10.3717
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:13 of 82, time-this-age:10.517
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:14 of 82, time-this-age:10.7579
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:15 of 82, time-this-age:10.8217
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:16 of 82, time-this-age:10.8223
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:17 of 82, time-this-age:10.7043
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:18 of 82, time-this-age:10.7417
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:19 of 82, time-this-age:10.8037
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:20 of 82, time-this-age:10.818
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:21 of 82, time-this-age:10.7822
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:22 of 82, time-this-age:11.9326
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:23 of 82, time-this-age:11.9625
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:24 of 82, time-this-age:11.8969
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:25 of 82, time-this-age:11.7013
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:26 of 82, time-this-age:11.9384
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:27 of 82, time-this-age:12.7336
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:28 of 82, time-this-age:12.6447
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:29 of 82, time-this-age:12.7296
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:30 of 82, time-this-age:12.7955
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:31 of 82, time-this-age:12.6745
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:32 of 82, time-this-age:12.822
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:33 of 82, time-this-age:12.4306
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:34 of 82, time-this-age:12.5625
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:35 of 82, time-this-age:12.4247
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:36 of 82, time-this-age:12.2152
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:37 of 82, time-this-age:12.4463
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:38 of 82, time-this-age:12.409
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:39 of 82, time-this-age:12.2658
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:40 of 82, time-this-age:12.2869
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:41 of 82, time-this-age:12.1216
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:42 of 82, time-this-age:12.1159
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:43 of 82, time-this-age:12.0175
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:44 of 82, time-this-age:11.8754
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:45 of 82, time-this-age:11.8576
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:46 of 82, time-this-age:11.6876
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:47 of 82, time-this-age:11.4529
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:48 of 82, time-this-age:11.2909
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:49 of 82, time-this-age:13.2073
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:50 of 82, time-this-age:14.38
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:51 of 82, time-this-age:14.2335
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:52 of 82, time-this-age:14.3025
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:53 of 82, time-this-age:14.4099
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:54 of 82, time-this-age:14.6607
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:55 of 82, time-this-age:14.3725
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:56 of 82, time-this-age:13.0721
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:57 of 82, time-this-age:14.2288
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:58 of 82, time-this-age:11.5969
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:59 of 82, time-this-age:11.2636
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:60 of 82, time-this-age:11.4644
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:61 of 82, time-this-age:11.153
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:62 of 82, time-this-age:9.8175
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:63 of 82, time-this-age:9.4858
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:64 of 82, time-this-age:8.2039
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:65 of 82, time-this-age:7.8046
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:66 of 82, time-this-age:8.0482
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:67 of 82, time-this-age:7.7332
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:68 of 82, time-this-age:7.8717
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:69 of 82, time-this-age:7.7449
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:70 of 82, time-this-age:7.6917
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:71 of 82, time-this-age:7.4818
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:72 of 82, time-this-age:7.5373
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:73 of 82, time-this-age:7.477
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:74 of 82, time-this-age:7.0533
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:75 of 82, time-this-age:7.0132
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:76 of 82, time-this-age:6.8244
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:77 of 82, time-this-age:6.5596
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:78 of 82, time-this-age:6.3739
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:79 of 82, time-this-age:6.145
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:80 of 82, time-this-age:5.9883
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:81 of 82, time-this-age:5.6745
-SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:82 of 82, time-this-age:5.4529
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:1 of 82, time-this-age:0.32995
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:2 of 82, time-this-age:0.046363
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:3 of 82, time-this-age:0.0452
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:4 of 82, time-this-age:0.04461
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:5 of 82, time-this-age:0.046124
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:6 of 82, time-this-age:0.044917
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:7 of 82, time-this-age:0.044963
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:8 of 82, time-this-age:0.045331
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:9 of 82, time-this-age:0.044994
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:10 of 82, time-this-age:0.045092
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:11 of 82, time-this-age:0.045782
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:12 of 82, time-this-age:0.045744
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:13 of 82, time-this-age:0.044755
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:14 of 82, time-this-age:0.045424
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:15 of 82, time-this-age:0.04489
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:16 of 82, time-this-age:0.045122
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:17 of 82, time-this-age:0.044855
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:18 of 82, time-this-age:0.044743
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:19 of 82, time-this-age:0.04457
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:20 of 82, time-this-age:0.042135
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:21 of 82, time-this-age:0.042964
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:22 of 82, time-this-age:0.042523
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:23 of 82, time-this-age:0.041992
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:24 of 82, time-this-age:0.042772
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:25 of 82, time-this-age:0.042253
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:26 of 82, time-this-age:0.042336
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:27 of 82, time-this-age:0.042502
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:28 of 82, time-this-age:0.042069
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:29 of 82, time-this-age:0.042066
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:30 of 82, time-this-age:0.042307
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:31 of 82, time-this-age:0.042301
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:32 of 82, time-this-age:0.042422
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:33 of 82, time-this-age:0.04251
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:34 of 82, time-this-age:0.043235
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:35 of 82, time-this-age:0.041973
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:36 of 82, time-this-age:0.042507
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:37 of 82, time-this-age:0.04212
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:38 of 82, time-this-age:0.041928
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:39 of 82, time-this-age:0.042805
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:40 of 82, time-this-age:0.042282
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:41 of 82, time-this-age:0.042023
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:42 of 82, time-this-age:0.041985
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:43 of 82, time-this-age:0.042461
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:44 of 82, time-this-age:0.042176
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:45 of 82, time-this-age:0.041744
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:46 of 82, time-this-age:0.042401
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:47 of 82, time-this-age:0.041823
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:48 of 82, time-this-age:0.042776
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:49 of 82, time-this-age:0.042345
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:50 of 82, time-this-age:0.041778
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:51 of 82, time-this-age:0.04279
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:52 of 82, time-this-age:0.042188
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:53 of 82, time-this-age:0.042106
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:54 of 82, time-this-age:0.041468
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:55 of 82, time-this-age:0.04238
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:56 of 82, time-this-age:0.042431
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:57 of 82, time-this-age:0.042291
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:58 of 82, time-this-age:0.042408
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:59 of 82, time-this-age:0.042301
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:60 of 82, time-this-age:0.041831
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:61 of 82, time-this-age:0.041465
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:62 of 82, time-this-age:0.043668
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:63 of 82, time-this-age:0.042077
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:64 of 82, time-this-age:0.041524
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:65 of 82, time-this-age:0.043254
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:66 of 82, time-this-age:0.042202
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:67 of 82, time-this-age:0.041436
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:68 of 82, time-this-age:0.041208
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:69 of 82, time-this-age:0.041526
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:70 of 82, time-this-age:0.042328
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:71 of 82, time-this-age:0.041618
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:72 of 82, time-this-age:0.041941
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:73 of 82, time-this-age:0.04211
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:74 of 82, time-this-age:0.041632
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:75 of 82, time-this-age:0.041663
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:76 of 82, time-this-age:0.042221
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:77 of 82, time-this-age:0.042
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:78 of 82, time-this-age:0.041732
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:79 of 82, time-this-age:0.042972
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:80 of 82, time-this-age:0.04279
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:81 of 82, time-this-age:0.042028
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:82 of 82, time-this-age:0.042981
-SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:83 of 82, time-this-age:0.041914
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:1 of 82, time-this-age:0.39334
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:2 of 82, time-this-age:4.11
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:3 of 82, time-this-age:4.9795
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:4 of 82, time-this-age:5.3519
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:5 of 82, time-this-age:5.7236
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:6 of 82, time-this-age:6.4229
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:7 of 82, time-this-age:6.6064
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:8 of 82, time-this-age:7.5306
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:9 of 82, time-this-age:7.3481
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:10 of 82, time-this-age:8.459
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:11 of 82, time-this-age:9.3302
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:12 of 82, time-this-age:10.5009
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:13 of 82, time-this-age:10.7123
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:14 of 82, time-this-age:10.6775
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:15 of 82, time-this-age:10.822
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:16 of 82, time-this-age:10.7687
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:17 of 82, time-this-age:11.4006
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:18 of 82, time-this-age:11.2548
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:19 of 82, time-this-age:11.2997
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:20 of 82, time-this-age:10.8026
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:21 of 82, time-this-age:10.7659
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:22 of 82, time-this-age:12.0397
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:23 of 82, time-this-age:12.6411
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:24 of 82, time-this-age:12.6029
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:25 of 82, time-this-age:11.8189
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:26 of 82, time-this-age:12.0551
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:27 of 82, time-this-age:13.04
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:28 of 82, time-this-age:13.2314
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:29 of 82, time-this-age:13.0356
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:30 of 82, time-this-age:13.5628
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:31 of 82, time-this-age:12.8784
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:32 of 82, time-this-age:12.7042
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:33 of 82, time-this-age:12.7287
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:34 of 82, time-this-age:12.9463
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:35 of 82, time-this-age:13.1275
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:36 of 82, time-this-age:12.6388
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:37 of 82, time-this-age:12.447
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:38 of 82, time-this-age:12.2203
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:39 of 82, time-this-age:12.3884
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:40 of 82, time-this-age:12.3557
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:41 of 82, time-this-age:12.944
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:42 of 82, time-this-age:12.2436
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:43 of 82, time-this-age:12.2168
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:44 of 82, time-this-age:12.6599
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:45 of 82, time-this-age:12.245
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:46 of 82, time-this-age:11.7744
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:47 of 82, time-this-age:11.5828
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:48 of 82, time-this-age:11.4646
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:49 of 82, time-this-age:14.0227
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:50 of 82, time-this-age:14.6851
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:51 of 82, time-this-age:14.7491
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:52 of 82, time-this-age:14.7967
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:53 of 82, time-this-age:14.6515
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:54 of 82, time-this-age:14.7403
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:55 of 82, time-this-age:14.6048
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:56 of 82, time-this-age:13.3352
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:57 of 82, time-this-age:14.5598
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:58 of 82, time-this-age:12.7411
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:59 of 82, time-this-age:11.6125
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:60 of 82, time-this-age:11.7255
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:61 of 82, time-this-age:11.2633
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:62 of 82, time-this-age:10.2443
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:63 of 82, time-this-age:10.0437
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:64 of 82, time-this-age:8.4077
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:65 of 82, time-this-age:7.7489
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:66 of 82, time-this-age:7.8557
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:67 of 82, time-this-age:8.0619
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:68 of 82, time-this-age:7.7275
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:69 of 82, time-this-age:7.8023
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:70 of 82, time-this-age:7.3455
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:71 of 82, time-this-age:7.3573
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:72 of 82, time-this-age:6.9026
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:73 of 82, time-this-age:6.897
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:74 of 82, time-this-age:6.4436
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:75 of 82, time-this-age:6.5685
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:76 of 82, time-this-age:6.0098
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:77 of 82, time-this-age:6.0711
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:78 of 82, time-this-age:6.045
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:79 of 82, time-this-age:5.8093
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:80 of 82, time-this-age:5.4826
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:81 of 82, time-this-age:5.133
+SNW_DS_MAIN_VEC ACUMU MASS: Finished Age Group:82 of 82, time-this-age:4.7325
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:1 of 82, time-this-age:0.34351
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:2 of 82, time-this-age:0.057964
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:3 of 82, time-this-age:0.047239
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:4 of 82, time-this-age:0.046663
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:5 of 82, time-this-age:0.047701
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:6 of 82, time-this-age:0.046611
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:7 of 82, time-this-age:0.04627
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:8 of 82, time-this-age:0.047136
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:9 of 82, time-this-age:0.046887
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:10 of 82, time-this-age:0.047342
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:11 of 82, time-this-age:0.046719
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:12 of 82, time-this-age:0.046569
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:13 of 82, time-this-age:0.047564
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:14 of 82, time-this-age:0.056209
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:15 of 82, time-this-age:0.051448
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:16 of 82, time-this-age:0.049786
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:17 of 82, time-this-age:0.051129
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:18 of 82, time-this-age:0.047445
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:19 of 82, time-this-age:0.046665
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:20 of 82, time-this-age:0.042283
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:21 of 82, time-this-age:0.041394
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:22 of 82, time-this-age:0.043719
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:23 of 82, time-this-age:0.042114
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:24 of 82, time-this-age:0.04228
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:25 of 82, time-this-age:0.043025
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:26 of 82, time-this-age:0.043165
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:27 of 82, time-this-age:0.041725
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:28 of 82, time-this-age:0.041071
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:29 of 82, time-this-age:0.040883
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:30 of 82, time-this-age:0.041196
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:31 of 82, time-this-age:0.041031
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:32 of 82, time-this-age:0.040506
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:33 of 82, time-this-age:0.039983
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:34 of 82, time-this-age:0.040024
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:35 of 82, time-this-age:0.040669
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:36 of 82, time-this-age:0.041376
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:37 of 82, time-this-age:0.042021
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:38 of 82, time-this-age:0.044166
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:39 of 82, time-this-age:0.041754
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:40 of 82, time-this-age:0.0415
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:41 of 82, time-this-age:0.041418
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:42 of 82, time-this-age:0.042098
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:43 of 82, time-this-age:0.042974
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:44 of 82, time-this-age:0.040936
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:45 of 82, time-this-age:0.042504
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:46 of 82, time-this-age:0.041483
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:47 of 82, time-this-age:0.041756
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:48 of 82, time-this-age:0.041055
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:49 of 82, time-this-age:0.041493
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:50 of 82, time-this-age:0.042181
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:51 of 82, time-this-age:0.042668
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:52 of 82, time-this-age:0.041988
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:53 of 82, time-this-age:0.05308
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:54 of 82, time-this-age:0.040945
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:55 of 82, time-this-age:0.040438
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:56 of 82, time-this-age:0.039873
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:57 of 82, time-this-age:0.039668
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:58 of 82, time-this-age:0.039572
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:59 of 82, time-this-age:0.039795
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:60 of 82, time-this-age:0.039983
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:61 of 82, time-this-age:0.039467
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:62 of 82, time-this-age:0.03986
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:63 of 82, time-this-age:0.040713
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:64 of 82, time-this-age:0.040873
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:65 of 82, time-this-age:0.040731
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:66 of 82, time-this-age:0.040093
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:67 of 82, time-this-age:0.03951
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:68 of 82, time-this-age:0.040165
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:69 of 82, time-this-age:0.039594
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:70 of 82, time-this-age:0.044621
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:71 of 82, time-this-age:0.039819
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:72 of 82, time-this-age:0.040101
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:73 of 82, time-this-age:0.039792
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:74 of 82, time-this-age:0.039931
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:75 of 82, time-this-age:0.039789
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:76 of 82, time-this-age:0.039697
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:77 of 82, time-this-age:0.039328
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:78 of 82, time-this-age:0.039731
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:79 of 82, time-this-age:0.041404
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:80 of 82, time-this-age:0.05228
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:81 of 82, time-this-age:0.040807
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:82 of 82, time-this-age:0.040525
+SNW_DS_MAIN NORMALIZE MASS: Finished Age Group:83 of 82, time-this-age:0.041202
 SNW_DS_MAIN: Share of population with assets equal to upper bound on asset grid:6.6266e-06
 SNW_DS_MAIN: Accidental bequests are thrown in the ocean
 SNW_DS_MAIN_VEC: Number of a2-adjustments (for taxation) used to balance the government budget= 0
 SNW_DS_MAIN_VEC: Old and updated value of a2=1.5286      1.5286
 SNW_DS_MAIN_VEC: Aggregates: Cons., Gov. cons., Save, Assets, Income, Bequests 48.88966      11.38831      194.5563      199.0754      64.79625      2.572533
 SNW_DS_MAIN_VEC: Resource constraint: C_t+A_{t+1}+G_t=A_t+Y_t 259.3534      259.3526
-Completed SNW_DS_MAIN_VEC;SNW_MP_PARAM=default_docdense;SNW_MP_CONTROL=default_test;time=869.5447
+Completed SNW_DS_MAIN_VEC;SNW_MP_PARAM=default_docdense;SNW_MP_CONTROL=default_test;time=878.3792
 xxx tb_outcomes: all stats xxx
      <strong>OriginalVariableNames</strong>         <strong>a_ss</strong>         <strong>ap_ss</strong>        <strong>cons_ss</strong>        <strong>n_ss</strong>         <strong>y_all</strong>       <strong>y_head_inc</strong>    <strong>y_head_earn</strong>    <strong>y_spouse_inc</strong>    <strong>yshr_interest</strong>    <strong>yshr_wage</strong>      <strong>yshr_SS</strong>       <strong>yshr_tax</strong>     <strong>yshr_nttxss</strong>
     <strong>________________________</strong>    <strong>__________</strong>    <strong>__________</strong>    <strong>__________</strong>    <strong>_________</strong>    <strong>__________</strong>    <strong>__________</strong>    <strong>___________</strong>    <strong>____________</strong>    <strong>_____________</strong>    <strong>__________</strong>    <strong>__________</strong>    <strong>__________</strong>    <strong>___________</strong>
@@ -335,7 +335,7 @@ xxx tb_outcomes: all stats xxx
     {'fracByP95'           }       0.69729       0.69468       0.85836       0.8953       0.79474       0.80629       0.79244         0.52595         0.73626               1       0.56994       0.93393       0.84459 
     {'fracByP99'           }       0.90278       0.90216       0.96058            1       0.93117          0.94       0.93633         0.80937         0.93588               1        0.9103       0.98632       0.96782 
     {'fracByP99_9'         }       0.98493       0.98362       0.99414            1       0.98801       0.99016       0.98962         0.95807         0.99303               1             1        0.9986        0.9967 
-    {'fracByP99_99'        }       0.99793       0.99759       0.99921            1       0.99841       0.99857       0.99849         0.99466         0.99925               1             1       0.99986       0.99967 </div></div></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre;"><span style="color: rgb(60, 118, 61);">% [Phi_true,Phi_adj] = snw_ds_main(mp_params, mp_controls);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre;"><span>Phi_true = Phi_true/sum(Phi_true(:));</span></span></div></div></div><h2  class = 'S2'><span>Show All Info in mp_dsvfi_results</span></h2><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre;"><span>mp_cl_mt_xyz_of_s = mp_dsvfi_results(</span><span style="color: rgb(160, 32, 240);">'mp_cl_mt_xyz_of_s'</span><span>);</span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S5'><span style="white-space: pre;"><span>disp(mp_cl_mt_xyz_of_s(</span><span style="color: rgb(160, 32, 240);">'tb_outcomes'</span><span>))</span></span></div><div  class = 'S6'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="D605E2F0" data-testid="output_1" data-width="428" data-height="227" data-hashorizontaloverflow="true" style="width: 458px; max-height: 261px;"><div class="textElement">                       <strong>mean</strong>      <strong>unweighted_sum</strong>      <strong>sd</strong>       <strong>coefofvar</strong>     <strong>gini</strong>        <strong>min</strong>         <strong>max</strong>       <strong>pYis0</strong>      <strong>pYls0</strong>      <strong>pYgr0</strong>      <strong>pYisMINY</strong>      <strong>pYisMAXY</strong>      <strong>p0_01</strong>        <strong>p0_1</strong>         <strong>p1</strong>          <strong>p5</strong>         <strong>p10</strong>         <strong>p20</strong>          <strong>p25</strong>         <strong>p30</strong>         <strong>p40</strong>         <strong>p50</strong>         <strong>p60</strong>         <strong>p70</strong>        <strong>p75</strong>        <strong>p80</strong>         <strong>p90</strong>        <strong>p95</strong>        <strong>p99</strong>       <strong>p99_9</strong>     <strong>p99_99</strong>     <strong>fl_cov_a_ss</strong>    <strong>fl_cor_a_ss</strong>    <strong>fl_cov_ap_ss</strong>    <strong>fl_cor_ap_ss</strong>    <strong>fl_cov_cons_ss</strong>    <strong>fl_cor_cons_ss</strong>    <strong>fl_cov_n_ss</strong>    <strong>fl_cor_n_ss</strong>    <strong>fl_cov_y_all</strong>    <strong>fl_cor_y_all</strong>    <strong>fl_cov_y_head_inc</strong>    <strong>fl_cor_y_head_inc</strong>    <strong>fl_cov_y_head_earn</strong>    <strong>fl_cor_y_head_earn</strong>    <strong>fl_cov_y_spouse_inc</strong>    <strong>fl_cor_y_spouse_inc</strong>    <strong>fl_cov_yshr_interest</strong>    <strong>fl_cor_yshr_interest</strong>    <strong>fl_cov_yshr_wage</strong>    <strong>fl_cor_yshr_wage</strong>    <strong>fl_cov_yshr_SS</strong>    <strong>fl_cor_yshr_SS</strong>    <strong>fl_cov_yshr_tax</strong>    <strong>fl_cor_yshr_tax</strong>    <strong>fl_cov_yshr_nttxss</strong>    <strong>fl_cor_yshr_nttxss</strong>    <strong>fracByP0_01</strong>    <strong>fracByP0_1</strong>    <strong>fracByP1</strong>     <strong>fracByP5</strong>    <strong>fracByP10</strong>    <strong>fracByP20</strong>     <strong>fracByP25</strong>    <strong>fracByP30</strong>    <strong>fracByP40</strong>    <strong>fracByP50</strong>    <strong>fracByP60</strong>    <strong>fracByP70</strong>    <strong>fracByP75</strong>    <strong>fracByP80</strong>     <strong>fracByP90</strong>    <strong>fracByP95</strong>    <strong>fracByP99</strong>    <strong>fracByP99_9</strong>    <strong>fracByP99_99</strong>
+    {'fracByP99_99'        }       0.99793       0.99759       0.99921            1       0.99841       0.99857       0.99849         0.99466         0.99925               1             1       0.99986       0.99967 </div></div></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre;"><span style="color: rgb(2, 128, 9);">% [Phi_true,Phi_adj] = snw_ds_main(mp_params, mp_controls);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre;"><span>Phi_true = Phi_true/sum(Phi_true(:));</span></span></div></div></div><h2  class = 'S2'><span>Show All Info in mp_dsvfi_results</span></h2><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre;"><span>mp_cl_mt_xyz_of_s = mp_dsvfi_results(</span><span style="color: rgb(170, 4, 249);">'mp_cl_mt_xyz_of_s'</span><span>);</span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S5'><span style="white-space: pre;"><span>disp(mp_cl_mt_xyz_of_s(</span><span style="color: rgb(170, 4, 249);">'tb_outcomes'</span><span>))</span></span></div><div  class = 'S6'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="B07D954B" data-testid="output_1" data-width="1128" data-height="227" data-hashorizontaloverflow="true" style="width: 1158px; max-height: 261px;"><div class="textElement">                       <strong>mean</strong>      <strong>unweighted_sum</strong>      <strong>sd</strong>       <strong>coefofvar</strong>     <strong>gini</strong>        <strong>min</strong>         <strong>max</strong>       <strong>pYis0</strong>      <strong>pYls0</strong>      <strong>pYgr0</strong>      <strong>pYisMINY</strong>      <strong>pYisMAXY</strong>      <strong>p0_01</strong>        <strong>p0_1</strong>         <strong>p1</strong>          <strong>p5</strong>         <strong>p10</strong>         <strong>p20</strong>          <strong>p25</strong>         <strong>p30</strong>         <strong>p40</strong>         <strong>p50</strong>         <strong>p60</strong>         <strong>p70</strong>        <strong>p75</strong>        <strong>p80</strong>         <strong>p90</strong>        <strong>p95</strong>        <strong>p99</strong>       <strong>p99_9</strong>     <strong>p99_99</strong>     <strong>fl_cov_a_ss</strong>    <strong>fl_cor_a_ss</strong>    <strong>fl_cov_ap_ss</strong>    <strong>fl_cor_ap_ss</strong>    <strong>fl_cov_cons_ss</strong>    <strong>fl_cor_cons_ss</strong>    <strong>fl_cov_n_ss</strong>    <strong>fl_cor_n_ss</strong>    <strong>fl_cov_y_all</strong>    <strong>fl_cor_y_all</strong>    <strong>fl_cov_y_head_inc</strong>    <strong>fl_cor_y_head_inc</strong>    <strong>fl_cov_y_head_earn</strong>    <strong>fl_cor_y_head_earn</strong>    <strong>fl_cov_y_spouse_inc</strong>    <strong>fl_cor_y_spouse_inc</strong>    <strong>fl_cov_yshr_interest</strong>    <strong>fl_cor_yshr_interest</strong>    <strong>fl_cov_yshr_wage</strong>    <strong>fl_cor_yshr_wage</strong>    <strong>fl_cov_yshr_SS</strong>    <strong>fl_cor_yshr_SS</strong>    <strong>fl_cov_yshr_tax</strong>    <strong>fl_cor_yshr_tax</strong>    <strong>fl_cov_yshr_nttxss</strong>    <strong>fl_cor_yshr_nttxss</strong>    <strong>fracByP0_01</strong>    <strong>fracByP0_1</strong>    <strong>fracByP1</strong>     <strong>fracByP5</strong>    <strong>fracByP10</strong>    <strong>fracByP20</strong>     <strong>fracByP25</strong>    <strong>fracByP30</strong>    <strong>fracByP40</strong>    <strong>fracByP50</strong>    <strong>fracByP60</strong>    <strong>fracByP70</strong>    <strong>fracByP75</strong>    <strong>fracByP80</strong>     <strong>fracByP90</strong>    <strong>fracByP95</strong>    <strong>fracByP99</strong>    <strong>fracByP99_9</strong>    <strong>fracByP99_99</strong>
                      <strong>________</strong>    <strong>______________</strong>    <strong>_______</strong>    <strong>_________</strong>    <strong>_______</strong>    <strong>________</strong>    <strong>_______</strong>    <strong>_______</strong>    <strong>_______</strong>    <strong>_______</strong>    <strong>__________</strong>    <strong>__________</strong>    <strong>________</strong>    <strong>________</strong>    <strong>________</strong>    <strong>________</strong>    <strong>________</strong>    <strong>________</strong>    <strong>_________</strong>    <strong>________</strong>    <strong>________</strong>    <strong>________</strong>    <strong>________</strong>    <strong>_______</strong>    <strong>_______</strong>    <strong>________</strong>    <strong>_______</strong>    <strong>_______</strong>    <strong>_______</strong>    <strong>_______</strong>    <strong>_______</strong>    <strong>___________</strong>    <strong>___________</strong>    <strong>____________</strong>    <strong>____________</strong>    <strong>______________</strong>    <strong>______________</strong>    <strong>___________</strong>    <strong>___________</strong>    <strong>____________</strong>    <strong>____________</strong>    <strong>_________________</strong>    <strong>_________________</strong>    <strong>__________________</strong>    <strong>__________________</strong>    <strong>___________________</strong>    <strong>___________________</strong>    <strong>____________________</strong>    <strong>____________________</strong>    <strong>________________</strong>    <strong>________________</strong>    <strong>______________</strong>    <strong>______________</strong>    <strong>_______________</strong>    <strong>_______________</strong>    <strong>__________________</strong>    <strong>__________________</strong>    <strong>___________</strong>    <strong>__________</strong>    <strong>_________</strong>    <strong>________</strong>    <strong>_________</strong>    <strong>__________</strong>    <strong>_________</strong>    <strong>_________</strong>    <strong>_________</strong>    <strong>_________</strong>    <strong>_________</strong>    <strong>_________</strong>    <strong>_________</strong>    <strong>__________</strong>    <strong>_________</strong>    <strong>_________</strong>    <strong>_________</strong>    <strong>___________</strong>    <strong>____________</strong>
 
     <strong>a_ss         </strong>      4.2486            2228       6.7963      1.5996     0.68054           0        135     0.1223          0     0.8777        0.1223    6.6266e-06           0           0           0           0           0    0.064373      0.11124     0.26367     0.68544      1.4131      2.5301     4.1199     5.4836      7.1191      12.56     16.875     30.548     56.953     90.439        46.189              1         46.181         0.99429            3.4533          0.73158          -1.4145      -0.14479            4.552        0.45762             3.9111             0.57021                1.9006               0.30133                0.64085              0.098743                  0.77027                0.67438               -0.77963            -0.3398           0.0093601        0.0058267           0.099405           0.41564             0.090044               0.05183                  0              0            0           0           0     0.00074359    0.0014042    0.0041483     0.01665     0.045047     0.094899      0.17353      0.24359        0.32643     0.56332      0.69729      0.90278       0.98493        0.99793   

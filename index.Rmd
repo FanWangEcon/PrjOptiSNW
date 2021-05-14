@@ -30,7 +30,7 @@ options(bookdown.render.file_scope = FALSE)
 
 `r text_top_count`
 
-This is a work-in-progress Matlab package consisting of functions that solve the dynamic life cycle model in [Nygård](https://sites.google.com/site/vegardmokleivnygaard/), [Sørensen](https://uh.edu/~bsorense/) and [Wang](https://fanwangecon.github.io/) (2020) [@SNW2020]. The code companion presents solutions to the dynamic life-cycle problem, and methods for evaluating the marginal gains from allocating additional welfare checks. Tested with [Matlab](https://www.mathworks.com/products/matlab.html) 2019a [@matlab].
+This is a work-in-progress Matlab package consisting of functions that solve the dynamic life cycle model in [Nygård](https://sites.google.com/site/vegardmokleivnygaard/), [Sørensen](https://uh.edu/~bsorense/) and [Wang](https://fanwangecon.github.io/) (2021). [Nygård, Sørensen and Wang (2021)](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3839890) supersedes two prior papers, [Nygård, Sørensen and Wang (2020)](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3691091) as well as [Wang (2020)](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3547706). The code companion presents solutions to the dynamic life-cycle problem, and methods for evaluating the marginal gains from allocating additional stimulus checks. Tested with [Matlab](https://www.mathworks.com/products/matlab.html) 2019a [@matlab].
 
 All functions are parts of a matlab toolbox that can be installed:
 
@@ -38,11 +38,11 @@ All functions are parts of a matlab toolbox that can be installed:
 
 The Code Companion can also be accessed via the bookdown site and PDF linked below:
 
-> [**bookdown pdf**](https://fanwangecon.github.io/PrjOptiSNW/bookdown/NSW-Dynamic-Life-Cycle-and-Welfare-Checks-Code-Companion.pdf), [**MathWorks File Exchange**](https://www.mathworks.com/matlabcentral/fileexchange/80164-prjoptisnw)
+> [**bookdown pdf**](https://fanwangecon.github.io/PrjOptiSNW/bookdown/NSW-Dynamic-Life-Cycle-and-Stimulus-Checks-Code-Companion.pdf), [**MathWorks File Exchange**](https://www.mathworks.com/matlabcentral/fileexchange/80164-prjoptisnw)
 
 This bookdown file is a collection of mlx based vignettes for functions that are available from [PrjOptiSNW](https://github.com/FanWangEcon/PrjOptiSNW). Each Vignette file contains various examples for invoking each function.
 
-The package relies on [MEconTools](https://fanwangecon.github.io/MEconTools/), which needs to be installed first. The package does not include allocation functions, only simulation code to generate the value of each welfare check increments for households. Allocation functions rely the R optimal allocation package [PrjOptiAlloc](https://fanwangecon.github.io/PrjOptiAlloc).
+The package relies on [MEconTools](https://fanwangecon.github.io/MEconTools/), which needs to be installed first. The package does not include allocation functions, only simulation code to generate the value of each stimulus check increments for households. Allocation functions rely the R optimal allocation package [PrjOptiAlloc](https://fanwangecon.github.io/PrjOptiAlloc).
 
 The site is built using [Bookdown](https://bookdown.org/) [@R-bookdown].
 

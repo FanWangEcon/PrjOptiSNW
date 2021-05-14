@@ -321,7 +321,9 @@ if (~bl_load_mat || ~isfile(spt_mat_path))
         % given lock-down which are already solved. 
         disp('Trump Check, do not need to resolve distribution')
         
-    elseif strcmp(st_biden_or_trump, 'bidenchk') || strcmp(st_biden_or_trump, 'bchklock')
+    elseif (strcmp(st_biden_or_trump, 'bidenchk') || ...
+            strcmp(st_biden_or_trump, 'bchklock') || ...
+            strcmp(st_biden_or_trump, 'bchknoui'))
         % Use steady-state continuation value, to solve for optimal choices
         % given stimulus checks
         % Assume manna-from-heaven, (1) same tax in year-1 of covid as under
@@ -356,7 +358,7 @@ if (~bl_load_mat || ~isfile(spt_mat_path))
             Phi_adj_ss);
     else 
         error(['st_biden_or_trump=' char(st_biden_or_trump) ...
-            ' is not allowed, has to be trumpchk or bidenchk or bchklock'])
+            ' is not allowed, has to be trumpchk or bidenchk or bchklock or bchknoui'])
     end
     
     %% C. Pre-compute

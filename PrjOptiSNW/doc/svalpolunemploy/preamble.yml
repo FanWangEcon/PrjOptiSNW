@@ -6,7 +6,7 @@
     There is an unemployment shock in 2020. We first solve for the policy and value functions without the unemployment shock.
     Using the value function from the world without the 2020 covid unemployment shock as future values, we solve for optimal choices in 2020 given a COVID unemployment shock.
     The COVID shock lowers the realization of household's stochastic income process proportionally, but the lost income might be replenished by unemployment benefits up to 100 percent. Unemployment benefits have to be paid for by taxes.
-    Households can receive welfare checks in 2020. The number of welfare checks is not a separate state-variable, but its effects is evaluated as a change in resource available considering household-specific tax and interest earnings.
+    Households can receive stimulus checks in 2020. The number of stimulus checks is not a separate state-variable, but its effects is evaluated as a change in resource available considering household-specific tax and interest earnings.
   core :
     - package: PrjOptiSNW
       code: |

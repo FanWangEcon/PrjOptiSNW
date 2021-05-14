@@ -74,8 +74,87 @@ end
 
 end
 
-%% Biden Check
+%% Biden Check Actual
 function fc_stimulus_check = snwi_stimulus_check(it_kids, bl_marital)
+
+fl_stimulus_adult = 1400;
+fl_stimulus_child = 1400;
+fl_slope_m0k0 = 1400/(80000-75000);
+fl_slope_m0k1 = 2800/(120000-112500);
+fl_slope_m0k2 = 4200/(120000-112500);
+fl_slope_m0k3 = 5600/(120000-112500);
+fl_slope_m0k4 = 7000/(120000-112500);
+% disp(['Check Reduction Per $100 fl_slope_m0k0=' num2str(round(fl_slope_m0k0*100, 3))]);
+% disp(['Check Reduction Per $100 fl_slope_m0k1=' num2str(round(fl_slope_m0k1*100, 3))]);
+% disp(['Check Reduction Per $100 fl_slope_m0k2=' num2str(round(fl_slope_m0k2*100, 3))]);
+% disp(['Check Reduction Per $100 fl_slope_m0k3=' num2str(round(fl_slope_m0k3*100, 3))]);
+% disp(['Check Reduction Per $100 fl_slope_m0k4=' num2str(round(fl_slope_m0k4*100, 3))]);
+
+fl_slope_m1k0 = 2800/(160000-150000);
+fl_slope_m1k1 = 4200/(160000-150000);
+fl_slope_m1k2 = 5600/(160000-150000);
+fl_slope_m1k3 = 7000/(160000-150000);
+fl_slope_m1k4 = 8400/(160000-150000);
+% disp(['Check Reduction Per $100 fl_slope_m1k0=' num2str(round(fl_slope_m1k0*100, 3))]);
+% disp(['Check Reduction Per $100 fl_slope_m1k1=' num2str(round(fl_slope_m1k1*100, 3))]);
+% disp(['Check Reduction Per $100 fl_slope_m1k2=' num2str(round(fl_slope_m1k2*100, 3))]);
+% disp(['Check Reduction Per $100 fl_slope_m1k3=' num2str(round(fl_slope_m1k3*100, 3))]);
+% disp(['Check Reduction Per $100 fl_slope_m1k4=' num2str(round(fl_slope_m1k4*100, 3))]);
+
+% Check Reduction Per $100 fl_slope_m0k0=28
+% Check Reduction Per $100 fl_slope_m0k1=37.333
+% Check Reduction Per $100 fl_slope_m0k2=56
+% Check Reduction Per $100 fl_slope_m0k3=74.667
+% Check Reduction Per $100 fl_slope_m0k4=93.333
+% Check Reduction Per $100 fl_slope_m1k0=28
+% Check Reduction Per $100 fl_slope_m1k1=42
+% Check Reduction Per $100 fl_slope_m1k2=56
+% Check Reduction Per $100 fl_slope_m1k3=70
+% Check Reduction Per $100 fl_slope_m1k4=84
+
+% start point household head
+fl_check_dollar = fl_stimulus_adult;
+% married household gets more, marital = 0, 1
+fl_check_dollar = fl_check_dollar + bl_marital*fl_stimulus_adult;
+% Households with kids: 0, 1,2,3,4
+fl_check_dollar = fl_check_dollar + it_kids*fl_stimulus_child;
+
+if (~bl_marital && it_kids == 0)
+    % The benefit would start decreasing at a rate of $5 for every additional $100 in income
+    fc_check_reduce = @(x) ((max(x - 75000,0))*fl_slope_m0k0);
+end
+
+% phaseout starts $112,500 for heads of household
+if (~bl_marital && it_kids == 1)    
+    fc_check_reduce = @(x) ((max(x - 112500,0))*fl_slope_m0k1);
+elseif (~bl_marital && it_kids == 2)
+    fc_check_reduce = @(x) ((max(x - 112500,0))*fl_slope_m0k2);
+elseif (~bl_marital && it_kids == 3)
+    fc_check_reduce = @(x) ((max(x - 112500,0))*fl_slope_m0k3);
+elseif (~bl_marital && it_kids == 4)
+    fc_check_reduce = @(x) ((max(x - 112500,0))*fl_slope_m0k4);
+end
+
+% phaseout starts $150,000 for heads of household
+if (bl_marital && it_kids == 0)
+    fc_check_reduce = @(x) ((max(x - 150000,0))*fl_slope_m1k0);
+elseif (bl_marital && it_kids == 1)
+    fc_check_reduce = @(x) ((max(x - 150000,0))*fl_slope_m1k1);
+elseif (bl_marital && it_kids == 2)
+    fc_check_reduce = @(x) ((max(x - 150000,0))*fl_slope_m1k2);
+elseif (bl_marital && it_kids == 3)
+    fc_check_reduce = @(x) ((max(x - 150000,0))*fl_slope_m1k3);
+elseif (bl_marital && it_kids == 4)
+    fc_check_reduce = @(x) ((max(x - 150000,0))*fl_slope_m1k4);
+end
+
+% stimulus check function first check
+fc_stimulus_check = @(x) max(0, fl_check_dollar - fc_check_reduce(x));
+
+end
+
+%% Biden Check Proposed
+function fc_stimulus_check = snwi_stimulus_check_proposed(it_kids, bl_marital)
 % x is household income
 % ,Single with 0 children,Stimulus check,,,Single with 1 child,Stimulus check,,,Single with 2 children,Stimulus check,,,Single with 3 children,Stimulus check,,,Single with 4 children,Stimulus check,,,,,Married,Child count
 % Income,75000,1400,,Income,112500,2800,,Income,112500,4200,,Income,112500,5600,,Income,112500,7000,,,,,,
@@ -91,22 +170,22 @@ fl_slope_m0k1 = 2800/(150000-112500);
 fl_slope_m0k2 = 4200/(150000-112500);
 fl_slope_m0k3 = 5600/(150000-112500);
 fl_slope_m0k4 = 7000/(150000-112500);
-disp(['Check Reduction Per $100 fl_slope_m0k0=' num2str(round(fl_slope_m0k0*100, 3))]);
-disp(['Check Reduction Per $100 fl_slope_m0k1=' num2str(round(fl_slope_m0k1*100, 3))]);
-disp(['Check Reduction Per $100 fl_slope_m0k2=' num2str(round(fl_slope_m0k2*100, 3))]);
-disp(['Check Reduction Per $100 fl_slope_m0k3=' num2str(round(fl_slope_m0k3*100, 3))]);
-disp(['Check Reduction Per $100 fl_slope_m0k4=' num2str(round(fl_slope_m0k4*100, 3))]);
+% disp(['Check Reduction Per $100 fl_slope_m0k0=' num2str(round(fl_slope_m0k0*100, 3))]);
+% disp(['Check Reduction Per $100 fl_slope_m0k1=' num2str(round(fl_slope_m0k1*100, 3))]);
+% disp(['Check Reduction Per $100 fl_slope_m0k2=' num2str(round(fl_slope_m0k2*100, 3))]);
+% disp(['Check Reduction Per $100 fl_slope_m0k3=' num2str(round(fl_slope_m0k3*100, 3))]);
+% disp(['Check Reduction Per $100 fl_slope_m0k4=' num2str(round(fl_slope_m0k4*100, 3))]);
 
 fl_slope_m1k0 = 2800/(200000-150000);
 fl_slope_m1k1 = 4200/(200000-150000);
 fl_slope_m1k2 = 5600/(200000-150000);
 fl_slope_m1k3 = 7000/(200000-150000);
 fl_slope_m1k4 = 8400/(200000-150000);
-disp(['Check Reduction Per $100 fl_slope_m1k0=' num2str(round(fl_slope_m1k0*100, 3))]);
-disp(['Check Reduction Per $100 fl_slope_m1k1=' num2str(round(fl_slope_m1k1*100, 3))]);
-disp(['Check Reduction Per $100 fl_slope_m1k2=' num2str(round(fl_slope_m1k2*100, 3))]);
-disp(['Check Reduction Per $100 fl_slope_m1k3=' num2str(round(fl_slope_m1k3*100, 3))]);
-disp(['Check Reduction Per $100 fl_slope_m1k4=' num2str(round(fl_slope_m1k4*100, 3))]);
+% disp(['Check Reduction Per $100 fl_slope_m1k0=' num2str(round(fl_slope_m1k0*100, 3))]);
+% disp(['Check Reduction Per $100 fl_slope_m1k1=' num2str(round(fl_slope_m1k1*100, 3))]);
+% disp(['Check Reduction Per $100 fl_slope_m1k2=' num2str(round(fl_slope_m1k2*100, 3))]);
+% disp(['Check Reduction Per $100 fl_slope_m1k3=' num2str(round(fl_slope_m1k3*100, 3))]);
+% disp(['Check Reduction Per $100 fl_slope_m1k4=' num2str(round(fl_slope_m1k4*100, 3))]);
 
 % Check Reduction Per $100 fl_slope_m0k0=5.6
 % Check Reduction Per $100 fl_slope_m0k1=7.467

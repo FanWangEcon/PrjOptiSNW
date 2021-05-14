@@ -2,13 +2,60 @@
   title: "Solve for Budget Clearing Tax Rates"
   titleshort: "Solve for Budget Clearing Tax Rates"
   description: |
-    Given welfare checks and unemployment insurance costs, solve for tax rate that clears the budget given household resource availability.
+    Given stimulus checks and unemployment insurance costs, solve for tax rate that clears the budget given household resource availability.
   core :
     - package: PrjOptiSNW
       code: |
         [snw_find_tax_rate()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/fgov/snw_find_tax_rate.m), [snw_tax_hh()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/fgov/snw_tax_hh.m)
   date: 2020-09-14
   date_start: 2020-09-14
+  output:
+    pdf_document:
+      pandoc_args: '../../../_output_kniti_pdf.yaml'
+      includes:
+        in_header: '../../../preamble.tex'
+    html_document:
+      pandoc_args: '../../../_output_kniti_html.yaml'
+      includes:
+        in_header: '../../../hdga.html'
+  always_allow_html: true
+  urlcolor: blue
+
+- file: snwx_stimulus_checks
+  title: "The Two Rounds of Trump CARES Stimulus Check Amounts"
+  titleshort: "The Two Rounds of Trump CARES Stimulus Check Amounts"
+  description: |
+    Under the Trump CARES Aact, given the number of children and marital status and income, the amounts of stimulus checks that households receive.
+    This function is used to evaluate the distributional effects of first rounds of CARES act stimulus checks
+  core :
+    - package: PrjOptiSNW
+      code: |
+        [snwx_stimulus_checks()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/fgov/snw_stimulus_checks.m),
+  date: 2021-05-14
+  date_start: 2021-05-14
+  output:
+    pdf_document:
+      pandoc_args: '../../../_output_kniti_pdf.yaml'
+      includes:
+        in_header: '../../../preamble.tex'
+    html_document:
+      pandoc_args: '../../../_output_kniti_html.yaml'
+      includes:
+        in_header: '../../../hdga.html'
+  always_allow_html: true
+  urlcolor: blue
+
+- file: snwx_stimulus_checks_biden
+  title: "The Biden American Recovery Act Stimulus Check Amounts"
+  titleshort: "The Biden American Recovery Act Stimulus Check Amounts"
+  description: |
+    Under the Biden American Recovery Act, given the number of children and marital status and income, the amounts of stimulus checks that households receive.
+  core :
+    - package: PrjOptiSNW
+      code: |
+        [snwx_stimulus_checks_biden()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/fgov/snw_stimulus_checks_biden.m),
+  date: 2021-05-14
+  date_start: 2021-05-14
   output:
     pdf_document:
       pandoc_args: '../../../_output_kniti_pdf.yaml'

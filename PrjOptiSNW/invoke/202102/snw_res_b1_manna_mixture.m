@@ -17,11 +17,15 @@ clear all;
 
 % The two mixture beta values
 ls_fl_beta_val = [0.60, 0.95];
+ls_fl_beta_val = [0.95];
 % Solve for HS and College for each type
 ls_it_edu_simu_type = [1, 2];
 % Biden check (3rd check)
-st_biden_or_trump = 'bidenchk';
+
 st_biden_or_trump = 'trumpchk';
+st_biden_or_trump = 'bchklock';
+st_biden_or_trump = 'bidenchk';
+st_biden_or_trump = 'bchknoui';
 
 % Solve for beta and edu combinations
 for fl_beta_val = ls_fl_beta_val
@@ -30,7 +34,7 @@ for fl_beta_val = ls_fl_beta_val
         %% A1. Computing Specifications
         % 1a. Parfor controls
         bl_parfor = true;
-        it_workers = 8;
+        it_workers = 12;
         % 1b. Export Controls
         bl_export = true;
         % 1c. Solution Type
@@ -48,7 +52,7 @@ for fl_beta_val = ls_fl_beta_val
         end
         
         % param group name
-        % st_param_group_base = 'default_tiny';
+%         st_param_group_base = 'default_tiny';
         % st_param_group_base = 'default_small53';
         % st_param_group_base = 'default_dense';
         % st_param_group_base = 'default_docdense';
@@ -64,10 +68,19 @@ for fl_beta_val = ls_fl_beta_val
         mp_params('a2') = 1.6996;
         mp_params('a2_covidyr_manna_heaven') = 1.6996;
         mp_params('theta') = 0.5577;
-                
+        if strcmp(st_biden_or_trump, 'bchklock')
+            mp_params('invbtlock') = 0.66884;
+        end
+
         %% B2. Unemployment Shock and Benefits
-        xi=0;
-        b=1;
+        if strcmp(st_biden_or_trump, 'bchknoui')
+            mp_params('pi_unemp') = mp_params('pi_unemp_2020_juneadj');
+            xi=0.25;
+            b=0;            
+        else 
+            xi=0;
+            b=1;
+        end
         mp_params('xi') = xi;
         mp_params('b') = b;
             

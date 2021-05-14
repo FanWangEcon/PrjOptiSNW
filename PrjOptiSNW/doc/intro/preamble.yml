@@ -37,10 +37,10 @@
   urlcolor: blue
 
 - file: snwx_opti_allocate
-  title: "The Welfare Check Planning Problem"
-  titleshort: "The Welfare Check Planning Problem"
+  title: "The Stimulus Check Planning Problem"
+  titleshort: "The Stimulus Check Planning Problem"
   description: |
-    Summarize several allocation problem that condition allocations on income, marital status, the number of children less than 18, and possibly age. 
+    Summarize several allocation problem that condition allocations on income, marital status, the number of children less than 18, and possibly age.
   date: 2020-09-14
   date_start: 2020-09-14
   output:

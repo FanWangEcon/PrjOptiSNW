@@ -1,10 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><meta name="generator" content="MATLAB R2019b"><title>Model Parameters</title><style type="text/css">.rtcContent { padding: 30px; } .S0 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 28.8px; min-height: 0px; white-space: pre-wrap; color: rgb(213, 80, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 24px; font-weight: 400; text-align: left;  }
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><meta name="generator" content="MATLAB 2020b"><title>Model Parameters</title><style type="text/css">.rtcContent { padding: 30px; } .S0 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 28.8px; min-height: 0px; white-space: pre-wrap; color: rgb(213, 80, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 24px; font-weight: 400; text-align: left;  }
 .S1 { margin: 2px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: pre-wrap; color: rgb(0, 0, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: 400; text-align: left;  }
 .S2 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 20px; min-height: 0px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: 700; text-align: left;  }
 .CodeBlock { background-color: #F7F7F7; margin: 10px 0 10px 0;}
-.S3 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 4px 4px 0px 0px; padding: 6px 45px 4px 13px; line-height: 16.996px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
-.S4 { color: rgb(64, 64, 64); padding: 10px 0px 6px 17px; background: rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box border-box; font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px; overflow-x: hidden; line-height: 16.996px;  }
+.S3 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 4px 4px 0px 0px; padding: 6px 45px 4px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S4 { color: rgb(64, 64, 64); padding: 10px 0px 6px 17px; background: rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box border-box; font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px; overflow-x: hidden; line-height: 17.234px;  }
 .embeddedOutputsErrorElement {min-height: 18px; max-height: 250px; overflow: auto;}
 .embeddedOutputsErrorElement.inlineElement {}
 .embeddedOutputsErrorElement.rightPaneElement {}
@@ -24,7 +24,7 @@
 .inlineElement .textElement {}
 .embeddedOutputsTextElement.rightPaneElement,.embeddedOutputsVariableStringElement.rightPaneElement {min-height: 16px;}
 .rightPaneElement .textElement {padding-top: 2px; padding-left: 9px;}
-.S5 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 4px; padding: 6px 45px 4px 13px; line-height: 16.996px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }</style></head><body><div class = rtcContent><h1  class = 'S0'><span>Model Parameters</span></h1><div  class = 'S1'><span>This is the example vignette for function: </span><a href = "https://github.com/FanWangEcon/PrjOptiSNW/tree/master/PrjOptiSNW/params/snw_mp_param.m"><span style=' font-weight: bold;'>snw_mp_param</span></a><span> from the </span><a href = "https://fanwangecon.github.io/PrjOptiSNW/"><span style=' font-weight: bold;'>PrjOptiSNW Package</span></a><span style=' font-weight: bold;'>. </span><span>This function sets and gets different parameters.</span></div><h2  class = 'S2'><span>Parameters Used for Test Simulation</span></h2><div  class = 'S1'><span>Rather than solving for all ages between 18 to 100, this solves for age groups, and has limited shocks and asset levels. Used for testing.</span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S3'><span style="white-space: pre;"><span>mp_params = snw_mp_param(</span><span style="color: rgb(160, 32, 240);">'default_small'</span><span>, true, 100, 6);</span></span></div><div  class = 'S4'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="D9AE9880" data-testid="output_0" data-width="428" data-height="6863" data-hashorizontaloverflow="true" style="width: 458px; max-height: 261px;"><div class="textElement">----------------------------------------
+.S5 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 4px; padding: 6px 45px 4px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }</style></head><body><div class = rtcContent><h1  class = 'S0'><span>Model Parameters</span></h1><div  class = 'S1'><span>This is the example vignette for function: </span><a href = "https://github.com/FanWangEcon/PrjOptiSNW/tree/master/PrjOptiSNW/params/snw_mp_param.m"><span style=' font-weight: bold;'>snw_mp_param</span></a><span> from the </span><a href = "https://fanwangecon.github.io/PrjOptiSNW/"><span style=' font-weight: bold;'>PrjOptiSNW Package</span></a><span style=' font-weight: bold;'>. </span><span>This function sets and gets different parameters.</span></div><h2  class = 'S2'><span>Parameters Used for Test Simulation</span></h2><div  class = 'S1'><span>Rather than solving for all ages between 18 to 100, this solves for age groups, and has limited shocks and asset levels. Used for testing.</span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S3'><span style="white-space: pre;"><span class="warning_squiggle_rte1865859824">mp_params</span><span> = snw_mp_param(</span><span style="color: rgb(170, 4, 249);">'default_small'</span><span>, true, 100, 6);</span></span></div><div  class = 'S4'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="3990F412" data-testid="output_0" data-width="1128" data-height="8445" data-hashorizontaloverflow="false" style="width: 1158px; max-height: 261px;"><div class="textElement">----------------------------------------
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 CONTAINER NAME: mp_params_preftechpricegov Scalars
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -44,10 +44,11 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     <strong>g_cons                  </strong>    11    11     0.17576
     <strong>g_n                     </strong>    12    12     0.05101
     <strong>gamma                   </strong>    13    13           2
-    <strong>jret                    </strong>    14    14          13
-    <strong>r                       </strong>    15    15     0.21665
-    <strong>theta                   </strong>    16    16     0.56523
-    <strong>throw_in_ocean          </strong>    17    17           1
+    <strong>invbtlock               </strong>    14    14           1
+    <strong>jret                    </strong>    15    15          13
+    <strong>r                       </strong>    16    16     0.21665
+    <strong>theta                   </strong>    17    17     0.56523
+    <strong>throw_in_ocean          </strong>    18    18           1
 
 ----------------------------------------
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -69,11 +70,13 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 CONTAINER NAME: mp_params_covid_unemploy ND Array (Matrix etc)
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                <strong>i</strong>    <strong>idx</strong>    <strong>ndim</strong>    <strong>numel</strong>    <strong>rowN</strong>    <strong>colN</strong>     <strong>sum</strong>        <strong>mean</strong>        <strong>std</strong>       <strong>coefvari</strong>      <strong>min</strong>        <strong>max</strong>   
-                <strong>_</strong>    <strong>___</strong>    <strong>____</strong>    <strong>_____</strong>    <strong>____</strong>    <strong>____</strong>    <strong>______</strong>    <strong>________</strong>    <strong>________</strong>    <strong>________</strong>    <strong>_______</strong>    <strong>________</strong>
+                             <strong>i</strong>    <strong>idx</strong>    <strong>ndim</strong>    <strong>numel</strong>    <strong>rowN</strong>    <strong>colN</strong>     <strong>sum</strong>        <strong>mean</strong>        <strong>std</strong>       <strong>coefvari</strong>      <strong>min</strong>         <strong>max</strong>  
+                             <strong>_</strong>    <strong>___</strong>    <strong>____</strong>    <strong>_____</strong>    <strong>____</strong>    <strong>____</strong>    <strong>______</strong>    <strong>________</strong>    <strong>________</strong>    <strong>________</strong>    <strong>________</strong>    <strong>_______</strong>
 
-    <strong>inc_grid</strong>    1     3      2       201     201      1       578.5      2.8781      1.8836    0.65444           0           7
-    <strong>pi_unemp</strong>    2     6      2       240      48      5      9.5319    0.039716    0.019674    0.49537     0.01241    0.080278
+    <strong>inc_grid             </strong>    1     7      2       201     201      1       578.5      2.8781      1.8836    0.65444            0          7
+    <strong>pi_unemp             </strong>    2    10      2       240      48      5      47.034     0.19598    0.095943    0.48957     0.070361    0.40989
+    <strong>pi_unemp_2020_april  </strong>    3    11      2       240      48      5      47.034     0.19598    0.095943    0.48957     0.070361    0.40989
+    <strong>pi_unemp_2020_juneadj</strong>    4    12      2       240      48      5       16.17    0.067373    0.032916    0.48855     0.033285    0.16597
 
 xxx TABLE:inc_grid xxxxxxxxxxxxxxxxxx
                <strong>c1</strong>   
@@ -181,71 +184,181 @@ xxx TABLE:inc_grid xxxxxxxxxxxxxxxxxx
     <strong>r201</strong>           7
 
 xxx TABLE:pi_unemp xxxxxxxxxxxxxxxxxx
-              <strong>c1</strong>          <strong>c2</strong>          <strong>c3</strong>          <strong>c4</strong>          <strong>c5</strong>   
-           <strong>________</strong>    <strong>________</strong>    <strong>________</strong>    <strong>________</strong>    <strong>________</strong>
+             <strong>c1</strong>         <strong>c2</strong>         <strong>c3</strong>         <strong>c4</strong>          <strong>c5</strong>   
+           <strong>_______</strong>    <strong>_______</strong>    <strong>_______</strong>    <strong>_______</strong>    <strong>________</strong>
 
-    <strong>r1 </strong>    0.080278    0.051706    0.041502     0.03538    0.025176
-    <strong>r2 </strong>    0.080278    0.051706    0.041502     0.03538    0.025176
-    <strong>r3 </strong>    0.080278    0.051706    0.041502     0.03538    0.025176
-    <strong>r4 </strong>    0.080278    0.051706    0.041502     0.03538    0.025176
-    <strong>r5 </strong>    0.080278    0.051706    0.041502     0.03538    0.025176
-    <strong>r6 </strong>    0.080278    0.051706    0.041502     0.03538    0.025176
-    <strong>r7 </strong>    0.080278    0.051706    0.041502     0.03538    0.025176
-    <strong>r8 </strong>    0.080278    0.051706    0.041502     0.03538    0.025176
-    <strong>r9 </strong>    0.080278    0.051706    0.041502     0.03538    0.025176
-    <strong>r10</strong>    0.080278    0.051706    0.041502     0.03538    0.025176
-    <strong>r11</strong>    0.080278    0.051706    0.041502     0.03538    0.025176
-    <strong>r12</strong>    0.080278    0.051706    0.041502     0.03538    0.025176
-    <strong>r13</strong>    0.080278    0.051706    0.041502     0.03538    0.025176
-    <strong>r14</strong>    0.070703    0.042132    0.031928    0.025805    0.015601
-    <strong>r15</strong>    0.070703    0.042132    0.031928    0.025805    0.015601
-    <strong>r16</strong>    0.070703    0.042132    0.031928    0.025805    0.015601
-    <strong>r17</strong>    0.070703    0.042132    0.031928    0.025805    0.015601
-    <strong>r18</strong>    0.070703    0.042132    0.031928    0.025805    0.015601
-    <strong>r19</strong>    0.070703    0.042132    0.031928    0.025805    0.015601
-    <strong>r20</strong>    0.070703    0.042132    0.031928    0.025805    0.015601
-    <strong>r21</strong>    0.070703    0.042132    0.031928    0.025805    0.015601
-    <strong>r22</strong>    0.070703    0.042132    0.031928    0.025805    0.015601
-    <strong>r23</strong>    0.070703    0.042132    0.031928    0.025805    0.015601
-    <strong>r24</strong>    0.067512    0.038941    0.028736    0.022614     0.01241
-    <strong>r25</strong>    0.067512    0.038941    0.028736    0.022614     0.01241
-    <strong>r26</strong>    0.067512    0.038941    0.028736    0.022614     0.01241
-    <strong>r27</strong>    0.067512    0.038941    0.028736    0.022614     0.01241
-    <strong>r28</strong>    0.067512    0.038941    0.028736    0.022614     0.01241
-    <strong>r29</strong>    0.067512    0.038941    0.028736    0.022614     0.01241
-    <strong>r30</strong>    0.067512    0.038941    0.028736    0.022614     0.01241
-    <strong>r31</strong>    0.067512    0.038941    0.028736    0.022614     0.01241
-    <strong>r32</strong>    0.067512    0.038941    0.028736    0.022614     0.01241
-    <strong>r33</strong>    0.067512    0.038941    0.028736    0.022614     0.01241
-    <strong>r34</strong>    0.068576    0.040004      0.0298    0.023678    0.013474
-    <strong>r35</strong>    0.068576    0.040004      0.0298    0.023678    0.013474
-    <strong>r36</strong>    0.068576    0.040004      0.0298    0.023678    0.013474
-    <strong>r37</strong>    0.068576    0.040004      0.0298    0.023678    0.013474
-    <strong>r38</strong>    0.068576    0.040004      0.0298    0.023678    0.013474
-    <strong>r39</strong>    0.068576    0.040004      0.0298    0.023678    0.013474
-    <strong>r40</strong>    0.068576    0.040004      0.0298    0.023678    0.013474
-    <strong>r41</strong>    0.068576    0.040004      0.0298    0.023678    0.013474
-    <strong>r42</strong>    0.068576    0.040004      0.0298    0.023678    0.013474
-    <strong>r43</strong>    0.068576    0.040004      0.0298    0.023678    0.013474
-    <strong>r44</strong>    0.080278    0.051706    0.041502     0.03538    0.025176
-    <strong>r45</strong>    0.080278    0.051706    0.041502     0.03538    0.025176
-    <strong>r46</strong>    0.080278    0.051706    0.041502     0.03538    0.025176
-    <strong>r47</strong>    0.080278    0.051706    0.041502     0.03538    0.025176
-    <strong>r48</strong>    0.080278    0.051706    0.041502     0.03538    0.025176
+    <strong>r1 </strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r2 </strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r3 </strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r4 </strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r5 </strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r6 </strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r7 </strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r8 </strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r9 </strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r10</strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r11</strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r12</strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r13</strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r14</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r15</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r16</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r17</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r18</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r19</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r20</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r21</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r22</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r23</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r24</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r25</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r26</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r27</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r28</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r29</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r30</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r31</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r32</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r33</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r34</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r35</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r36</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r37</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r38</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r39</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r40</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r41</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r42</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r43</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r44</strong>    0.40989    0.27032    0.22056     0.1906     0.13108
+    <strong>r45</strong>    0.40989    0.27032    0.22056     0.1906     0.13108
+    <strong>r46</strong>    0.40989    0.27032    0.22056     0.1906     0.13108
+    <strong>r47</strong>    0.40989    0.27032    0.22056     0.1906     0.13108
+    <strong>r48</strong>    0.40989    0.27032    0.22056     0.1906     0.13108
+
+xxx TABLE:pi_unemp_2020_april xxxxxxxxxxxxxxxxxx
+             <strong>c1</strong>         <strong>c2</strong>         <strong>c3</strong>         <strong>c4</strong>          <strong>c5</strong>   
+           <strong>_______</strong>    <strong>_______</strong>    <strong>_______</strong>    <strong>_______</strong>    <strong>________</strong>
+
+    <strong>r1 </strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r2 </strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r3 </strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r4 </strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r5 </strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r6 </strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r7 </strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r8 </strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r9 </strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r10</strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r11</strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r12</strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r13</strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r14</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r15</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r16</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r17</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r18</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r19</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r20</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r21</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r22</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r23</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r24</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r25</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r26</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r27</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r28</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r29</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r30</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r31</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r32</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r33</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r34</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r35</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r36</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r37</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r38</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r39</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r40</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r41</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r42</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r43</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r44</strong>    0.40989    0.27032    0.22056     0.1906     0.13108
+    <strong>r45</strong>    0.40989    0.27032    0.22056     0.1906     0.13108
+    <strong>r46</strong>    0.40989    0.27032    0.22056     0.1906     0.13108
+    <strong>r47</strong>    0.40989    0.27032    0.22056     0.1906     0.13108
+    <strong>r48</strong>    0.40989    0.27032    0.22056     0.1906     0.13108
+
+xxx TABLE:pi_unemp_2020_juneadj xxxxxxxxxxxxxxxxxx
+             <strong>c1</strong>          <strong>c2</strong>          <strong>c3</strong>          <strong>c4</strong>          <strong>c5</strong>   
+           <strong>_______</strong>    <strong>________</strong>    <strong>________</strong>    <strong>________</strong>    <strong>________</strong>
+
+    <strong>r1 </strong>    0.11257    0.062283    0.046026    0.036173    0.035471
+    <strong>r2 </strong>    0.11257    0.062283    0.046026    0.036173    0.035471
+    <strong>r3 </strong>    0.11257    0.062283    0.046026    0.036173    0.035471
+    <strong>r4 </strong>    0.11257    0.062283    0.046026    0.036173    0.035471
+    <strong>r5 </strong>    0.11257    0.062283    0.046026    0.036173    0.035471
+    <strong>r6 </strong>    0.11257    0.062283    0.046026    0.036173    0.035471
+    <strong>r7 </strong>    0.11257    0.062283    0.046026    0.036173    0.035471
+    <strong>r8 </strong>    0.11257    0.062283    0.046026    0.036173    0.035471
+    <strong>r9 </strong>    0.11257    0.062283    0.046026    0.036173    0.035471
+    <strong>r10</strong>    0.11257    0.062283    0.046026    0.036173    0.035471
+    <strong>r11</strong>    0.11257    0.062283    0.046026    0.036173    0.035471
+    <strong>r12</strong>    0.11257    0.062283    0.046026    0.036173    0.035471
+    <strong>r13</strong>    0.11257    0.062283    0.046026    0.036173    0.035471
+    <strong>r14</strong>    0.11994    0.069654    0.053397    0.043545    0.042842
+    <strong>r15</strong>    0.11994    0.069654    0.053397    0.043545    0.042842
+    <strong>r16</strong>    0.11994    0.069654    0.053397    0.043545    0.042842
+    <strong>r17</strong>    0.11994    0.069654    0.053397    0.043545    0.042842
+    <strong>r18</strong>    0.11994    0.069654    0.053397    0.043545    0.042842
+    <strong>r19</strong>    0.11994    0.069654    0.053397    0.043545    0.042842
+    <strong>r20</strong>    0.11994    0.069654    0.053397    0.043545    0.042842
+    <strong>r21</strong>    0.11994    0.069654    0.053397    0.043545    0.042842
+    <strong>r22</strong>    0.11994    0.069654    0.053397    0.043545    0.042842
+    <strong>r23</strong>    0.11994    0.069654    0.053397    0.043545    0.042842
+    <strong>r24</strong>    0.11038    0.060097     0.04384    0.033988    0.033285
+    <strong>r25</strong>    0.11038    0.060097     0.04384    0.033988    0.033285
+    <strong>r26</strong>    0.11038    0.060097     0.04384    0.033988    0.033285
+    <strong>r27</strong>    0.11038    0.060097     0.04384    0.033988    0.033285
+    <strong>r28</strong>    0.11038    0.060097     0.04384    0.033988    0.033285
+    <strong>r29</strong>    0.11038    0.060097     0.04384    0.033988    0.033285
+    <strong>r30</strong>    0.11038    0.060097     0.04384    0.033988    0.033285
+    <strong>r31</strong>    0.11038    0.060097     0.04384    0.033988    0.033285
+    <strong>r32</strong>    0.11038    0.060097     0.04384    0.033988    0.033285
+    <strong>r33</strong>    0.11038    0.060097     0.04384    0.033988    0.033285
+    <strong>r34</strong>    0.12326    0.072969    0.056712     0.04686    0.046157
+    <strong>r35</strong>    0.12326    0.072969    0.056712     0.04686    0.046157
+    <strong>r36</strong>    0.12326    0.072969    0.056712     0.04686    0.046157
+    <strong>r37</strong>    0.12326    0.072969    0.056712     0.04686    0.046157
+    <strong>r38</strong>    0.12326    0.072969    0.056712     0.04686    0.046157
+    <strong>r39</strong>    0.12326    0.072969    0.056712     0.04686    0.046157
+    <strong>r40</strong>    0.12326    0.072969    0.056712     0.04686    0.046157
+    <strong>r41</strong>    0.12326    0.072969    0.056712     0.04686    0.046157
+    <strong>r42</strong>    0.12326    0.072969    0.056712     0.04686    0.046157
+    <strong>r43</strong>    0.12326    0.072969    0.056712     0.04686    0.046157
+    <strong>r44</strong>    0.16597     0.11568    0.099422     0.08957    0.088867
+    <strong>r45</strong>    0.16597     0.11568    0.099422     0.08957    0.088867
+    <strong>r46</strong>    0.16597     0.11568    0.099422     0.08957    0.088867
+    <strong>r47</strong>    0.16597     0.11568    0.099422     0.08957    0.088867
+    <strong>r48</strong>    0.16597     0.11568    0.099422     0.08957    0.088867
 
 ----------------------------------------
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 CONTAINER NAME: mp_params_covid_unemploy Scalars
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                        <strong>i</strong>    <strong>idx</strong>      <strong>value</strong>  
-                        <strong>_</strong>    <strong>___</strong>    <strong>_________</strong>
+                                <strong>i</strong>     <strong>idx</strong>      <strong>value</strong>  
+                                <strong>__</strong>    <strong>___</strong>    <strong>_________</strong>
 
-    <strong>TR              </strong>    1     1     0.0017225
-    <strong>b               </strong>    2     2             1
-    <strong>n_incgrid       </strong>    3     4           201
-    <strong>n_welfchecksgrid</strong>    4     5            45
-    <strong>scaleconvertor  </strong>    5     7         58056
-    <strong>xi              </strong>    6     8          0.75
+    <strong>TR                      </strong>     1     1     0.0017225
+    <strong>b                       </strong>     2     2             1
+    <strong>fl_stimulus_adult_first </strong>     3     3          1200
+    <strong>fl_stimulus_adult_second</strong>     4     4           600
+    <strong>fl_stimulus_child_first </strong>     5     5           500
+    <strong>fl_stimulus_child_second</strong>     6     6           600
+    <strong>n_incgrid               </strong>     7     8           201
+    <strong>n_welfchecksgrid        </strong>     8     9            45
+    <strong>scaleconvertor          </strong>     9    13         58056
+    <strong>xi                      </strong>    10    14          0.75
 
 ----------------------------------------
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -513,7 +626,7 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                           <strong>i</strong>     <strong>idx</strong>                             <strong>string</strong>                         
                          <strong>___</strong>    <strong>___</strong>    <strong>________________________________________________________</strong>
 
-    <strong>st_old_age_depend</strong>    "1"    "2"    "Old-age dependency ratio (ratio of 65+/(18-64))=0.1155"</div></div></div></div></div><h2  class = 'S2'><span>Documentation Run Parameters Docdense</span></h2><div  class = 'S1'><span>Parameters used for documentation vig. "docdense" uses less shocks than the version of the model used to implement the allocation problems in the </span><a href = "https://cepr.org/active/publications/discussion_papers/dp.php?dpno=15283"><span>Nygaard, Sorensen and Wang (2020)</span></a><span>.</span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S3'><span style="white-space: pre;"><span>mp_params = snw_mp_param(</span><span style="color: rgb(160, 32, 240);">'default_docdense'</span><span>, true, 100, 6);</span></span></div><div  class = 'S4'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="BFA05FAB" data-testid="output_1" data-width="428" data-height="13387" data-hashorizontaloverflow="true" style="width: 458px; max-height: 261px;"><div class="textElement">----------------------------------------
+    <strong>st_old_age_depend</strong>    "1"    "2"    "Old-age dependency ratio (ratio of 65+/(18-64))=0.1155"</div></div></div></div></div><h2  class = 'S2'><span>Documentation Run Parameters Docdense</span></h2><div  class = 'S1'><span>Parameters used for documentation vig. "docdense" uses less shocks than the version of the model used to implement the allocation problems in the </span><a href = "https://cepr.org/active/publications/discussion_papers/dp.php?dpno=15283"><span>Nygaard, Sorensen and Wang (2020)</span></a><span>.</span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S3'><span style="white-space: pre;"><span>mp_params = snw_mp_param(</span><span style="color: rgb(170, 4, 249);">'default_docdense'</span><span>, true, 100, 6);</span></span></div><div  class = 'S4'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="B6461223" data-testid="output_1" data-width="1128" data-height="12575" data-hashorizontaloverflow="false" style="width: 1158px; max-height: 261px;"><div class="textElement">----------------------------------------
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 CONTAINER NAME: mp_params_preftechpricegov Scalars
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -533,10 +646,11 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     <strong>g_cons                  </strong>    11    11     0.17576
     <strong>g_n                     </strong>    12    12        0.01
     <strong>gamma                   </strong>    13    13           2
-    <strong>jret                    </strong>    14    14          48
-    <strong>r                       </strong>    15    15        0.04
-    <strong>theta                   </strong>    16    16     0.56523
-    <strong>throw_in_ocean          </strong>    17    17           1
+    <strong>invbtlock               </strong>    14    14           1
+    <strong>jret                    </strong>    15    15          48
+    <strong>r                       </strong>    16    16        0.04
+    <strong>theta                   </strong>    17    17     0.56523
+    <strong>throw_in_ocean          </strong>    18    18           1
 
 ----------------------------------------
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -558,11 +672,13 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 CONTAINER NAME: mp_params_covid_unemploy ND Array (Matrix etc)
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                <strong>i</strong>    <strong>idx</strong>    <strong>ndim</strong>    <strong>numel</strong>    <strong>rowN</strong>    <strong>colN</strong>     <strong>sum</strong>        <strong>mean</strong>        <strong>std</strong>       <strong>coefvari</strong>    <strong>min</strong>      <strong>max</strong>   
-                <strong>_</strong>    <strong>___</strong>    <strong>____</strong>    <strong>_____</strong>    <strong>____</strong>    <strong>____</strong>    <strong>______</strong>    <strong>________</strong>    <strong>________</strong>    <strong>________</strong>    <strong>___</strong>    <strong>________</strong>
+                             <strong>i</strong>    <strong>idx</strong>    <strong>ndim</strong>    <strong>numel</strong>    <strong>rowN</strong>    <strong>colN</strong>     <strong>sum</strong>        <strong>mean</strong>        <strong>std</strong>       <strong>coefvari</strong>    <strong>min</strong>      <strong>max</strong>  
+                             <strong>_</strong>    <strong>___</strong>    <strong>____</strong>    <strong>_____</strong>    <strong>____</strong>    <strong>____</strong>    <strong>______</strong>    <strong>________</strong>    <strong>________</strong>    <strong>________</strong>    <strong>___</strong>    <strong>_______</strong>
 
-    <strong>inc_grid</strong>    1     3      2       201     201      1       578.5      2.8781      1.8836    0.65444      0            7
-    <strong>pi_unemp</strong>    2     6      2       415      83      5      9.5319    0.022968    0.024679     1.0745      0     0.080278
+    <strong>inc_grid             </strong>    1     7      2       201     201      1       578.5      2.8781      1.8836    0.65444      0           7
+    <strong>pi_unemp             </strong>    2    10      2       415      83      5      47.034     0.11333     0.12125     1.0699      0     0.40989
+    <strong>pi_unemp_2020_april  </strong>    3    11      2       415      83      5      47.034     0.11333     0.12125     1.0699      0     0.40989
+    <strong>pi_unemp_2020_juneadj</strong>    4    12      2       415      83      5       16.17    0.038963    0.041654     1.0691      0     0.16597
 
 xxx TABLE:inc_grid xxxxxxxxxxxxxxxxxx
                <strong>c1</strong>   
@@ -670,106 +786,286 @@ xxx TABLE:inc_grid xxxxxxxxxxxxxxxxxx
     <strong>r201</strong>           7
 
 xxx TABLE:pi_unemp xxxxxxxxxxxxxxxxxx
-              <strong>c1</strong>          <strong>c2</strong>          <strong>c3</strong>          <strong>c4</strong>          <strong>c5</strong>   
-           <strong>________</strong>    <strong>________</strong>    <strong>________</strong>    <strong>________</strong>    <strong>________</strong>
+             <strong>c1</strong>         <strong>c2</strong>         <strong>c3</strong>         <strong>c4</strong>          <strong>c5</strong>   
+           <strong>_______</strong>    <strong>_______</strong>    <strong>_______</strong>    <strong>_______</strong>    <strong>________</strong>
 
-    <strong>r1 </strong>    0.080278    0.051706    0.041502     0.03538    0.025176
-    <strong>r2 </strong>    0.080278    0.051706    0.041502     0.03538    0.025176
-    <strong>r3 </strong>    0.080278    0.051706    0.041502     0.03538    0.025176
-    <strong>r4 </strong>    0.080278    0.051706    0.041502     0.03538    0.025176
-    <strong>r5 </strong>    0.080278    0.051706    0.041502     0.03538    0.025176
-    <strong>r6 </strong>    0.080278    0.051706    0.041502     0.03538    0.025176
-    <strong>r7 </strong>    0.080278    0.051706    0.041502     0.03538    0.025176
-    <strong>r8 </strong>    0.080278    0.051706    0.041502     0.03538    0.025176
-    <strong>r9 </strong>    0.080278    0.051706    0.041502     0.03538    0.025176
-    <strong>r10</strong>    0.080278    0.051706    0.041502     0.03538    0.025176
-    <strong>r11</strong>    0.080278    0.051706    0.041502     0.03538    0.025176
-    <strong>r12</strong>    0.080278    0.051706    0.041502     0.03538    0.025176
-    <strong>r13</strong>    0.080278    0.051706    0.041502     0.03538    0.025176
-    <strong>r14</strong>    0.070703    0.042132    0.031928    0.025805    0.015601
-    <strong>r15</strong>    0.070703    0.042132    0.031928    0.025805    0.015601
-    <strong>r16</strong>    0.070703    0.042132    0.031928    0.025805    0.015601
-    <strong>r17</strong>    0.070703    0.042132    0.031928    0.025805    0.015601
-    <strong>r18</strong>    0.070703    0.042132    0.031928    0.025805    0.015601
-    <strong>r19</strong>    0.070703    0.042132    0.031928    0.025805    0.015601
-    <strong>r20</strong>    0.070703    0.042132    0.031928    0.025805    0.015601
-    <strong>r21</strong>    0.070703    0.042132    0.031928    0.025805    0.015601
-    <strong>r22</strong>    0.070703    0.042132    0.031928    0.025805    0.015601
-    <strong>r23</strong>    0.070703    0.042132    0.031928    0.025805    0.015601
-    <strong>r24</strong>    0.067512    0.038941    0.028736    0.022614     0.01241
-    <strong>r25</strong>    0.067512    0.038941    0.028736    0.022614     0.01241
-    <strong>r26</strong>    0.067512    0.038941    0.028736    0.022614     0.01241
-    <strong>r27</strong>    0.067512    0.038941    0.028736    0.022614     0.01241
-    <strong>r28</strong>    0.067512    0.038941    0.028736    0.022614     0.01241
-    <strong>r29</strong>    0.067512    0.038941    0.028736    0.022614     0.01241
-    <strong>r30</strong>    0.067512    0.038941    0.028736    0.022614     0.01241
-    <strong>r31</strong>    0.067512    0.038941    0.028736    0.022614     0.01241
-    <strong>r32</strong>    0.067512    0.038941    0.028736    0.022614     0.01241
-    <strong>r33</strong>    0.067512    0.038941    0.028736    0.022614     0.01241
-    <strong>r34</strong>    0.068576    0.040004      0.0298    0.023678    0.013474
-    <strong>r35</strong>    0.068576    0.040004      0.0298    0.023678    0.013474
-    <strong>r36</strong>    0.068576    0.040004      0.0298    0.023678    0.013474
-    <strong>r37</strong>    0.068576    0.040004      0.0298    0.023678    0.013474
-    <strong>r38</strong>    0.068576    0.040004      0.0298    0.023678    0.013474
-    <strong>r39</strong>    0.068576    0.040004      0.0298    0.023678    0.013474
-    <strong>r40</strong>    0.068576    0.040004      0.0298    0.023678    0.013474
-    <strong>r41</strong>    0.068576    0.040004      0.0298    0.023678    0.013474
-    <strong>r42</strong>    0.068576    0.040004      0.0298    0.023678    0.013474
-    <strong>r43</strong>    0.068576    0.040004      0.0298    0.023678    0.013474
-    <strong>r44</strong>    0.080278    0.051706    0.041502     0.03538    0.025176
-    <strong>r45</strong>    0.080278    0.051706    0.041502     0.03538    0.025176
-    <strong>r46</strong>    0.080278    0.051706    0.041502     0.03538    0.025176
-    <strong>r47</strong>    0.080278    0.051706    0.041502     0.03538    0.025176
-    <strong>r48</strong>    0.080278    0.051706    0.041502     0.03538    0.025176
-    <strong>r49</strong>           0           0           0           0           0
-    <strong>r50</strong>           0           0           0           0           0
-    <strong>r51</strong>           0           0           0           0           0
-    <strong>r52</strong>           0           0           0           0           0
-    <strong>r53</strong>           0           0           0           0           0
-    <strong>r54</strong>           0           0           0           0           0
-    <strong>r55</strong>           0           0           0           0           0
-    <strong>r56</strong>           0           0           0           0           0
-    <strong>r57</strong>           0           0           0           0           0
-    <strong>r58</strong>           0           0           0           0           0
-    <strong>r59</strong>           0           0           0           0           0
-    <strong>r60</strong>           0           0           0           0           0
-    <strong>r61</strong>           0           0           0           0           0
-    <strong>r62</strong>           0           0           0           0           0
-    <strong>r63</strong>           0           0           0           0           0
-    <strong>r64</strong>           0           0           0           0           0
-    <strong>r65</strong>           0           0           0           0           0
-    <strong>r66</strong>           0           0           0           0           0
-    <strong>r67</strong>           0           0           0           0           0
-    <strong>r68</strong>           0           0           0           0           0
-    <strong>r69</strong>           0           0           0           0           0
-    <strong>r70</strong>           0           0           0           0           0
-    <strong>r71</strong>           0           0           0           0           0
-    <strong>r72</strong>           0           0           0           0           0
-    <strong>r73</strong>           0           0           0           0           0
-    <strong>r74</strong>           0           0           0           0           0
-    <strong>r75</strong>           0           0           0           0           0
-    <strong>r76</strong>           0           0           0           0           0
-    <strong>r77</strong>           0           0           0           0           0
-    <strong>r78</strong>           0           0           0           0           0
-    <strong>r79</strong>           0           0           0           0           0
-    <strong>r80</strong>           0           0           0           0           0
-    <strong>r81</strong>           0           0           0           0           0
-    <strong>r82</strong>           0           0           0           0           0
-    <strong>r83</strong>           0           0           0           0           0
+    <strong>r1 </strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r2 </strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r3 </strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r4 </strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r5 </strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r6 </strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r7 </strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r8 </strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r9 </strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r10</strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r11</strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r12</strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r13</strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r14</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r15</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r16</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r17</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r18</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r19</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r20</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r21</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r22</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r23</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r24</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r25</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r26</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r27</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r28</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r29</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r30</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r31</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r32</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r33</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r34</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r35</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r36</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r37</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r38</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r39</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r40</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r41</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r42</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r43</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r44</strong>    0.40989    0.27032    0.22056     0.1906     0.13108
+    <strong>r45</strong>    0.40989    0.27032    0.22056     0.1906     0.13108
+    <strong>r46</strong>    0.40989    0.27032    0.22056     0.1906     0.13108
+    <strong>r47</strong>    0.40989    0.27032    0.22056     0.1906     0.13108
+    <strong>r48</strong>    0.40989    0.27032    0.22056     0.1906     0.13108
+    <strong>r49</strong>          0          0          0          0           0
+    <strong>r50</strong>          0          0          0          0           0
+    <strong>r51</strong>          0          0          0          0           0
+    <strong>r52</strong>          0          0          0          0           0
+    <strong>r53</strong>          0          0          0          0           0
+    <strong>r54</strong>          0          0          0          0           0
+    <strong>r55</strong>          0          0          0          0           0
+    <strong>r56</strong>          0          0          0          0           0
+    <strong>r57</strong>          0          0          0          0           0
+    <strong>r58</strong>          0          0          0          0           0
+    <strong>r59</strong>          0          0          0          0           0
+    <strong>r60</strong>          0          0          0          0           0
+    <strong>r61</strong>          0          0          0          0           0
+    <strong>r62</strong>          0          0          0          0           0
+    <strong>r63</strong>          0          0          0          0           0
+    <strong>r64</strong>          0          0          0          0           0
+    <strong>r65</strong>          0          0          0          0           0
+    <strong>r66</strong>          0          0          0          0           0
+    <strong>r67</strong>          0          0          0          0           0
+    <strong>r68</strong>          0          0          0          0           0
+    <strong>r69</strong>          0          0          0          0           0
+    <strong>r70</strong>          0          0          0          0           0
+    <strong>r71</strong>          0          0          0          0           0
+    <strong>r72</strong>          0          0          0          0           0
+    <strong>r73</strong>          0          0          0          0           0
+    <strong>r74</strong>          0          0          0          0           0
+    <strong>r75</strong>          0          0          0          0           0
+    <strong>r76</strong>          0          0          0          0           0
+    <strong>r77</strong>          0          0          0          0           0
+    <strong>r78</strong>          0          0          0          0           0
+    <strong>r79</strong>          0          0          0          0           0
+    <strong>r80</strong>          0          0          0          0           0
+    <strong>r81</strong>          0          0          0          0           0
+    <strong>r82</strong>          0          0          0          0           0
+    <strong>r83</strong>          0          0          0          0           0
+
+xxx TABLE:pi_unemp_2020_april xxxxxxxxxxxxxxxxxx
+             <strong>c1</strong>         <strong>c2</strong>         <strong>c3</strong>         <strong>c4</strong>          <strong>c5</strong>   
+           <strong>_______</strong>    <strong>_______</strong>    <strong>_______</strong>    <strong>_______</strong>    <strong>________</strong>
+
+    <strong>r1 </strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r2 </strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r3 </strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r4 </strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r5 </strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r6 </strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r7 </strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r8 </strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r9 </strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r10</strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r11</strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r12</strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r13</strong>    0.36194    0.22237    0.17262    0.14265    0.083133
+    <strong>r14</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r15</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r16</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r17</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r18</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r19</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r20</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r21</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r22</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r23</strong>     0.3534    0.21383    0.16408    0.13411    0.074592
+    <strong>r24</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r25</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r26</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r27</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r28</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r29</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r30</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r31</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r32</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r33</strong>    0.34917     0.2096    0.15984    0.12988    0.070361
+    <strong>r34</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r35</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r36</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r37</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r38</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r39</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r40</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r41</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r42</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r43</strong>    0.35656    0.21699    0.16723    0.13727    0.077749
+    <strong>r44</strong>    0.40989    0.27032    0.22056     0.1906     0.13108
+    <strong>r45</strong>    0.40989    0.27032    0.22056     0.1906     0.13108
+    <strong>r46</strong>    0.40989    0.27032    0.22056     0.1906     0.13108
+    <strong>r47</strong>    0.40989    0.27032    0.22056     0.1906     0.13108
+    <strong>r48</strong>    0.40989    0.27032    0.22056     0.1906     0.13108
+    <strong>r49</strong>          0          0          0          0           0
+    <strong>r50</strong>          0          0          0          0           0
+    <strong>r51</strong>          0          0          0          0           0
+    <strong>r52</strong>          0          0          0          0           0
+    <strong>r53</strong>          0          0          0          0           0
+    <strong>r54</strong>          0          0          0          0           0
+    <strong>r55</strong>          0          0          0          0           0
+    <strong>r56</strong>          0          0          0          0           0
+    <strong>r57</strong>          0          0          0          0           0
+    <strong>r58</strong>          0          0          0          0           0
+    <strong>r59</strong>          0          0          0          0           0
+    <strong>r60</strong>          0          0          0          0           0
+    <strong>r61</strong>          0          0          0          0           0
+    <strong>r62</strong>          0          0          0          0           0
+    <strong>r63</strong>          0          0          0          0           0
+    <strong>r64</strong>          0          0          0          0           0
+    <strong>r65</strong>          0          0          0          0           0
+    <strong>r66</strong>          0          0          0          0           0
+    <strong>r67</strong>          0          0          0          0           0
+    <strong>r68</strong>          0          0          0          0           0
+    <strong>r69</strong>          0          0          0          0           0
+    <strong>r70</strong>          0          0          0          0           0
+    <strong>r71</strong>          0          0          0          0           0
+    <strong>r72</strong>          0          0          0          0           0
+    <strong>r73</strong>          0          0          0          0           0
+    <strong>r74</strong>          0          0          0          0           0
+    <strong>r75</strong>          0          0          0          0           0
+    <strong>r76</strong>          0          0          0          0           0
+    <strong>r77</strong>          0          0          0          0           0
+    <strong>r78</strong>          0          0          0          0           0
+    <strong>r79</strong>          0          0          0          0           0
+    <strong>r80</strong>          0          0          0          0           0
+    <strong>r81</strong>          0          0          0          0           0
+    <strong>r82</strong>          0          0          0          0           0
+    <strong>r83</strong>          0          0          0          0           0
+
+xxx TABLE:pi_unemp_2020_juneadj xxxxxxxxxxxxxxxxxx
+             <strong>c1</strong>          <strong>c2</strong>          <strong>c3</strong>          <strong>c4</strong>          <strong>c5</strong>   
+           <strong>_______</strong>    <strong>________</strong>    <strong>________</strong>    <strong>________</strong>    <strong>________</strong>
+
+    <strong>r1 </strong>    0.11257    0.062283    0.046026    0.036173    0.035471
+    <strong>r2 </strong>    0.11257    0.062283    0.046026    0.036173    0.035471
+    <strong>r3 </strong>    0.11257    0.062283    0.046026    0.036173    0.035471
+    <strong>r4 </strong>    0.11257    0.062283    0.046026    0.036173    0.035471
+    <strong>r5 </strong>    0.11257    0.062283    0.046026    0.036173    0.035471
+    <strong>r6 </strong>    0.11257    0.062283    0.046026    0.036173    0.035471
+    <strong>r7 </strong>    0.11257    0.062283    0.046026    0.036173    0.035471
+    <strong>r8 </strong>    0.11257    0.062283    0.046026    0.036173    0.035471
+    <strong>r9 </strong>    0.11257    0.062283    0.046026    0.036173    0.035471
+    <strong>r10</strong>    0.11257    0.062283    0.046026    0.036173    0.035471
+    <strong>r11</strong>    0.11257    0.062283    0.046026    0.036173    0.035471
+    <strong>r12</strong>    0.11257    0.062283    0.046026    0.036173    0.035471
+    <strong>r13</strong>    0.11257    0.062283    0.046026    0.036173    0.035471
+    <strong>r14</strong>    0.11994    0.069654    0.053397    0.043545    0.042842
+    <strong>r15</strong>    0.11994    0.069654    0.053397    0.043545    0.042842
+    <strong>r16</strong>    0.11994    0.069654    0.053397    0.043545    0.042842
+    <strong>r17</strong>    0.11994    0.069654    0.053397    0.043545    0.042842
+    <strong>r18</strong>    0.11994    0.069654    0.053397    0.043545    0.042842
+    <strong>r19</strong>    0.11994    0.069654    0.053397    0.043545    0.042842
+    <strong>r20</strong>    0.11994    0.069654    0.053397    0.043545    0.042842
+    <strong>r21</strong>    0.11994    0.069654    0.053397    0.043545    0.042842
+    <strong>r22</strong>    0.11994    0.069654    0.053397    0.043545    0.042842
+    <strong>r23</strong>    0.11994    0.069654    0.053397    0.043545    0.042842
+    <strong>r24</strong>    0.11038    0.060097     0.04384    0.033988    0.033285
+    <strong>r25</strong>    0.11038    0.060097     0.04384    0.033988    0.033285
+    <strong>r26</strong>    0.11038    0.060097     0.04384    0.033988    0.033285
+    <strong>r27</strong>    0.11038    0.060097     0.04384    0.033988    0.033285
+    <strong>r28</strong>    0.11038    0.060097     0.04384    0.033988    0.033285
+    <strong>r29</strong>    0.11038    0.060097     0.04384    0.033988    0.033285
+    <strong>r30</strong>    0.11038    0.060097     0.04384    0.033988    0.033285
+    <strong>r31</strong>    0.11038    0.060097     0.04384    0.033988    0.033285
+    <strong>r32</strong>    0.11038    0.060097     0.04384    0.033988    0.033285
+    <strong>r33</strong>    0.11038    0.060097     0.04384    0.033988    0.033285
+    <strong>r34</strong>    0.12326    0.072969    0.056712     0.04686    0.046157
+    <strong>r35</strong>    0.12326    0.072969    0.056712     0.04686    0.046157
+    <strong>r36</strong>    0.12326    0.072969    0.056712     0.04686    0.046157
+    <strong>r37</strong>    0.12326    0.072969    0.056712     0.04686    0.046157
+    <strong>r38</strong>    0.12326    0.072969    0.056712     0.04686    0.046157
+    <strong>r39</strong>    0.12326    0.072969    0.056712     0.04686    0.046157
+    <strong>r40</strong>    0.12326    0.072969    0.056712     0.04686    0.046157
+    <strong>r41</strong>    0.12326    0.072969    0.056712     0.04686    0.046157
+    <strong>r42</strong>    0.12326    0.072969    0.056712     0.04686    0.046157
+    <strong>r43</strong>    0.12326    0.072969    0.056712     0.04686    0.046157
+    <strong>r44</strong>    0.16597     0.11568    0.099422     0.08957    0.088867
+    <strong>r45</strong>    0.16597     0.11568    0.099422     0.08957    0.088867
+    <strong>r46</strong>    0.16597     0.11568    0.099422     0.08957    0.088867
+    <strong>r47</strong>    0.16597     0.11568    0.099422     0.08957    0.088867
+    <strong>r48</strong>    0.16597     0.11568    0.099422     0.08957    0.088867
+    <strong>r49</strong>          0           0           0           0           0
+    <strong>r50</strong>          0           0           0           0           0
+    <strong>r51</strong>          0           0           0           0           0
+    <strong>r52</strong>          0           0           0           0           0
+    <strong>r53</strong>          0           0           0           0           0
+    <strong>r54</strong>          0           0           0           0           0
+    <strong>r55</strong>          0           0           0           0           0
+    <strong>r56</strong>          0           0           0           0           0
+    <strong>r57</strong>          0           0           0           0           0
+    <strong>r58</strong>          0           0           0           0           0
+    <strong>r59</strong>          0           0           0           0           0
+    <strong>r60</strong>          0           0           0           0           0
+    <strong>r61</strong>          0           0           0           0           0
+    <strong>r62</strong>          0           0           0           0           0
+    <strong>r63</strong>          0           0           0           0           0
+    <strong>r64</strong>          0           0           0           0           0
+    <strong>r65</strong>          0           0           0           0           0
+    <strong>r66</strong>          0           0           0           0           0
+    <strong>r67</strong>          0           0           0           0           0
+    <strong>r68</strong>          0           0           0           0           0
+    <strong>r69</strong>          0           0           0           0           0
+    <strong>r70</strong>          0           0           0           0           0
+    <strong>r71</strong>          0           0           0           0           0
+    <strong>r72</strong>          0           0           0           0           0
+    <strong>r73</strong>          0           0           0           0           0
+    <strong>r74</strong>          0           0           0           0           0
+    <strong>r75</strong>          0           0           0           0           0
+    <strong>r76</strong>          0           0           0           0           0
+    <strong>r77</strong>          0           0           0           0           0
+    <strong>r78</strong>          0           0           0           0           0
+    <strong>r79</strong>          0           0           0           0           0
+    <strong>r80</strong>          0           0           0           0           0
+    <strong>r81</strong>          0           0           0           0           0
+    <strong>r82</strong>          0           0           0           0           0
+    <strong>r83</strong>          0           0           0           0           0
 
 ----------------------------------------
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 CONTAINER NAME: mp_params_covid_unemploy Scalars
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                        <strong>i</strong>    <strong>idx</strong>      <strong>value</strong>  
-                        <strong>_</strong>    <strong>___</strong>    <strong>_________</strong>
+                                <strong>i</strong>     <strong>idx</strong>      <strong>value</strong>  
+                                <strong>__</strong>    <strong>___</strong>    <strong>_________</strong>
 
-    <strong>TR              </strong>    1     1     0.0017225
-    <strong>b               </strong>    2     2             1
-    <strong>n_incgrid       </strong>    3     4           201
-    <strong>n_welfchecksgrid</strong>    4     5            45
-    <strong>scaleconvertor  </strong>    5     7         58056
-    <strong>xi              </strong>    6     8          0.75
+    <strong>TR                      </strong>     1     1     0.0017225
+    <strong>b                       </strong>     2     2             1
+    <strong>fl_stimulus_adult_first </strong>     3     3          1200
+    <strong>fl_stimulus_adult_second</strong>     4     4           600
+    <strong>fl_stimulus_child_first </strong>     5     5           500
+    <strong>fl_stimulus_child_second</strong>     6     6           600
+    <strong>n_incgrid               </strong>     7     8           201
+    <strong>n_welfchecksgrid        </strong>     8     9            45
+    <strong>scaleconvertor          </strong>     9    13         58056
+    <strong>xi                      </strong>    10    14          0.75
 
 ----------------------------------------
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -779,7 +1075,7 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                   <strong>_</strong>    <strong>___</strong>    <strong>____</strong>    <strong>_____</strong>    <strong>____</strong>    <strong>____</strong>    <strong>___________</strong>    <strong>___________</strong>    <strong>______</strong>    <strong>___________</strong>    <strong>_______</strong>    <strong>______</strong>
 
     <strong>agrid     </strong>    1     1      2        65      65      1             2228         34.277    39.432         1.1504          0       135
-    <strong>eta_H_grid</strong>    2     2      2       405     405      1       1.3234e-13     3.2676e-16    1.5783     4.8301e+15    -2.6968    2.6968
+    <strong>eta_H_grid</strong>    2     2      2       405     405      1        9.015e-14     2.2259e-16    1.5783     7.0905e+15    -2.6968    2.6968
     <strong>eta_S_grid</strong>    3     3      2       405     405      1      -1.7764e-14    -4.3861e-17    2.2103    -5.0393e+16     -3.122     3.122
 
 xxx TABLE:agrid xxxxxxxxxxxxxxxxxx
@@ -1227,248 +1523,7 @@ xxx TABLE:pi_eta xxxxxxxxxxxxxxxxxx
     <strong>r43 </strong>     1.2896e-98     4.1031e-94     1.0147e-89             0             0             0
     <strong>r44 </strong>    3.9058e-103     1.5907e-98     5.0355e-94             0             0             0
     <strong>r45 </strong>    9.2866e-108    4.8414e-103     1.9619e-98             0             0             0
-    <strong>r46 </strong>    1.7334e-112    1.1568e-107    6.0007e-103             0             0             0
-    <strong>r47 </strong>    2.5399e-117    2.1699e-112    1.4409e-107             0             0             0
-    <strong>r48 </strong>    2.9214e-122    3.1953e-117    2.7162e-112             0             0             0
-    <strong>r49 </strong>    2.6379e-127    3.6936e-122    4.0195e-117             0             0             0
-    <strong>r50 </strong>    1.8697e-132    3.3516e-127    4.6693e-122             0             0             0
-    <strong>r356</strong>     7.6568e-56     1.6142e-52     2.6475e-49             0             0             0
-    <strong>r357</strong>     3.3147e-59     8.9421e-56     1.8764e-52             0             0             0
-    <strong>r358</strong>      1.127e-62     3.8906e-59     1.0446e-55             0             0             0
-    <strong>r359</strong>     3.0092e-66     1.3294e-62     4.5673e-59             0             0             0
-    <strong>r360</strong>     6.3099e-70     3.5674e-66     1.5684e-62             0             0             0
-    <strong>r361</strong>      1.039e-73     7.5177e-70     4.2295e-66             0             0             0
-    <strong>r362</strong>     1.3433e-77      1.244e-73     8.9569e-70             0             0             0
-    <strong>r363</strong>     1.3638e-81     1.6164e-77     1.4895e-73             0             0             0
-    <strong>r364</strong>     1.0871e-85     1.6492e-81      1.945e-77             0             0             0
-    <strong>r365</strong>     6.8035e-90     1.3211e-85     1.9942e-81             0             0             0
-    <strong>r366</strong>      3.343e-94     8.3091e-90     1.6054e-85             0             0             0
-    <strong>r367</strong>     1.2896e-98     4.1031e-94     1.0147e-89             0             0             0
-    <strong>r368</strong>    3.9058e-103     1.5907e-98     5.0355e-94             0             0             0
-    <strong>r369</strong>    9.2866e-108    4.8414e-103     1.9619e-98             0             0             0
-    <strong>r370</strong>    1.7334e-112    1.1568e-107    6.0007e-103             0             0             0
-    <strong>r371</strong>    2.5399e-117    2.1699e-112    1.4409e-107             0             0             0
-    <strong>r372</strong>    2.9214e-122    3.1953e-117    2.7162e-112             0             0             0
-    <strong>r373</strong>    2.6379e-127    3.6936e-122    4.0195e-117             0             0             0
-    <strong>r374</strong>    1.8697e-132    3.3516e-127    4.6693e-122             0             0             0
-    <strong>r375</strong>    1.0402e-137    2.3873e-132    4.2579e-127             0             0             0
-    <strong>r376</strong>    4.5428e-143    1.3348e-137    3.0479e-132             0             0             0
-    <strong>r377</strong>    1.5573e-148    5.8581e-143    1.7126e-137             0             0             0
-    <strong>r378</strong>    4.1902e-154    2.0181e-148    7.5536e-143             0             0             0
-    <strong>r379</strong>    8.8497e-160    5.4571e-154    2.6151e-148             0             0             0
-    <strong>r380</strong>     1.467e-165    1.1582e-159    7.1063e-154             0             0             0
-    <strong>r381</strong>    1.9088e-171    1.9296e-165    1.5158e-159             0             0             0
-    <strong>r382</strong>    1.9494e-177    2.5231e-171    2.5377e-165             0             0             0
-    <strong>r383</strong>    1.5626e-183    2.5895e-177    3.3347e-171             0             0             0
-    <strong>r384</strong>    9.8305e-190    2.0859e-183    3.4394e-177             0             0             0
-    <strong>r385</strong>    4.8541e-196    1.3188e-189    2.7843e-183             0             0             0
-    <strong>r386</strong>    1.8812e-202    6.5443e-196    1.7691e-189             0             0             0
-    <strong>r387</strong>    5.7219e-209    2.5488e-202    8.8221e-196    6.7859e-18             0             0
-    <strong>r388</strong>     1.366e-215     7.791e-209     3.453e-202    3.3387e-16    6.7859e-18             0
-    <strong>r389</strong>    2.5593e-222    1.8691e-215    1.0607e-208    1.2748e-14     3.108e-16    5.4288e-18
-    <strong>r390</strong>    3.7633e-229    3.5193e-222    2.5573e-215    3.8254e-13    1.1865e-14     2.918e-16
-    <strong>r391</strong>     4.343e-236    5.2006e-229     4.839e-222    9.0346e-12    3.5774e-13    1.1311e-14
-    <strong>r392</strong>    3.9336e-243    6.0316e-236    7.1863e-229    1.6797e-10    8.4903e-12    3.4504e-13
-    <strong>r393</strong>    2.7961e-250      5.49e-243    8.3758e-236     2.459e-09    1.5863e-10    8.3005e-12
-    <strong>r394</strong>    1.5599e-257    3.9218e-250    7.6616e-243     2.835e-08    2.3335e-09    1.5758e-10
-    <strong>r395</strong>    6.8293e-265    2.1987e-257    5.5002e-250    2.5746e-07    2.7035e-08     2.363e-09
-    <strong>r396</strong>    2.3466e-272     9.674e-265    3.0989e-257    1.8421e-06    2.4671e-07    2.8019e-08
-    <strong>r397</strong>    6.3276e-280    3.3405e-272    1.3702e-264    1.0385e-05    1.7738e-06    2.6309e-07
-    <strong>r398</strong>    1.3391e-287    9.0525e-280    4.7549e-272    4.6145e-05    1.0049e-05    1.9598e-06
-    <strong>r399</strong>     2.224e-295    1.9252e-287    1.2949e-279    0.00016162    4.4868e-05    1.1608e-05
-    <strong>r400</strong>    2.8987e-303    3.2133e-295    2.7676e-287    0.00044628    0.00015792    5.4842e-05
-    <strong>r401</strong>    2.9649e-311    4.2089e-303    4.6422e-295    0.00097159    0.00043816    0.00020753
-    <strong>r402</strong>      2.38e-319    4.3265e-311    6.1107e-303     0.0016679    0.00095856    0.00063256
-    <strong>r403</strong>              0    3.4902e-319    6.3126e-311      0.002258     0.0016536     0.0015653
-    <strong>r404</strong>              0              0    5.1176e-319     0.0024107     0.0022495     0.0031788
-    <strong>r405</strong>              0              0              0     0.0020297     0.0024132     0.0053798
-
-xxx TABLE:pi_kids xxxxxxxxxxxxxxxxxx
-              <strong>c1</strong>            <strong>c2</strong>            <strong>c3</strong>        <strong>c1658</strong>    <strong>c1659</strong>    <strong>c1660</strong>
-          <strong>__________</strong>    <strong>__________</strong>    <strong>__________</strong>    <strong>_____</strong>    <strong>_____</strong>    <strong>_____</strong>
-
-    <strong>r1</strong>       0.88581       0.11137     0.0027904      0        0        0  
-    <strong>r2</strong>      0.051118       0.65943       0.28506      0        0        0  
-    <strong>r3</strong>     0.0012655       0.05332       0.78763      0        0        0  
-    <strong>r4</strong>     1.808e-05    0.00080512      0.069952      0        0        0  
-    <strong>r5</strong>    1.8185e-07    8.1047e-06    0.00075722      0        0        0  
-
-xxx TABLE:psi xxxxxxxxxxxxxxxxxx
-             <strong>c1</strong>   
-           <strong>_______</strong>
-
-    <strong>r1 </strong>    0.99937
-    <strong>r2 </strong>    0.99933
-    <strong>r3 </strong>    0.99929
-    <strong>r4 </strong>    0.99925
-    <strong>r5 </strong>    0.99923
-    <strong>r6 </strong>    0.99923
-    <strong>r7 </strong>    0.99924
-    <strong>r8 </strong>    0.99927
-    <strong>r9 </strong>    0.99928
-    <strong>r10</strong>    0.99929
-    <strong>r11</strong>    0.99927
-    <strong>r12</strong>    0.99924
-    <strong>r13</strong>     0.9992
-    <strong>r14</strong>    0.99915
-    <strong>r15</strong>    0.99909
-    <strong>r16</strong>    0.99901
-    <strong>r17</strong>    0.99892
-    <strong>r18</strong>    0.99882
-    <strong>r19</strong>    0.99872
-    <strong>r20</strong>     0.9986
-    <strong>r21</strong>    0.99848
-    <strong>r22</strong>    0.99834
-    <strong>r23</strong>     0.9982
-    <strong>r24</strong>    0.99806
-    <strong>r25</strong>    0.99791
-    <strong>r26</strong>    0.99775
-    <strong>r27</strong>     0.9976
-    <strong>r28</strong>    0.99742
-    <strong>r29</strong>    0.99725
-    <strong>r30</strong>    0.99706
-    <strong>r31</strong>    0.99691
-    <strong>r32</strong>    0.99674
-    <strong>r33</strong>    0.99657
-    <strong>r34</strong>    0.99635
-    <strong>r35</strong>    0.99607
-    <strong>r36</strong>    0.99574
-    <strong>r37</strong>    0.99533
-    <strong>r38</strong>    0.99487
-    <strong>r39</strong>    0.99436
-    <strong>r40</strong>     0.9938
-    <strong>r41</strong>    0.99319
-    <strong>r42</strong>    0.99253
-    <strong>r43</strong>     0.9918
-    <strong>r44</strong>    0.99097
-    <strong>r45</strong>    0.99005
-    <strong>r46</strong>    0.98902
-    <strong>r47</strong>    0.98787
-    <strong>r48</strong>    0.98659
-    <strong>r49</strong>    0.98519
-    <strong>r50</strong>    0.98372
-    <strong>r51</strong>    0.98217
-    <strong>r52</strong>    0.98052
-    <strong>r53</strong>    0.97863
-    <strong>r54</strong>    0.97651
-    <strong>r55</strong>    0.97431
-    <strong>r56</strong>     0.9721
-    <strong>r57</strong>    0.96973
-    <strong>r58</strong>    0.96693
-    <strong>r59</strong>    0.96365
-    <strong>r60</strong>    0.96005
-    <strong>r61</strong>    0.95611
-    <strong>r62</strong>    0.95165
-    <strong>r63</strong>     0.9465
-    <strong>r64</strong>    0.94063
-    <strong>r65</strong>    0.93385
-    <strong>r66</strong>     0.9261
-    <strong>r67</strong>     0.9174
-    <strong>r68</strong>    0.90767
-    <strong>r69</strong>    0.89701
-    <strong>r70</strong>    0.88535
-    <strong>r71</strong>    0.87267
-    <strong>r72</strong>    0.85894
-    <strong>r73</strong>    0.84407
-    <strong>r74</strong>    0.82817
-    <strong>r75</strong>    0.81104
-    <strong>r76</strong>    0.79282
-    <strong>r77</strong>    0.77349
-    <strong>r78</strong>    0.75398
-    <strong>r79</strong>     0.7345
-    <strong>r80</strong>    0.71587
-    <strong>r81</strong>    0.69772
-    <strong>r82</strong>    0.68139
-    <strong>r83</strong>          0
-
-----------------------------------------
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-CONTAINER NAME: mp_params_exotrans Scalars
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                            <strong>i</strong>    <strong>idx</strong>    <strong>value</strong>
-                            <strong>_</strong>    <strong>___</strong>    <strong>_____</strong>
-
-    <strong>bl_store_shock_trans</strong>    1     1       0  
-
-----------------------------------------
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-CONTAINER NAME: mp_params_typelife ND Array (Matrix etc)
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-               <strong>i</strong>    <strong>idx</strong>    <strong>ndim</strong>    <strong>numel</strong>    <strong>rowN</strong>    <strong>colN</strong>     <strong>sum</strong>       <strong>mean</strong>        <strong>std</strong>      <strong>coefvari</strong>    <strong>min</strong>      <strong>max</strong>  
-               <strong>_</strong>    <strong>___</strong>    <strong>____</strong>    <strong>_____</strong>    <strong>____</strong>    <strong>____</strong>    <strong>______</strong>    <strong>_______</strong>    <strong>_______</strong>    <strong>________</strong>    <strong>___</strong>    <strong>_______</strong>
-
-    <strong>SS     </strong>    1     1      2       166      83      2      19.331    0.11645    0.13441     1.1542      0     0.29263
-    <strong>epsilon</strong>    2     2      2       166      83      2      159.11    0.95847    0.89457    0.93333      0      2.2612
-
-xxx TABLE:SS xxxxxxxxxxxxxxxxxx
-             <strong>c1</strong>         <strong>c2</strong>   
-           <strong>_______</strong>    <strong>_______</strong>
-
-    <strong>r1 </strong>          0          0
-    <strong>r2 </strong>          0          0
-    <strong>r3 </strong>          0          0
-    <strong>r4 </strong>          0          0
-    <strong>r5 </strong>          0          0
-    <strong>r6 </strong>          0          0
-    <strong>r7 </strong>          0          0
-    <strong>r8 </strong>          0          0
-    <strong>r9 </strong>          0          0
-    <strong>r10</strong>          0          0
-    <strong>r11</strong>          0          0
-    <strong>r12</strong>          0          0
-    <strong>r13</strong>          0          0
-    <strong>r14</strong>          0          0
-    <strong>r15</strong>          0          0
-    <strong>r16</strong>          0          0
-    <strong>r17</strong>          0          0
-    <strong>r18</strong>          0          0
-    <strong>r19</strong>          0          0
-    <strong>r20</strong>          0          0
-    <strong>r21</strong>          0          0
-    <strong>r22</strong>          0          0
-    <strong>r23</strong>          0          0
-    <strong>r24</strong>          0          0
-    <strong>r25</strong>          0          0
-    <strong>r26</strong>          0          0
-    <strong>r27</strong>          0          0
-    <strong>r28</strong>          0          0
-    <strong>r29</strong>          0          0
-    <strong>r30</strong>          0          0
-    <strong>r31</strong>          0          0
-    <strong>r32</strong>          0          0
-    <strong>r33</strong>          0          0
-    <strong>r34</strong>          0          0
-    <strong>r35</strong>          0          0
-    <strong>r36</strong>          0          0
-    <strong>r37</strong>          0          0
-    <strong>r38</strong>          0          0
-    <strong>r39</strong>          0          0
-    <strong>r40</strong>          0          0
-    <strong>r41</strong>          0          0
-    <strong>r42</strong>          0          0
-    <strong>r43</strong>          0          0
-    <strong>r44</strong>          0          0
-    <strong>r45</strong>          0          0
-    <strong>r46</strong>          0          0
-    <strong>r47</strong>          0          0
-    <strong>r48</strong>    0.24433    0.29263
-    <strong>r49</strong>    0.24433    0.29263
-    <strong>r50</strong>    0.24433    0.29263
-    <strong>r51</strong>    0.24433    0.29263
-    <strong>r52</strong>    0.24433    0.29263
-    <strong>r53</strong>    0.24433    0.29263
-    <strong>r54</strong>    0.24433    0.29263
-    <strong>r55</strong>    0.24433    0.29263
-    <strong>r56</strong>    0.24433    0.29263
-    <strong>r57</strong>    0.24433    0.29263
-    <strong>r58</strong>    0.24433    0.29263
-    <strong>r59</strong>    0.24433    0.29263
-    <strong>r60</strong>    0.24433    0.29263
-    <strong>r61</strong>    0.24433    0.29263
-    <strong>r62</strong>    0.24433    0.29263
-    <strong>r63</strong>    0.24433    0.29263
-    <strong>r64</strong>    0.24433    0.29263
-    <strong>r65</strong>    0.2443...</div></div></div></div></div><h2  class = 'S2'><span>Parameters Used for Paper Simulations</span></h2><div  class = 'S1'><span>Full version of parameters used in </span><a href = "https://cepr.org/active/publications/discussion_papers/dp.php?dpno=15283"><span>Nygaard, Sorensen and Wang (2020)</span></a><span>. This is not printed to save space.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span style="color: rgb(60, 118, 61);">% mp_params = snw_mp_param('default_moredense_a65zh266zs5_e2m2', true, 100, 6);</span></span></div></div></div><h2  class = 'S2'></h2></div>
+    <strong>r46 </strong>    1.7334e-112    1.1568e-107 ...</div></div></div></div></div><h2  class = 'S2'><span>Parameters Used for Paper Simulations</span></h2><div  class = 'S1'><span>Full version of parameters used in </span><a href = "https://cepr.org/active/publications/discussion_papers/dp.php?dpno=15283"><span>Nygaard, Sorensen and Wang (2020)</span></a><span>. This is not printed to save space.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span style="color: rgb(2, 128, 9);">% mp_params = snw_mp_param('default_moredense_a65zh266zs5_e2m2', true, 100, 6);</span></span></div></div></div><h2  class = 'S2'></h2></div>
 <br>
 <!-- 
 ##### SOURCE BEGIN #####

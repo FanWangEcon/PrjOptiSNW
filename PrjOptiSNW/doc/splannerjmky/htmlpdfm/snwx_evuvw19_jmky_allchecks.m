@@ -31,7 +31,8 @@ mp_controls('bl_print_evuvw19_jmky_verbose') = false;
 
 % default dense load
 % mp_params = snw_mp_param('default_dense');
-mp_params = snw_mp_param('default_docdense');
+mp_params = snw_mp_param('default_docdense')
+mp_params('beta') = 0.95;
 % Unemployment
 xi=0.5; % Proportional reduction in income due to unemployment (xi=0 refers to 0 labor income; xi=1 refers to no drop in labor income)
 b=0; % Unemployment insurance replacement rate (b=0 refers to no UI benefits; b=1 refers to 100 percent labor income replacement)

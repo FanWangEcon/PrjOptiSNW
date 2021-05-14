@@ -9,6 +9,7 @@
 % given covid shocks. COVID lasts one period.
 
 mp_params = snw_mp_param('default_docdense', false, 'tauchen', true);
+mp_params('beta') = 0.95;
 mp_controls = snw_mp_control('default_test');
 mp_controls('bl_print_vfi') = false;
 mp_controls('bl_timer') = true;

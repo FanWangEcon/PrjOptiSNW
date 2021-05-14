@@ -1,7 +1,7 @@
 %% Household Problem and Distributions
 % In <https://cepr.org/active/publications/discussion_papers/dp.php?dpno=15283 
 % Nygaard, Sorensen and Wang (2020)>, we study the optimal allocation of COVID-19 
-% welfare checks. Congress spent $250 billion sending checks to individuals in 
+% stimulus checks. Congress spent $250 billion sending checks to individuals in 
 % March 2020 to provide economic stimulus. Could the same amount of stimulus have 
 % been achieved for less money? Using a life-cycle consumption-saving model with 
 % heterogeneous consumers, we calculate the consumption responses to cash transfers 
@@ -54,8 +54,8 @@
 % marginal propensity effects for small income bins that define the choice-set 
 % of the allocation problem.
 % # While a choice-grid-based solution algorithm might sufficiently approximate 
-% the value function, but its policy function zig-zags. For the welfare checks 
-% problem, where welfare checks come in small increments, the zig-zags lead to 
+% the value function, but its policy function zig-zags. For the stimulus checks 
+% problem, where stimulus checks come in small increments, the zig-zags lead to 
 % fluctuating (negative and positive) marginal propensities to consume as resource 
 % availability increases for very small amounts of check increments. To deal with 
 % this challenge, we rely on the <https://fanwangecon.github.io/MEconTools/MEconTools/doc/vfi/htmlpdfm/fx_vfi_az_bisec_vec.html 
@@ -79,7 +79,7 @@
 % program): <https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/svalpolsmall/htmlpdfm/snwx_vfi_test.html 
 % snwx_vfi_test>
 % * Small test using grid-search-based solution algorithm (insufficiently precise 
-% for welfare checks): <https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/svalpolsmall/htmlpdfm/snwx_vfi_test_grid_search.html 
+% for stimulus checks): <https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/svalpolsmall/htmlpdfm/snwx_vfi_test_grid_search.html 
 % snwx_vfi_test_grid_search>
 % * Small test of core dynamic programming code: <https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/svalpolsmall/htmlpdfm/snwx_vfi_test_bisec_vec.html 
 % snwx_vfi_test_bisec_vec>
@@ -107,7 +107,7 @@
 % *FF_VFI_AZ_BISEC_VEC*> function from <https://fanwangecon.github.io/MEconTools/ 
 % *MEconTools*>. While checks could be viewed as an additional state variable, 
 % we evaluate the marginal effects of check by solving for the equivalent household-specpfic 
-% variation in savings state that has the same effect as a welfare check transfer. 
+% variation in savings state that has the same effect as a stimulus check transfer. 
 % The process takes into account the nonlinear tax-schedule that households face 
 % as well as return on savings. 
 % 
@@ -130,10 +130,10 @@
 % * <https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/svalpolunemploy/htmlpdfm/snwx_vfi_unemp_bisec_vec.html 
 % snwx_vfi_unemp_bisec_vec> provides the vignette given unemployment shock.
 % * <https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/splannercheckval/htmlpdfm/snwx_a4chk_wrk_bisec_vec.html 
-% snwx_a4chk_wrk_bisec_vec> computes the marginal impacts of a particular welfare 
+% snwx_a4chk_wrk_bisec_vec> computes the marginal impacts of a particular stimulus 
 % check increment for those without unemployment shock in COVID year.
 % * <https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/splannercheckval/htmlpdfm/snwx_a4chk_unemp_bisec_vec.html 
-% snwx_a4chk_unemp_bisec_vec> computes the marginal impacts of a particular welfare 
+% snwx_a4chk_unemp_bisec_vec> computes the marginal impacts of a particular stimulus 
 % check increment for those with unemployment shock in COVID year.
 % * <https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/splannerjaeemk/htmlpdfm/snwx_evuvw20_jaeemk.html 
 % snwx_evuvw20_jaeemk> considers probabilities for getting hit with the COVID 

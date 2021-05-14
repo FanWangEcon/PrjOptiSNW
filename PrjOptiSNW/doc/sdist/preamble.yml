@@ -1,3 +1,26 @@
+- file: snwx_ds_grid_search
+  title: "Assets and Demographic Distributions with Grid Search"
+  titleshort: "Assets and Demographic Distributions with Grid Search"
+  description: |
+    Grid search solution using grid search for savings choices, the savings state-space grid is the same as the savings choice-grid. Exact choice solution from [snw_ds_main()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/sdist/snw_ds_main.m) generates significantly smoother distributions.
+  core :
+    - package: PrjOptiSNW
+      code: |
+        [snw_ds_main_grid_search()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/sdist/snw_ds_main_grid_search.m)
+  date: 2020-08-07
+  date_start: 2020-08-07
+  output:
+    pdf_document:
+      pandoc_args: '../../../_output_kniti_pdf.yaml'
+      includes:
+        in_header: '../../../preamble.tex'
+    html_document:
+      pandoc_args: '../../../_output_kniti_html.yaml'
+      includes:
+        in_header: '../../../hdga.html'
+  always_allow_html: true
+  urlcolor: blue
+
 - file: snwx_ds_bisec_vec_loop
   title: "Assets and Demographic Distributions with Continuous Exact Savings Choices (Loop)"
   titleshort: "Assets and Demographic Distributions with Continuous Exact Savings Choices (Loop)"
@@ -25,11 +48,13 @@
   title: "Assets and Demographic Distributions with Continuous Exact Savings Choices (Vectorized)"
   titleshort: "Assets and Demographic Distributions with Continuous Exact Savings Choices (Vectorized)"
   description: |
-    Simulate the life cycle distributions This is the fully vectorized version of [snw_ds_main()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/sdist/snw_ds_main.m).
+    Simulate the life cycle distributions. This is the fully vectorized version of [snw_ds_main()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/sdist/snw_ds_main.m).
+    Given distributions, [snw_ds_aggregation()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/sdist/snw_ds_aggregation.m) provides aggregate statistics.
   core :
     - package: PrjOptiSNW
       code: |
         [snw_ds_main_vec()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/sdist/snw_ds_main_vec.m)
+        [snw_ds_aggregation()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/sdist/snw_ds_aggregation.m)
   date: 2020-08-07
   date_start: 2020-08-07
   output:
@@ -44,17 +69,19 @@
   always_allow_html: true
   urlcolor: blue
 
-- file: snwx_ds_grid_search
-  title: "Assets and Demographic Distributions with Grid Search"
-  titleshort: "Assets and Demographic Distributions with Grid Search"
+- file: snwx_ds_bisec_vec_oneperiodpolshift
+  title: "Assets and Demographic Distributions (vectorized) with One Period MIT Shock"
+  titleshort: "Assets and Demographic Distributions (vectorized) with One Period MIT Shock"
   description: |
-    Grid search solution using grid search for savings choices, the savings state-space grid is the same as the savings choice-grid. Exact choice solution from [snw_ds_main()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/sdist/snw_ds_main.m) generates significantly smoother distributions.
+    Simulate the life cycle distributions. This calls the vectorized [snwx_ds_bisec_vec()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/sdist/snw_ds_main_vec.m) distributional function.
+    Feed in a 6th parameter to [snwx_ds_bisec_vec()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/sdist/snw_ds_main_vec.m) which is the current (steady-state) distribution across state-space. The policy functions are optimal choices in a period with MIT shock. Solve for the distribution induced by the one-period MIT shock's policy function given steady-state distribution.
+    This is used to model the distributional effects of CARES Act, the two rounds of Trump Stimulus Checks, on household asset distribution when then receive the Biden stimulus checks from the the American Recovery Act. In effect, we have two MIT shock periods.
   core :
     - package: PrjOptiSNW
       code: |
-        [snw_ds_main_grid_search()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/sdist/snw_ds_main_grid_search.m)
-  date: 2020-08-07
-  date_start: 2020-08-07
+        [snw_ds_main_vec()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/sdist/snw_ds_main_vec.m)
+  date: 2021-05-12
+  date_start: 2021-05-12
   output:
     pdf_document:
       pandoc_args: '../../../_output_kniti_pdf.yaml'

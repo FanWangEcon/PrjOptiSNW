@@ -1,5 +1,5 @@
 fs_opti_support_202102 <- function(st_which_solu='snwx_trumpchk_moredense_a65zh266zs5_b1_xi0_manna_168_married') {
-  #' Same as fs_opti_support, but shorter for just the beta/edu weighted results
+  #' Similar fs_opti_support_202102, but shorter for just the beta/edu weighted results
   #'
   #' @description
   #' see fs_opti_support

@@ -9,6 +9,8 @@
 % and policy. Then depending on 2020 taxes, solve for 2020 policy and value.
 
 mp_params = snw_mp_param('default_docdense');
+% mp_params = snw_mp_param('default_dense');
+mp_params('beta') = 0.95;
 mp_controls = snw_mp_control('default_test');
 mp_controls('bl_print_vfi') = false;
 mp_controls('bl_timer') = true;

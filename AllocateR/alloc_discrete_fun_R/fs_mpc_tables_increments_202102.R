@@ -67,22 +67,25 @@ ls_st_file_suffix_trumpchk_betaedu <-
     'snwx_trumpchk_docdense_e1lm2_b1_xi0_manna_88_bt60',
     'snwx_trumpchk_docdense_e1lm2_b1_xi0_manna_88_bt50')
 
-# ls_st_file_suffix_test <- c('snwx_bidenchk_tiny_b1_xi0_manna_168')
+ls_st_file_suffix_test <- c('snwx_bidenchk_tiny_b1_xi0_manna_168')
+
+bl_per_capita <- TRUE
+fl_rho <- 1
 
 # list to run
 ls_st_file_suffix <- c(ls_st_file_suffix_trumpchk, ls_st_file_suffix_bidenchk,
                        ls_st_file_suffix_bidenchk_betaedu, ls_st_file_suffix_trumpchk_betaedu)
 
 # Solve iteratively
-# for (st_which_solu in ls_st_file_suffix) {
-foreach (st_which_solu=ls_st_file_suffix) %dopar% {
+for (st_which_solu in ls_st_file_suffix) {
+# foreach (st_which_solu=ls_st_file_suffix) %dopar% {
   rm(df_plan_v_tilde_full)
 
   # Files:
   # source('fs_opti_support.R')
   # st_which_solu <- 'b1_manna'
   # st_which_solu <- paste0('b1_xi0_manna_88_', st_file_suffix)
-  ls_output <- fs_opti_support_202102(st_which_solu)
+  ls_output <- fs_opti_support_202103(st_which_solu, bl_per_capita=bl_per_capita, fl_rho=fl_rho)
   st_b0b1 <- ls_output$st_b0b1
   st_file_type_withspouse_shock <- ls_output$st_file_type_withspouse_shock
   st_file_type_withspouse_shock <- ls_output$st_file_type_withspouse_shock

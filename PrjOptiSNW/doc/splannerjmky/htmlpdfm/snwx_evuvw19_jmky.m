@@ -14,6 +14,7 @@ st_solu_type = 'bisec_vec';
 % mp_params = snw_mp_param('default_tiny');
 % mp_params = snw_mp_param('default_dense');
 mp_params = snw_mp_param('default_docdense');
+mp_params('beta') = 0.95;
 mp_controls = snw_mp_control('default_test');
 
 % set Unemployment Related Variables

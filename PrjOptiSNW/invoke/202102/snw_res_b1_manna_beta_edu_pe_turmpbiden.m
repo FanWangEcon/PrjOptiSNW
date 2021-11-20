@@ -40,8 +40,8 @@ for st_biden_or_trump = ["bidenchk", "trumpchk"]
                 st_param_group_suffix = '_e2hm2';
             end
             % param group name
-            % st_param_group_base = 'default_tiny';
-            st_param_group_base = 'default_docdense';
+            st_param_group_base = 'default_tiny';
+%             st_param_group_base = 'default_docdense';
             % st_param_groups_base = 'default_moredense_a65zh266zs5';
             st_param_group = [st_param_group_base st_param_group_suffix];
             % get parametesr

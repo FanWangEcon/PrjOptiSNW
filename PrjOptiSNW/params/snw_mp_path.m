@@ -1,6 +1,6 @@
 %% SNW_MP_PATH Controls and Keeps Track of Paths
 %    SNW_MP_PATH controls and keeps track of paths. Keeps track of external
-%    path for storing larger data and simulation files. 
+%    path for storing larger data and simulation files.
 %
 %    ST_COMPUTER, whose computer this is on: 'fan'
 %
@@ -21,13 +21,13 @@ if (~isempty(varargin))
         bl_print_mp_path = false;
     elseif (length(varargin)==2)
         [st_computer, bl_print_mp_path] = varargin{:};
-    end    
+    end
 
 else
 
     st_computer = 'fan';
     bl_print_mp_path = true;
-    
+
 end
 
 %% Dropbox Root Auto Detect by Computer
@@ -47,14 +47,14 @@ end
 
 spt_simu_codem = fullfile(spt_rootlocal_root, 'PrjOptiSNW', filesep);
 spt_simu_codem_doc = fullfile(spt_rootlocal_root, 'PrjOptiSNW', 'PrjOptiSNW', 'doc', filesep);
-spt_simu_outputs = fullfile(spt_dropbox_root, 'Output202102', filesep);
-spt_simu_outputs_vig = fullfile(spt_dropbox_root, 'MatlabVig', '05-11-2021', filesep);
+spt_simu_outputs = fullfile(spt_dropbox_root, 'Output202111', filesep);
+spt_simu_outputs_vig = fullfile(spt_dropbox_root, 'MatlabVig', '11-15-2021', filesep);
 spt_simu_outputs_log = fullfile(spt_simu_outputs, 'log', filesep);
 spt_simu_outputs_mat = fullfile(spt_simu_outputs, 'mat', filesep);
 % spt_simu_results_csv = fullfile(spt_dropbox_root, 'Results', '2020-08-23-b1_manna', 'csv_with_expmin_apc');
 % spt_simu_results_csv = fullfile(spt_dropbox_root, 'Results', '2020-08-23-b1_manna', 'csv', filesep);
 % spt_simu_results_csv = fullfile(spt_dropbox_root, 'Results', '2021-01-02-b1_manna', 'csv', filesep);
-spt_simu_results_csv = fullfile(spt_dropbox_root, 'Results', '2021-02-21-b1_manna', 'csv', filesep);
+spt_simu_results_csv = fullfile(spt_dropbox_root, 'Results', '2021-11-15-b1_manna', 'csv', filesep);
 
 %% Set Parameter Maps
 mp_path_external = containers.Map('KeyType', 'char', 'ValueType', 'any');

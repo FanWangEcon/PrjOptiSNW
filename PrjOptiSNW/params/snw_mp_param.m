@@ -104,15 +104,22 @@ end
 mp_more_inputs = containers.Map('KeyType','char', 'ValueType','any');
 % both: simulate for both high and low education groups; low: simulate only
 % for the low education group; high: simulate only for the high education
-% group. 
+% group.
 mp_more_inputs('st_edu_simu_type') = 'both'; % possible values are both, low, vs high
+mp_more_inputs('fl_ss_non_college') = 0.24433; % Average SS non-college 2005-2009 as a share of GDP per capita
+mp_more_inputs('fl_ss_college') = 0.29263; % Average SS college 2005-2009 as a share of GDP per capita
+mp_more_inputs('fl_scaleconvertor') = 58056; % Average SS college 2005-2009 as a share of GDP per capita
+
 if (length(varargin)>=7)
     mp_more_inputs = [mp_more_inputs; mp_more_inputs_ex];
 end
-
 % Parse parameters
 params_group = values(mp_more_inputs, {'st_edu_simu_type'});
 [st_edu_simu_type] = params_group{:};
+params_group = values(mp_more_inputs, {'fl_ss_non_college', 'fl_ss_college'});
+[fl_ss_non_college, fl_ss_college] = params_group{:};
+params_group = values(mp_more_inputs, {'fl_scaleconvertor'});
+[fl_scaleconvertor] = params_group{:};
 
 %% Parametesr Grid Points
 % Number of grid points
@@ -200,9 +207,9 @@ elseif(strcmp(st_param_group, "default_moredense_a65zh133zs5") || contains(st_pa
     n_eta_S_grid=5;
     n_kidsgrid=5;
     n_marriedgrid=2;
-elseif(strcmp(st_param_group, "default_moredense_a65zh266zs5") || contains(st_param_group, 'default_moredense_a65zh266zs5_'))    
+elseif(strcmp(st_param_group, "default_moredense_a65zh266zs5") || contains(st_param_group, 'default_moredense_a65zh266zs5_'))
 % elseif(contains(st_param_group, 'default_moredense_a65zh266zs5'))
-% elseif(strcmp(st_param_group, "default_moredense_a65zh266zs5_e2m2"))    
+% elseif(strcmp(st_param_group, "default_moredense_a65zh266zs5_e2m2"))
     % 1 workers on Precision
     n_jgrid  =83;
     jret     =48;
@@ -218,7 +225,7 @@ elseif(strcmp(st_param_group, "default_dense") || contains(st_param_group, 'defa
     n_eta_H_grid=7; % 9; % No. of grid points for persistent labor productivity shocks
     n_eta_S_grid=3; % 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
     n_kidsgrid=5; % No. of grid points for children (0 to 4+ children)
-elseif(strcmp(st_param_group, "default_base") || contains(st_param_group, 'default_base_'))    
+elseif(strcmp(st_param_group, "default_base") || contains(st_param_group, 'default_base_'))
     n_jgrid  =42; % Age runs from 18 to 100 (a period is 2 years)
     jret=25;
     n_agrid  =40; % No. of grid points for assets
@@ -226,7 +233,7 @@ elseif(strcmp(st_param_group, "default_base") || contains(st_param_group, 'defau
     n_eta_S_grid=3; % 1; % No. of grid points for spousal labor productivity shocks (=1 corresponds to no spousal shocks)
     n_kidsgrid=5; % No. of grid points for children (0 to 4+ children)
 % elseif(strcmp(st_param_group, "default_small53"))
-elseif(strcmp(st_param_group, "default_small53") || contains(st_param_group, 'default_small53_'))    
+elseif(strcmp(st_param_group, "default_small53") || contains(st_param_group, 'default_small53_'))
     n_jgrid   =18; % Age runs from 18 to 100 (16 periods of 5 years + terminal)
     jret      =13;
     n_agrid   =25;
@@ -273,13 +280,13 @@ end
 
 %% Education Groups
 % How many education groups to solve for
-% it_edu_select, which "column" to select out. 
+% it_edu_select, which "column" to select out.
 if(strcmp(st_edu_simu_type, "both"))
     n_educgrid=2;
     it_edu_select=NaN;
 %     if(~contains(st_param_group, "_e2"))
 %        error('st_param_group should contain e2')
-%     end    
+%     end
     run('snw_hh_spousal_income_generator_bothlow');
 elseif(strcmp(st_edu_simu_type, "low"))
     n_educgrid=1;
@@ -289,7 +296,7 @@ elseif(strcmp(st_edu_simu_type, "low"))
         error('st_param_group should contain e1l')
     end
     run('snw_hh_spousal_income_generator_bothlow');
-elseif(strcmp(st_edu_simu_type, "high"))    
+elseif(strcmp(st_edu_simu_type, "high"))
 
 %     % discovered bug
 %     n_educgrid=2;
@@ -306,7 +313,7 @@ elseif(strcmp(st_edu_simu_type, "high"))
         error('st_param_group should contain e1h')
     end
     run('snw_hh_spousal_income_generator_high');
-    
+
 end
 
 
@@ -327,7 +334,8 @@ end
 
 xi=0.75; % Proportional reduction in income due to unemployment (xi=0 refers to 0 labor income; xi=1 refers to no drop in labor income)
 b=1; % Unemployment insurance replacement rate (b=0 refers to no UI benefits; b=1 refers to 100 percent labor income replacement)
-scaleconvertor = 58056;
+% scaleconvertor = 58056;
+scaleconvertor = fl_scaleconvertor;
 TR=100/scaleconvertor; % Value of a welfare check (can receive multiple checks). TO DO: Update with alternative values
 n_welfchecksgrid=45; % Number of welfare checks. 0 refers to 0 dollars; 51 refers to 5000 dollars
 
@@ -388,7 +396,7 @@ inc_grid=[inc_grid1;linspace(4+((7-4)/(n_incgrid-n_incgrid_aux)),7,n_incgrid-n_i
 
 %% Preferences, Technologies, etc.
 
-% Lockdown parameters, 1 if no lock-down, lower with lock-down. 
+% Lockdown parameters, 1 if no lock-down, lower with lock-down.
 % this is to model consumption changes during lock-down.
 invbtlock = 1;
 
@@ -457,8 +465,10 @@ cons_allocation_rule=2;
 
 % Social Security benefits, edu-specific
 SS=zeros(n_jgrid, 2);
-SS(jret:end, 1)=0.24433; % Average SS non-college 2005-2009 as a share of GDP per capita
-SS(jret:end, 2)=0.29263; % Average SS college 2005-2009 as a share of GDP per capita
+% SS(jret:end, 1)=0.24433; % Average SS non-college 2005-2009 as a share of GDP per capita
+SS(jret:end, 1) = fl_ss_non_college;
+% SS(jret:end, 2)=0.29263; % Average SS college 2005-2009 as a share of GDP per capita
+SS(jret:end, 2) = fl_ss_college;
 
 %% PARAM Mortality
 % Assume MORT_PROB will have 80 rows. Average based on Resulting Dataframes
@@ -670,7 +680,7 @@ stat_distr_educ(1,2)=0.3030; % College
 % stat_distr_educ(1,1)=0.0; % No college
 % stat_distr_educ(1,2)=1.0; % College
 
-% if(strcmp(st_edu_simu_type, "high"))    
+% if(strcmp(st_edu_simu_type, "high"))
 %     stat_distr_educ(1,1)=0.0; % No college
 %     stat_distr_educ(1,2)=1.0; % College
 % end
@@ -761,10 +771,10 @@ if ~isnan(it_edu_select)
     SS = SS(:, it_edu_select);
     epsilon = epsilon(:, it_edu_select);
     pi_kids = pi_kids(:, :, :, it_edu_select, :);
-    
+
     stat_distr_educ = stat_distr_educ(:, it_edu_select);
     stat_distr_married = stat_distr_married(it_edu_select, :);
-    stat_distr_kids = stat_distr_kids(it_edu_select, :, :);    
+    stat_distr_kids = stat_distr_kids(it_edu_select, :, :);
 end
 
 %% Set Parameter Maps
@@ -803,6 +813,7 @@ mp_params_preftechpricegov('a2_covidyr_manna_heaven') = a2_covidyr_manna_heaven;
 mp_params_preftechpricegov('a2_covidyr_tax_fully_pay') = a2_covidyr_tax_fully_pay;
 
 % mp_params_preftechpricegov('a2_mana_heaven') = a2_mana_heaven;
+mp_params_preftechpricegov('it_yrs_per_period') = it_yrs_per_period;
 mp_params_preftechpricegov('jret') = jret;
 mp_params_preftechpricegov('Bequests') = Bequests;
 mp_params_preftechpricegov('bequests_option') = bequests_option;

@@ -79,7 +79,7 @@ params_group = values(mp_params, ...
 [fl_stimulus_adult_first, fl_stimulus_child_first, ...
     fl_stimulus_adult_second, fl_stimulus_child_second] = params_group{:};
 
-%% Collect welfare check functions
+%% Collect stimulus check functions
 % Collection cell
 cl_fc_welfare_checks = cell([n_kidsgrid, n_marriedgrid]);
 

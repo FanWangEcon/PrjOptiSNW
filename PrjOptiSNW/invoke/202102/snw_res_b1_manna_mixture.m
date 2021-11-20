@@ -17,15 +17,15 @@ clear all;
 
 % The two mixture beta values
 ls_fl_beta_val = [0.60, 0.95];
-ls_fl_beta_val = [0.95];
+% ls_fl_beta_val = [0.95];
 % Solve for HS and College for each type
 ls_it_edu_simu_type = [1, 2];
 % Biden check (3rd check)
 
-st_biden_or_trump = 'trumpchk';
-st_biden_or_trump = 'bchklock';
+% st_biden_or_trump = 'trumpchk';
+% st_biden_or_trump = 'bchklock';
 st_biden_or_trump = 'bidenchk';
-st_biden_or_trump = 'bchknoui';
+% st_biden_or_trump = 'bchknoui';
 
 % Solve for beta and edu combinations
 for fl_beta_val = ls_fl_beta_val
@@ -52,12 +52,12 @@ for fl_beta_val = ls_fl_beta_val
         end
         
         % param group name
-%         st_param_group_base = 'default_tiny';
+        st_param_group_base = 'default_tiny';
         % st_param_group_base = 'default_small53';
         % st_param_group_base = 'default_dense';
         % st_param_group_base = 'default_docdense';
         % st_param_group_base = 'default_moredense_a65zh133zs5';
-        st_param_group_base = 'default_moredense_a65zh266zs5';
+%         st_param_group_base = 'default_moredense_a65zh266zs5';
         st_param_group = [st_param_group_base st_param_group_suffix];
         % get parametesr
         mp_params = snw_mp_param(st_param_group, false, 'tauchen', false, 8, 8, mp_more_inputs);

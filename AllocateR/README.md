@@ -1,3 +1,18 @@
+# README 2021-11-18 09:12
+
+## Work Flow for RR JEDC
+
+**Step 1**
+
+Solve the dynamic programming problem for several four beta and education groups separately.
+
+Code: PrjOptiSNW\invoke\202111\snw_res_b1_manna_mixture_arp.m
+
+**Step 2**
+
+
+
+# Prior README
 This folder contains Allocation Files that take advantage of the PrjOptiAlloc Project.
 
 1. First, open up three files in alloc_discrete_fun, feasible, feasible_threshold as well as optimal, all three files

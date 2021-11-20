@@ -47,7 +47,7 @@
 %    is the value for all future periods. When this program is called with
 %    V_VFI_FIX, the resource equation will use the unemployment shock
 %    information. Output results will be the same as from the V_VFI_FIX,
-%    because. 
+%    because.
 %
 %    [V_VFI,AP_VFI,CONS_VFI,EXITFLAG_VFI] =
 %    SNW_VFI_MAIN_BISEC_VEC(MP_PARAMS, MP_CONTROLS, V_VFI_FIX,
@@ -61,7 +61,7 @@
 %    a good approximation because 2019 information is higherly correlated
 %    with 2020 information. Using 2019 information would involve
 %    significant code modifications and is more time consuming, because
-%    lagged income is not tracked. 
+%    lagged income is not tracked.
 %
 %    See also SNWX_VFI_MAIN, SNW_MP_CONTROL, SNW_MP_PARAM
 %
@@ -71,7 +71,7 @@ function [varargout]=snw_vfi_main_bisec_vec(varargin)
 
 %% Default and Parse
 if (~isempty(varargin))
-    
+
     bl_covid_year = false;
     if (length(varargin)==1)
         [mp_params] = varargin{:};
@@ -79,20 +79,20 @@ if (~isempty(varargin))
     elseif (length(varargin)==2)
         [mp_params, mp_controls] = varargin{:};
     elseif (length(varargin)==3)
-        [mp_params, mp_controls, V_VFI_POSTSHOCK] = varargin{:};                
+        [mp_params, mp_controls, V_VFI_POSTSHOCK] = varargin{:};
     elseif (length(varargin)==4)
-        [mp_params, mp_controls, V_VFI_POSTSHOCK, cl_fc_welfare_checks] = varargin{:};                
+        [mp_params, mp_controls, V_VFI_POSTSHOCK, cl_fc_welfare_checks] = varargin{:};
     end
-    
+
     if (length(varargin)==3 || length(varargin)==4)
         bl_covid_year = true;
     end
-    
+
 else
-    
+
     clc;
     bl_covid_year = false;
-    
+
     mp_more_inputs = containers.Map('KeyType','char', 'ValueType','any');
     mp_more_inputs('st_edu_simu_type') = 'both';
     mp_params = snw_mp_param('default_tiny', false, 'tauchen', false, 8, 8, mp_more_inputs);
@@ -100,7 +100,7 @@ else
 %     mp_params = snw_mp_param('default_tiny_e1l', false, 'tauchen', false, 8, 8, mp_more_inputs);
 %     mp_more_inputs('st_edu_simu_type') = 'high';
 %     mp_params = snw_mp_param('default_tiny_e2h', false, 'tauchen', false, 8, 8, mp_more_inputs);
-    
+
     mp_controls = snw_mp_control('default_test');
     false;
 
@@ -169,7 +169,7 @@ if(gamma == 1)
     f_util = @(c,hh_size) invbtlock.*(log(c./(hh_size.^hh_power)));
     f_du_da = @(c,hh_size) invbtlock.*((-1)./(c));
 else
-    f_util = @(c,hh_size) invbtlock.*(((c./(hh_size.^hh_power)).^(1-gamma)-1)./(1-gamma));
+    f_util = @(c,hh_size) invbtlock.*(((c./(hh_size.^hh_power)).^(1-gamma))./(1-gamma));
     f_du_da = @(c,hh_size) invbtlock.*((-(hh_size.^(hh_power.*(gamma-1))))./(c.^gamma));
 end
 
@@ -215,10 +215,10 @@ end
 
 % Solve for value function and policy functions by means of backwards induction
 for j=ar_j_seq % Age
-    
+
     % Age Timer
     if (bl_print_vfi) tm_vfi_age = tic; end
-    
+
     % A1. Generate the Resources Matrix
     mn_resources = zeros(n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
     % mn_resources_stimulus_share = zeros(n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
@@ -231,12 +231,12 @@ for j=ar_j_seq % Age
         % match up with column order after reshape(mn_ev_ap_z, n_agrid, [])
         for kids=1:n_kidsgrid % Number of kids
             for married=1:n_marriedgrid % Marital status
-                
+
                 % Get stimulus equation as a function of income
                 if (length(varargin)==4)
                     fc_stimulus_check_firstsecond = cl_fc_welfare_checks{kids, married};
                 end
-                
+
                 for educ=1:n_educgrid % Educational level
                     for eta=1:n_etagrid % Productivity
 
@@ -247,21 +247,21 @@ for j=ar_j_seq % Age
                                 theta, r, agrid, epsilon, eta_H_grid, SS, Bequests, bequests_option,...
                                 xi,b);
                             % do not earn one hundred percent
-                            fl_earn_ratio = (xi+b*(1-xi));                            
+                            fl_earn_ratio = (xi+b*(1-xi));
                         else
                             [inc,earn]=snw_hh_individual_income(j,a,eta,educ,...
                                 theta, r, agrid, epsilon, eta_H_grid, SS, Bequests, bequests_option);
                             fl_earn_ratio = 1;
                         end
-                        
+
                         % Spousal income and overall resources
-                        spouse_inc=snw_hh_spousal_income(j,educ,kids,earn,SS(j,educ), jret);                                                
+                        spouse_inc=snw_hh_spousal_income(j,educ,kids,earn,SS(j,educ), jret);
                         resources = (1+r)*(agrid(a)+Bequests*(bequests_option-1)) ...
                                     + epsilon(j,educ)*theta*exp(eta_H_grid(eta))*fl_earn_ratio ...
                                     + SS(j,educ) ...
                                     + (married-1)*spouse_inc*exp(eta_S_grid(eta))*fl_earn_ratio ...
                                     - max(0,snw_tax_hh(inc,(married-1)*spouse_inc*exp(eta_S_grid(eta))*fl_earn_ratio,a2));
-                        
+
                         % Total income, adjust based on stimulus checks
                         if (length(varargin)==4)
                             int_tot = inc+(married-1)*spouse_inc*exp(eta_S_grid(eta))*fl_earn_ratio;
@@ -270,10 +270,10 @@ for j=ar_j_seq % Age
                             resources = resources + fl_stimulus_model_dollars;
                             % mn_resources_stimulus_share(a, eta, educ, married, kids) = fl_stimulus_model_dollars/resources;
                         end
-                        
+
                         % Store resources to matrix
                         mn_resources(a, eta, educ, married, kids) = resources;
-                        
+
                         % Non-asset position Counter
                         it_z_ctr = it_z_ctr + 1;
                         mn_z_ctr(a, eta, educ, married, kids) = it_z_ctr;
@@ -308,13 +308,13 @@ for j=ar_j_seq % Age
     mn_ev_ap_z = zeros(n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 
     if (j~=n_jgrid)
-           
+
         if (length(varargin)==3 || length(varargin)==4)
             V_VFI_FUTURE = V_VFI_POSTSHOCK;
         else
             V_VFI_FUTURE = V_VFI;
         end
- 
+
         for educ=1:n_educgrid % Educational level
             for married=1:n_marriedgrid % Marital status
 
@@ -340,7 +340,7 @@ for j=ar_j_seq % Age
                 mn_ev19_jem = reshape(mt_ev19_jem, [n_agrid, n_etagrid, 1, 1, n_kidsgrid]);
                 mn_ev_ap_z(:, :, educ, married, :) = mn_ev19_jem;
             end
-        end        
+        end
 
         % B1. z specific EV Slope: EV(ap,z)/d(ap)
         mn_deri_dev_dap = diff(mn_ev_ap_z, 1)./diff(agrid);
@@ -410,7 +410,7 @@ for j=ar_j_seq % Age
                             if j==n_jgrid
 
                                 ap_VFI(j,a,eta,educ,married,kids)=0;
-                                                                
+
                                 if (length(varargin)==3 || length(varargin)==4)
                                     cons_VFI(j,a,eta,educ,married,kids) = snw_hh_consumption(...
                                         j,a,eta,educ,married,kids,ap_VFI(j,a,eta,educ,married,kids),...
@@ -421,7 +421,7 @@ for j=ar_j_seq % Age
                                     cons_VFI(j,a,eta,educ,married,kids) = snw_hh_consumption(...
                                         j,a,eta,educ,married,kids,ap_VFI(j,a,eta,educ,married,kids),...
                                         theta, r, agrid, epsilon, eta_H_grid, eta_S_grid, SS, Bequests, bequests_option,...
-                                        jret,a2);                                    
+                                        jret,a2);
                                 end
 
 
@@ -448,11 +448,11 @@ for j=ar_j_seq % Age
         if (length(varargin)==3 || length(varargin)==4)
             disp(strcat(['SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock: Age ' ...
                 num2str(j) ' of ' num2str(n_jgrid-1) ...
-                ', time-this-age:' num2str(tm_vfi_age_end)]));        
+                ', time-this-age:' num2str(tm_vfi_age_end)]));
         else
             disp(strcat(['SNW_VFI_MAIN_BISEC_VEC: Finished Age Group:' ...
                 num2str(j) ' of ' num2str(n_jgrid-1) ...
-                ', time-this-age:' num2str(tm_vfi_age_end)]));        
+                ', time-this-age:' num2str(tm_vfi_age_end)]));
         end
     end
 
@@ -488,7 +488,7 @@ if (bl_print_vfi_verbose)
     ff_container_map_display(mp_outcomes, 9, 9);
 end
 
-%% Return 
+%% Return
 varargout = cell(nargout,0);
 for it_k = 1:nargout
     if (it_k==1)
@@ -498,7 +498,7 @@ for it_k = 1:nargout
     elseif (it_k==3)
         ob_out_cur = cons_VFI;
     elseif (it_k==4)
-        mp_valpol_more = containers.Map('KeyType','char', 'ValueType','any');        
+        mp_valpol_more = containers.Map('KeyType','char', 'ValueType','any');
         mp_valpol_more('inc_VFI') = inc_VFI;
         mp_valpol_more('earn_VFI') = earn_VFI;
         mp_valpol_more('spouse_inc_VFI') = spouse_inc_VFI;

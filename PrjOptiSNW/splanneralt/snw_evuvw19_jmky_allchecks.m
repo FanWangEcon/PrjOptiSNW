@@ -214,6 +214,10 @@ else
 end
 
 %% Parse Model Parameters
+
+params_group = values(mp_params, {'gamma'});
+[gamma] = params_group{:};
+
 params_group = values(mp_params, ...
     {'n_welfchecksgrid', 'n_jgrid', 'n_marriedgrid', 'n_kidsgrid'});
 [n_welfchecksgrid, n_jgrid, n_marriedgrid, n_kidsgrid] = params_group{:};
@@ -255,12 +259,16 @@ if (~bl_load_mat || ~isfile(spt_mat_path))
     % Solve the Model to get V working and unemployed
     % solved with calibrated regular a2
     
-    if strcmp(st_biden_or_trump, 'bchklock')
+    if (strcmp(st_biden_or_trump, 'bchklock') || ...
+            strcmp(st_biden_or_trump, 'bchklkr2') || ...
+            strcmp(st_biden_or_trump, 'bcklknou'))
         invbtlock = mp_params('invbtlock');
         mp_params('invbtlock') = 1;
     end
     [V_ss,ap_ss,cons_ss] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
-    if strcmp(st_biden_or_trump, 'bchklock')
+    if (strcmp(st_biden_or_trump, 'bchklock') || ...
+            strcmp(st_biden_or_trump, 'bchklkr2') || ...            
+            strcmp(st_biden_or_trump, 'bcklknou'))
         mp_params('invbtlock') = invbtlock;
     end
     
@@ -277,7 +285,9 @@ if (~bl_load_mat || ~isfile(spt_mat_path))
     % 2020 if employed, same as steady state unless tax differs
     % 2020 V and C same as V_SS and cons_ss if tax the same
     if (mp_params('a2_covidyr') == mp_params('a2'))
-        if strcmp(st_biden_or_trump, 'bchklock')
+        if (strcmp(st_biden_or_trump, 'bchklock') || ...
+                strcmp(st_biden_or_trump, 'bchklkr2') || ...      
+                strcmp(st_biden_or_trump, 'bcklknou'))
             % need to resolve for MIT Shock Year 1 with LOCKDOWN
             [V_ss_2020, ~, cons_ss_2020] = ...
                 snw_vfi_main_bisec_vec(mp_params, mp_controls, V_ss);
@@ -323,7 +333,9 @@ if (~bl_load_mat || ~isfile(spt_mat_path))
         
     elseif (strcmp(st_biden_or_trump, 'bidenchk') || ...
             strcmp(st_biden_or_trump, 'bchklock') || ...
-            strcmp(st_biden_or_trump, 'bchknoui'))
+            strcmp(st_biden_or_trump, 'bchklkr2') || ...            
+            strcmp(st_biden_or_trump, 'bchknoui') || ...
+            strcmp(st_biden_or_trump, 'bcklknou'))
         % Use steady-state continuation value, to solve for optimal choices
         % given stimulus checks
         % Assume manna-from-heaven, (1) same tax in year-1 of covid as under
@@ -515,7 +527,7 @@ for inc_group=1:n_incgrid
         end
     end
 end
-Output(:,8) = ev19_jmky_allchecks(:);
+Output(:,8) = snw_hh_welfare(ev19_jmky_allchecks(:), gamma);
 Output(:,9) = ec19_jmky_allchecks(:);
 
 %% F2. Drop Zero Mass Rows

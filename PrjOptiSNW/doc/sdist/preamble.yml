@@ -50,6 +50,7 @@
   description: |
     Simulate the life cycle distributions. This is the fully vectorized version of [snw_ds_main()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/sdist/snw_ds_main.m).
     Given distributions, [snw_ds_aggregation()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/sdist/snw_ds_aggregation.m) provides aggregate statistics.
+    Distribution of individuals by age induced by age-specific mortality probability.
   core :
     - package: PrjOptiSNW
       code: |

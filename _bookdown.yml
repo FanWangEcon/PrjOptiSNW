@@ -27,6 +27,7 @@ rmd_files:
 
   - PrjOptiSNW/doc/svalpolunemploy/main.Rmd
   - PrjOptiSNW/doc/svalpolunemploy/snwx_vfi_unemp_bisec_vec.Rmd
+  - PrjOptiSNW/doc/svalpolunemploy/snwx_v08p08_jaeemk.Rmd
   - PrjOptiSNW/doc/svalpolstimulus/main.Rmd
   - PrjOptiSNW/doc/svalpolstimulus/snwx_vfi_bisec_vec_stimulus.Rmd
 
@@ -42,11 +43,14 @@ rmd_files:
 
   - PrjOptiSNW/doc/splannerjaeemk/main.Rmd
   - PrjOptiSNW/doc/splannerjaeemk/snwx_evuvw20_jaeemk.Rmd
-  - PrjOptiSNW/doc/splannerjaeemk/snwx_evuvw19_jaeemk.Rmd
+  - PrjOptiSNW/doc/splannerjaeemk/snwx_evuvw19_jaeemk_foc.Rmd
+  - PrjOptiSNW/doc/splannerjaeemk/snwx_v08_jaeemk.Rmd
+  - PrjOptiSNW/doc/splannerjaeemk/snwx_evuvw07_jaeemk_foc.Rmd
 
   - PrjOptiSNW/doc/splannerjmky/main.Rmd
   - PrjOptiSNW/doc/splannerjmky/snwx_evuvw19_jmky.Rmd
   - PrjOptiSNW/doc/splannerjmky/snwx_evuvw19_jmky_allchecks.Rmd
+  - PrjOptiSNW/doc/splannerjmky/snwx_evuvw07_jmky_allchecks.Rmd
 
   - PrjOptiSNW/doc/fgov/main.Rmd
   - PrjOptiSNW/doc/fgov/snwx_find_tax_rate.Rmd
@@ -56,6 +60,7 @@ rmd_files:
   - PrjOptiSNW/doc/calibrate/main.Rmd
   - PrjOptiSNW/doc/calibrate/snwx_calibrate_beta_norm_gdp.Rmd
   - PrjOptiSNW/doc/calibrate/snwx_calibrate_lockdown_c.Rmd
+  - PrjOptiSNW/doc/calibrate/snwx_calibrate_2009_b.Rmd
 
   - PrjOptiSNW/doc/stats/main.Rmd
   - PrjOptiSNW/doc/stats/snwx_evuvw19_jaeemk_mky.Rmd

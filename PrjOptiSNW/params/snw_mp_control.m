@@ -5,12 +5,12 @@
 %    same container map
 %
 %    MP_CONTROLS = SNW_MP_CONTROL(ST_PARAM_GROUP)
-%    generates default parameters for the type ST_PARAM_GROUP. 
+%    generates default parameters for the type ST_PARAM_GROUP.
 %
 %    MP_CONTROLS = SNW_MP_CONTROL(ST_PARAM_GROUP, bl_print_mp_controls) generates
 %    default parameters for the type ST_PARAM_GROUP, display parameter map
 %    details if bl_print_mp_controls is true.
-%    
+%
 %    See also SNWX_MP_CONTROLS
 %
 
@@ -18,23 +18,23 @@
 function varargout = snw_mp_control(varargin)
 %% Parse Main Inputs and Set Defaults
 if (~isempty(varargin))
-    
+
     if (length(varargin)==1)
         st_param_group = varargin{:};
         bl_print_mp_controls = false;
     elseif (length(varargin)==2)
         [st_param_group, bl_print_mp_controls] = varargin{:};
     end
-    
+
 else
-    
-    st_param_group = 'default_base';   
-    st_param_group = 'default_test';   
+
+    st_param_group = 'default_base';
+    st_param_group = 'default_test';
     bl_print_mp_controls = true;
-    
+
 end
 
-%% Control Optimization 
+%% Control Optimization
 %amin=0;
 %amax=agrid(end);
 A_aux=[];
@@ -46,11 +46,11 @@ nonlcon=[];
 options=optimoptions('fmincon','Display', 'off');
 options2=optimoptions('fsolve','Display','off');
 
-%% Control Calibration 
+%% Control Calibration
 err=1;
 tol=0.005;
 
-%% Control What to Calculate 
+%% Control What to Calculate
 bl_compute_drv_stats = true;
 
 %% Control Profiling and Display
@@ -70,14 +70,17 @@ bl_print_evuvw19_jymk = true;
 bl_print_evuvw19_jmky_mass = true;
 bl_print_evuvw19_jmky_allchecks = true;
 bl_print_find_tax_rate = true;
- 
-if (strcmp(st_param_group, 'default_test')) 
+bl_print_v08p08_jaeemk = true;
+bl_print_calibrate_2009 = true;
+bl_print_v08_jaeemk = true;
+
+if (strcmp(st_param_group, 'default_test'))
     bl_print_ds_verbose = true;
     bl_print_ds_aggregation_verbose = true;
     bl_print_vfi_verbose = true;
     bl_print_a4chk_verbose = true;
     bl_print_vu_vw_verbose = true;
-    bl_print_v_planner_verbose = true;    
+    bl_print_v_planner_verbose = true;
     bl_print_precompute_verbose = true;
     bl_print_evuvw20_jaeemk_verbose = true;
     bl_print_evuvw19_jaeemk_verbose = true;
@@ -85,6 +88,10 @@ if (strcmp(st_param_group, 'default_test'))
     bl_print_evuvw19_jmky_mass_verbose = true;
     bl_print_evuvw19_jmky_allchecks_verbose = true;
     bl_print_find_tax_rate_verbose = true;
+    bl_print_v08p08_jaeemk_verbose = true;
+    bl_print_calibrate_2009_verbose = true;
+    bl_print_v08_jaeemk_verbose = true;
+
 else
     bl_print_ds_verbose = false;
     bl_print_ds_aggregation_verbose = false;
@@ -99,9 +106,13 @@ else
     bl_print_evuvw19_jmky_mass_verbose = false;
     bl_print_evuvw19_jmky_allchecks_verbose = false;
     bl_print_find_tax_rate_verbose = false;
+    bl_print_v08p08_jaeemk_verbose = false;
+    bl_print_calibrate_2009_verbose = false;
+    bl_print_v08_jaeemk_verbose = false;
+
 end
 
-%% Control Optimization 
+%% Control Optimization
 mp_minimizer_controls = containers.Map('KeyType', 'char', 'ValueType', 'any');
 
 mp_minimizer_controls('A_aux') = A_aux;
@@ -144,7 +155,7 @@ mp_display('bl_print_vu_vw_verbose') = bl_print_vu_vw_verbose;
 
 mp_display('bl_print_v_planner') = bl_print_v_planner;
 mp_display('bl_print_v_planner_verbose') = bl_print_v_planner_verbose;
- 
+
 mp_display('bl_print_precompute') = bl_print_precompute;
 mp_display('bl_print_precompute_verbose') = bl_print_precompute_verbose;
 
@@ -166,12 +177,22 @@ mp_display('bl_print_evuvw19_jmky_allchecks_verbose') = bl_print_evuvw19_jmky_al
 mp_display('bl_print_find_tax_rate') = bl_print_find_tax_rate;
 mp_display('bl_print_find_tax_rate_verbose') = bl_print_find_tax_rate_verbose;
 
+mp_display('bl_print_v08p08_jaeemk') = bl_print_v08p08_jaeemk;
+mp_display('bl_print_v08p08_jaeemk_verbose') = bl_print_v08p08_jaeemk_verbose;
+
+mp_display('bl_print_calibrate_2009') = bl_print_calibrate_2009;
+mp_display('bl_print_calibrate_2009_verbose') = bl_print_calibrate_2009_verbose;
+
+mp_display('bl_print_v08_jaeemk') = bl_print_v08_jaeemk;
+mp_display('bl_print_v08_jaeemk_verbose') = bl_print_v08_jaeemk_verbose;
+
+
 %% Combine Maps
 mp_controls = [mp_minimizer_controls; mp_m4check_controls; ...
     mp_calibrate; mp_compute_stats; mp_profile; mp_display];
 mp_controls('mp_params_name') = string(st_param_group);
 
-%% Print 
+%% Print
 if (bl_print_mp_controls)
     ff_container_map_display(mp_controls);
 end
@@ -188,13 +209,13 @@ for it_k = 1:nargout
     elseif (it_k==4)
         ob_out_cur = mp_calibrate;
     elseif (it_k==5)
-        ob_out_cur = mp_compute_stats;        
+        ob_out_cur = mp_compute_stats;
     elseif (it_k==6)
-        ob_out_cur = mp_profile;        
+        ob_out_cur = mp_profile;
     elseif (it_k==7)
-        ob_out_cur = mp_display;        
+        ob_out_cur = mp_display;
     elseif (it_k==8)
-        ob_out_cur = mp_store;        
+        ob_out_cur = mp_store;
     end
     varargout{it_k} = ob_out_cur;
 end

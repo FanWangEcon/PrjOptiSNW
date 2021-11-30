@@ -35,8 +35,17 @@ if (strcmp(st_computer, 'fan'))
      if (exist('D:/Dropbox (UH-ECON)', 'dir')>0)
          spt_dropbox_root = fullfile('D:/Dropbox (UH-ECON)/PrjNygaardSorensenWang/');
          spt_rootlocal_root = fullfile('G:/repos/');
-     elseif (exist('C:/Users/fan/Documents/Dropbox (UH-ECON)/', 'dir')>0)
+     elseif (exist('C:/Users/fan/Documents/Dropbox (UH-ECON)/PrjNygaardSorensenWang/', 'dir')>0)
          spt_dropbox_root = fullfile('C:/Users/fan/Documents/Dropbox (UH-ECON)/PrjNygaardSorensenWang/');
+         spt_rootlocal_root = fullfile('C:/Users/fan/');
+     else
+         % Windows local computer does not have dropbox folder with the project, store under user documents
+         if (exist('C:/Users/fan/PrjNygaardSorensenWang/', 'dir')>0)
+             % do nothing.
+         else
+             mkdir('C:/Users/fan/PrjNygaardSorensenWang/');
+         end
+         spt_dropbox_root = fullfile('C:/Users/fan/PrjNygaardSorensenWang/');
          spt_rootlocal_root = fullfile('C:/Users/fan/');
      end
 end

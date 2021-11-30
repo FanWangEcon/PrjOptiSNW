@@ -30,7 +30,7 @@
   core :
     - package: PrjOptiSNW
       code: |
-        [snwx_stimulus_checks()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/fgov/snw_stimulus_checks.m),
+        [snw_stimulus_checks()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/fgov/snw_stimulus_checks.m),
   date: 2021-05-14
   date_start: 2021-05-14
   output:
@@ -53,7 +53,7 @@
   core :
     - package: PrjOptiSNW
       code: |
-        [snwx_stimulus_checks_biden()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/fgov/snw_stimulus_checks_biden.m),
+        [snw_stimulus_checks_biden()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/fgov/snw_stimulus_checks_biden.m),
   date: 2021-05-14
   date_start: 2021-05-14
   output:

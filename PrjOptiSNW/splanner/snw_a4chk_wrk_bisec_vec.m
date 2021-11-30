@@ -57,7 +57,7 @@ if (~isempty(varargin))
     if (length(varargin)==3)
         [welf_checks, V_ss, cons_ss] = varargin{:};
     elseif (length(varargin)==4)
-        [welf_checks, mp_params, mp_controls, spt_mat_path] = varargin{:};                        
+        [welf_checks, mp_params, mp_controls, spt_mat_path] = varargin{:};
     elseif (length(varargin)==5)
         [welf_checks, V_ss, cons_ss, mp_params, mp_controls] = varargin{:};
     elseif (length(varargin)==8)
@@ -76,16 +76,17 @@ else
     mp_controls = snw_mp_control('default_test');
     [V_ss,~,cons_ss,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
 
+    mp_params('a2_covidyr') = mp_params('a2_covidyr_manna_heaven');
     mp_params('xi') = 1;
-    mp_params('b') = 0;            
+    mp_params('b') = 0;
     [V_ss_xi1b0,~,cons_ss_xi1b0,~] = snw_vfi_main_bisec_vec(mp_params, mp_controls, V_ss);
-    
+
     % the difference should be zero if xi=1 and b=0
     V_ss_diff = min(V_ss_xi1b0 - V_ss, [], 'all');
     if (V_ss_diff > 0)
         error('V_ss_diff > 0');
     end
-    
+
     % Solve for Value of One Period Unemployment Shock
     welf_checks = 1;
     TR = 100/58056;
@@ -118,6 +119,13 @@ params_group = values(mp_params, ...
 
 params_group = values(mp_params, {'TR'});
 [TR] = params_group{:};
+
+if (isKey(mp_params,'st_biden_or_trump'))
+    params_group = values(mp_params, {'st_biden_or_trump'});
+    [st_biden_or_trump] = params_group{:};
+else
+    st_biden_or_trump = 'bidenchk';
+end
 
 %% Parse Model Controls
 % Minimizer Controls
@@ -210,27 +218,55 @@ end
 
 % C1. Change matrix order so asset becomes the first dimension
 % Note consumption is in per-capita terms
-if exist('spt_mat_path','var')
-    load(spt_mat_path, 'V_ss_2020');
+if (strcmp(st_biden_or_trump, 'bushchck'))
+
+    if exist('spt_mat_path','var')
+        load(spt_mat_path, 'V_2008');
+    else
+        V_2008 = V_ss;
+    end
+    mn_v_ad1 = permute(V_2008, [2,1,3,4,5,6]);
+    if exist('spt_mat_path','var')
+        clear V_2008
+    end
+    % mn_c_ad1 = permute(cons_ss./mn_hhsize, [2,1,3,4,5,6]);
+    if exist('spt_mat_path','var') && ~bl_print_a4chk_verbose
+        load(spt_mat_path, 'cons_2008');
+    else
+        cons_2008 = cons_ss;
+    end
+    mn_c_ad1 = permute(cons_2008, [2,1,3,4,5,6]);
+    if exist('spt_mat_path','var') && ~bl_print_a4chk_verbose
+        clear cons_2008
+    end
+    mn_a_aux_bisec_ad1 = permute(mn_a_aux_bisec, [2,1,3,4,5,6]);
+    clear mn_a_aux_bisec
+
 else
-    V_ss_2020 = V_ss;
+
+    if exist('spt_mat_path','var')
+        load(spt_mat_path, 'V_ss_2020');
+    else
+        V_ss_2020 = V_ss;
+    end
+    mn_v_ad1 = permute(V_ss_2020, [2,1,3,4,5,6]);
+    if exist('spt_mat_path','var')
+        clear V_ss_2020
+    end
+    % mn_c_ad1 = permute(cons_ss./mn_hhsize, [2,1,3,4,5,6]);
+    if exist('spt_mat_path','var') && ~bl_print_a4chk_verbose
+        load(spt_mat_path, 'cons_ss_2020');
+    else
+        cons_ss_2020 = cons_ss;
+    end
+    mn_c_ad1 = permute(cons_ss_2020, [2,1,3,4,5,6]);
+    if exist('spt_mat_path','var') && ~bl_print_a4chk_verbose
+        clear cons_ss_2020
+    end
+    mn_a_aux_bisec_ad1 = permute(mn_a_aux_bisec, [2,1,3,4,5,6]);
+    clear mn_a_aux_bisec
+
 end
-mn_v_ad1 = permute(V_ss_2020, [2,1,3,4,5,6]);
-if exist('spt_mat_path','var')
-    clear V_ss_2020
-end
-% mn_c_ad1 = permute(cons_ss./mn_hhsize, [2,1,3,4,5,6]);
-if exist('spt_mat_path','var') && ~bl_print_a4chk_verbose
-    load(spt_mat_path, 'cons_ss_2020');
-else
-    cons_ss_2020 = cons_ss;
-end
-mn_c_ad1 = permute(cons_ss_2020, [2,1,3,4,5,6]);
-if exist('spt_mat_path','var') && ~bl_print_a4chk_verbose
-    clear cons_ss_2020
-end
-mn_a_aux_bisec_ad1 = permute(mn_a_aux_bisec, [2,1,3,4,5,6]);
-clear mn_a_aux_bisec
 
 % C2. Reshape so that asset is dim 1, all other dim 2
 mt_v_ad1 = reshape(mn_v_ad1, n_agrid, []);
@@ -253,16 +289,16 @@ ar_it_a_near_lower_idx = zeros([length(ar_a_aux_bisec),1]);
 ar_segments_points = linspace(1, length(ar_a_aux_bisec), 50);
 ar_segments_points = [1 round(ar_segments_points(2:49)) length(ar_a_aux_bisec)];
 for it_seg_ctr=2:length(ar_segments_points)
-    it_end_idx = ar_segments_points(it_seg_ctr);   
+    it_end_idx = ar_segments_points(it_seg_ctr);
     if (it_seg_ctr == 2)
         it_start_idx = 1;
     else
         it_start_idx = ar_segments_points(it_seg_ctr-1) + 1;
     end
     if (it_seg_ctr >= 2)
-        ar_it_a_near_lower_idx_seg = sum(agrid' <= ar_a_aux_bisec(it_start_idx:it_end_idx), 2);    
+        ar_it_a_near_lower_idx_seg = sum(agrid' <= ar_a_aux_bisec(it_start_idx:it_end_idx), 2);
         ar_it_a_near_lower_idx(it_start_idx:it_end_idx) = ar_it_a_near_lower_idx_seg;
-    end   
+    end
 end
 clear ar_it_a_near_lower_idx_seg
 % ar_it_a_near_lower_idx = sum(agrid' <= ar_a_aux_bisec, 2);
@@ -307,6 +343,7 @@ if (bl_timer)
     tm_end = toc(tm_start);
     st_complete_a4chk = strjoin(...
         ["Completed SNW_A4CHK_WRK_BISEC_VEC", ...
+         ['SNW_MP_PARAM=' char(mp_params('st_biden_or_trump'))], ...
          ['welf_checks=' num2str(welf_checks)], ...
          ['TR=' num2str(TR)], ...
          ['SNW_MP_PARAM=' char(mp_params('mp_params_name'))], ...
@@ -358,5 +395,5 @@ function [ar_root_zero, ar_a_aux_amz] = ...
     % difference equation f(a4chkchange)=0
     ar_root_zero = TR*welf_checks + ar_r_gap - ar_tax_gap;
     clear ar_r_gap ar_tax_gap
-    
+
 end

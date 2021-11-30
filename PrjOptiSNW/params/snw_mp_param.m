@@ -91,8 +91,8 @@ else
 
 %     st_param_group = 'default_base';
 %     st_param_group = 'default_verydense';
-%     st_param_group = 'default_dense';
-    st_param_group = 'default_tiny';
+    st_param_group = 'default_dense';
+%     st_param_group = 'default_tiny';
     st_shock_method = 'tauchen';
     bl_store_shock_trans = false;
     bl_print_mp_params = true;
@@ -106,9 +106,17 @@ mp_more_inputs = containers.Map('KeyType','char', 'ValueType','any');
 % for the low education group; high: simulate only for the high education
 % group.
 mp_more_inputs('st_edu_simu_type') = 'both'; % possible values are both, low, vs high
-mp_more_inputs('fl_ss_non_college') = 0.24433; % Average SS non-college 2005-2009 as a share of GDP per capita
-mp_more_inputs('fl_ss_college') = 0.29263; % Average SS college 2005-2009 as a share of GDP per capita
-mp_more_inputs('fl_scaleconvertor') = 58056; % Average SS college 2005-2009 as a share of GDP per capita
+
+% 0.24433 and 0.29263 were used in earlier paper versions for COVID
+% mp_more_inputs('fl_ss_non_college') = 0.24433; % Average SS non-college 2005-2009 as a share of GDP per capita
+% mp_more_inputs('fl_ss_college') = 0.29263; % Average SS college 2005-2009 as a share of GDP per capita
+% 0.220 and 0.266 are used in JEDC revsision
+mp_more_inputs('fl_ss_non_college') = 0.220; % Average SS non-college 2005-2009 as a share of GDP per capita
+mp_more_inputs('fl_ss_college') = 0.266; % Average SS college 2005-2009 as a share of GDP per capita
+
+% 58056 was used for COVID problem in earlier paper versions, 62502 is used in JEDC revisions.
+% mp_more_inputs('fl_scaleconvertor') = 58056; % Average SS college 2005-2009 as a share of GDP per capita
+mp_more_inputs('fl_scaleconvertor') = 62502; % Average SS college 2005-2009 as a share of GDP per capita
 
 if (length(varargin)>=7)
     mp_more_inputs = [mp_more_inputs; mp_more_inputs_ex];
@@ -313,9 +321,7 @@ elseif(strcmp(st_edu_simu_type, "high"))
         error('st_param_group should contain e1h')
     end
     run('snw_hh_spousal_income_generator_high');
-
 end
-
 
 %% Planning and Unemployment Parameters
 % ADDITIONAL PARAMETERS/VARIABLES for planner problem are given in the following sections:
@@ -394,6 +400,30 @@ n_incgrid_aux=round(0.75*n_incgrid);
 inc_grid1=linspace(0,4,n_incgrid_aux)'; % 4 refers to 4*58056=232224 dollars in 2012USD
 inc_grid=[inc_grid1;linspace(4+((7-4)/(n_incgrid-n_incgrid_aux)),7,n_incgrid-n_incgrid_aux)']; % 7 refers to 7*58056=406392 dollars in 2012USD
 
+%% Unemployment Parameters Bush Checks
+% We have unemployment rate by education and age groups, 2 education groups, 3 age groups
+% Marginal probability by the three age groups, 18-24, 25-54 and 55-56
+% ar_p_agegrp = c(0.1828,0.6404,0.1768);
+% Marginal probability (invariant across ages) for education groups
+% ar_p_edugrp <- c(0.6970,0.3029);
+% Conditional unemployment probability by age groups
+% ar_p_u_m_agegrp <- c(0.176083333, 0.083, 0.0659166667);
+% Conditional unemployment probability by education groups
+% ar_p_u_m_edugrp <- c(0.100098317, 0.0460833333);
+
+% Rows are age-groups, columns are education groups (c1=highschool, c2=college)
+pi_unemp_2009_edu_age =zeros(n_jgrid,2);
+% 18 to 24
+aux_mat=[0.1791864, 0.1251714];
+pi_unemp_2009_edu_age(1:7,:)=repmat(aux_mat, 7, 1);
+% 25 to 54
+aux_mat=[0.08610302, 0.03208803];
+pi_unemp_2009_edu_age(8:37,:)=repmat(aux_mat,30,1);
+% 55 to 65
+aux_mat=[0.06901968, 0.01500470];
+pi_unemp_2009_edu_age(38:48,:)=repmat(aux_mat,11,1);
+clear aux_mat
+
 %% Preferences, Technologies, etc.
 
 % Lockdown parameters, 1 if no lock-down, lower with lock-down.
@@ -449,6 +479,8 @@ end
 a2_covidyr_manna_heaven = a2;
 a2_covidyr_tax_fully_pay = 12.7176;
 a2_covidyr = NaN;
+a2_bushchkyr_2008 = a2;
+a2_greatrecession_2009 = a2;
 % a2_covidyr = a2_mana_heaven;
 a0 = 0.258;
 a1 = 0.768;
@@ -787,6 +819,7 @@ mp_params_covid_unemploy('n_welfchecksgrid') = n_welfchecksgrid;
 mp_params_covid_unemploy('pi_unemp') = pi_unemp_2020_april;
 mp_params_covid_unemploy('pi_unemp_2020_april') = pi_unemp_2020_april;
 mp_params_covid_unemploy('pi_unemp_2020_juneadj') = pi_unemp_2020_juneadj;
+mp_params_covid_unemploy('pi_unemp_2009_edu_age') = pi_unemp_2009_edu_age;
 
 mp_params_covid_unemploy('n_incgrid') = n_incgrid;
 mp_params_covid_unemploy('inc_grid') = inc_grid;
@@ -811,6 +844,8 @@ mp_params_preftechpricegov('a2') = a2;
 mp_params_preftechpricegov('a2_covidyr') = a2_covidyr;
 mp_params_preftechpricegov('a2_covidyr_manna_heaven') = a2_covidyr_manna_heaven;
 mp_params_preftechpricegov('a2_covidyr_tax_fully_pay') = a2_covidyr_tax_fully_pay;
+mp_params_preftechpricegov('a2_bushchkyr_2008') = a2_bushchkyr_2008;
+mp_params_preftechpricegov('a2_greatrecession_2009') = a2_greatrecession_2009;
 
 % mp_params_preftechpricegov('a2_mana_heaven') = a2_mana_heaven;
 mp_params_preftechpricegov('it_yrs_per_period') = it_yrs_per_period;

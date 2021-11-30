@@ -45,3 +45,28 @@
         in_header: '../../../hdga.html'
   always_allow_html: true
   urlcolor: blue
+
+- file: snwx_calibrate_2009_b
+  title: "UI Benefit Unemployment Lost Wage Recovery Parameter b Calibration"
+  titleshort: "UI Benefit Unemployment Lost Wage Recovery Parameter b Calibration"
+  description: |
+    The ratio of UI benefits to wages and salary is 2.1 percent in 2009. 0 < xi < 1 governs the duration of unemployment shock for those unemployed. This equals to 0.532 in 2009 (xi = 0 no wages earned).
+    We solve for total wage earnings from unemployed and employed in 2009, for employed, same as under steady-state. For unemployed, they lose (1 - xi) share of the wage they would otherwise have earned. Our unemployment probability in 2009 is conditional on age and edu groups (SNW_UNEMP_2008.m) computed based on rectiilnear restriction.
+    We know total UI amount (multiply its share of total "Wages and salary" by total "wages and salary". We know how much wage was lost due to xi. The ratio of these two levels is b, which is the parameter that is the share of lost-wage recovered.
+  core :
+    - package: PrjOptiSNW
+      code: |
+        [snw_calibrate_2009_b()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/calibrate/snw_calibrate_2009_b.m)
+  date: 2021-11-26
+  date_start: 2021-11-26
+  output:
+    pdf_document:
+      pandoc_args: '../../../_output_kniti_pdf.yaml'
+      includes:
+        in_header: '../../../preamble.tex'
+    html_document:
+      pandoc_args: '../../../_output_kniti_html.yaml'
+      includes:
+        in_header: '../../../hdga.html'
+  always_allow_html: true
+  urlcolor: blue

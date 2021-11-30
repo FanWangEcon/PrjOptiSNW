@@ -9,7 +9,7 @@
   core :
     - package: PrjOptiSNW
       code: |
-        [snwx_vfi_bisec_vec()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/svalpol/snw_vfi_main_bisec_vec.m)
+        [snw_vfi_bisec_vec()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/svalpol/snw_vfi_main_bisec_vec.m)
   date: 2020-08-07
   date_start: 2020-08-07
   output:

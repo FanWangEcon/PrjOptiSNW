@@ -85,6 +85,9 @@ if (~isempty(varargin))
     end
 
     if (length(varargin)==3 || length(varargin)==4)
+        % bl_covid_year is not named properly, should be bl_solving for special year
+        % So could be any year in which V is provided as 3rd parameter
+        % One year policy, specifically, allowing for tax variation in this special year for example
         bl_covid_year = true;
     end
 
@@ -95,7 +98,8 @@ else
 
     mp_more_inputs = containers.Map('KeyType','char', 'ValueType','any');
     mp_more_inputs('st_edu_simu_type') = 'both';
-    mp_params = snw_mp_param('default_tiny', false, 'tauchen', false, 8, 8, mp_more_inputs);
+%     mp_params = snw_mp_param('default_tiny', false, 'tauchen', false, 8, 8, mp_more_inputs);
+    mp_params = snw_mp_param('default_dense', false, 'tauchen', false, 8, 8, mp_more_inputs);
 %     mp_more_inputs('st_edu_simu_type') = 'low';
 %     mp_params = snw_mp_param('default_tiny_e1l', false, 'tauchen', false, 8, 8, mp_more_inputs);
 %     mp_more_inputs('st_edu_simu_type') = 'high';

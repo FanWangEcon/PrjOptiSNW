@@ -2,7 +2,7 @@
   title: "Policy and Value Functions Dynamic Life Cycle if Unemployed"
   titleshort: "Policy and Value Functions Dynamic Life Cycle if Unemployed"
   description: |
-    Solving the dynamic programming problem conditional on having an one period unemployment shock.
+    Solving the dynamic programming problem conditional on having an one period unemployment shock (MIT).
     There is an unemployment shock in 2020. We first solve for the policy and value functions without the unemployment shock.
     Using the value function from the world without the 2020 covid unemployment shock as future values, we solve for optimal choices in 2020 given a COVID unemployment shock.
     The COVID shock lowers the realization of household's stochastic income process proportionally, but the lost income might be replenished by unemployment benefits up to 100 percent. Unemployment benefits have to be paid for by taxes.
@@ -10,9 +10,34 @@
   core :
     - package: PrjOptiSNW
       code: |
-        [snwx_vfi_bisec_vec()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/svalpol/snw_vfi_main_bisec_vec.m)
+        [snw_vfi_bisec_vec()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/svalpol/snw_vfi_main_bisec_vec.m)
   date: 2020-08-07
   date_start: 2020-08-07
+  output:
+    pdf_document:
+      pandoc_args: '../../../_output_kniti_pdf.yaml'
+      includes:
+        in_header: '../../../preamble.tex'
+    html_document:
+      pandoc_args: '../../../_output_kniti_html.yaml'
+      includes:
+        in_header: '../../../hdga.html'
+  always_allow_html: true
+  urlcolor: blue
+
+- file: snwx_v08p08_jaeemk
+  title: "Policy and Value Functions Dynamic Life Cycle 2008 Given Expected Great Recession Unemployment"
+  titleshort: "Policy and Value Functions 2008 given 2009 Shock Expectation"
+  description: |
+    Solving the dynamic programming problem conditional on having an one period unemployment shock that is expected with known unemployment probability.
+    Unemployment probability is a function of the realized state-space next year, specifically, it is determined by age and education.
+    Bush 2008 checks were received by households in expectation of forth-coming unemployment shocks, ex-ante the realization of shocks. During COVID, the shocks were received ex-post the realization of shocks. In both cases, stimulus checks were determined based on ex-ante information.
+  core :
+    - package: PrjOptiSNW
+      code: |
+        [snw_v08p08_jaeemk()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/svalpol/snw_v08p08_jaeemk.m)
+  date: 2021-11-23
+  date_start: 2021-11-23
   output:
     pdf_document:
       pandoc_args: '../../../_output_kniti_pdf.yaml'

@@ -6,9 +6,32 @@
   core :
     - package: PrjOptiSNW
       code: |
-        [snw_evuvw19_jaeemk()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/splanneralt/snw_evuvw19_jaeemk.m)
-  date: 2020-08-07
+        [snw_evuvw19_jaeemk_foc()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/splanneralt/snw_evuvw19_jaeemk_foc.m)
+  date: 2021-11-29
   date_start: 2020-08-07
+  output:
+    pdf_document:
+      pandoc_args: '../../../_output_kniti_pdf.yaml'
+      includes:
+        in_header: '../../../preamble.tex'
+    html_document:
+      pandoc_args: '../../../_output_kniti_html.yaml'
+      includes:
+        in_header: '../../../hdga.html'
+  always_allow_html: true
+  urlcolor: blue
+
+- file: snwx_evuvw07_jaeemk
+  title: "Expected Value in 2007 Given Age, Savings, Shocks, Kids, Educaiton and Marriage"
+  titleshort: "Expected Value in 2007 Given Age, Savings, Shocks, Kids, Educaiton and Marriage"
+  description: |
+    Expected value and expected consumption from 2007 for a household at a particular age (18-99), savings level, shocks combinations, kids/education/marriage status, given 2007 optimal savings choices, income shock transition probability as well as household children count transition probabilities.
+  core :
+    - package: PrjOptiSNW
+      code: |
+        [snw_evuvw19_jaeemk_foc()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/splanneralt/snw_evuvw19_jaeemk_foc.m)
+  date: 2021-11-29
+  date_start: 2020-11-29
   output:
     pdf_document:
       pandoc_args: '../../../_output_kniti_pdf.yaml'
@@ -33,6 +56,30 @@
         [snw_evuvw20_jaeemk()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/splanneralt/snw_evuvw20_jaeemk.m)
   date: 2020-08-07
   date_start: 2020-08-07
+  output:
+    pdf_document:
+      pandoc_args: '../../../_output_kniti_pdf.yaml'
+      includes:
+        in_header: '../../../preamble.tex'
+    html_document:
+      pandoc_args: '../../../_output_kniti_html.yaml'
+      includes:
+        in_header: '../../../hdga.html'
+  always_allow_html: true
+  urlcolor: blue
+
+- file: snwx_v08_jaeemk
+  title: "2008 Value and Optimal Savings and Consumption Given Stimulus"
+  titleshort: "2008 Value and Optimal Savings and Consumption Given Stimulus"
+  description: |
+    Compute the difference in Value and Consumption under differing levels of Bush Stimulus. We assume that the stimulus is provided ex-ante of the 2009 great recession shocks, which are expected by households (not MIT shock as under COVID).
+    This is simialr to SNW_EVUVW20_JAEEMK, but for the 2008 Bush stimulus. SNW_V08P08_JAEEMK already solved for optimal policy and value functions in 2008, given expected unemployment shock in 2009. In this function, given some stimulus amount, we use SNW_A4CHK_WRK_BISEC_VEC to compute the updated optimal V and C in 2008 given the stimulus amount, based on the alues for V and C without stimulus computed by SNW_V08P08_JAEEMK.
+  core :
+    - package: PrjOptiSNW
+      code: |
+        [snw_v08_jaeemk()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/splanneralt/snw_v08_jaeemk.m)
+  date: 2021-11-28
+  date_start: 2021-11-28
   output:
     pdf_document:
       pandoc_args: '../../../_output_kniti_pdf.yaml'

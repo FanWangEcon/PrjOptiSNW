@@ -1,7 +1,10 @@
-%% SNW_STIMULUS_CHECKS_BIDEN Biden checks, not used in Matlab
-%    Biden checks, not ujsed in matlab
+%% SNW_STIMULUS_CHECKS_BIDEN Biden checks, demonstrative, not used
+%    Biden checks, not used in matlab, meaning matlab solution functions do
+%    not call this. There are separate R functions that implement the
+%    checks that are unrelated to this, this is just to graph out the
+%    stimulus schedule for visualization
 %
-%    See also SNWX_STIMULUS_CHECKS
+%    See also SNWX_STIMULUS_CHECKS_BIDEN
 %
 
 function [varargout] = snw_stimulus_checks_biden(varargin)
@@ -10,17 +13,17 @@ if (~isempty(varargin))
     % this relies on externally generated parameters, defaults do not have to be generated
     % if this file has to be invoked many times, then this saves time by avoiding
     % regenerating defaults over and over again
-    
+
     if (length(varargin) ==3)
         [it_kids, bl_marital, bl_visualize] = varargin{:};
     end
-    
+
 else
     close all;
-    
+
     bl_visualize = true;
     [it_kids, bl_marital] = deal(0,0);
-    
+
 end
 
 % Second round check
@@ -30,40 +33,40 @@ fc_stimulus_biden = snwi_stimulus_check(it_kids, bl_marital);
 if (bl_visualize)
     figure();
     hold on;
-    
+
     % Set bounds on the domain
     fl_x_lower = 0;
-    fl_x_higher = 220000;
-    
+    fl_x_higher = 250000;
+
     % Graph
     pl_check = fplot(fc_stimulus_biden, [fl_x_lower, fl_x_higher],...
         '-', 'Linewidth',2);
-    
+
     % Legend
     legend([pl_check], ...
-        {'Biden checks'}, ...
+        {'Biden American Rescue Plan checks'}, ...
         'Location','best',...
         'NumColumns',1,'FontSize',12,'TextColor','black');
-    
+
     % Add x-axis and y-axis
     pl_xline = xline(0);
     pl_yline = yline(0);
     pl_xline.HandleVisibility = 'off';
     pl_yline.HandleVisibility = 'off';
-    
+
     % Title and y and y-able
     title({'Biden stimulus check amounts as a function of household income (under consideration)',...
         ['Kids count = ' num2str(it_kids) '; marital status = ' num2str(bl_marital)]}, ...
         'Interpreter', "none");
     ylabel('Stimulus check amount');
     xlabel('income levels');
-    
+
     % Add grids
     grid on;
     grid minor;
 end
 
-%% Return 
+%% Return
 varargout = cell(nargout,0);
 for it_k = 1:nargout
     if (it_k==1)
@@ -125,7 +128,7 @@ if (~bl_marital && it_kids == 0)
 end
 
 % phaseout starts $112,500 for heads of household
-if (~bl_marital && it_kids == 1)    
+if (~bl_marital && it_kids == 1)
     fc_check_reduce = @(x) ((max(x - 112500,0))*fl_slope_m0k1);
 elseif (~bl_marital && it_kids == 2)
     fc_check_reduce = @(x) ((max(x - 112500,0))*fl_slope_m0k2);
@@ -211,7 +214,7 @@ if (~bl_marital && it_kids == 0)
 end
 
 % phaseout starts $112,500 for heads of household
-if (~bl_marital && it_kids == 1)    
+if (~bl_marital && it_kids == 1)
     fc_check_reduce = @(x) ((max(x - 112500,0))*fl_slope_m0k1);
 elseif (~bl_marital && it_kids == 2)
     fc_check_reduce = @(x) ((max(x - 112500,0))*fl_slope_m0k2);

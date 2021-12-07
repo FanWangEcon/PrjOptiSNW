@@ -55,8 +55,8 @@ else
     mp_more_inputs('fl_ss_non_college') = 0.225;
     mp_more_inputs('fl_ss_college') = 0.271;
     mp_more_inputs('fl_scaleconvertor') = 54831;
-    st_param_group = 'default_small';
-%     st_param_group = 'default_dense';
+%     st_param_group = 'default_small';
+    st_param_group = 'default_dense';
     mp_params = snw_mp_param(st_param_group, false, 'tauchen', false, 8, 8, mp_more_inputs);
     mp_controls = snw_mp_control('default_test');
 
@@ -81,6 +81,11 @@ end
 % solving for b, b=0 to get wages without b
 fl_b_zero = 0;
 mp_params('b') = 0;
+
+% if bl_unemp_head_only = TRUE, that means unemployment income loss only
+% computed for household head, otherwise, joint household head and spousal
+% income losses.
+bl_unemp_head_only = true;
 
 %% Parse Model Parameters
 params_group = values(mp_params, {'theta', 'r' , 'jret'});
@@ -128,7 +133,6 @@ end
 [V_ss, ap_ss, cons_ss] = snw_vfi_main_bisec_vec(mp_params, mp_controls);
 [Phi_true, Phi_adj_ss] = snw_ds_main_vec(mp_params, mp_controls, ap_ss, cons_ss);
 
-
 %% Solve 08 Policy and Value given 09 Unemployment shock
 % 09 has two states, employed or not (extensive), and if unemployed (intensive duration)
 
@@ -161,7 +165,7 @@ for j=1:n_jgrid
                         end
                         fl_unemp_edu_age = pi_unemp_2009_edu_age(it_age_grp, educ);
 
-                        % 2. Income and Wages employed
+                        % 2. Income and Wages employed earnings ratio given
                         % inc = SS + wages + interest earnings + bequest
                         % earn = wages
                         [inc, earn]=snw_hh_individual_income(j,a,eta,educ,...
@@ -171,6 +175,9 @@ for j=1:n_jgrid
                         earn_tot = earn+(married-1)*spouse_inc*exp(eta_S_grid(eta));
 
                         % 3. Income unemployed
+                        % xi and b, snw_hh_individual_income inc output
+                        % includes this, but earn output does not
+                        % fl_earn_ratio = (xi+b*(1-xi));
                         % inc_umemp = SS + wages*(xi+b*(1-xi)) + interest earnings + bequest
                         % earn_unemp = wages*(xi+b*(1-xi)), NOT multiplied by (xi+b*(1-xi))
                         [inc_umemp,earn_unemp]=snw_hh_individual_income(j,a,eta,educ,...
@@ -181,11 +188,20 @@ for j=1:n_jgrid
                         % Total household income and earnings under unemployment
                         % under earn_unemp_tot, note UI = 0, b = 0
                         % xi=0 means no wage earnings in 2009
-                        earn_unemp_tot = earn_unemp*(xi)+(married-1)*spouse_inc_unemp*exp(eta_S_grid(eta));
+                        if (bl_unemp_head_only)
+                            % If unemployment only hits houshold head
+                            earn_unemp_tot = earn_unemp*(xi)+(married-1)*spouse_inc_unemp*exp(eta_S_grid(eta));
+                        else
+                            % If unemployment hits household head + spouse both
+                            earn_unemp_tot = (earn_unemp+(married-1)*spouse_inc_unemp*exp(eta_S_grid(eta)))*xi;
+                        end
 
                         % 4. Collect results to mn Matrixes
+                        % Employed
                         mn_earn_tot(j,a,eta,educ,married,kids) = earn_tot*(1 - fl_unemp_edu_age);
+                        % unemployed household head earnings
                         mn_earn_unemp(j,a,eta,educ,married,kids) = (earn_unemp*(xi))*fl_unemp_edu_age;
+                        % unemployed household + spouse earnings
                         mn_earn_unemp_tot(j,a,eta,educ,married,kids) = earn_unemp_tot*fl_unemp_edu_age;
                         mn_earn_unemp_weighted(j,a,eta,educ,married,kids) = ...
                             fl_unemp_edu_age*earn_unemp_tot + (1 - fl_unemp_edu_age)*earn_tot;
@@ -213,19 +229,25 @@ fl_total_b_spending = fl_total_wage*fl_ratio_ui_benefits_to_wage;
 
 % 3. Total wage earning by household head unemployed (with unemployment duration xi)
 fl_total_wage_unemp_hhhead = sum(mn_earn_unemp_wgted, 'all');
+fl_total_wage_unemp_hhhead_and_spouse = sum(mn_earn_unemp_tot_wgted, 'all');
 
 % 4. Wages lost for unemployed household head
-fl_total_wage_unemp_hhhead_lost = (fl_total_wage_unemp_hhhead/xi)*(1-xi);
+if (bl_unemp_head_only)
+    fl_total_wage_unemp_lost = (fl_total_wage_unemp_hhhead/xi)*(1-xi);
+else
+    fl_total_wage_unemp_lost = (fl_total_wage_unemp_hhhead_and_spouse/xi)*(1-xi);
+end
 
 % 5. Compute the b, share of lost income recovered parameter.
-fl_b_calibrated_by_ui_share = fl_total_b_spending/fl_total_wage_unemp_hhhead_lost;
+fl_b_calibrated_by_ui_share = fl_total_b_spending/fl_total_wage_unemp_lost;
 
 % Gather statistics
 mp_stats_wage_ui_spending = containers.Map('KeyType', 'char', 'ValueType', 'any');
 mp_stats_wage_ui_spending('fl_total_wage') = fl_total_wage;
 mp_stats_wage_ui_spending('fl_total_b_spending') = fl_total_b_spending;
 mp_stats_wage_ui_spending('fl_total_wage_unemp_hhhead') = fl_total_wage_unemp_hhhead;
-mp_stats_wage_ui_spending('fl_total_wage_unemp_hhhead_lost') = fl_total_wage_unemp_hhhead_lost;
+mp_stats_wage_ui_spending('fl_total_wage_unemp_hhhead_and_spouse') = fl_total_wage_unemp_hhhead_and_spouse;
+mp_stats_wage_ui_spending('fl_total_wage_unemp_lost') = fl_total_wage_unemp_lost;
 mp_stats_wage_ui_spending('fl_b_calibrated_by_ui_share') = fl_b_calibrated_by_ui_share;
 
 %% Timing and Profiling End

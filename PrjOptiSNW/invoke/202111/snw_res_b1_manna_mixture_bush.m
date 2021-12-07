@@ -157,12 +157,12 @@ for it_solve_jedc_rr = ar_it_solve_jedc_rr
             mp_more_inputs('fl_scaleconvertor') = fl_scaleconvertor;
 
             % param group name
-%             st_param_group_base = 'default_tiny';
-            st_param_group_base = 'default_small53';
-            %         st_param_group_base = 'default_dense';
+            % st_param_group_base = 'default_tiny';
+            % st_param_group_base = 'default_small53';
+            % st_param_group_base = 'default_dense';
             % st_param_group_base = 'default_docdense';
             % st_param_group_base = 'default_moredense_a65zh133zs5';
-            % st_param_group_base = 'default_moredense_a65zh266zs5';
+            st_param_group_base = 'default_moredense_a65zh266zs5';
             st_param_group = [st_param_group_base st_param_group_suffix];
             % get parametesr
             mp_params = snw_mp_param(st_param_group, false, 'tauchen', false, 8, 8, mp_more_inputs);
@@ -187,8 +187,11 @@ for it_solve_jedc_rr = ar_it_solve_jedc_rr
             %% B3. Welfare Check Value And Numbers
             % The number of welfare checks to consider and the value of each checks
             TR=100/fl_scaleconvertor;
-            % Biden check: The current proposal by Congress is to give $1,400 to adults, $2,800 to married couples, and $1,400 per child
-            n_welfchecksgrid = 169;
+            % Bush check: The current proposal by Congress is to give $600
+            % to adults, $1200 to married couples, and $300 per child 97 =
+            % (3*4 + 6*2)*4 + 1, allowing for potentially quadrupling of
+            % stimulus
+            n_welfchecksgrid = 97;
             mp_params('TR') = TR;
             mp_params('n_welfchecksgrid') = n_welfchecksgrid;
 
@@ -223,9 +226,10 @@ for it_solve_jedc_rr = ar_it_solve_jedc_rr
             % different compared to the common slope of 5 dollar stimulus
             % reduction for each 100 dollar income increase under the Trump
             % policy.
+            % max phase out is slightly below 200k
             % fl_max_phaseout = 238000;
             %         fl_max_phaseout = 318000; % 7*58056 is 406392
-            fl_max_phaseout = 200000;
+            fl_max_phaseout = 225000;
             fl_multiple = fl_scaleconvertor;
             it_bin_dollar_before_phaseout = 500;
             it_bin_dollar_after_phaseout = 5000;

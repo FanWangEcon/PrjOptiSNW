@@ -196,7 +196,10 @@ for it_solve_jedc_rr = ar_it_solve_jedc_rr
             %% B3. Welfare Check Value And Numbers
             % The number of welfare checks to consider and the value of each checks
             TR=100/fl_scaleconvertor;
-            % Biden check: The current proposal by Congress is to give $1,400 to adults, $2,800 to married couples, and $1,400 per child
+            % Biden check: The current proposal by Congress is to give
+            % $1,400 to adults, $2,800 to married couples, and $1,400 per
+            % child 169 = (14*4 + 14*2)*2 + 1, allowing for potentially
+            % doubling of stimulus
             n_welfchecksgrid = 169;
             mp_params('TR') = TR;
             mp_params('n_welfchecksgrid') = n_welfchecksgrid;

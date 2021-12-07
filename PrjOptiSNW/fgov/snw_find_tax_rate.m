@@ -43,9 +43,9 @@ function a2=snw_find_tax_rate(varargin)
 %% Default and Parse Inputs
 
 if (~isempty(varargin))
-        
+    
     bl_load_existing = false;
-
+    
     if (length(varargin)==3)
         [mp_params, mp_controls, Covid_checks_per_capita] = varargin{:};
     elseif (length(varargin)==4)
@@ -59,30 +59,34 @@ if (~isempty(varargin))
 else
     
     clc;
-    clear all;    
-%             mp_params = snw_mp_param('default_tiny');
-%     mp_params = snw_mp_param('default_small');
-            mp_params = snw_mp_param('default_dense');
-    %     mp_params = snw_mp_param('default_moredense', false, 'tauchen', true, 8, 8);           
-%     mp_params = snw_mp_param('default_moredense_a65zh81zs5_e2m2', false, 'tauchen', true, 8, 8);
-    xi=0; % Proportional reduction in income due to unemployment (xi=0 refers to 0 labor income; xi=1 refers to no drop in labor income)
-    b=1; % Unemployment insurance replacement rate (b=0 refers to no UI benefits; b=1 refers to 100 percent labor income replacement)       
+    clear all;
+    %   mp_params = snw_mp_param('default_tiny');
+    %   mp_params = snw_mp_param('default_small');
+    mp_params = snw_mp_param('default_dense');
+    %   mp_params = snw_mp_param('default_docdense');
+    %   mp_params = snw_mp_param('default_base');
+    %   mp_params = snw_mp_param('default_moredense', false, 'tauchen', true, 8, 8);
+    %   mp_params = snw_mp_param('default_moredense_a65zh81zs5_e2m2', false, 'tauchen', true, 8, 8);
+    mp_params('beta') = 0.95;
+    xi=0.651; % Proportional reduction in income due to unemployment (xi=0 refers to 0 labor income; xi=1 refers to no drop in labor income)
+    b=1; % Unemployment insurance replacement rate (b=0 refers to no UI benefits; b=1 refers to 100 percent labor income replacement)
     mp_params('xi') = xi;
     mp_params('b') = b;
     
     mp_controls = snw_mp_control('default_test');
     
-    Covid_checks_per_capita = 18.7255856*100/58056;
-%     Covid_checks_per_capita = 0;
+    Covid_checks_per_capita = 18.7255856*100/62502;
+    %   Covid_checks_per_capita = 0;
     
-    mp_controls('bl_print_vfi') = true;
+    mp_controls('bl_print_vfi') = false;
     mp_controls('bl_print_vfi_verbose') = false;
-    mp_controls('bl_print_ds') = true;
+    mp_controls('bl_print_ds') = false;
     mp_controls('bl_print_ds_verbose') = false;
+    mp_controls('bl_print_find_tax_rate') = true;
+    mp_controls('bl_print_find_tax_rate_verbose') = true;
     
     bl_adjust_a0 = false;
-    
-    bl_load_existing = true;
+    bl_load_existing = false;
     
 end
 
@@ -160,7 +164,7 @@ else
     
     % Savings per capita
     A_per_capita = A_agg/sum(Phi_true, 'all');
-        
+    
     %% B2. Cutoffs
     cutoffs = snw_wage_cutoffs(Phi_true, theta, epsilon, eta_H_grid, n_agrid, n_etagrid, n_educgrid, n_marriedgrid, n_kidsgrid, jret);
     
@@ -189,10 +193,10 @@ SS_spend=0;
 UI_benefits=0;
 
 for j=1:n_jgrid
-
+    
     % Age Timer
     if (bl_print_find_tax_rate) tm_ds_age = tic; end
-
+    
     for a=1:n_agrid
         for eta=1:n_etagrid
             for educ=1:n_educgrid
@@ -211,11 +215,11 @@ for j=1:n_jgrid
                         elseif wages>cutoffs(4)
                             wage_ind=5;
                         end
-                                                
-%                         [~,earn]=individual_income(j,a,eta,educ); % What individual earnings are before we account for the drop in earnings due to unemployment
+                        
+                        %                         [~,earn]=individual_income(j,a,eta,educ); % What individual earnings are before we account for the drop in earnings due to unemployment
                         [~,earn]=snw_hh_individual_income(j,a,eta,educ,...
                             theta, r, agrid, epsilon, eta_H_grid, SS, Bequests, bequests_option);
-%                         spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ)); % What average spousal earnings are before we account for the drop in earnings due to unemployment
+                        %                         spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ)); % What average spousal earnings are before we account for the drop in earnings due to unemployment
                         spouse_inc=snw_hh_spousal_income(j,educ,kids,earn,SS(j,educ), jret);
                         
                         inc_aux=pi_unemp(j,wage_ind)*epsilon(j,educ)*theta*exp(eta_H_grid(eta))*xi+(1-pi_unemp(j,wage_ind))*epsilon(j,educ)*theta*exp(eta_H_grid(eta))+r*(agrid(a)+Bequests*(bequests_option-1)); % Income (excluding Social Security benefits) after accounting for potential earnings drop in case of unemployment
@@ -224,7 +228,10 @@ for j=1:n_jgrid
                         
                         SS_spend=SS_spend+sum(Phi_true(j,a,eta,educ,married,kids)*SS(j,educ)); % Total spending on Social Security
                         
-                        UI_benefits=UI_benefits+sum(Phi_true(j,a,eta,educ,married,kids))*pi_unemp(j,wage_ind)*( epsilon(j,educ)*theta*exp(eta_H_grid(eta))+(married-1)*spouse_inc*exp(eta_S_grid(eta)) )*b*(1-xi); % Total spending on unemployment insurance benefits
+                        % 2021 12/05, the first commented out line below
+                        % includes spousal income, but our model only has 
+%                         UI_benefits=UI_benefits+sum(Phi_true(j,a,eta,educ,married,kids))*pi_unemp(j,wage_ind)*( epsilon(j,educ)*theta*exp(eta_H_grid(eta))+(married-1)*spouse_inc*exp(eta_S_grid(eta)) )*b*(1-xi); % Total spending on unemployment insurance benefits
+                        UI_benefits=UI_benefits+sum(Phi_true(j,a,eta,educ,married,kids))*pi_unemp(j,wage_ind)*(epsilon(j,educ)*theta*exp(eta_H_grid(eta)))*b*(1-xi); % Total spending on unemployment insurance benefits
                         
                     end
                 end
@@ -232,28 +239,34 @@ for j=1:n_jgrid
         end
     end
     
-   if (bl_print_find_tax_rate)
-       tm_ds_age_end = toc(tm_ds_age);
-       disp(strcat(['SNW_FIND_TAX_RATE: Aggregation, Finished Age Group:' ...
-           num2str(j) ' of ' num2str(n_jgrid) ...
-           ', time-this-age:' num2str(tm_ds_age_end)]));
-   end
+    if (bl_print_find_tax_rate)
+        tm_ds_age_end = toc(tm_ds_age);
+        disp(strcat(['SNW_FIND_TAX_RATE: Aggregation, Finished Age Group:' ...
+            num2str(j) ' of ' num2str(n_jgrid) ...
+            ', time-this-age:' num2str(tm_ds_age_end)]));
+    end
     
 end
 
 %% D. Tax Adjustments to Pay for Government Bills
 % Find value of a2 that balances government budget
-tol=10^-4;
+tol = 10^-4;
+tol_gap = 10^-4;
 err=1;
-
+err_last=99;
+err_gap=1;
 a2_guess_orig=mp_params('a2_covidyr_manna_heaven');
 a2 = mp_params('a2_covidyr_manna_heaven');
 
+% Income aggregation
+
+
+% Tax parameters
 a0_guess_orig=mp_params('a0');
 a0 = mp_params('a0');
 
 it=0;
-while err>tol
+while err>tol && err_gap>tol_gap
     
     it=it+1;
     Tax_revenues_aux=0;
@@ -271,9 +284,9 @@ while err>tol
                             
                             % spouse_inc=spousal_income(j,educ,kids,earn,SS(j,educ)); % What average spousal earnings are before we account for the drop in earnings due to unemployment
                             spouse_inc=snw_hh_spousal_income(j,educ,kids,earn,SS(j,educ), jret);
-
-%                             Tax_revenues_aux=Tax_revenues_aux+Phi_true(j,1:n_agrid,eta,educ,married,kids)*...
-%                                 max(0,Tax(inc,(married-1)*spouse_inc*exp(eta_S_grid(eta))*(xi+b*(1-xi)))); % Tax revenues                            
+                            
+                            % Tax_revenues_aux = Tax_revenues_aux+Phi_true(j,1:n_agrid,eta,educ,married,kids)*...
+                            %                     max(0,Tax(inc,(married-1)*spouse_inc*exp(eta_S_grid(eta))*(xi+b*(1-xi)))); % Tax revenues
                             Tax_revenues_aux=Tax_revenues_aux+Phi_true(j,a,eta,educ,married,kids)*...
                                 max(0,snw_tax_hh(inc,(married-1)*spouse_inc*exp(eta_S_grid(eta))*(xi+b*(1-xi)), a2, a0)); % Tax revenues
                             
@@ -288,16 +301,20 @@ while err>tol
     if (bl_adjust_a0)
         a0=a0*((fl_total_costs/Tax_revenues_aux)^0.75); % Find value of a0 that balances government budget
     else
+        a2_last = a2;
         a2=a2*((fl_total_costs/Tax_revenues_aux)^0.75); % Find value of a2 that balances government budget
-    end        
+    end
     err=abs((Tax_revenues_aux/(fl_total_costs))-1);
-
+    err_gap = abs(err-err_last);
+    err_last = err;
     if (bl_print_find_tax_rate)
         st_tax_iter = strjoin(...
             ["SNW_FIND_TAX_RATE tax a2 or a0 adjustments", ...
             ['a2=' num2str(a2)] ...
             ['a0=' num2str(a0)] ...
             ['err=' num2str(err)] ...
+            ['fl_total_costs=' num2str(fl_total_costs)] ...
+            ['Tax_revenues_aux=' num2str(Tax_revenues_aux)] ...
             ], ";");
         disp(st_tax_iter);
     end
@@ -312,7 +329,7 @@ if (bl_print_find_tax_rate)
     disp(['xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx']);
     disp(['xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx']);
     disp(['xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx']);
-        
+    
     name='SNW_FIND_TAX_RATE: Number of a2-adjustments (for taxation) used to balance the government budget= ';
     name2=[name,num2str(it)];
     disp(name2);
@@ -324,8 +341,8 @@ if (bl_print_find_tax_rate)
         ['a0_new=' num2str(a0)] ...
         ['a0_guess_orig=' num2str(a0_guess_orig)] ...
         ], ";");
-    disp(st_tax_iter);    
-
+    disp(st_tax_iter);
+    
     st_tax_iter = strjoin(...
         ["SNW_FIND_TAX_RATE info B", ...
         ['Y_inc_agg=' num2str(Y_inc_agg)] ...
@@ -341,7 +358,7 @@ if (bl_print_find_tax_rate)
         ['Covid_checks_per_capita=' num2str(Covid_checks_per_capita)] ...
         ['Covid_checks_share_of_GDP=' num2str(Covid_checks_share_of_GDP)] ...
         ], ";");
-    disp(st_tax_iter);    
+    disp(st_tax_iter);
     
     st_tax_iter = strjoin(...
         ["SNW_FIND_TAX_RATE info D", ...

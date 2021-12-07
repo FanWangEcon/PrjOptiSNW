@@ -22,15 +22,18 @@
 %    See also SNWX_TAX_LIABILITY
 %
 
-function [mn_taxable_income, mn_tax_liability] =snw_tax_liability(varargin)
+function [mn_taxable_income, mn_tax_liability] = snw_tax_liability(varargin)
 
 if (~isempty(varargin))
 
     bl_graph = false;
+    bl_verbose = false;
     if (length(varargin)==1)
         [ar_income] = varargin{:};
     elseif (length(varargin)==2)
         [ar_income, bl_graph] = varargin{:};
+    elseif (length(varargin)==2)
+        [ar_income, bl_graph, bl_verbose] = varargin{:};
     end
 
 else
@@ -40,11 +43,13 @@ else
     clear all;
 
     bl_graph = true;
+    bl_verbose = true;
     ar_income=linspace(0,400000,5)';
     ar_income = [20000, 30000, 50000, 70000];
     ar_income=linspace(20000,70000,100);
     ar_income=linspace(0,200000,100);
-%     ar_income = [20000];
+    ar_income=linspace(0,200000,5);
+    %     ar_income = [20000];
 
 end
 
@@ -136,10 +141,15 @@ for y=1:length(ar_income)
     end
 end
 
-% disp(mn_taxable_income);
-% disp(mn_tax_liability);
+%% D. Show Results and Visualization
 
-%% D. Visualization
+if (bl_verbose)
+    disp('mn_taxable_income');
+    disp(mn_taxable_income);
+    disp('mn_tax_liability');
+    disp(mn_tax_liability);
+end
+
 % stimulus = max(max(300*(1+married), min(tax_liablity, 600*(1+married))) +  kids*300 - max(0, (ar_income - 75000*(1+married))*0.05), 0)
 if (bl_graph)
     % Figure 1

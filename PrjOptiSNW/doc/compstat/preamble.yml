@@ -44,3 +44,26 @@
         in_header: '../../../hdga.html'
   always_allow_html: true
   urlcolor: blue
+
+- file: snwx_comp_beta_low_vs_high
+  title: "Value and Consumption Low vs Higher Discount Factor Comparison"
+  titleshort: "Value and Consumption Low vs Higher Discount Factor Comparison"
+  description: |
+    This function solves for the V(states) for individuals at lower and higher discount factor . We allow for  heterogeneity in the model to consider both patient and impatient households. The key difference is that patient households are more willing to save and will consume less.
+  core :
+    - package: PrjOptiSNW
+      code: |
+        [snw_vfi_bisec_vec()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/svalpol/snw_vfi_main_bisec_vec.m)
+  date: 2021-12-07
+  date_start: 2021-12-07
+  output:
+    pdf_document:
+      pandoc_args: '../../../_output_kniti_pdf.yaml'
+      includes:
+        in_header: '../../../preamble.tex'
+    html_document:
+      pandoc_args: '../../../_output_kniti_html.yaml'
+      includes:
+        in_header: '../../../hdga.html'
+  always_allow_html: true
+  urlcolor: blue

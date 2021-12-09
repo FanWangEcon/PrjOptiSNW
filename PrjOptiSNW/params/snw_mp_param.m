@@ -829,6 +829,14 @@ mp_params_covid_unemploy('fl_stimulus_child_first') = fl_stimulus_child_first;
 mp_params_covid_unemploy('fl_stimulus_adult_second') = fl_stimulus_adult_second;
 mp_params_covid_unemploy('fl_stimulus_child_second') = fl_stimulus_child_second;
 
+% 2021-12-01 10:38
+% This key is used for print-out and other purposes, most functions don't
+% actually need it, but some print it out so that we know during
+% invocation, which check problem is been solved, so purely for logging
+% purposes. When calling the programs from the core invoke files, these are
+% set based on whether the Bush, Trump, or Biden problems are been solved.
+mp_params_covid_unemploy('st_biden_or_trump') = 'st_biden_or_trump_undefined';
+
 mp_params_preftechpricegov = containers.Map('KeyType', 'char', 'ValueType', 'any');
 mp_params_preftechpricegov('invbtlock') = invbtlock;
 mp_params_preftechpricegov('gamma') = gamma;

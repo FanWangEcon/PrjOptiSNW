@@ -1,0 +1,259 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><meta name="generator" content="MATLAB 2020b"><title>2007 Age, Income, Kids, Marry EV and EC All Checks (Bush Checks)</title><style type="text/css">.rtcContent { padding: 30px; } .S0 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 28.8px; min-height: 0px; white-space: pre-wrap; color: rgb(213, 80, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 24px; font-weight: 400; text-align: left;  }
+.S1 { margin: 2px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: pre-wrap; color: rgb(0, 0, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: 400; text-align: left;  }
+.S2 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 20px; min-height: 0px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: 700; text-align: left;  }
+.CodeBlock { background-color: #F7F7F7; margin: 10px 0 10px 0;}
+.S3 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 0px none rgb(0, 0, 0); border-radius: 4px 4px 0px 0px; padding: 6px 45px 0px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S4 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 0px none rgb(0, 0, 0); border-radius: 0px; padding: 0px 45px 0px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S5 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 0px 0px 4px 4px; padding: 0px 45px 4px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S6 { margin: 10px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: pre-wrap; color: rgb(0, 0, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: 400; text-align: left;  }
+.S7 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 0px; padding: 0px 45px 4px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S8 { color: rgb(64, 64, 64); padding: 10px 0px 6px 17px; background: rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box border-box; font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px; overflow-x: hidden; line-height: 17.234px;  }
+.embeddedOutputsErrorElement {min-height: 18px; max-height: 250px; overflow: auto;}
+.embeddedOutputsErrorElement.inlineElement {}
+.embeddedOutputsErrorElement.rightPaneElement {}
+.embeddedOutputsWarningElement{min-height: 18px; max-height: 250px; overflow: auto;}
+.embeddedOutputsWarningElement.inlineElement {}
+.embeddedOutputsWarningElement.rightPaneElement {}
+.diagnosticMessage-wrapper {font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 12px;}
+.diagnosticMessage-wrapper.diagnosticMessage-warningType {color: rgb(255,100,0);}
+.diagnosticMessage-wrapper.diagnosticMessage-warningType a {color: rgb(255,100,0); text-decoration: underline;}
+.diagnosticMessage-wrapper.diagnosticMessage-errorType {color: rgb(230,0,0);}
+.diagnosticMessage-wrapper.diagnosticMessage-errorType a {color: rgb(230,0,0); text-decoration: underline;}
+.diagnosticMessage-wrapper .diagnosticMessage-messagePart,.diagnosticMessage-wrapper .diagnosticMessage-causePart {white-space: pre-wrap;}
+.diagnosticMessage-wrapper .diagnosticMessage-stackPart {white-space: pre;}
+.embeddedOutputsTextElement,.embeddedOutputsVariableStringElement {white-space: pre; word-wrap: initial; min-height: 18px; max-height: 250px; overflow: auto;}
+.textElement,.rtcDataTipElement .textElement {padding-top: 3px;}
+.embeddedOutputsTextElement.inlineElement,.embeddedOutputsVariableStringElement.inlineElement {}
+.inlineElement .textElement {}
+.embeddedOutputsTextElement.rightPaneElement,.embeddedOutputsVariableStringElement.rightPaneElement {min-height: 16px;}
+.rightPaneElement .textElement {padding-top: 2px; padding-left: 9px;}</style></head><body><div class = rtcContent><h1  class = 'S0'><span>2007 Age, Income, Kids, Marry EV and EC All Checks (Bush Checks)</span></h1><div  class = 'S1'><span>This is the example vignette for function: </span><a href = "https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/splanneralt/snw_evuvw19_jmky_allchecks.m"><span style=' font-weight: bold;'>snw_evuvw19_jmky_allchecks</span></a><span> from the </span><a href = "https://fanwangecon.github.io/PrjOptiSNW/"><span style=' font-weight: bold;'>PrjOptiSNW Package</span></a><span style=' font-weight: bold;'>. </span><span>2019 integrated over VU and VW</span></div><div  class = 'S1'><span>The function </span><a href = "https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/splanneralt/snw_evuvw19_jmky_allchecks.m"><span style=' font-weight: bold;'>snw_evuvw19_jmky_allchecks</span></a><span> was initiall designed to handle the COVID problem, the revised version of the program handles both the 2007/8/9 Bush stimulus check problem, and the 2019/20/21 Trump and Biden stimulus check problems.</span></div><div  class = 'S1'><span>The key features of the Bush stimulus checks are: i) determined based on 2007 information; ii) checks received in 2008, when the great recession has not arrived yet, but all expect it to in 2009; iii) the Great Recession hits in 2009, putting some people, based on education and age, into unemployment state with a shared unemployment duration and lost income and also UI benefits (calibrated to match overall UI share of wages); iv) the economy returns to steady-state in 2010.</span></div><h2  class = 'S2'><span>Test SNW_EVUVW19_JMKY_ALLCHECKS Parameters for Bush Checks</span></h2><div  class = 'S1'><span>Save a result that is low in memory cost so that it can be loaded quickly for various allocation tests. Turn off Various Printing Controls. Call function with wide income bins to reduce memory storage and retrievel costs</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre;"><span>clear </span><span class="warning_squiggle_rte1865859824" style="color: rgb(170, 4, 249);">all</span><span>;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span style="color: rgb(2, 128, 9);">% Start mp contorls</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_controls = snw_mp_control(</span><span style="color: rgb(170, 4, 249);">'default_test'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span style="color: rgb(2, 128, 9);">% Solve for Unemployment Values</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_controls(</span><span style="color: rgb(170, 4, 249);">'bl_timer'</span><span>) = true;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_controls(</span><span style="color: rgb(170, 4, 249);">'bl_print_vfi'</span><span>) = false;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_controls(</span><span style="color: rgb(170, 4, 249);">'bl_print_vfi_verbose'</span><span>) = false;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_controls(</span><span style="color: rgb(170, 4, 249);">'bl_print_ds'</span><span>) = false;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_controls(</span><span style="color: rgb(170, 4, 249);">'bl_print_ds_verbose'</span><span>) = true;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_controls(</span><span style="color: rgb(170, 4, 249);">'bl_print_precompute'</span><span>) = false;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_controls(</span><span style="color: rgb(170, 4, 249);">'bl_print_precompute_verbose'</span><span>) = false;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_controls(</span><span style="color: rgb(170, 4, 249);">'bl_print_a4chk'</span><span>) = false;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_controls(</span><span style="color: rgb(170, 4, 249);">'bl_print_a4chk_verbose'</span><span>) = false;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_controls(</span><span style="color: rgb(170, 4, 249);">'bl_print_v08p08_jaeemk'</span><span>) = false;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_controls(</span><span style="color: rgb(170, 4, 249);">'bl_print_v08p08_jaeemk_verbose'</span><span>) = false;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_controls(</span><span style="color: rgb(170, 4, 249);">'bl_print_v08_jaeemk'</span><span>) = false;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_controls(</span><span style="color: rgb(170, 4, 249);">'bl_print_v08_jaeemk_verbose'</span><span>) = false;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_controls(</span><span style="color: rgb(170, 4, 249);">'bl_print_evuvw20_jaeemk'</span><span>) = false;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_controls(</span><span style="color: rgb(170, 4, 249);">'bl_print_evuvw20_jaeemk_verbose'</span><span>) = false;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_controls(</span><span style="color: rgb(170, 4, 249);">'bl_print_evuvw19_jaeemk'</span><span>) = false;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_controls(</span><span style="color: rgb(170, 4, 249);">'bl_print_evuvw19_jaeemk_verbose'</span><span>) = false;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_controls(</span><span style="color: rgb(170, 4, 249);">'bl_print_evuvw19_jmky'</span><span>) = false;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>mp_controls(</span><span style="color: rgb(170, 4, 249);">'bl_print_evuvw19_jmky_verbose'</span><span>) = false;</span></span></div></div></div><div  class = 'S6'><span>Dense default, and unemployment parameters:</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre;"><span style="color: rgb(2, 128, 9);">% default dense load</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span style="color: rgb(2, 128, 9);">% 1. generate MP_PARAMS specific to 2008 stimulus</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span style="color: rgb(2, 128, 9);">% Use non-default values for Bush Stimulus</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_more_inputs = containers.Map(</span><span style="color: rgb(170, 4, 249);">'KeyType'</span><span>,</span><span style="color: rgb(170, 4, 249);">'char'</span><span>, </span><span style="color: rgb(170, 4, 249);">'ValueType'</span><span>,</span><span style="color: rgb(170, 4, 249);">'any'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_more_inputs(</span><span style="color: rgb(170, 4, 249);">'fl_ss_non_college'</span><span>) = 0.225;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_more_inputs(</span><span style="color: rgb(170, 4, 249);">'fl_ss_college'</span><span>) = 0.271;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>fl_p50_hh_income_07 = 54831;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_more_inputs(</span><span style="color: rgb(170, 4, 249);">'fl_scaleconvertor'</span><span>) = fl_p50_hh_income_07;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span style="color: rgb(2, 128, 9);">% st_param_group = 'default_small';</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span style="color: rgb(2, 128, 9);">% st_param_group = 'default_dense';</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>st_param_group = </span><span style="color: rgb(170, 4, 249);">'default_docdense'</span><span>;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_params = snw_mp_param(st_param_group, false, </span><span style="color: rgb(170, 4, 249);">'tauchen'</span><span>, false, 8, 8, mp_more_inputs);</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span style="color: rgb(2, 128, 9);">% mp_params = snw_mp_param('default_docdense')</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_params(</span><span style="color: rgb(170, 4, 249);">'beta'</span><span>) = 0.95;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>fl_scaleconvertor = 62502;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_more_inputs(</span><span style="color: rgb(170, 4, 249);">'fl_scaleconvertor'</span><span>) = fl_scaleconvertor;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span style="color: rgb(2, 128, 9);">% Unemployment</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_params(</span><span style="color: rgb(170, 4, 249);">'xi'</span><span>) = 0.532;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_params(</span><span style="color: rgb(170, 4, 249);">'b'</span><span>) = 0.37992;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_params(</span><span style="color: rgb(170, 4, 249);">'a2_covidyr'</span><span>) = mp_params(</span><span style="color: rgb(170, 4, 249);">'a2_greatrecession_2009'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_params(</span><span style="color: rgb(170, 4, 249);">'TR'</span><span>) = 100/fl_p50_hh_income_07;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span style="color: rgb(2, 128, 9);">% Check Count: 89 checks to allow for both the first and the second round</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>n_welfchecksgrid = 3;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_params(</span><span style="color: rgb(170, 4, 249);">'n_welfchecksgrid'</span><span>) = n_welfchecksgrid;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>mp_params(</span><span style="color: rgb(170, 4, 249);">'a2_covidyr'</span><span>) = mp_params(</span><span style="color: rgb(170, 4, 249);">'a2_greatrecession_2009'</span><span>);</span></span></div></div></div><div  class = 'S6'><span>Income bins:</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre;"><span style="color: rgb(2, 128, 9);">% Income Grid</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span style="color: rgb(2, 128, 9);">% 4 refers to 4*58056=232224 dollars in 2012USD</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span style="color: rgb(2, 128, 9);">% max 7 refers to 7*58056=406392 dollars in 2012USD</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span style="color: rgb(2, 128, 9);">% all phase out = (4400/5)*100 + 150000 = 238000</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span style="color: rgb(2, 128, 9);">% if 500 dollar interval, need 476 inc groups before 238000  </span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span style="color: rgb(2, 128, 9);">% if have 85 percent of points betwen 238000, </span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>fl_max_phaseout = 238000;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>fl_multiple = fl_scaleconvertor;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>it_bin_dollar_before_phaseout = 5000;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>it_bin_dollar_after_phaseout = 25000;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>fl_thres = fl_max_phaseout/fl_multiple;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>inc_grid1 = linspace(0,fl_thres,(fl_max_phaseout)/it_bin_dollar_before_phaseout);</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>inc_grid2 = linspace(fl_thres, 7, (7*fl_multiple-fl_max_phaseout)/it_bin_dollar_after_phaseout); </span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>inc_grid=sort(unique([inc_grid1 inc_grid2]'));</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>mp_params(</span><span style="color: rgb(170, 4, 249);">'n_incgrid'</span><span>) = length(inc_grid);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>mp_params(</span><span style="color: rgb(170, 4, 249);">'inc_grid'</span><span>) = inc_grid;</span></span></div></div></div><h2  class = 'S2'><span>SNW_EVUVW19_JMKY_ALLCHECKS Low Storage Invoke for Bush Checks</span></h2><div  class = 'S1'><span>The simulation here (dense) requires less than 10 GB of memory with 8 workers (8 threads needed), simulating over 88 checks takes with 8 workers </span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre;"><span>st_biden_or_trump = </span><span style="color: rgb(170, 4, 249);">'bushchck'</span><span>;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>st_solu_type = </span><span style="color: rgb(170, 4, 249);">'bisec_vec'</span><span>;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>bl_parfor = false;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>it_workers = 1;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>bl_export = false; </span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>bl_load_mat = false;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>snm_suffix = [</span><span style="color: rgb(170, 4, 249);">'_test_ybin' </span><span>num2str(it_bin_dollar_before_phaseout)];</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>[ev19_jmky_allchecks, ec19_jmky_allchecks, output] = </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    snw_evuvw19_jmky_allchecks(mp_params, mp_controls, </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    st_biden_or_trump, st_solu_type, </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    bl_parfor, it_workers, </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S7'><span style="white-space: pre;"><span>    bl_export, bl_load_mat, snm_suffix);</span></span></div><div  class = 'S8'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="491527A0" data-testid="output_0" data-width="1128" data-height="1655" data-hashorizontaloverflow="false" style="width: 1158px; max-height: 261px;"><div class="textElement">Completed SNW_VFI_MAIN_BISEC_VEC;SNW_MP_PARAM=default_docdense;SNW_MP_CONTROL=default_test;time=330.7856
+Completed SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock;SNW_MP_PARAM=default_docdense;SNW_MP_CONTROL=default_test;time=320.2784
+Completed SNW_VFI_MAIN_BISEC_VEC 1 Period Unemp Shock;SNW_MP_PARAM=default_docdense;SNW_MP_CONTROL=default_test;time=518.3883
+Completed SNW_V08P08_JAEEMK;SNW_MP_PARAM=default_docdense;SNW_MP_CONTROL=default_test;time=524.1155
+sum of Phi_adj:83
+sum of Phi_true:45.7931
+sum of Phiss:83
+summ of diff of Phiss and Phi_adj:-3.4775e-12
+summ of diff of Phiss and Phi_true:37.2069
+Completed SNW_DS_MAIN_VEC;SNW_MP_PARAM=default_docdense;SNW_MP_CONTROL=default_test;time=1254.4898
+Trump Check, do not need to resolve distribution
+Wage quintile cutoffs=0.4645     0.71528      1.0335      1.5632
+Completed SNW_HH_PRECOMPUTE;SNW_MP_PARAM=default_docdense;SNW_MP_CONTROL=default_test;time cost=265.7184
+SNW_EVUVW19_JMKY_MASS Start
+Completed SNW_EVUVW19_JMKY_MASS;SNW_MP_PARAM=default_docdense;SNW_MP_CONTROL=default_test;time=5.264
+----------------------------------------
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+CONTAINER NAME: mp_outcomes ND Array (Matrix etc)
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                     <strong>i</strong>    <strong>idx</strong>    <strong>ndim</strong>     <strong>numel</strong>      <strong>rowN</strong>      <strong>colN</strong>        <strong>sum</strong>         <strong>mean</strong>          <strong>std</strong>        <strong>coefvari</strong>    <strong>min</strong>       <strong>max</strong>   
+                     <strong>_</strong>    <strong>___</strong>    <strong>____</strong>    <strong>________</strong>    <strong>____</strong>    <strong>_________</strong>    <strong>______</strong>    <strong>__________</strong>    <strong>__________</strong>    <strong>________</strong>    <strong>___</strong>    <strong>_________</strong>
+
+    <strong>Phi_true     </strong>    1     1      6      4.37e+07     83     5.265e+05    45.793    1.0479e-06    1.5289e-05      14.59      0     0.0062366
+    <strong>Phi_true_jmky</strong>    2     2      4         43460     82           530    45.787     0.0010535     0.0031057     2.9479      0      0.073265
+
+SNW_EVUVW19_JMKY_ALLCHECKS Start
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+Completed SNW_A4CHK_WRK_BISEC_VEC;SNW_MP_PARAM=bushchck;welf_checks=0;TR=0.0018238;SNW_MP_PARAM=default_docdense;SNW_MP_CONTROL=default_test;time cost=78.1172
+Completed SNW_V08_JAEEMK;SNW_MP_PARAM=default_docdense;SNW_MP_CONTROL=default_test;timeEUEC=2.81e-05
+Completed SNW_EVUVW19_JAEEMK_FOC;st_biden_or_trump=bushchck;SNW_MP_PARAM=default_docdense;SNW_MP_CONTROL=default_test;time=15.4712
+Completed SNW_EVUVW19_JMKY;SNW_MP_PARAM=default_docdense;SNW_MP_CONTROL=default_test;time=10.3545
+SNW_EVUVW19_JMKY_ALLCHECKS: Finished Check 0 of 2, time=106.2974
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+Completed SNW_A4CHK_WRK_BISEC_VEC;SNW_MP_PARAM=bushchck;welf_checks=1;TR=0.0018238;SNW_MP_PARAM=default_docdense;SNW_MP_CONTROL=default_test;time cost=78.7545
+Completed SNW_V08_JAEEMK;SNW_MP_PARAM=default_docdense;SNW_MP_CONTROL=default_test;timeEUEC=2.94e-05
+Completed SNW_EVUVW19_JAEEMK_FOC;st_biden_or_trump=bushchck;SNW_MP_PARAM=default_docdense;SNW_MP_CONTROL=default_test;time=15.4582
+Completed SNW_EVUVW19_JMKY;SNW_MP_PARAM=default_docdense;SNW_MP_CONTROL=default_test;time=10.0897
+SNW_EVUVW19_JMKY_ALLCHECKS: Finished Check 1 of 2, time=106.6849
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+Completed SNW_A4CHK_WRK_BISEC_VEC;SNW_MP_PARAM=bushchck;welf_checks=2;TR=0.0018238;SNW_MP_PARAM=default_docdense;SNW_MP_CONTROL=default_test;time cost=78.7404
+Completed SNW_V08_JAEEMK;SNW_MP_PARAM=default_docdense;SNW_MP_CONTROL=default_test;timeEUEC=2.1e-05
+Completed SNW_EVUVW19_JAEEMK_FOC;st_biden_or_trump=bushchck;SNW_MP_PARAM=default_docdense;SNW_MP_CONTROL=default_test;time=15.4389
+Completed SNW_EVUVW19_JMKY;SNW_MP_PARAM=default_docdense;SNW_MP_CONTROL=default_test;time=10.1555
+SNW_EVUVW19_JMKY_ALLCHECKS: Finished Check 2 of 2, time=106.7998
+Completed SNW_EVUVW19_JMKY_ALLCHECKS;ST_BIDEN_OR_TRUMP=bushchck;SNW_MP_PARAM=default_docdense;SNW_MP_CONTROL=default_test;time=3088.2443
+----------------------------------------
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+CONTAINER NAME: mp_outcomes ND Array (Matrix etc)
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                                   <strong>i</strong>    <strong>idx</strong>    <strong>ndim</strong>      <strong>numel</strong>          <strong>rowN</strong>       <strong>colN</strong>         <strong>sum</strong>         <strong>mean</strong>        <strong>std</strong>      <strong>coefvari</strong>       <strong>min</strong>        <strong>max</strong>  
+                                   <strong>_</strong>    <strong>___</strong>    <strong>____</strong>    <strong>__________</strong>    <strong>__________</strong>    <strong>_____</strong>    <strong>___________</strong>    <strong>_______</strong>    <strong>_______</strong>    <strong>________</strong>    <strong>_________</strong>    <strong>______</strong>
+
+    <strong>Output                     </strong>    1     1      2      1.0483e+06    1.1648e+05        9     7.7619e+06     7.4042     18.458      2.493      -0.57722        99
+    <strong>ec19_jmky_allchecks        </strong>    2     2      5      1.3038e+05             3    43460      2.737e+05     2.0992     2.0221    0.96328             0    14.597
+    <strong>ec19_jmky_allchecks_posmass</strong>    3     3      2      1.1648e+05    1.1648e+05        1      2.737e+05     2.3498     1.9971     0.8499      0.066614    14.597
+    <strong>ev19_jmky_allchecks        </strong>    4     4      5      1.3038e+05             3    43460    -2.3148e+06    -17.754     22.215    -1.2512       -319.71         0
+    <strong>ev19_jmky_allchecks_posmass</strong>    5     5      2      1.1648e+05    1.1648e+05        1          17932    0.15395    0.24305     1.5787     0.0031279    4.8312
+
+xxx TABLE:Output xxxxxxxxxxxxxxxxxx
+               <strong>c1</strong>    <strong>c2</strong>    <strong>c3</strong>    <strong>c4</strong>        <strong>c6</strong>           <strong>c7</strong>          <strong>c8</strong>           <strong>c9</strong>   
+               <strong>__</strong>    <strong>__</strong>    <strong>__</strong>    <strong>__</strong>    <strong>__________</strong>    <strong>________</strong>    <strong>_________</strong>    <strong>________</strong>
+
+    <strong>r1     </strong>    18    0     0     0     2.1599e-05    -0.57722    0.0053606    0.066639
+    <strong>r2     </strong>    18    0     0     1     2.1599e-05    -0.57722    0.0053744    0.067396
+    <strong>r3     </strong>    18    0     0     2     2.1599e-05    -0.57722    0.0053882    0.068355
+    <strong>r4     </strong>    19    0     0     0     1.9002e-05     0.42278    0.0055828    0.068128
+    <strong>r5     </strong>    19    0     0     1     1.9002e-05     0.42278    0.0055969    0.069089
+    <strong>r116474</strong>    86    1     4     1      3.937e-49      4.2268      0.97866      13.912
+    <strong>r116475</strong>    86    1     4     2      3.937e-49      4.2268      0.97868      13.912
+    <strong>r116476</strong>    87    1     4     0     1.0014e-58      4.2413       1.0716      14.596
+    <strong>r116477</strong>    87    1     4     1     1.0014e-58      4.2413       1.0716      14.597
+    <strong>r116478</strong>    87    1     4     2     1.0014e-58      4.2413       1.0716      14.597
+
+xxx TABLE:ec19_jmky_allchecks xxxxxxxxxxxxxxxxxx
+             <strong>c1</strong>          <strong>c2</strong>          <strong>c3</strong>          <strong>c4</strong>       <strong>c43457</strong>    <strong>c43458</strong>    <strong>c43459</strong>    <strong>c43460</strong>
+          <strong>________</strong>    <strong>________</strong>    <strong>________</strong>    <strong>________</strong>    <strong>______</strong>    <strong>______</strong>    <strong>______</strong>    <strong>______</strong>
+
+    <strong>r1</strong>    0.066639    0.068128    0.071766    0.071091      0         0         0         0   
+    <strong>r2</strong>    0.067396    0.069089    0.072695    0.072031      0         0         0         0   
+    <strong>r3</strong>    0.068355    0.069782    0.073378     0.07271      0         0         0         0   
+
+xxx TABLE:ec19_jmky_allchecks_posmass xxxxxxxxxxxxxxxxxx
+                  <strong>c1</strong>   
+               <strong>________</strong>
+
+    <strong>r1     </strong>    0.066639
+    <strong>r2     </strong>    0.067396
+    <strong>r3     </strong>    0.068355
+    <strong>r4     </strong>    0.068128
+    <strong>r5     </strong>    0.069089
+    <strong>r116474</strong>      13.912
+    <strong>r116475</strong>      13.912
+    <strong>r116476</strong>      14.596
+    <strong>r116477</strong>      14.597
+    <strong>r116478</strong>      14.597
+
+xxx TABLE:ev19_jmky_allchecks xxxxxxxxxxxxxxxxxx
+            <strong>c1</strong>         <strong>c2</strong>         <strong>c3</strong>         <strong>c4</strong>       <strong>c43457</strong>    <strong>c43458</strong>    <strong>c43459</strong>    <strong>c43460</strong>
+          <strong>_______</strong>    <strong>_______</strong>    <strong>_______</strong>    <strong>_______</strong>    <strong>______</strong>    <strong>______</strong>    <strong>______</strong>    <strong>______</strong>
+
+    <strong>r1</strong>    -186.55    -179.12    -171.74    -172.54      0         0         0         0   
+    <strong>r2</strong>    -186.07    -178.67    -171.33    -172.13      0         0         0         0   
+    <strong>r3</strong>    -185.59    -178.22    -170.92    -171.72      0         0         0         0   
+
+xxx TABLE:ev19_jmky_allchecks_posmass xxxxxxxxxxxxxxxxxx
+                  <strong>c1</strong>    
+               <strong>_________</strong>
+
+    <strong>r1     </strong>    0.0053606
+    <strong>r2     </strong>    0.0053744
+    <strong>r3     </strong>    0.0053882
+    <strong>r4     </strong>    0.0055828
+    <strong>r5     </strong>    0.0055969
+    <strong>r116474</strong>      0.97866
+    <strong>r116475</strong>      0.97868
+    <strong>r116476</strong>       1.0716
+    <strong>r116477</strong>       1.0716
+    <strong>r116478</strong>       1.0716</div></div></div></div></div></div>
+<br>
+<!-- 
+##### SOURCE BEGIN #####
+%% 2007 Age, Income, Kids, Marry EV and EC All Checks (Bush Checks)
+% This is the example vignette for function: <https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/splanneralt/snw_evuvw19_jmky_allchecks.m 
+% *snw_evuvw19_jmky_allchecks*> from the <https://fanwangecon.github.io/PrjOptiSNW/ 
+% *PrjOptiSNW Package*>*.* 2019 integrated over VU and VW
+% 
+% The function <https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/splanneralt/snw_evuvw19_jmky_allchecks.m 
+% *snw_evuvw19_jmky_allchecks*> was initiall designed to handle the COVID problem, 
+% the revised version of the program handles both the 2007/8/9 Bush stimulus check 
+% problem, and the 2019/20/21 Trump and Biden stimulus check problems.
+% 
+% The key features of the Bush stimulus checks are: i) determined based on 2007 
+% information; ii) checks received in 2008, when the great recession has not arrived 
+% yet, but all expect it to in 2009; iii) the Great Recession hits in 2009, putting 
+% some people, based on education and age, into unemployment state with a shared 
+% unemployment duration and lost income and also UI benefits (calibrated to match 
+% overall UI share of wages); iv) the economy returns to steady-state in 2010.
+%% Test SNW_EVUVW19_JMKY_ALLCHECKS Parameters for Bush Checks
+% Save a result that is low in memory cost so that it can be loaded quickly 
+% for various allocation tests. Turn off Various Printing Controls. Call function 
+% with wide income bins to reduce memory storage and retrievel costs
+
+clear all;
+% Start mp contorls
+mp_controls = snw_mp_control('default_test');
+% Solve for Unemployment Values
+mp_controls('bl_timer') = true;
+mp_controls('bl_print_vfi') = false;
+mp_controls('bl_print_vfi_verbose') = false;
+mp_controls('bl_print_ds') = false;
+mp_controls('bl_print_ds_verbose') = true;
+mp_controls('bl_print_precompute') = false;
+mp_controls('bl_print_precompute_verbose') = false;
+mp_controls('bl_print_a4chk') = false;
+mp_controls('bl_print_a4chk_verbose') = false;
+mp_controls('bl_print_v08p08_jaeemk') = false;
+mp_controls('bl_print_v08p08_jaeemk_verbose') = false;
+mp_controls('bl_print_v08_jaeemk') = false;
+mp_controls('bl_print_v08_jaeemk_verbose') = false;
+mp_controls('bl_print_evuvw20_jaeemk') = false;
+mp_controls('bl_print_evuvw20_jaeemk_verbose') = false;
+mp_controls('bl_print_evuvw19_jaeemk') = false;
+mp_controls('bl_print_evuvw19_jaeemk_verbose') = false;
+mp_controls('bl_print_evuvw19_jmky') = false;
+mp_controls('bl_print_evuvw19_jmky_verbose') = false;
+%% 
+% Dense default, and unemployment parameters:
+
+% default dense load
+% 1. generate MP_PARAMS specific to 2008 stimulus
+% Use non-default values for Bush Stimulus
+mp_more_inputs = containers.Map('KeyType','char', 'ValueType','any');
+mp_more_inputs('fl_ss_non_college') = 0.225;
+mp_more_inputs('fl_ss_college') = 0.271;
+fl_p50_hh_income_07 = 54831;
+mp_more_inputs('fl_scaleconvertor') = fl_p50_hh_income_07;
+% st_param_group = 'default_small';
+% st_param_group = 'default_dense';
+st_param_group = 'default_docdense';
+mp_params = snw_mp_param(st_param_group, false, 'tauchen', false, 8, 8, mp_more_inputs);
+% mp_params = snw_mp_param('default_docdense')
+mp_params('beta') = 0.95;
+fl_scaleconvertor = 62502;
+mp_more_inputs('fl_scaleconvertor') = fl_scaleconvertor;
+% Unemployment
+mp_params('xi') = 0.532;
+mp_params('b') = 0.37992;
+mp_params('a2_covidyr') = mp_params('a2_greatrecession_2009');
+mp_params('TR') = 100/fl_p50_hh_income_07;
+% Check Count: 89 checks to allow for both the first and the second round
+n_welfchecksgrid = 3;
+mp_params('n_welfchecksgrid') = n_welfchecksgrid;
+mp_params('a2_covidyr') = mp_params('a2_greatrecession_2009');
+%% 
+% Income bins:
+
+% Income Grid
+% 4 refers to 4*58056=232224 dollars in 2012USD
+% max 7 refers to 7*58056=406392 dollars in 2012USD
+% all phase out = (4400/5)*100 + 150000 = 238000
+% if 500 dollar interval, need 476 inc groups before 238000  
+% if have 85 percent of points betwen 238000, 
+fl_max_phaseout = 238000;
+fl_multiple = fl_scaleconvertor;
+it_bin_dollar_before_phaseout = 5000;
+it_bin_dollar_after_phaseout = 25000;
+fl_thres = fl_max_phaseout/fl_multiple;
+inc_grid1 = linspace(0,fl_thres,(fl_max_phaseout)/it_bin_dollar_before_phaseout);
+inc_grid2 = linspace(fl_thres, 7, (7*fl_multiple-fl_max_phaseout)/it_bin_dollar_after_phaseout); 
+inc_grid=sort(unique([inc_grid1 inc_grid2]'));
+mp_params('n_incgrid') = length(inc_grid);
+mp_params('inc_grid') = inc_grid;
+%% SNW_EVUVW19_JMKY_ALLCHECKS Low Storage Invoke for Bush Checks
+% The simulation here (dense) requires less than 10 GB of memory with 8 workers 
+% (8 threads needed), simulating over 88 checks takes with 8 workers 
+
+st_biden_or_trump = 'bushchck';
+st_solu_type = 'bisec_vec';
+bl_parfor = false;
+it_workers = 1;
+bl_export = false; 
+bl_load_mat = false;
+snm_suffix = ['_test_ybin' num2str(it_bin_dollar_before_phaseout)];
+[ev19_jmky_allchecks, ec19_jmky_allchecks, output] = ...
+    snw_evuvw19_jmky_allchecks(mp_params, mp_controls, ...
+    st_biden_or_trump, st_solu_type, ...
+    bl_parfor, it_workers, ...
+    bl_export, bl_load_mat, snm_suffix);
+##### SOURCE END #####
+--></body></html>

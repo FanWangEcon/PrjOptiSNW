@@ -1,4 +1,4 @@
-%% SNW_EVUVW19_JAEEMK_FOC Solves 2019 and 2007 expected Values Given 2020 and 2008 EVs/Vs
+%% SNW_EVUVW19_JAEEMK_FOC Solves 2019 and 2007 Expected Values Given 2020 and 2008 EVs/Vs
 %    Despite the name, this problem supports solving the 2019 looking into
 %    2020 as well as the 2007 looking into 2008 problems. The idea is that
 %    the planner only has information from 2019 and from 2007, and must

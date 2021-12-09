@@ -3,6 +3,8 @@ mp_path = snw_mp_path('fan');
 git_repo_vig_main = mp_path('spt_simu_codem_doc');
 
 st_mlx_search_name = '*.mlx';
+% st_mlx_search_name = 'snwx_comp_beta_low_vs_high.mlx';
+
 st_pub_format = 'html';
 bl_run_mlx = true;
 bl_run_mlx_only = false;
@@ -14,7 +16,7 @@ st_proj_folder = git_repo_vig_main;
 %     'splannerjaeemk', 'splannerjmky', 'svalpol', 'svalpolsmall', 'svalpolunemploy'};
 st_out_folder = mp_path('spt_simu_outputs_vig');
 
-it_vig_group = 4;
+it_vig_group = 6;
 
 if (it_vig_group == 1)
 % 2 Parameters
@@ -31,6 +33,11 @@ elseif (it_vig_group == 3)
     cl_st_subfolder = {'sdist'};    
 elseif (it_vig_group == 4)
     cl_st_subfolder = {'splannercheckval', 'splannerjaeemk', 'splannerjmky'};
+elseif (it_vig_group == 5)
+    cl_st_subfolder = {'fgov', 'calibrate'};
+elseif (it_vig_group == 6)
+    % Added on 2021 12 06 comparative statistics
+    cl_st_subfolder = {'compstat'};
 elseif (it_vig_group == 99)
 %     , 'calibrate'
     cl_st_subfolder = {'svalpolsmall'};

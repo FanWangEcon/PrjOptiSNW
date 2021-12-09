@@ -56,6 +56,8 @@ rmd_files:
   - PrjOptiSNW/doc/fgov/snwx_find_tax_rate.Rmd
   - PrjOptiSNW/doc/fgov/snwx_stimulus_checks.Rmd
   - PrjOptiSNW/doc/fgov/snwx_stimulus_checks_biden.Rmd
+  - PrjOptiSNW/doc/fgov/snwx_tax_liability.Rmd
+  - PrjOptiSNW/doc/fgov/snwx_stimulus_checks_bush.Rmd
 
   - PrjOptiSNW/doc/calibrate/main.Rmd
   - PrjOptiSNW/doc/calibrate/snwx_calibrate_beta_norm_gdp.Rmd
@@ -64,6 +66,11 @@ rmd_files:
 
   - PrjOptiSNW/doc/stats/main.Rmd
   - PrjOptiSNW/doc/stats/snwx_evuvw19_jaeemk_mky.Rmd
+
+  - PrjOptiSNW/doc/compstat/main.Rmd
+  - PrjOptiSNW/doc/compstat/snwx_comp_r_low_vs_high.Rmd
+  - PrjOptiSNW/doc/compstat/snwx_comp_b_low_vs_high.Rmd
+  - PrjOptiSNW/doc/compstat/snwx_comp_beta_low_vs_high.Rmd
 
   - README_appendix.md
   - title.Rmd

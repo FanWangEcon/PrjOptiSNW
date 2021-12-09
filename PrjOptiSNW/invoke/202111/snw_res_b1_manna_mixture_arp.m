@@ -55,6 +55,7 @@ JEDC revision version, COVID 19 problem:
 %% Call Groups
 % For COVID Check, solve the problem 3 times for JEDC revision
 ar_it_solve_jedc_rr = [1, 2, 3];
+ar_it_solve_jedc_rr = [2, 3];
 
 for it_solve_jedc_rr = ar_it_solve_jedc_rr
 
@@ -135,6 +136,9 @@ for it_solve_jedc_rr = ar_it_solve_jedc_rr
             %% A1. Computing Specifications
             % 1a. Parfor controls
             bl_parfor = true;
+            % Worker count at most 12
+            % worker count of 9 is safe given memory, allows other
+            % activities on computer while this is running
             it_workers = 9;
             % 1b. Export Controls
             bl_export = true;
@@ -282,7 +286,7 @@ for it_solve_jedc_rr = ar_it_solve_jedc_rr
             spt_simu_outputs_log = mp_paths('spt_simu_outputs_log');
 
             snm_invoke_suffix = strrep(mp_params('mp_params_name'), 'default_', '');
-            snm_file = ['snwx_v_planner_' char(snm_invoke_suffix) char(snm_suffix)];
+            snm_file = ['snwx_' char(st_biden_or_trump) '_' char(snm_invoke_suffix) char(snm_suffix)];
             spn_log = fullfile(mp_paths('spt_simu_outputs_log'), [snm_file '.log']);
 
             diary(spn_log);

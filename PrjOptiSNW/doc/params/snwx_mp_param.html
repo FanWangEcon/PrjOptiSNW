@@ -24,7 +24,7 @@
 .inlineElement .textElement {}
 .embeddedOutputsTextElement.rightPaneElement,.embeddedOutputsVariableStringElement.rightPaneElement {min-height: 16px;}
 .rightPaneElement .textElement {padding-top: 2px; padding-left: 9px;}
-.S5 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 4px; padding: 6px 45px 4px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }</style></head><body><div class = rtcContent><h1  class = 'S0'><span>Model Parameters</span></h1><div  class = 'S1'><span>This is the example vignette for function: </span><a href = "https://github.com/FanWangEcon/PrjOptiSNW/tree/master/PrjOptiSNW/params/snw_mp_param.m"><span style=' font-weight: bold;'>snw_mp_param</span></a><span> from the </span><a href = "https://fanwangecon.github.io/PrjOptiSNW/"><span style=' font-weight: bold;'>PrjOptiSNW Package</span></a><span style=' font-weight: bold;'>. </span><span>This function sets and gets different parameters.</span></div><h2  class = 'S2'><span>Parameters Used for Test Simulation</span></h2><div  class = 'S1'><span>Rather than solving for all ages between 18 to 100, this solves for age groups, and has limited shocks and asset levels. Used for testing.</span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S3'><span style="white-space: pre;"><span class="warning_squiggle_rte1865859824">mp_params</span><span> = snw_mp_param(</span><span style="color: rgb(170, 4, 249);">'default_small'</span><span>, true, 100, 6);</span></span></div><div  class = 'S4'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="3990F412" data-testid="output_0" data-width="1128" data-height="8445" data-hashorizontaloverflow="false" style="width: 1158px; max-height: 261px;"><div class="textElement">----------------------------------------
+.S5 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 4px; padding: 6px 45px 4px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }</style></head><body><div class = rtcContent><h1  class = 'S0'><span>Model Parameters</span></h1><div  class = 'S1'><span>This is the example vignette for function: </span><a href = "https://github.com/FanWangEcon/PrjOptiSNW/tree/master/PrjOptiSNW/params/snw_mp_param.m"><span style=' font-weight: bold;'>snw_mp_param</span></a><span> from the </span><a href = "https://fanwangecon.github.io/PrjOptiSNW/"><span style=' font-weight: bold;'>PrjOptiSNW Package</span></a><span style=' font-weight: bold;'>. </span><span>This function sets and gets different parameters.</span></div><h2  class = 'S2'><span>Parameters Used for Test Simulation</span></h2><div  class = 'S1'><span>Rather than solving for all ages between 18 to 100, this solves for age groups, and has limited shocks and asset levels. Used for testing.</span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S3'><span style="white-space: pre;"><span class="warning_squiggle_rte1865859824">mp_params</span><span> = snw_mp_param(</span><span style="color: rgb(170, 4, 249);">'default_small'</span><span>, true, 100, 6);</span></span></div><div  class = 'S4'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="4ABAC053" data-testid="output_0" data-width="1128" data-height="9369" data-hashorizontaloverflow="false" style="width: 1158px; max-height: 261px;"><div class="textElement">----------------------------------------
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 CONTAINER NAME: mp_params_preftechpricegov Scalars
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -35,20 +35,23 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     <strong>a0                      </strong>     2     2       0.258
     <strong>a1                      </strong>     3     3       0.768
     <strong>a2                      </strong>     4     4      1.5286
-    <strong>a2_covidyr              </strong>     5     5         NaN
-    <strong>a2_covidyr_manna_heaven </strong>     6     6      1.5286
-    <strong>a2_covidyr_tax_fully_pay</strong>     7     7      12.718
-    <strong>bequests_option         </strong>     8     8           1
-    <strong>beta                    </strong>     9     9     0.86389
-    <strong>cons_allocation_rule    </strong>    10    10           2
-    <strong>g_cons                  </strong>    11    11     0.17576
-    <strong>g_n                     </strong>    12    12     0.05101
-    <strong>gamma                   </strong>    13    13           2
-    <strong>invbtlock               </strong>    14    14           1
-    <strong>jret                    </strong>    15    15          13
-    <strong>r                       </strong>    16    16     0.21665
-    <strong>theta                   </strong>    17    17     0.56523
-    <strong>throw_in_ocean          </strong>    18    18           1
+    <strong>a2_bushchkyr_2008       </strong>     5     5      1.5286
+    <strong>a2_covidyr              </strong>     6     6         NaN
+    <strong>a2_covidyr_manna_heaven </strong>     7     7      1.5286
+    <strong>a2_covidyr_tax_fully_pay</strong>     8     8      12.718
+    <strong>a2_greatrecession_2009  </strong>     9     9      1.5286
+    <strong>bequests_option         </strong>    10    10           1
+    <strong>beta                    </strong>    11    11     0.86389
+    <strong>cons_allocation_rule    </strong>    12    12           2
+    <strong>g_cons                  </strong>    13    13     0.17576
+    <strong>g_n                     </strong>    14    14     0.05101
+    <strong>gamma                   </strong>    15    15           2
+    <strong>invbtlock               </strong>    16    16           1
+    <strong>it_yrs_per_period       </strong>    17    17           5
+    <strong>jret                    </strong>    18    18          13
+    <strong>r                       </strong>    19    19     0.21665
+    <strong>theta                   </strong>    20    20     0.56523
+    <strong>throw_in_ocean          </strong>    21    21           1
 
 ----------------------------------------
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -75,8 +78,9 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     <strong>inc_grid             </strong>    1     7      2       201     201      1       578.5      2.8781      1.8836    0.65444            0          7
     <strong>pi_unemp             </strong>    2    10      2       240      48      5      47.034     0.19598    0.095943    0.48957     0.070361    0.40989
-    <strong>pi_unemp_2020_april  </strong>    3    11      2       240      48      5      47.034     0.19598    0.095943    0.48957     0.070361    0.40989
-    <strong>pi_unemp_2020_juneadj</strong>    4    12      2       240      48      5       16.17    0.067373    0.032916    0.48855     0.033285    0.16597
+    <strong>pi_unemp_2009_edu_age</strong>    3    11      2        96      48      2      6.6005    0.068755    0.044579    0.64837     0.015005    0.17919
+    <strong>pi_unemp_2020_april  </strong>    4    12      2       240      48      5      47.034     0.19598    0.095943    0.48957     0.070361    0.40989
+    <strong>pi_unemp_2020_juneadj</strong>    5    13      2       240      48      5       16.17    0.067373    0.032916    0.48855     0.033285    0.16597
 
 xxx TABLE:inc_grid xxxxxxxxxxxxxxxxxx
                <strong>c1</strong>   
@@ -236,6 +240,59 @@ xxx TABLE:pi_unemp xxxxxxxxxxxxxxxxxx
     <strong>r47</strong>    0.40989    0.27032    0.22056     0.1906     0.13108
     <strong>r48</strong>    0.40989    0.27032    0.22056     0.1906     0.13108
 
+xxx TABLE:pi_unemp_2009_edu_age xxxxxxxxxxxxxxxxxx
+              <strong>c1</strong>          <strong>c2</strong>   
+           <strong>________</strong>    <strong>________</strong>
+
+    <strong>r1 </strong>     0.17919     0.12517
+    <strong>r2 </strong>     0.17919     0.12517
+    <strong>r3 </strong>     0.17919     0.12517
+    <strong>r4 </strong>     0.17919     0.12517
+    <strong>r5 </strong>     0.17919     0.12517
+    <strong>r6 </strong>     0.17919     0.12517
+    <strong>r7 </strong>     0.17919     0.12517
+    <strong>r8 </strong>    0.086103    0.032088
+    <strong>r9 </strong>    0.086103    0.032088
+    <strong>r10</strong>    0.086103    0.032088
+    <strong>r11</strong>    0.086103    0.032088
+    <strong>r12</strong>    0.086103    0.032088
+    <strong>r13</strong>    0.086103    0.032088
+    <strong>r14</strong>    0.086103    0.032088
+    <strong>r15</strong>    0.086103    0.032088
+    <strong>r16</strong>    0.086103    0.032088
+    <strong>r17</strong>    0.086103    0.032088
+    <strong>r18</strong>    0.086103    0.032088
+    <strong>r19</strong>    0.086103    0.032088
+    <strong>r20</strong>    0.086103    0.032088
+    <strong>r21</strong>    0.086103    0.032088
+    <strong>r22</strong>    0.086103    0.032088
+    <strong>r23</strong>    0.086103    0.032088
+    <strong>r24</strong>    0.086103    0.032088
+    <strong>r25</strong>    0.086103    0.032088
+    <strong>r26</strong>    0.086103    0.032088
+    <strong>r27</strong>    0.086103    0.032088
+    <strong>r28</strong>    0.086103    0.032088
+    <strong>r29</strong>    0.086103    0.032088
+    <strong>r30</strong>    0.086103    0.032088
+    <strong>r31</strong>    0.086103    0.032088
+    <strong>r32</strong>    0.086103    0.032088
+    <strong>r33</strong>    0.086103    0.032088
+    <strong>r34</strong>    0.086103    0.032088
+    <strong>r35</strong>    0.086103    0.032088
+    <strong>r36</strong>    0.086103    0.032088
+    <strong>r37</strong>    0.086103    0.032088
+    <strong>r38</strong>     0.06902    0.015005
+    <strong>r39</strong>     0.06902    0.015005
+    <strong>r40</strong>     0.06902    0.015005
+    <strong>r41</strong>     0.06902    0.015005
+    <strong>r42</strong>     0.06902    0.015005
+    <strong>r43</strong>     0.06902    0.015005
+    <strong>r44</strong>     0.06902    0.015005
+    <strong>r45</strong>     0.06902    0.015005
+    <strong>r46</strong>     0.06902    0.015005
+    <strong>r47</strong>     0.06902    0.015005
+    <strong>r48</strong>     0.06902    0.015005
+
 xxx TABLE:pi_unemp_2020_april xxxxxxxxxxxxxxxxxx
              <strong>c1</strong>         <strong>c2</strong>         <strong>c3</strong>         <strong>c4</strong>          <strong>c5</strong>   
            <strong>_______</strong>    <strong>_______</strong>    <strong>_______</strong>    <strong>_______</strong>    <strong>________</strong>
@@ -349,7 +406,7 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                                 <strong>i</strong>     <strong>idx</strong>      <strong>value</strong>  
                                 <strong>__</strong>    <strong>___</strong>    <strong>_________</strong>
 
-    <strong>TR                      </strong>     1     1     0.0017225
+    <strong>TR                      </strong>     1     1     0.0015999
     <strong>b                       </strong>     2     2             1
     <strong>fl_stimulus_adult_first </strong>     3     3          1200
     <strong>fl_stimulus_adult_second</strong>     4     4           600
@@ -357,8 +414,17 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     <strong>fl_stimulus_child_second</strong>     6     6           600
     <strong>n_incgrid               </strong>     7     8           201
     <strong>n_welfchecksgrid        </strong>     8     9            45
-    <strong>scaleconvertor          </strong>     9    13         58056
-    <strong>xi                      </strong>    10    14          0.75
+    <strong>scaleconvertor          </strong>     9    14         62502
+    <strong>xi                      </strong>    10    16          0.75
+
+----------------------------------------
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+CONTAINER NAME: mp_params_covid_unemploy String
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                          <strong>i</strong>     <strong>idx</strong>                <strong>string</strong>            
+                         <strong>___</strong>    <strong>____</strong>    <strong>_____________________________</strong>
+
+    <strong>st_biden_or_trump</strong>    "1"    "15"    "st_biden_or_trump_undefined"
 
 ----------------------------------------
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -505,34 +571,34 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 CONTAINER NAME: mp_params_typelife ND Array (Matrix etc)
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-               <strong>i</strong>    <strong>idx</strong>    <strong>ndim</strong>    <strong>numel</strong>    <strong>rowN</strong>    <strong>colN</strong>     <strong>sum</strong>        <strong>mean</strong>        <strong>std</strong>      <strong>coefvari</strong>    <strong>min</strong>      <strong>max</strong>  
-               <strong>_</strong>    <strong>___</strong>    <strong>____</strong>    <strong>_____</strong>    <strong>____</strong>    <strong>____</strong>    <strong>______</strong>    <strong>________</strong>    <strong>_______</strong>    <strong>________</strong>    <strong>___</strong>    <strong>_______</strong>
+               <strong>i</strong>    <strong>idx</strong>    <strong>ndim</strong>    <strong>numel</strong>    <strong>rowN</strong>    <strong>colN</strong>     <strong>sum</strong>       <strong>mean</strong>       <strong>std</strong>      <strong>coefvari</strong>    <strong>min</strong>     <strong>max</strong>  
+               <strong>_</strong>    <strong>___</strong>    <strong>____</strong>    <strong>_____</strong>    <strong>____</strong>    <strong>____</strong>    <strong>______</strong>    <strong>______</strong>    <strong>_______</strong>    <strong>________</strong>    <strong>___</strong>    <strong>______</strong>
 
-    <strong>SS     </strong>    1     1      2       36       18      2      3.2218    0.089493    0.12913      1.443      0     0.29263
-    <strong>epsilon</strong>    2     2      2       36       18      2      39.526      1.0979    0.85451    0.77828      0      2.2588
+    <strong>SS     </strong>    1     1      2       36       18      2       2.916     0.081    0.11695     1.4439      0      0.266
+    <strong>epsilon</strong>    2     2      2       36       18      2      39.526    1.0979    0.85451    0.77828      0     2.2588
 
 xxx TABLE:SS xxxxxxxxxxxxxxxxxx
-             <strong>c1</strong>         <strong>c2</strong>   
-           <strong>_______</strong>    <strong>_______</strong>
+            <strong>c1</strong>      <strong>c2</strong>  
+           <strong>____</strong>    <strong>_____</strong>
 
-    <strong>r1 </strong>          0          0
-    <strong>r2 </strong>          0          0
-    <strong>r3 </strong>          0          0
-    <strong>r4 </strong>          0          0
-    <strong>r5 </strong>          0          0
-    <strong>r6 </strong>          0          0
-    <strong>r7 </strong>          0          0
-    <strong>r8 </strong>          0          0
-    <strong>r9 </strong>          0          0
-    <strong>r10</strong>          0          0
-    <strong>r11</strong>          0          0
-    <strong>r12</strong>          0          0
-    <strong>r13</strong>    0.24433    0.29263
-    <strong>r14</strong>    0.24433    0.29263
-    <strong>r15</strong>    0.24433    0.29263
-    <strong>r16</strong>    0.24433    0.29263
-    <strong>r17</strong>    0.24433    0.29263
-    <strong>r18</strong>    0.24433    0.29263
+    <strong>r1 </strong>       0        0
+    <strong>r2 </strong>       0        0
+    <strong>r3 </strong>       0        0
+    <strong>r4 </strong>       0        0
+    <strong>r5 </strong>       0        0
+    <strong>r6 </strong>       0        0
+    <strong>r7 </strong>       0        0
+    <strong>r8 </strong>       0        0
+    <strong>r9 </strong>       0        0
+    <strong>r10</strong>       0        0
+    <strong>r11</strong>       0        0
+    <strong>r12</strong>       0        0
+    <strong>r13</strong>    0.22    0.266
+    <strong>r14</strong>    0.22    0.266
+    <strong>r15</strong>    0.22    0.266
+    <strong>r16</strong>    0.22    0.266
+    <strong>r17</strong>    0.22    0.266
+    <strong>r18</strong>    0.22    0.266
 
 xxx TABLE:epsilon xxxxxxxxxxxxxxxxxx
              <strong>c1</strong>        <strong>c2</strong>  
@@ -626,7 +692,7 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                           <strong>i</strong>     <strong>idx</strong>                             <strong>string</strong>                         
                          <strong>___</strong>    <strong>___</strong>    <strong>________________________________________________________</strong>
 
-    <strong>st_old_age_depend</strong>    "1"    "2"    "Old-age dependency ratio (ratio of 65+/(18-64))=0.1155"</div></div></div></div></div><h2  class = 'S2'><span>Documentation Run Parameters Docdense</span></h2><div  class = 'S1'><span>Parameters used for documentation vig. "docdense" uses less shocks than the version of the model used to implement the allocation problems in the </span><a href = "https://cepr.org/active/publications/discussion_papers/dp.php?dpno=15283"><span>Nygaard, Sorensen and Wang (2020)</span></a><span>.</span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S3'><span style="white-space: pre;"><span>mp_params = snw_mp_param(</span><span style="color: rgb(170, 4, 249);">'default_docdense'</span><span>, true, 100, 6);</span></span></div><div  class = 'S4'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="B6461223" data-testid="output_1" data-width="1128" data-height="12575" data-hashorizontaloverflow="false" style="width: 1158px; max-height: 261px;"><div class="textElement">----------------------------------------
+    <strong>st_old_age_depend</strong>    "1"    "2"    "Old-age dependency ratio (ratio of 65+/(18-64))=0.1155"</div></div></div></div></div><h2  class = 'S2'><span>Documentation Run Parameters Docdense</span></h2><div  class = 'S1'><span>Parameters used for documentation vig. "docdense" uses less shocks than the version of the model used to implement the allocation problems in the </span><a href = "https://cepr.org/active/publications/discussion_papers/dp.php?dpno=15283"><span>Nygaard, Sorensen and Wang (2020)</span></a><span>.</span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S3'><span style="white-space: pre;"><span>mp_params = snw_mp_param(</span><span style="color: rgb(170, 4, 249);">'default_docdense'</span><span>, true, 100, 6);</span></span></div><div  class = 'S4'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="75B958F0" data-testid="output_1" data-width="1128" data-height="13359" data-hashorizontaloverflow="false" style="width: 1158px; max-height: 261px;"><div class="textElement">----------------------------------------
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 CONTAINER NAME: mp_params_preftechpricegov Scalars
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -637,20 +703,23 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     <strong>a0                      </strong>     2     2       0.258
     <strong>a1                      </strong>     3     3       0.768
     <strong>a2                      </strong>     4     4      1.5286
-    <strong>a2_covidyr              </strong>     5     5         NaN
-    <strong>a2_covidyr_manna_heaven </strong>     6     6      1.5286
-    <strong>a2_covidyr_tax_fully_pay</strong>     7     7      12.718
-    <strong>bequests_option         </strong>     8     8           1
-    <strong>beta                    </strong>     9     9     0.97116
-    <strong>cons_allocation_rule    </strong>    10    10           2
-    <strong>g_cons                  </strong>    11    11     0.17576
-    <strong>g_n                     </strong>    12    12        0.01
-    <strong>gamma                   </strong>    13    13           2
-    <strong>invbtlock               </strong>    14    14           1
-    <strong>jret                    </strong>    15    15          48
-    <strong>r                       </strong>    16    16        0.04
-    <strong>theta                   </strong>    17    17     0.56523
-    <strong>throw_in_ocean          </strong>    18    18           1
+    <strong>a2_bushchkyr_2008       </strong>     5     5      1.5286
+    <strong>a2_covidyr              </strong>     6     6         NaN
+    <strong>a2_covidyr_manna_heaven </strong>     7     7      1.5286
+    <strong>a2_covidyr_tax_fully_pay</strong>     8     8      12.718
+    <strong>a2_greatrecession_2009  </strong>     9     9      1.5286
+    <strong>bequests_option         </strong>    10    10           1
+    <strong>beta                    </strong>    11    11     0.97116
+    <strong>cons_allocation_rule    </strong>    12    12           2
+    <strong>g_cons                  </strong>    13    13     0.17576
+    <strong>g_n                     </strong>    14    14        0.01
+    <strong>gamma                   </strong>    15    15           2
+    <strong>invbtlock               </strong>    16    16           1
+    <strong>it_yrs_per_period       </strong>    17    17           1
+    <strong>jret                    </strong>    18    18          48
+    <strong>r                       </strong>    19    19        0.04
+    <strong>theta                   </strong>    20    20     0.56523
+    <strong>throw_in_ocean          </strong>    21    21           1
 
 ----------------------------------------
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -677,8 +746,9 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     <strong>inc_grid             </strong>    1     7      2       201     201      1       578.5      2.8781      1.8836    0.65444      0           7
     <strong>pi_unemp             </strong>    2    10      2       415      83      5      47.034     0.11333     0.12125     1.0699      0     0.40989
-    <strong>pi_unemp_2020_april  </strong>    3    11      2       415      83      5      47.034     0.11333     0.12125     1.0699      0     0.40989
-    <strong>pi_unemp_2020_juneadj</strong>    4    12      2       415      83      5       16.17    0.038963    0.041654     1.0691      0     0.16597
+    <strong>pi_unemp_2009_edu_age</strong>    3    11      2       166      83      2      6.6005    0.039762       0.048     1.2072      0     0.17919
+    <strong>pi_unemp_2020_april  </strong>    4    12      2       415      83      5      47.034     0.11333     0.12125     1.0699      0     0.40989
+    <strong>pi_unemp_2020_juneadj</strong>    5    13      2       415      83      5       16.17    0.038963    0.041654     1.0691      0     0.16597
 
 xxx TABLE:inc_grid xxxxxxxxxxxxxxxxxx
                <strong>c1</strong>   
@@ -872,6 +942,94 @@ xxx TABLE:pi_unemp xxxxxxxxxxxxxxxxxx
     <strong>r81</strong>          0          0          0          0           0
     <strong>r82</strong>          0          0          0          0           0
     <strong>r83</strong>          0          0          0          0           0
+
+xxx TABLE:pi_unemp_2009_edu_age xxxxxxxxxxxxxxxxxx
+              <strong>c1</strong>          <strong>c2</strong>   
+           <strong>________</strong>    <strong>________</strong>
+
+    <strong>r1 </strong>     0.17919     0.12517
+    <strong>r2 </strong>     0.17919     0.12517
+    <strong>r3 </strong>     0.17919     0.12517
+    <strong>r4 </strong>     0.17919     0.12517
+    <strong>r5 </strong>     0.17919     0.12517
+    <strong>r6 </strong>     0.17919     0.12517
+    <strong>r7 </strong>     0.17919     0.12517
+    <strong>r8 </strong>    0.086103    0.032088
+    <strong>r9 </strong>    0.086103    0.032088
+    <strong>r10</strong>    0.086103    0.032088
+    <strong>r11</strong>    0.086103    0.032088
+    <strong>r12</strong>    0.086103    0.032088
+    <strong>r13</strong>    0.086103    0.032088
+    <strong>r14</strong>    0.086103    0.032088
+    <strong>r15</strong>    0.086103    0.032088
+    <strong>r16</strong>    0.086103    0.032088
+    <strong>r17</strong>    0.086103    0.032088
+    <strong>r18</strong>    0.086103    0.032088
+    <strong>r19</strong>    0.086103    0.032088
+    <strong>r20</strong>    0.086103    0.032088
+    <strong>r21</strong>    0.086103    0.032088
+    <strong>r22</strong>    0.086103    0.032088
+    <strong>r23</strong>    0.086103    0.032088
+    <strong>r24</strong>    0.086103    0.032088
+    <strong>r25</strong>    0.086103    0.032088
+    <strong>r26</strong>    0.086103    0.032088
+    <strong>r27</strong>    0.086103    0.032088
+    <strong>r28</strong>    0.086103    0.032088
+    <strong>r29</strong>    0.086103    0.032088
+    <strong>r30</strong>    0.086103    0.032088
+    <strong>r31</strong>    0.086103    0.032088
+    <strong>r32</strong>    0.086103    0.032088
+    <strong>r33</strong>    0.086103    0.032088
+    <strong>r34</strong>    0.086103    0.032088
+    <strong>r35</strong>    0.086103    0.032088
+    <strong>r36</strong>    0.086103    0.032088
+    <strong>r37</strong>    0.086103    0.032088
+    <strong>r38</strong>     0.06902    0.015005
+    <strong>r39</strong>     0.06902    0.015005
+    <strong>r40</strong>     0.06902    0.015005
+    <strong>r41</strong>     0.06902    0.015005
+    <strong>r42</strong>     0.06902    0.015005
+    <strong>r43</strong>     0.06902    0.015005
+    <strong>r44</strong>     0.06902    0.015005
+    <strong>r45</strong>     0.06902    0.015005
+    <strong>r46</strong>     0.06902    0.015005
+    <strong>r47</strong>     0.06902    0.015005
+    <strong>r48</strong>     0.06902    0.015005
+    <strong>r49</strong>           0           0
+    <strong>r50</strong>           0           0
+    <strong>r51</strong>           0           0
+    <strong>r52</strong>           0           0
+    <strong>r53</strong>           0           0
+    <strong>r54</strong>           0           0
+    <strong>r55</strong>           0           0
+    <strong>r56</strong>           0           0
+    <strong>r57</strong>           0           0
+    <strong>r58</strong>           0           0
+    <strong>r59</strong>           0           0
+    <strong>r60</strong>           0           0
+    <strong>r61</strong>           0           0
+    <strong>r62</strong>           0           0
+    <strong>r63</strong>           0           0
+    <strong>r64</strong>           0           0
+    <strong>r65</strong>           0           0
+    <strong>r66</strong>           0           0
+    <strong>r67</strong>           0           0
+    <strong>r68</strong>           0           0
+    <strong>r69</strong>           0           0
+    <strong>r70</strong>           0           0
+    <strong>r71</strong>           0           0
+    <strong>r72</strong>           0           0
+    <strong>r73</strong>           0           0
+    <strong>r74</strong>           0           0
+    <strong>r75</strong>           0           0
+    <strong>r76</strong>           0           0
+    <strong>r77</strong>           0           0
+    <strong>r78</strong>           0           0
+    <strong>r79</strong>           0           0
+    <strong>r80</strong>           0           0
+    <strong>r81</strong>           0           0
+    <strong>r82</strong>           0           0
+    <strong>r83</strong>           0           0
 
 xxx TABLE:pi_unemp_2020_april xxxxxxxxxxxxxxxxxx
              <strong>c1</strong>         <strong>c2</strong>         <strong>c3</strong>         <strong>c4</strong>          <strong>c5</strong>   
@@ -1056,7 +1214,7 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                                 <strong>i</strong>     <strong>idx</strong>      <strong>value</strong>  
                                 <strong>__</strong>    <strong>___</strong>    <strong>_________</strong>
 
-    <strong>TR                      </strong>     1     1     0.0017225
+    <strong>TR                      </strong>     1     1     0.0015999
     <strong>b                       </strong>     2     2             1
     <strong>fl_stimulus_adult_first </strong>     3     3          1200
     <strong>fl_stimulus_adult_second</strong>     4     4           600
@@ -1064,8 +1222,17 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     <strong>fl_stimulus_child_second</strong>     6     6           600
     <strong>n_incgrid               </strong>     7     8           201
     <strong>n_welfchecksgrid        </strong>     8     9            45
-    <strong>scaleconvertor          </strong>     9    13         58056
-    <strong>xi                      </strong>    10    14          0.75
+    <strong>scaleconvertor          </strong>     9    14         62502
+    <strong>xi                      </strong>    10    16          0.75
+
+----------------------------------------
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+CONTAINER NAME: mp_params_covid_unemploy String
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                          <strong>i</strong>     <strong>idx</strong>                <strong>string</strong>            
+                         <strong>___</strong>    <strong>____</strong>    <strong>_____________________________</strong>
+
+    <strong>st_biden_or_trump</strong>    "1"    "15"    "st_biden_or_trump_undefined"
 
 ----------------------------------------
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1478,52 +1645,7 @@ xxx TABLE:pi_eta xxxxxxxxxxxxxxxxxx
                 <strong>c1</strong>             <strong>c2</strong>             <strong>c3</strong>            <strong>c403</strong>          <strong>c404</strong>          <strong>c405</strong>   
             <strong>___________</strong>    <strong>___________</strong>    <strong>___________</strong>    <strong>__________</strong>    <strong>__________</strong>    <strong>__________</strong>
 
-    <strong>r1  </strong>      0.0053798      0.0024132      0.0020297             0             0             0
-    <strong>r2  </strong>      0.0031788      0.0022495      0.0024107             0             0             0
-    <strong>r3  </strong>      0.0015653      0.0016536       0.002258             0             0             0
-    <strong>r4  </strong>     0.00063256     0.00095856      0.0016679             0             0             0
-    <strong>r5  </strong>     0.00020753     0.00043816     0.00097159             0             0             0
-    <strong>r6  </strong>     5.4842e-05     0.00015792     0.00044628             0             0             0
-    <strong>r7  </strong>     1.1608e-05     4.4868e-05     0.00016162             0             0             0
-    <strong>r8  </strong>     1.9598e-06     1.0049e-05     4.6145e-05             0             0             0
-    <strong>r9  </strong>     2.6309e-07     1.7738e-06     1.0385e-05             0             0             0
-    <strong>r10 </strong>     2.8019e-08     2.4671e-07     1.8421e-06             0             0             0
-    <strong>r11 </strong>      2.363e-09     2.7035e-08     2.5746e-07             0             0             0
-    <strong>r12 </strong>     1.5758e-10     2.3335e-09      2.835e-08             0             0             0
-    <strong>r13 </strong>     8.3005e-12     1.5863e-10      2.459e-09             0             0             0
-    <strong>r14 </strong>     3.4504e-13     8.4903e-12     1.6797e-10             0             0             0
-    <strong>r15 </strong>      1.131e-14     3.5774e-13     9.0346e-12             0             0             0
-    <strong>r16 </strong>     2.9218e-16     1.1864e-14     3.8254e-13             0             0             0
-    <strong>r17 </strong>     5.9455e-18     3.0962e-16     1.2749e-14             0             0             0
-    <strong>r18 </strong>     9.5258e-20     6.3575e-18     3.3434e-16             0             0             0
-    <strong>r19 </strong>     1.2012e-21     1.0269e-19     6.8987e-18             0             0             0
-    <strong>r20 </strong>     1.1919e-23     1.3046e-21     1.1198e-19             0             0             0
-    <strong>r21 </strong>      9.303e-26     1.3034e-23     1.4296e-21             0             0             0
-    <strong>r22 </strong>     5.7105e-28     1.0239e-25     1.4353e-23             0             0             0
-    <strong>r23 </strong>     2.7561e-30     6.3237e-28     1.1331e-25             0             0             0
-    <strong>r24 </strong>     1.0458e-32       3.07e-30     7.0324e-28             0             0             0
-    <strong>r25 </strong>      3.119e-35     1.1715e-32     3.4309e-30             0             0             0
-    <strong>r26 </strong>     7.3108e-38     3.5131e-35     1.3156e-32             0             0             0
-    <strong>r27 </strong>     1.3466e-40      8.279e-38     3.9649e-35             0             0             0
-    <strong>r28 </strong>      1.949e-43      1.533e-40     9.3897e-38             0             0             0
-    <strong>r29 </strong>     2.2162e-46     2.2303e-43     1.7473e-40             0             0             0
-    <strong>r30 </strong>     1.9797e-49     2.5492e-46     2.5546e-43             0             0             0
-    <strong>r31 </strong>     1.3892e-52     2.2888e-49     2.9342e-46             0             0             0
-    <strong>r32 </strong>     7.6568e-56     1.6142e-52     2.6475e-49             0             0             0
-    <strong>r33 </strong>     3.3147e-59     8.9421e-56     1.8764e-52             0             0             0
-    <strong>r34 </strong>      1.127e-62     3.8906e-59     1.0446e-55             0             0             0
-    <strong>r35 </strong>     3.0092e-66     1.3294e-62     4.5673e-59             0             0             0
-    <strong>r36 </strong>     6.3099e-70     3.5674e-66     1.5684e-62             0             0             0
-    <strong>r37 </strong>      1.039e-73     7.5177e-70     4.2295e-66             0             0             0
-    <strong>r38 </strong>     1.3433e-77      1.244e-73     8.9569e-70             0             0             0
-    <strong>r39 </strong>     1.3638e-81     1.6164e-77     1.4895e-73             0             0             0
-    <strong>r40 </strong>     1.0871e-85     1.6492e-81      1.945e-77             0             0             0
-    <strong>r41 </strong>     6.8035e-90     1.3211e-85     1.9942e-81             0             0             0
-    <strong>r42 </strong>      3.343e-94     8.3091e-90     1.6054e-85             0             0             0
-    <strong>r43 </strong>     1.2896e-98     4.1031e-94     1.0147e-89             0             0             0
-    <strong>r44 </strong>    3.9058e-103     1.5907e-98     5.0355e-94             0             0             0
-    <strong>r45 </strong>    9.2866e-108    4.8414e-103     1.9619e-98             0             0             0
-    <strong>r46 </strong>    1.7334e-112    1.1568e-107 ...</div></div></div></div></div><h2  class = 'S2'><span>Parameters Used for Paper Simulations</span></h2><div  class = 'S1'><span>Full version of parameters used in </span><a href = "https://cepr.org/active/publications/discussion_papers/dp.php?dpno=15283"><span>Nygaard, Sorensen and Wang (2020)</span></a><span>. This is not printed to save space.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span style="color: rgb(2, 128, 9);">% mp_params = snw_mp_param('default_moredense_a65zh266zs5_e2m2', true, 100, 6);</span></span></div></div></div><h2  class = 'S2'></h2></div>
+    <strong>r1  </strong>...</div></div></div></div></div><h2  class = 'S2'><span>Parameters Used for Paper Simulations</span></h2><div  class = 'S1'><span>Full version of parameters used in </span><a href = "https://cepr.org/active/publications/discussion_papers/dp.php?dpno=15283"><span>Nygaard, Sorensen and Wang (2020)</span></a><span>. This is not printed to save space.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span style="color: rgb(2, 128, 9);">% mp_params = snw_mp_param('default_moredense_a65zh266zs5_e2m2', true, 100, 6);</span></span></div></div></div><h2  class = 'S2'></h2></div>
 <br>
 <!-- 
 ##### SOURCE BEGIN #####

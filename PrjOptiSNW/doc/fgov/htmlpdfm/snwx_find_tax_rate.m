@@ -1,12 +1,16 @@
 %% Compute for Equilibrium Tax
 % Taking advantage of <https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/fgov/snw_find_tax_rate.m 
-% *snw_calibrate_beta_norm_gdp*> from the <https://fanwangecon.github.io/PrjOptiSNW/ 
-% *PrjOptiSNW Package*,> this function solves for equilibrium tax rate.
+% *snw_find_tax_rate*> from the <https://fanwangecon.github.io/PrjOptiSNW/ *PrjOptiSNW 
+% Package*,> this function solves for equilibrium tax rate.
 %% Parameter Controls
 
 clear all;    
 mp_params = snw_mp_param('default_docdense');
-xi=0; % Proportional reduction in income due to unemployment (xi=0 refers to 0 labor income; xi=1 refers to no drop in labor income)
+% mp_params = snw_mp_param('default_dense');
+% mp_params = snw_mp_param('default_base');
+% mp_params = snw_mp_param('default_small');
+mp_params('beta') = 0.95;
+xi=0.651; % Proportional reduction in income due to unemployment (xi=0 refers to 0 labor income; xi=1 refers to no drop in labor income)
 b=1; % Unemployment insurance replacement rate (b=0 refers to no UI benefits; b=1 refers to 100 percent labor income replacement)       
 mp_params('xi') = xi;
 mp_params('b') = b;
@@ -17,7 +21,7 @@ mp_controls = snw_mp_control('default_test');
 % Average check per household, given COVID actual policy payment schedule
 % And given distribution. The number is from averaging over the actual
 % allocations given distribution.
-Covid_checks_per_capita = 18.7255856*100/58056;
+Covid_checks_per_capita = 18.7255856*100/62502;
 % Covid_checks_per_capita = 0;
 % which tax parameter to change a2 is the deafult, a0 shifts max tax rate
 bl_adjust_a0 = false;
@@ -45,4 +49,6 @@ mp_controls('bl_print_find_tax_rate_verbose') = true;
 % an one period surprise shock.
 
 a2 = snw_find_tax_rate(mp_params, mp_controls, Covid_checks_per_capita, bl_adjust_a0, bl_load_existing);
+%% 
+%% 
 %%

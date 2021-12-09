@@ -25,13 +25,12 @@
   title: "The Two Rounds of Trump CARES Stimulus Check Amounts"
   titleshort: "The Two Rounds of Trump CARES Stimulus Check Amounts"
   description: |
-    Under the Trump CARES Aact, given the number of children and marital status and income, the amounts of stimulus checks that households receive.
-    This function is used to evaluate the distributional effects of first rounds of CARES act stimulus checks
+    Under the Trump CARES Act, given the number of children and marital status and income, the amounts of stimulus checks that households receive.
   core :
     - package: PrjOptiSNW
       code: |
         [snw_stimulus_checks()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/fgov/snw_stimulus_checks.m),
-  date: 2021-05-14
+  date: 2021-11-30
   date_start: 2021-05-14
   output:
     pdf_document:
@@ -49,13 +48,61 @@
   title: "The Biden American Recovery Act Stimulus Check Amounts"
   titleshort: "The Biden American Recovery Act Stimulus Check Amounts"
   description: |
-    Under the Biden American Recovery Act, given the number of children and marital status and income, the amounts of stimulus checks that households receive.
+    Under the Biden American Rescue Plan Act of 2021, given the number of children and marital status and income, the amounts of stimulus checks that households receive.
   core :
     - package: PrjOptiSNW
       code: |
         [snw_stimulus_checks_biden()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/fgov/snw_stimulus_checks_biden.m),
-  date: 2021-05-14
+  date: 2021-11-30
   date_start: 2021-05-14
+  output:
+    pdf_document:
+      pandoc_args: '../../../_output_kniti_pdf.yaml'
+      includes:
+        in_header: '../../../preamble.tex'
+    html_document:
+      pandoc_args: '../../../_output_kniti_html.yaml'
+      includes:
+        in_header: '../../../hdga.html'
+  always_allow_html: true
+  urlcolor: blue
+
+- file: snwx_stimulus_checks_bush
+  title: "The Biden American Recovery Act Stimulus Check Amounts"
+  titleshort: "The Biden American Recovery Act Stimulus Check Amounts"
+  description: |
+    Under the Bush Economic Stimulus Act of 2008, given the number of children and marital status and income, the amounts of stimulus checks that households receive.
+  core :
+    - package: PrjOptiSNW
+      code: |
+        [snw_stimulus_checks_bush()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/fgov/snw_stimulus_checks_bush.m),
+  date: 2021-11-30
+  date_start: 2021-11-30
+  output:
+    pdf_document:
+      pandoc_args: '../../../_output_kniti_pdf.yaml'
+      includes:
+        in_header: '../../../preamble.tex'
+    html_document:
+      pandoc_args: '../../../_output_kniti_html.yaml'
+      includes:
+        in_header: '../../../hdga.html'
+  always_allow_html: true
+  urlcolor: blue
+
+- file: snwx_tax_liability
+  title: "Taxable Income and Tax Liabilities in 2008 (Bush Stimulus)"
+  titleshort: "Taxable Income and Tax Liabilities in 2008 (Bush Stimulus)"
+  description: |
+    The 2008 Bush stimulus is a rebate based on how much tax was paid, so we need to know taxable income and tax liability. These differ by income, household marital status, and the count of children.
+    Given an array of pre-tax income values, we compute for from 0 to 4 kids and both married and unmarried taxable-income and tax-liability at all points along the income array.
+    Deductions are from 2008 income (2008 IRS f1040). Tax brackets from 2008 are here (2008 IRS 1040tt).
+  core :
+    - package: PrjOptiSNW
+      code: |
+        [snw_tax_liability()](https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/fgov/snw_tax_liability.m),
+  date: 2021-11-30
+  date_start: 2021-11-30
   output:
     pdf_document:
       pandoc_args: '../../../_output_kniti_pdf.yaml'

@@ -2,8 +2,9 @@
 % Taking advantage of <https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/fgov/snw_stimulus_checks_biden.m 
 % *snw_stimulus_checks_biden*> from the <https://fanwangecon.github.io/PrjOptiSNW/ 
 % *PrjOptiSNW Package*,> this function presents stimulus checks at different income 
-% levels for households with different children count and martial status. The 
-% function considers the first as well as the second stimulus check.
+% levels for households with different children count and martial status. This 
+% is for the Biden Stimulus under the <https://en.wikipedia.org/wiki/American_Rescue_Plan_Act_of_2021#:~:text=No.,pandemic%20and%20the%20ongoing%20recession. 
+% American Rescue Plan Act>.
 %% Biden Stimulus Checks for Unmarried Households
 % Check base amount per adult and per child for the first and second rounds. 
 % 

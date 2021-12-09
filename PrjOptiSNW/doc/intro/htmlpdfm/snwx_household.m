@@ -1,17 +1,20 @@
 %% Household Problem and Distributions
 % In <https://cepr.org/active/publications/discussion_papers/dp.php?dpno=15283 
 % Nygaard, Sorensen and Wang (2020)>, we study the optimal allocation of COVID-19 
-% stimulus checks. Congress spent $250 billion sending checks to individuals in 
-% March 2020 to provide economic stimulus. Could the same amount of stimulus have 
-% been achieved for less money? Using a life-cycle consumption-saving model with 
-% heterogeneous consumers, we calculate the consumption responses to cash transfers 
-% for, e.g., couples and singles with different levels of income and number of 
-% children. We calculate the aggregate consumption response for all feasible allocations 
-% of $250 billion and, using a new algorithm that allows for the ranking of an 
-% arbitrarily large number of allocations, we find the optimal allocation under 
-% alternative constraints. The optimal policy allocates more toward low-income 
-% and younger consumers and can achieve the same stimulus effect at almost half 
-% the cost.
+% stimulus checks as well as the 2008 Bush era stimulus checks. Congress spent 
+% $250 billion sending checks to individuals in March 2020 to provide economic 
+% stimulus. In the summer of 2008, the Bush administration sent stimulus chcks 
+% (in the form of tax rebates) to 150 million American households. 
+% 
+% Could the same amount of stimulus have been achieved for less money? Using 
+% a life-cycle consumption-saving model with heterogeneous consumers, we calculate 
+% the consumption responses to cash transfers for, e.g., couples and singles with 
+% different levels of income and number of children. We calculate the aggregate 
+% consumption response for all feasible allocations of a stimulus checks program 
+% billion and, using a new algorithm that allows for the ranking of an arbitrarily 
+% large number of allocations, we find the optimal allocation under alternative 
+% constraints. The optimal policy allocates more toward low-income and younger 
+% consumers and can achieve the same stimulus effect at almost half the cost.
 % 
 % This Matlab based programming guide, package, and associated vignettes, provide 
 % examples and instructions on how the dynamic programming problem in Nygaard, 
@@ -37,7 +40,7 @@
 % First we solve for the optimal consumption/savings problem in the COVID-less 
 % world:
 %% 
-% * *83*: 2020 age groups, age 18 to 100 age groups
+% * *83*: 2020 or 2008 age groups, age 18 to 100 age groups
 % * *65*: grid of savings state-space grid, and exact continuous optimal savings 
 % choices using the <https://fanwangecon.github.io/MEconTools/MEconTools/doc/vfi/htmlpdfm/fx_vfi_az_bisec_vec.html 
 % *FF_VFI_AZ_BISEC_VEC*> function from <https://fanwangecon.github.io/MEconTools/ 
@@ -139,5 +142,32 @@
 % snwx_evuvw20_jaeemk> considers probabilities for getting hit with the COVID 
 % shock and considers the expected value conditional on age, savings level, shocks, 
 % educational status, kids count and marital status in 2020. 
+%% Dynamic Programming Solution Structure Bush Stimulus Checks
+% The Bush era stimulus checks problem is similar to the Covid problem, but 
+% there are some key differences. 
+%% 
+% # The Bush <https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/fgov/htmlpdfm/snwx_stimulus_checks_bush.html 
+% stimulus were tax rebate>, and had a more complicated schedule that is based 
+% on <https://fanwangecon.github.io/PrjOptiSNW/PrjOptiSNW/doc/fgov/htmlpdfm/snwx_tax_liability.html 
+% tax-liability>.
+% # The Bush stimulus were sent out prior to the unemployment shock, and hence 
+% in expectation of forthcoming shocks. In our setting, households can receive 
+% unemployment shock in 2009, and they optimize their savings/consumption decision 
+% in 2008 given this expectation. Computationally, this means the stimulus check 
+% effects do not need to be solved separately for unemployment and employed individuals 
+% as under the COVID stimulus. Instead, we solve the effects of stimulus checks 
+% on households in 2008, prior to shock realization. 
+%% 
+% More generally, stimulus checks can be given based on realized shocks or ex-ante 
+% state-space information prior to shocks. Given the information available to 
+% the IRS, which comes from the prior tax year, it seems that stimulus checks 
+% have been sent out during the Bush and Trump/Biden era based not on realized 
+% shocks, but on ex-ante information. Additionally, stimlus can be received during 
+% the period of crisis (COVID) or prior to it (Great Recession).
+% 
+% Our 2020 and 2008 programs rely on the same set of underling dynamic programming 
+% and distributional functions, however there are also some functions that are 
+% specific to each program year that are shown on the project webpage under headings 
+% with differing dates.
 %% 
 %

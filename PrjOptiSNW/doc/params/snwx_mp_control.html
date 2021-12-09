@@ -23,7 +23,7 @@
 .embeddedOutputsTextElement.inlineElement,.embeddedOutputsVariableStringElement.inlineElement {}
 .inlineElement .textElement {}
 .embeddedOutputsTextElement.rightPaneElement,.embeddedOutputsVariableStringElement.rightPaneElement {min-height: 16px;}
-.rightPaneElement .textElement {padding-top: 2px; padding-left: 9px;}</style></head><body><div class = rtcContent><h1  class = 'S0'><span>Model Controls</span></h1><div  class = 'S1'><span>This is the example vignette for function: </span><a href = "https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/params/snw_mp_control.m"><span style=' font-weight: bold;'>snw_mp_control</span></a><span> from the </span><a href = "https://fanwangecon.github.io/PrjOptiSNW/"><span style=' font-weight: bold;'>PrjOptiSNW Package</span></a><span style=' font-weight: bold;'>. </span><span>This function sets and gets different control parameters.</span></div><h2  class = 'S2'><span>Test SNW_MP_CONTROLS Defaults</span></h2><div  class = 'S1'><span>Call the function with defaults.</span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S3'><span style="white-space: pre;"><span>mp_controls = snw_mp_control(</span><span style="color: rgb(170, 4, 249);">'default_base'</span><span>, true);</span></span></div><div  class = 'S4'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="9986A645" data-testid="output_0" data-width="1128" data-height="1599" data-hashorizontaloverflow="false" style="width: 1158px; max-height: 261px;"><div class="textElement">pos = 37 ; key = options
+.rightPaneElement .textElement {padding-top: 2px; padding-left: 9px;}</style></head><body><div class = rtcContent><h1  class = 'S0'><span>Model Controls</span></h1><div  class = 'S1'><span>This is the example vignette for function: </span><a href = "https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/params/snw_mp_control.m"><span style=' font-weight: bold;'>snw_mp_control</span></a><span> from the </span><a href = "https://fanwangecon.github.io/PrjOptiSNW/"><span style=' font-weight: bold;'>PrjOptiSNW Package</span></a><span style=' font-weight: bold;'>. </span><span>This function sets and gets different control parameters.</span></div><h2  class = 'S2'><span>Test SNW_MP_CONTROLS Defaults</span></h2><div  class = 'S1'><span>Call the function with defaults.</span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S3'><span style="white-space: pre;"><span>mp_controls = snw_mp_control(</span><span style="color: rgb(170, 4, 249);">'default_base'</span><span>, true);</span></span></div><div  class = 'S4'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="1D9A3746" data-testid="output_0" data-width="1128" data-height="1683" data-hashorizontaloverflow="false" style="width: 1158px; max-height: 261px;"><div class="textElement">pos = 43 ; key = options
   fmincon options:
 
    Options used by current <strong>Algorithm</strong> ('interior-point'):
@@ -58,7 +58,7 @@
 
    Show options not used by current <strong>Algorithm</strong> ('interior-point')
 
-pos = 38 ; key = options2
+pos = 44 ; key = options2
   fsolve options:
 
    Options used by current <strong>Algorithm</strong> ('trust-region-dogleg'):
@@ -99,35 +99,41 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     <strong>bl_compute_drv_stats                   </strong>     5     5         1
     <strong>bl_print_a4chk                         </strong>     6     6         1
     <strong>bl_print_a4chk_verbose                 </strong>     7     7         0
-    <strong>bl_print_ds                            </strong>     8     8         1
-    <strong>bl_print_ds_aggregation                </strong>     9     9         1
-    <strong>bl_print_ds_aggregation_verbose        </strong>    10    10         0
-    <strong>bl_print_ds_verbose                    </strong>    11    11         0
-    <strong>bl_print_evuvw19_jaeemk                </strong>    12    12         1
-    <strong>bl_print_evuvw19_jaeemk_verbose        </strong>    13    13         0
-    <strong>bl_print_evuvw19_jmky                  </strong>    14    14         1
-    <strong>bl_print_evuvw19_jmky_allchecks        </strong>    15    15         1
-    <strong>bl_print_evuvw19_jmky_allchecks_verbose</strong>    16    16         0
-    <strong>bl_print_evuvw19_jmky_mass             </strong>    17    17         1
-    <strong>bl_print_evuvw19_jmky_mass_verbose     </strong>    18    18         0
-    <strong>bl_print_evuvw19_jmky_verbose          </strong>    19    19         0
-    <strong>bl_print_evuvw20_jaeemk                </strong>    20    20         1
-    <strong>bl_print_evuvw20_jaeemk_verbose        </strong>    21    21         0
-    <strong>bl_print_find_tax_rate                 </strong>    22    22         1
-    <strong>bl_print_find_tax_rate_verbose         </strong>    23    23         0
-    <strong>bl_print_precompute                    </strong>    24    24         1
-    <strong>bl_print_precompute_verbose            </strong>    25    25         0
-    <strong>bl_print_v_planner                     </strong>    26    26         1
-    <strong>bl_print_v_planner_verbose             </strong>    27    27         0
-    <strong>bl_print_vfi                           </strong>    28    28         1
-    <strong>bl_print_vfi_verbose                   </strong>    29    29         0
-    <strong>bl_print_vu_vw                         </strong>    30    30         1
-    <strong>bl_print_vu_vw_verbose                 </strong>    31    31         0
-    <strong>bl_timer                               </strong>    32    32         1
-    <strong>err                                    </strong>    33    33         1
-    <strong>fl_max_trchk_perc_increase             </strong>    34    34       1.5
-    <strong>nonlcon                                </strong>    35    36       NaN
-    <strong>tol                                    </strong>    36    39     0.005
+    <strong>bl_print_calibrate_2009                </strong>     8     8         1
+    <strong>bl_print_calibrate_2009_verbose        </strong>     9     9         0
+    <strong>bl_print_ds                            </strong>    10    10         1
+    <strong>bl_print_ds_aggregation                </strong>    11    11         1
+    <strong>bl_print_ds_aggregation_verbose        </strong>    12    12         0
+    <strong>bl_print_ds_verbose                    </strong>    13    13         0
+    <strong>bl_print_evuvw19_jaeemk                </strong>    14    14         1
+    <strong>bl_print_evuvw19_jaeemk_verbose        </strong>    15    15         0
+    <strong>bl_print_evuvw19_jmky                  </strong>    16    16         1
+    <strong>bl_print_evuvw19_jmky_allchecks        </strong>    17    17         1
+    <strong>bl_print_evuvw19_jmky_allchecks_verbose</strong>    18    18         0
+    <strong>bl_print_evuvw19_jmky_mass             </strong>    19    19         1
+    <strong>bl_print_evuvw19_jmky_mass_verbose     </strong>    20    20         0
+    <strong>bl_print_evuvw19_jmky_verbose          </strong>    21    21         0
+    <strong>bl_print_evuvw20_jaeemk                </strong>    22    22         1
+    <strong>bl_print_evuvw20_jaeemk_verbose        </strong>    23    23         0
+    <strong>bl_print_find_tax_rate                 </strong>    24    24         1
+    <strong>bl_print_find_tax_rate_verbose         </strong>    25    25         0
+    <strong>bl_print_precompute                    </strong>    26    26         1
+    <strong>bl_print_precompute_verbose            </strong>    27    27         0
+    <strong>bl_print_v08_jaeemk                    </strong>    28    28         1
+    <strong>bl_print_v08_jaeemk_verbose            </strong>    29    29         0
+    <strong>bl_print_v08p08_jaeemk                 </strong>    30    30         1
+    <strong>bl_print_v08p08_jaeemk_verbose         </strong>    31    31         0
+    <strong>bl_print_v_planner                     </strong>    32    32         1
+    <strong>bl_print_v_planner_verbose             </strong>    33    33         0
+    <strong>bl_print_vfi                           </strong>    34    34         1
+    <strong>bl_print_vfi_verbose                   </strong>    35    35         0
+    <strong>bl_print_vu_vw                         </strong>    36    36         1
+    <strong>bl_print_vu_vw_verbose                 </strong>    37    37         0
+    <strong>bl_timer                               </strong>    38    38         1
+    <strong>err                                    </strong>    39    39         1
+    <strong>fl_max_trchk_perc_increase             </strong>    40    40       1.5
+    <strong>nonlcon                                </strong>    41    42       NaN
+    <strong>tol                                    </strong>    42    45     0.005
 
 ----------------------------------------
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -136,7 +142,7 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                        <strong>i</strong>     <strong>idx</strong>         <strong>string</strong>    
                       <strong>___</strong>    <strong>____</strong>    <strong>______________</strong>
 
-    <strong>mp_params_name</strong>    "1"    "35"    "default_base"</div></div></div></div></div><h2  class = 'S2'></h2></div>
+    <strong>mp_params_name</strong>    "1"    "41"    "default_base"</div></div></div></div></div><h2  class = 'S2'></h2></div>
 <br>
 <!-- 
 ##### SOURCE BEGIN #####

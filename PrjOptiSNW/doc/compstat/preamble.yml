@@ -1,6 +1,6 @@
 - file: snwx_comp_r_low_vs_high
-  title: "Value and ConsumptionLow vs Higher Interest Rates Results Comparison"
-  titleshort: "Value and Consumption Low vs Higher Unemployment Insurance Comparison"
+  title: "Value and Consumption Low vs Higher Interest Rates Results Comparison"
+  titleshort: "Value and Consumption Low vs Higher Interest Rates Results Comparison"
   description: |
     Solves for V and C for individuals at lower (2 percent) and higher (4 percent) savings interest rate.
     An increase change in the savings rate generates both an income effect (higher resources) and also changes relative price of consumption today vs tomorrow; households value/welfare increase and might overall consume more or less depending on their state-space.

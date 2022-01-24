@@ -6,7 +6,8 @@ Work flow information and some optimal allocation information.
 
 - [alloc_discrete_fun_R](https://github.com/FanWangEcon/PrjOptiSNW/tree/master/AllocateR/alloc_discrete_fun_R): Optimal allocation files that call functions from the R [PrjOptiAlloc](https://fanwangecon.github.io/PrjOptiAlloc/) package and that take as inputs results from the dynamic programming simulation functions from Matlab.
 - [alloc_discrete_paper_graphs](https://github.com/FanWangEcon/PrjOptiSNW/tree/master/AllocateR/alloc_discrete_paper_graphs): Given optimal allocation results, visualize for the paper manuscript.
-- [jointbetedu](https://github.com/FanWangEcon/PrjOptiSNW/tree/master/AllocateR/jointbetedu): Files that merge CSV files solved for different beta and education types together, to be used as inputs for the optimal allocation files. 
+- [jointbetedu](https://github.com/FanWangEcon/PrjOptiSNW/tree/master/AllocateR/jointbetedu): Files that merge CSV files solved for different beta and education types together, to be used as inputs for the optimal allocation files.
+- [additional_results](https://github.com/FanWangEcon/PrjOptiSNW/tree/master/AllocateR/additional_results): Additional results for the paper.  
 - [sandbox](https://github.com/FanWangEcon/PrjOptiSNW/tree/master/AllocateR/sandbox): Various RMD files testing functions later included in [alloc_discrete_fun_R](https://github.com/FanWangEcon/PrjOptiSNW/tree/master/AllocateR/alloc_discrete_fun_R). Also tested code that became a part of functions [ffp_snw_process_inputs](https://fanwangecon.github.io/PrjOptiAlloc/reference/ffp_snw_process_inputs.html), [ffp_snw_graph_feasible](https://fanwangecon.github.io/PrjOptiAlloc/reference/ffp_snw_graph_feasible.html) and other functions in the [PrjOptiAlloc](https://fanwangecon.github.io/PrjOptiAlloc/) package.
 
 ## Work Flow

@@ -9,47 +9,99 @@ library(tidyverse)
 library(REconTools)
 # library(PrjOptiAlloc)
 
-library(forcats)
-library(foreach)
-library(doParallel)
-
+# library(forcats)
+# library(foreach)
+# library(doParallel)
+#
 # it_no_cores <- detectCores(logical = TRUE)
-# cl <- makeCluster(5)
+# cl <- makeCluster(4)
 # registerDoParallel(cl)
 
+# Part 1, Set how to weight and aggregate specs ------------
+# do 1,2 for JEDC revision
+it_solve_jedc_mpcapc <- 3
+
+# Part 1 Various Allocation files for JEDC Revision ------------
+# 0. Testing structure
+ls_st_file_suffix_test <- c('snwx_bushchck_tiny_b1_xi0_manna_168')
+
+# 1a. Core Biden check problem
+ls_st_file_suffix_bidenchk_main <-
+  c('snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168')
+
+# 1b. Biden check UI robustness and low vs high interest rate check
+# bchklkr2 = solve as bchklock, but at 2 percent interest rate
+# bcklknou = solve as bchklock, without UI benefits
+ls_st_file_suffix_bidenchk_uir2 <-
+  c('snwx_bchklkr2_moredense_a65zh266zs5_b1_xi0_manna_168',
+    'snwx_bcklknou_moredense_a65zh266zs5_b1_xi0_manna_168')
+
+# 1c. Biden Check: change low and high mixture
+ls_st_file_suffix_bidenchk_mixturealter <-
+  c('snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168_3o6',
+    'snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168_4o6',
+    'snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168_8o6',
+    'snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168_9o6')
+ls_st_file_suffix_bidenchk_mixturealter <- rev(ls_st_file_suffix_bidenchk_mixturealter)
+
+# 2a. Bush Check Problem
+ls_st_file_suffix_bushchck <-
+  c('snwx_bushchck_moredense_a65zh266zs5_b1_xi0_manna_96_bt95',
+    'snwx_bushchck_moredense_a65zh266zs5_b1_xi0_manna_96_bt60',
+    'snwx_bushchck_moredense_a65zh266zs5_b1_xi0_manna_96_married',
+    'snwx_bushchck_moredense_a65zh266zs5_b1_xi0_manna_96_unmarried',
+    'snwx_bushchck_moredense_a65zh266zs5_b1_xi0_manna_96')
+ls_st_file_suffix_bushchck <- rev(ls_st_file_suffix_bushchck)
+
+# 2b. Bush check problem with greater beta variety
+ls_st_file_suffix_bushchck_betaedu <-
+  c('snwx_bushchck_moredense_a65zh266zs5_e2hm2_b1_xi0_manna_96_bt99',
+    'snwx_bushchck_moredense_a65zh266zs5_e2hm2_b1_xi0_manna_96_bt97',
+    'snwx_bushchck_moredense_a65zh266zs5_e2hm2_b1_xi0_manna_96_bt95',
+    'snwx_bushchck_moredense_a65zh266zs5_e2hm2_b1_xi0_manna_96_bt90',
+    'snwx_bushchck_moredense_a65zh266zs5_e2hm2_b1_xi0_manna_96_bt80',
+    'snwx_bushchck_moredense_a65zh266zs5_e2hm2_b1_xi0_manna_96_bt70',
+    'snwx_bushchck_moredense_a65zh266zs5_e2hm2_b1_xi0_manna_96_bt60',
+    'snwx_bushchck_moredense_a65zh266zs5_e2hm2_b1_xi0_manna_96_bt50',
+    'snwx_bushchck_moredense_a65zh266zs5_e1lm2_b1_xi0_manna_96_bt99',
+    'snwx_bushchck_moredense_a65zh266zs5_e1lm2_b1_xi0_manna_96_bt97',
+    'snwx_bushchck_moredense_a65zh266zs5_e1lm2_b1_xi0_manna_96_bt95',
+    'snwx_bushchck_moredense_a65zh266zs5_e1lm2_b1_xi0_manna_96_bt90',
+    'snwx_bushchck_moredense_a65zh266zs5_e1lm2_b1_xi0_manna_96_bt80',
+    'snwx_bushchck_moredense_a65zh266zs5_e1lm2_b1_xi0_manna_96_bt70',
+    'snwx_bushchck_moredense_a65zh266zs5_e1lm2_b1_xi0_manna_96_bt60',
+    'snwx_bushchck_moredense_a65zh266zs5_e1lm2_b1_xi0_manna_96_bt50')
+
+# Part 2 Group run ------------
+if (it_solve_jedc_mpcapc == 1) {
+  ls_st_file_suffix <-
+    c(ls_st_file_suffix_bidenchk_main,
+      ls_st_file_suffix_bidenchk_uir2,
+      ls_st_file_suffix_bidenchk_mixturealter,
+      ls_st_file_suffix_bushchck)
+  snm_main_use <- 'Results202111'
+
+} else if (it_solve_jedc_mpcapc == 2) {
+  ls_st_file_suffix <- c(ls_st_file_suffix_bushchck_betaedu)
+  snm_main_use <- 'Results202111_betaheter'
+
+} else if (it_solve_jedc_mpcapc == 3) {
+  # Solve something individually by itself
+  ls_st_file_suffix <- c('snwx_bcklknou_moredense_a65zh266zs5_b1_xi0_manna_168')
+  snm_main_use <- 'Results202111'
+  # snm_main_use <- 'Results202111_betaheter'
+
+}
+
+# Part 3 Other parameter controls ------------
 # Number of ways to cut income bins
 ls_it_income_cuts <- c(1,2,3,4)
 ls_it_income_cuts <- c(1,3)
 
-# Types of allocation files to consider
-ls_st_file_suffix_bidenchk_mixturealter <-
-  c('snwx_bidenchk_moredense_a65zh266zs5_b1_xi0_manna_168_3o6',
-    'snwx_bidenchk_moredense_a65zh266zs5_b1_xi0_manna_168_4o6',
-    'snwx_bidenchk_moredense_a65zh266zs5_b1_xi0_manna_168_8o6',
-    'snwx_bidenchk_moredense_a65zh266zs5_b1_xi0_manna_168_9o6')
-ls_st_file_suffix_bidenchk_mixturealter <- rev(ls_st_file_suffix_bidenchk_mixturealter)
-
-ls_st_file_suffix_bchkbnoui <-
-  c('snwx_bchknoui_moredense_a65zh266zs5_b1_xi0_manna_168')
-
-ls_st_file_suffix_bchklock <-
-  c('snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168_bt95',
-    'snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168_bt60',
-    'snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168_married',
-    'snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168_unmarried',
-    'snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168')
-ls_st_file_suffix_bchklock <- rev(ls_st_file_suffix_bchklock)
-
-ls_st_file_suffix_test <- c('snwx_bcklknou_tiny_b1_xi0_manna_168')
-
 bl_per_capita <- TRUE
 fl_rho <- 1
 
-# list to run
-ls_st_file_suffix <- c(ls_st_file_suffix_bchkbnoui)
-ls_st_file_suffix <- c("snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168")
-# ls_st_file_suffix <- ls_st_file_suffix_test
-
+# Part 4 Run main -------------------
 for (it_income_cuts in ls_it_income_cuts) {
   if (it_income_cuts == 1) {
     # 20k interval, between 0 and 100k and 100 million
@@ -108,6 +160,7 @@ for (it_income_cuts in ls_it_income_cuts) {
                       fl_bin_final_end)
   # Solve iteratively
   for (st_which_solu in ls_st_file_suffix) {
+  # Parallel does't work over loop, ls_it_income_cuts <- c(1,3), completees only first element
   # foreach (st_which_solu=ls_st_file_suffix) %dopar% {
     rm(df_plan_v_tilde_full)
 
@@ -115,7 +168,10 @@ for (it_income_cuts in ls_it_income_cuts) {
     # source('fs_opti_support.R')
     # st_which_solu <- 'b1_manna'
     # st_which_solu <- paste0('b1_xi0_manna_88_', st_file_suffix)
-    ls_output <- fs_opti_support_202111(st_which_solu, bl_per_capita=bl_per_capita, fl_rho=fl_rho)
+    ls_output <- fs_opti_support_202111(st_which_solu,
+                                        bl_per_capita=bl_per_capita,
+                                        fl_rho=fl_rho,
+                                        snm_main=snm_main_use)
     st_b0b1 <- ls_output$st_b0b1
     st_file_type_withspouse_shock <- ls_output$st_file_type_withspouse_shock
     st_file_type_withspouse_shock <- ls_output$st_file_type_withspouse_shock
@@ -129,12 +185,19 @@ for (it_income_cuts in ls_it_income_cuts) {
     ## Common Parameters Across
 
     # Max Phase Out given 1200*2 + 500*4 = 4400
-    fl_max_phaseout = 200000
+    fl_max_phaseout_trump_biden = 200000
+    # Meaning of Ymin Ymax simulated interval of 1
+    fl_multiple_trump_biden = 62502
+    fl_multiple_bush = 54831
+    if (grepl('bushchck', st_which_solu)) {
+      fl_multiple <- fl_multiple_bush
+    } else {
+      fl_multiple <- fl_multiple_trump_biden
+    }
+
     it_bin_dollar_before_phaseout = 500
     # Dollar Per Check
     fl_percheck_dollar = 100
-    # Meaning of Ymin Ymax simulated interval of 1
-    fl_multiple = 58056
     # Number of Max Checks
     it_max_checks_1st = 44
     it_max_checks_2nd = 88
@@ -166,7 +229,11 @@ for (it_income_cuts in ls_it_income_cuts) {
       st_img_suf_age_ybin <- paste0(it_min_age, 't', it_max_age)
 
       # Various Parameters
-      it_max_checks <- 168
+      if (grepl('bushchck', st_which_solu)) {
+        it_max_checks <- 97
+      } else {
+        it_max_checks <- 168
+      }
       ar_agecut <- c(it_min_age-1, it_max_age)
       ar_svr_groups <- c('marital', 'kids', 'age_group', 'ymin_group')
       svr_v_value <- 'vtilde'
@@ -297,6 +364,10 @@ for (it_income_cuts in ls_it_income_cuts) {
 
         snm_save_csv = ""
 
+        # Keep C or V for x-axis, c is default
+        svr_c_or_v_zerochk <- svr_c_zerochk
+
+        # separate processing for different problems
         if (MPC_type == 1 | MPC_type == 3) {
           # Select subset
           df_il_U_select <- df_il_U %>% select(id_i, marital, kids, ymin_group, checks, mass, MPC_smooth) %>%
@@ -330,6 +401,8 @@ for (it_income_cuts in ls_it_income_cuts) {
           if (MPC_type == 6) {
             snm_save_csv <- 'apv_raw'
           }
+          # Keep C or V for x-axis, c is default
+          svr_c_or_v_zerochk <- svr_v_zerochk
         }
         snm_save_csv = paste0(snm_save_csv,
                               '_bykidsmarital20k_allchecks_',
@@ -337,7 +410,7 @@ for (it_income_cuts in ls_it_income_cuts) {
                               st_snm_suffix_save, '.csv')
 
         if (MPC_type == 1 | MPC_type == 2 | MPC_type == 5) {
-          # Average MPCs by group
+          # MPCs by group
           df_MPC_results <- df_il_U_select %>%
             select(id_i, marital, kids, ymin_group, checks, mass, MPC) %>%
             pivot_wider(names_from = checks,
@@ -359,7 +432,7 @@ for (it_income_cuts in ls_it_income_cuts) {
         # Merge results with additional column to show consumption at zero
         df_MPC_results <- df_MPC_results %>% ungroup() %>%
           left_join(df_il_checkzero, by="id_i") %>%
-          select(marital, kids, ymin_group, mass, !!sym(svr_c_zerochk), everything()) %>%
+          select(marital, kids, ymin_group, mass, !!sym(svr_c_or_v_zerochk), everything()) %>%
           select(-id_i)
 
         # CSV Save

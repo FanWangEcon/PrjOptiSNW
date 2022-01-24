@@ -12,47 +12,14 @@ library(foreach)
 library(doParallel)
 
 it_no_cores <- detectCores(logical = TRUE)
-cl <- makeCluster(5)
+# This is the maximum cluster size that can re-run on the precision, but should not do anything else if this is running
+it_max_cluster_size <- 7
+# This is the smaller more stable run, 5 elements in the cluster, can run other stuff while this is running.
+# it_max_cluster_size <- 5
+cl <- makeCluster(it_max_cluster_size)
 registerDoParallel(cl)
 
 # Various Lists
-ls_st_file_suffix_temp <-
-  c('snwx_bidenchk_moredense_a65zh266zs5_b1_xi0_manna_168')
-
-ls_st_file_suffix_trumpchk <-
-  c('snwx_trumpchk_moredense_a65zh266zs5_b1_xi0_manna_168_bt95',
-    'snwx_trumpchk_moredense_a65zh266zs5_b1_xi0_manna_168_bt60',
-    'snwx_trumpchk_moredense_a65zh266zs5_b1_xi0_manna_168_married',
-    'snwx_trumpchk_moredense_a65zh266zs5_b1_xi0_manna_168_unmarried',
-    'snwx_trumpchk_moredense_a65zh266zs5_b1_xi0_manna_168')
-ls_st_file_suffix_trumpchk <- rev(ls_st_file_suffix_trumpchk)
-
-ls_st_file_suffix_bidenchk <-
-  c('snwx_bidenchk_moredense_a65zh266zs5_b1_xi0_manna_168_bt95',
-    'snwx_bidenchk_moredense_a65zh266zs5_b1_xi0_manna_168_bt60',
-    'snwx_bidenchk_moredense_a65zh266zs5_b1_xi0_manna_168_married',
-    'snwx_bidenchk_moredense_a65zh266zs5_b1_xi0_manna_168_unmarried',
-    'snwx_bidenchk_moredense_a65zh266zs5_b1_xi0_manna_168')
-ls_st_file_suffix_bidenchk <- rev(ls_st_file_suffix_bidenchk)
-
-ls_st_file_suffix_bidenchk_mixturealter <-
-  c('snwx_bidenchk_moredense_a65zh266zs5_b1_xi0_manna_168_3o6',
-    'snwx_bidenchk_moredense_a65zh266zs5_b1_xi0_manna_168_4o6',
-    'snwx_bidenchk_moredense_a65zh266zs5_b1_xi0_manna_168_8o6',
-    'snwx_bidenchk_moredense_a65zh266zs5_b1_xi0_manna_168_9o6')
-ls_st_file_suffix_bidenchk_mixturealter <- rev(ls_st_file_suffix_bidenchk_mixturealter)
-
-ls_st_file_suffix_bchkbnoui <-
-  c('snwx_bchknoui_moredense_a65zh266zs5_b1_xi0_manna_168')
-
-ls_st_file_suffix_bchklock <-
-  c('snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168_bt95',
-    'snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168_bt60',
-    'snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168_married',
-    'snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168_unmarried',
-    'snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168')
-ls_st_file_suffix_bchklock <- rev(ls_st_file_suffix_bchklock)
-
 ls_st_file_suffix_beta_heterogeneity <- c('snwx_bidenchk_docdense_e2hm2_b1_xi0_manna_88_bt99',
                                           'snwx_bidenchk_docdense_e2hm2_b1_xi0_manna_88_bt97',
                                           'snwx_bidenchk_docdense_e2hm2_b1_xi0_manna_88_bt95',
@@ -70,28 +37,27 @@ ls_st_file_suffix_beta_heterogeneity <- c('snwx_bidenchk_docdense_e2hm2_b1_xi0_m
                                           'snwx_bidenchk_docdense_e1lm2_b1_xi0_manna_88_bt60',
                                           'snwx_bidenchk_docdense_e1lm2_b1_xi0_manna_88_bt50')
 
-ls_st_file_suffix_test_multiple <- c('snwx_bidenchk_tiny_b1_xi0_manna_168',
-                                     'snwx_bidenchk_tiny_b1_xi0_manna_168_unmarried',
-                                     'snwx_bidenchk_tiny_b1_xi0_manna_168_married',
-                                     'snwx_bidenchk_tiny_b1_xi0_manna_168_bt60',
-                                     'snwx_bidenchk_tiny_b1_xi0_manna_168_bt95')
-ls_st_file_suffix_test_multiple <- rev(ls_st_file_suffix_test_multiple)
-
-ls_st_file_suffix_single_main <- c('snwx_bidenchk_moredense_a65zh266zs5_b1_xi0_manna_168')
-ls_st_file_suffix_single_main <- c('snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168')
-ls_st_file_suffix_test <- c('snwx_bidenchk_tiny_b1_xi0_manna_168')
+# Main result 2021 JEDC Revisions
+ls_st_file_jedc_2021_main <- c('snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168')
+# Robustness check results for 2021 JEDC Revisions
+ls_st_file_jedc_2021_bchklock_mix <-
+  c('snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168_3o6',
+    'snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168_4o6',
+    'snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168_8o6',
+    'snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168_9o6')
+# check UI and Interest rate robustness
+ls_st_file_jedc_2021_bchklock_ui_r <-
+  c('snwx_bchklkr2_moredense_a65zh266zs5_b1_xi0_manna_168',
+    'snwx_bcklknou_moredense_a65zh266zs5_b1_xi0_manna_168')
+# All robustness files together
+ls_st_file_jedc_2021_robust <- c(ls_st_file_jedc_2021_bchklock_mix, ls_st_file_jedc_2021_bchklock_ui_r)
 
 # Run Collections-------------------------------------------------
-it_run_collection <- 2
+it_run_collection <- 4
 
 # OPTION 1 CSV SOLU to Run-------------------------------------------------
-# list to run
-ls_st_file_suffix <- c(ls_st_file_suffix_bidenchk,
-                       ls_st_file_suffix_trumpchk,
-                       ls_st_file_suffix_bidenchk_mixturealter,
-                       ls_st_file_suffix_bchkbnoui,
-                       ls_st_file_suffix_bchklock)
-# ls_st_file_suffix <- c(ls_st_file_suffix_test_1)
+ls_st_file_suffix_single_main <- ls_st_file_jedc_2021_robust
+ls_st_file_suffix_test <- c('snwx_bidenchk_tiny_b1_xi0_manna_168')
 
 # OPTION 2 Per Capita or Per Household-------------------------------------------------
 # per capita or per household model, using what rho/elasticity values.
@@ -186,8 +152,9 @@ if (it_run_collection == 1) {
   ls_st_file_suffix <- c(ls_st_file_suffix_single_main)
   ls_bl_per_capita <- c(TRUE)
   ar_rho <- c(-1)
-  ar_double_triple_alloc <- ar_double_triple_alloc_set4
-  bl_graph <- FALSE
+  # ar_double_triple_alloc <- ar_double_triple_alloc_set4
+  ar_double_triple_alloc <- ar_double_triple_alloc_set3
+  bl_graph <- TRUE
   bl_save_full_queue <- TRUE
 
 }
@@ -251,13 +218,13 @@ for (bl_per_capita in ls_bl_per_capita) {
   for (it_perturb_ctr in ar_it_perturb_n) {
     it_rand_adj_A_rng_seed <- it_rand_adj_A_rng_seed_start + it_perturb_ctr
 
-    foreach (fl_rho=ar_rho) %dopar% {
-    # for (fl_rho in ar_rho) {
+    # foreach (fl_rho=ar_rho) %dopar% {
+    for (fl_rho in ar_rho) {
       print(paste0('bl_per_capita=', bl_per_capita, ', fl_rho=', fl_rho))
       try(rm(df_plan_v_tilde_full))
 
-      # foreach (st_which_solu=ls_st_file_suffix) %dopar% {
-      for (st_which_solu in ls_st_file_suffix) {
+      foreach (st_which_solu=ls_st_file_suffix) %dopar% {
+      # for (st_which_solu in ls_st_file_suffix) {
         print(paste0('bl_per_capita=', bl_per_capita, ', fl_rho=', fl_rho, ', st_which_solu=', st_which_solu))
 
         # File Names, Paths Etc -------
@@ -600,6 +567,9 @@ for (bl_per_capita in ls_bl_per_capita) {
               if (it_solu_group >= 101 & it_solu_group <= 199) {
 
                 print(paste0(it_solu_group, ': First Round Allocation Started'))
+                ls_stimulus_specs <- list(st_biden_or_trump = 'bidenchk',
+                                          it_check_headorspouse = it_check_headorspouse,
+                                          it_check_perkids = it_check_perkids)
 
                 ls_prc_outputs_zs5_1st <- ffp_snw_process_inputs(
                   srt_simu_path = srt_simu_path,
@@ -626,8 +596,7 @@ for (bl_per_capita in ls_bl_per_capita) {
                   svr_mass = svr_mass,
                   ar_rho = ar_rho,
                   bl_threshold = bl_threshold,
-                  it_check_headorspouse = it_check_headorspouse,
-                  it_check_perkids = it_check_perkids,
+                  ls_stimulus_specs = ls_stimulus_specs,
                   bl_non_inc_adjust = TRUE,
                   bl_print = FALSE,
                   bl_print_verbose = FALSE)

@@ -16,59 +16,55 @@ library(REconTools)
 # cl <- makeCluster(5)
 # registerDoParallel(cl)
 
+# Part 1 Various Allocation files for JEDC Revision ------------
+# 0. Testing structure
+ls_st_file_suffix_test <- c('snwx_bushchck_tiny_b1_xi0_manna_168')
+
+# 1a. Core Biden check problem
+ls_st_file_suffix_bidenchk_main <-
+  c('snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168')
+
+# 1b. Biden check UI robustness and low vs high interest rate check
+# bchklkr2 = solve as bchklock, but at 2 percent interest rate
+# bchknoui = solve as bchklock, without UI benefits
+ls_st_file_suffix_bidenchk_uir2 <-
+  c('snwx_bcklknou_moredense_a65zh266zs5_b1_xi0_manna_168',
+    'snwx_bchklkr2_moredense_a65zh266zs5_b1_xi0_manna_168')
+
+# 1c. Biden Check: change low and high mixture
+ls_st_file_suffix_bidenchk_mixturealter <-
+  c('snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168_3o6',
+    'snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168_4o6',
+    'snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168_8o6',
+    'snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168_9o6')
+ls_st_file_suffix_bidenchk_mixturealter <- rev(ls_st_file_suffix_bidenchk_mixturealter)
+
+# 2a. Bush Check Problem
+ls_st_file_suffix_bushchck <-
+  c('snwx_bushchck_moredense_a65zh266zs5_b1_xi0_manna_96_bt95',
+    'snwx_bushchck_moredense_a65zh266zs5_b1_xi0_manna_96_bt60',
+    'snwx_bushchck_moredense_a65zh266zs5_b1_xi0_manna_96_married',
+    'snwx_bushchck_moredense_a65zh266zs5_b1_xi0_manna_96_unmarried',
+    'snwx_bushchck_moredense_a65zh266zs5_b1_xi0_manna_96')
+ls_st_file_suffix_bushchck <- rev(ls_st_file_suffix_bushchck)
+
+# Part B list to run ---------------------
+# list to run
+ls_st_file_suffix <-
+  c(ls_st_file_suffix_bidenchk_main,
+    ls_st_file_suffix_bidenchk_uir2,
+    ls_st_file_suffix_bidenchk_mixturealter,
+    ls_st_file_suffix_bushchck)
+snm_main_use <- 'Results202111'
+
+# Part C Parameters to specify ---------------------
 # Number of ways to cut income bins
+bl_per_capita <- TRUE
+fl_rho <- 1
 ls_it_income_cuts <- c(1,2,3,4)
 ls_it_income_cuts <- c(1,3)
 
-# Types of allocation files to consider
-ls_st_file_suffix_trumpchk <-
-  c('snwx_trumpchk_moredense_a65zh266zs5_b1_xi0_manna_168_bt95',
-    'snwx_trumpchk_moredense_a65zh266zs5_b1_xi0_manna_168_bt60',
-    'snwx_trumpchk_moredense_a65zh266zs5_b1_xi0_manna_168_married',
-    'snwx_trumpchk_moredense_a65zh266zs5_b1_xi0_manna_168_unmarried',
-    'snwx_trumpchk_moredense_a65zh266zs5_b1_xi0_manna_168')
-ls_st_file_suffix_trumpchk <- rev(ls_st_file_suffix_trumpchk)
-
-ls_st_file_suffix_bidenchk <-
-  c('snwx_bidenchk_moredense_a65zh266zs5_b1_xi0_manna_168_bt95',
-    'snwx_bidenchk_moredense_a65zh266zs5_b1_xi0_manna_168_bt60',
-    'snwx_bidenchk_moredense_a65zh266zs5_b1_xi0_manna_168_married',
-    'snwx_bidenchk_moredense_a65zh266zs5_b1_xi0_manna_168_unmarried',
-    'snwx_bidenchk_moredense_a65zh266zs5_b1_xi0_manna_168')
-ls_st_file_suffix_bidenchk <- rev(ls_st_file_suffix_bidenchk)
-
-ls_st_file_suffix_bidenchk_mixturealter <-
-  c('snwx_bidenchk_moredense_a65zh266zs5_b1_xi0_manna_168_3o6',
-    'snwx_bidenchk_moredense_a65zh266zs5_b1_xi0_manna_168_4o6',
-    'snwx_bidenchk_moredense_a65zh266zs5_b1_xi0_manna_168_8o6',
-    'snwx_bidenchk_moredense_a65zh266zs5_b1_xi0_manna_168_9o6')
-ls_st_file_suffix_bidenchk_mixturealter <- rev(ls_st_file_suffix_bidenchk_mixturealter)
-
-ls_st_file_suffix_bchkbnoui <-
-  c('snwx_bchknoui_moredense_a65zh266zs5_b1_xi0_manna_168')
-
-ls_st_file_suffix_bchklock <-
-  c('snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168_bt95',
-    'snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168_bt60',
-    'snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168_married',
-    'snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168_unmarried',
-    'snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168')
-ls_st_file_suffix_bchklock <- rev(ls_st_file_suffix_bchklock)
-
-bl_per_capita <- TRUE
-fl_rho <- 1
-
-# list to run
-ls_st_file_suffix <- c(ls_st_file_suffix_bidenchk,
-                       ls_st_file_suffix_trumpchk,
-                       ls_st_file_suffix_bchklock)
-# ls_st_file_suffix <- c(ls_st_file_suffix_trumpchk, ls_st_file_suffix_bidenchk,
-#                        ls_st_file_suffix_bidenchk_betaedu, ls_st_file_suffix_trumpchk_betaedu)
-# ls_st_file_suffix_test <- "snwx_bidenchk_moredense_a65zh266zs5_b1_xi0_manna_168"
-
-ls_st_file_suffix <- c(ls_st_file_suffix_bchkbnoui)
-ls_st_file_suffix <- c("snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168")
-
+# Part D Looping over different runs --------------------
 for (it_income_cuts in ls_it_income_cuts) {
   if (it_income_cuts == 1) {
     # 20k interval, between 0 and 100k and 100 million
@@ -133,7 +129,10 @@ for (it_income_cuts in ls_it_income_cuts) {
     # source('fs_opti_support.R')
     # st_which_solu <- 'b1_manna'
     # st_which_solu <- paste0('b1_xi0_manna_88_', st_file_suffix)
-    ls_output <- fs_opti_support_202111(st_which_solu, bl_per_capita=bl_per_capita, fl_rho=fl_rho)
+    ls_output <- fs_opti_support_202111(st_which_solu,
+                                        snm_main=snm_main_use,
+                                        bl_per_capita=bl_per_capita,
+                                        fl_rho=fl_rho)
     st_b0b1 <- ls_output$st_b0b1
     st_file_type_withspouse_shock <- ls_output$st_file_type_withspouse_shock
     st_file_type_withspouse_shock <- ls_output$st_file_type_withspouse_shock
@@ -148,14 +147,23 @@ for (it_income_cuts in ls_it_income_cuts) {
 
     ### Variable Names and Paths
     ## Common Parameters Across
-
-    # Max Phase Out given 1200*2 + 500*4 = 4400
-    fl_max_phaseout = 200000
     it_bin_dollar_before_phaseout = 500
     # Dollar Per Check
     fl_percheck_dollar = 100
+    # Max Phase Out given 1200*2 + 500*4 = 4400
+    fl_max_phaseout_trump_biden = 200000
+    fl_max_phaseout_bush = 225000
     # Meaning of Ymin Ymax simulated interval of 1
-    fl_multiple = 58056
+    fl_multiple_trump_biden = 62502
+    fl_multiple_bush = 54831
+    if (grepl('bushchck', st_which_solu)) {
+      fl_multiple <- fl_multiple_bush
+      fl_max_phaseout <- fl_max_phaseout_bush
+    } else {
+      fl_multiple <- fl_multiple_trump_biden
+      fl_max_phaseout <- fl_max_phaseout_trump_biden
+    }
+
     # Number of Max Checks
     it_max_checks_1st = 44
     it_max_checks_2nd = 88
@@ -182,6 +190,9 @@ for (it_income_cuts in ls_it_income_cuts) {
 
             snm_save_csv <- ""
 
+            # Keep C or V for x-axis, c is default
+            svr_c_or_v_zerochk <- 'c_avg_chk0_usd'
+
             if (MPC_type == 1 | MPC_type == 3) {
               if (MPC_type == 1) {
                 snm_save_csv <- 'mpc_smooth'
@@ -205,6 +216,8 @@ for (it_income_cuts in ls_it_income_cuts) {
               if (MPC_type == 6) {
                 snm_save_csv <- 'apv_raw'
               }
+              # Keep C or V for x-axis, c is default
+              svr_c_or_v_zerochk <- 'v_avg_chk0_usd'
             }
 
             # File name final construction
@@ -223,8 +236,8 @@ for (it_income_cuts in ls_it_income_cuts) {
 
             # Gather the needed data
             df_MPC_results_A_alpha <- df_MPC_results %>%
-              select(X, marital, kids, ymin_group, mass, c_avg_chk0_usd, X0) %>%
-              mutate(A = c_avg_chk0_usd/(1 + marital + kids),
+              select(X, marital, kids, ymin_group, mass, one_of(svr_c_or_v_zerochk), X0) %>%
+              mutate(A = !!sym(svr_c_or_v_zerochk)/(1 + marital + kids),
                      alpha = X0)
 
             # The continuous variables are A, alpha, mass. The categorical variables are kids and marital.
@@ -306,22 +319,31 @@ for (it_income_cuts in ls_it_income_cuts) {
             #                       'R4Econ/tabgraph/ggscatter/htmlpdfr/fs_ggscatter_3cts_mdisc.html')
             # st_caption <- paste0('mtcars dataset, ',
             #                      'https://fanwangecon.github.io/R4Econ/')
+
+            if (grepl('bushchck', st_which_solu)) {
+               # 2008 Bush stimulus were tax rebates
+                st_stimulus_or_rebate <- "tax rebates"
+            } else {
+              # COVID stimulus were not tax rebates, but just stimulus checks
+                st_stimulus_or_rebate <- "stimulus checks"
+            }
+
             if (MPC_type == 5 | MPC_type == 6) {
               if (bl_log_x_axis) {
-                st_x_label <- 'Log average life-discounted-lifetime-perm-c per household member before receiving stimulus checks'
+                st_x_label <- paste0('Log average life-discounted-lifetime-perm-c per household member before receiving ', st_stimulus_or_rebate)
               } else {
-                st_x_label <- 'Average life-discounted-perm-c per household member before receiving stimulus checks'
-                st_x_label <- 'Minimum household income given income bin'
+                st_x_label <- paste0('Average life-discounted-perm-c per household member before receiving ', st_stimulus_or_rebate)
+                # st_x_label <- 'Minimum household income given income bin'
               }
-              st_y_label <- 'MPV (life-discounted-perm-c) out of first $100 in stimulus checks (percent)'
+              st_y_label <- paste0('MPV (life-discounted-perm-c) out of first $100 in ', st_stimulus_or_rebate, ' (percent)')
             } else {
               if (bl_log_x_axis) {
-                st_x_label <- 'Log average consumption per household member before receiving stimulus checks'
+                st_x_label <- paste0('Log average consumption per household member before receiving ', st_stimulus_or_rebate)
               } else {
-                st_x_label <- 'Average consumption per household member before receiving stimulus checks'
-                st_x_label <- 'Minimum household income given income bin'
+                st_x_label <- paste0('Average consumption per household member before receiving ', st_stimulus_or_rebate)
+                # st_x_label <- 'Minimum household income given income bin'
               }
-              st_y_label <- 'MPC out of first $100 in stimulus checks (percent)'
+              st_y_label <- paste0('MPC out of first $100 in ', st_stimulus_or_rebate, ' (percent)')
             }
 
             # Add titles and labels
@@ -351,17 +373,31 @@ for (it_income_cuts in ls_it_income_cuts) {
             if (bl_log_x_axis) {
               print('do not label x-axis, not in level')
             } else {
-              x.labels <- c('0', '25K', '50k', '75k', '100K', '125K', '150K')
-              x.breaks <- c(0,
-                            25000,
-                            50000,
-                            75000,
-                            100000,
-                            125000,
-                            150000)
-              # x-axis labeling
-              plt_mtcars_scatter <- plt_mtcars_scatter +
-                scale_x_continuous(labels = x.labels, breaks = x.breaks)
+              if (MPC_type == 5 | MPC_type == 6) {
+                x.labels <- c('0', '2.5K', '5k', '7.5k', '10K', '15k', '20k')
+                x.breaks <- c(0,
+                              2500,
+                              5000,
+                              7500,
+                              10000,
+                              15000,
+                              20000)
+                # x-axis labeling
+                plt_mtcars_scatter <- plt_mtcars_scatter +
+                  scale_x_continuous(labels = x.labels, breaks = x.breaks)
+              } else {
+                x.labels <- c('0', '25K', '50k', '75k', '100K', '125K', '150K')
+                x.breaks <- c(0,
+                              25000,
+                              50000,
+                              75000,
+                              100000,
+                              125000,
+                              150000)
+                # x-axis labeling
+                plt_mtcars_scatter <- plt_mtcars_scatter +
+                  scale_x_continuous(labels = x.labels, breaks = x.breaks)
+              }
             }
 
             # Graph

@@ -11,58 +11,52 @@ library(scales)
 
 # Parameters and Options --------
 
-# Possible rho values to select from
-ar_rho <- c(1,
-            0.9, 0.8,
-            0.05, -1,
-            -9, -19, -99)
-
 # Results from which planners should
-ls_it_rho_combo_type <- c(1,2,3,4)
+ls_it_rho_combo_type <- c(1,2,3,4,5,6)
 
 # Types of allocation files to consider
-ls_st_file_suffix_trumpchk <-
-  c('snwx_trumpchk_moredense_a65zh266zs5_b1_xi0_manna_168_bt95',
-    'snwx_trumpchk_moredense_a65zh266zs5_b1_xi0_manna_168_bt60',
-    'snwx_trumpchk_moredense_a65zh266zs5_b1_xi0_manna_168_married',
-    'snwx_trumpchk_moredense_a65zh266zs5_b1_xi0_manna_168_unmarried',
-    'snwx_trumpchk_moredense_a65zh266zs5_b1_xi0_manna_168')
-ls_st_file_suffix_trumpchk <- rev(ls_st_file_suffix_trumpchk)
-
-ls_st_file_suffix_bidenchk <-
-  c('snwx_bidenchk_moredense_a65zh266zs5_b1_xi0_manna_168_bt95',
-    'snwx_bidenchk_moredense_a65zh266zs5_b1_xi0_manna_168_bt60',
-    'snwx_bidenchk_moredense_a65zh266zs5_b1_xi0_manna_168_married',
-    'snwx_bidenchk_moredense_a65zh266zs5_b1_xi0_manna_168_unmarried',
-    'snwx_bidenchk_moredense_a65zh266zs5_b1_xi0_manna_168')
-ls_st_file_suffix_bidenchk <- rev(ls_st_file_suffix_bidenchk)
-
-ls_st_file_suffix_bchklock <-
-  c('snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168_bt95',
-    'snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168_bt60',
-    'snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168_married',
-    'snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168_unmarried',
-    'snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168')
-ls_st_file_suffix_bchklock <- rev(ls_st_file_suffix_bchklock)
-
-# list to run
-ls_st_file_suffix <- c(ls_st_file_suffix_trumpchk,
-                       ls_st_file_suffix_bidenchk,
-                       ls_st_file_suffix_bchklock)
-ls_st_file_suffix <- c('snwx_bidenchk_moredense_a65zh266zs5_b1_xi0_manna_168')
-ls_st_file_suffix <- c("snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168")
 # Per capita or per household results
 ls_bl_per_capita <- c(TRUE)
 
-# Allocation bounds types
+# Allocation bounds types for Trump/Biden Checks
+ls_st_file_suffix <- c("snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168")
 ls_st_bound_files <- c('14ca14ck', '17ca17ck', '20ca20ck', '20ca20ck', '17k',
                        '17cadt', '17ckid', '20cadt', '20ckid')
-ls_st_bound_files <- c('20ca20ck', '20cadt', '20ckid')
+ls_st_bound_files <- c('20ca20ck', '20cadt', '20ckid', '14ca14ck')
+
+# # Allocation bounds types for Bush checks
+# ls_st_file_suffix <- c("snwx_bushchck_moredense_a65zh266zs5_b1_xi0_manna_96")
+# ls_st_bound_files <- c('6ca3ck', '9ca6ck', '12ca9ck', '12cadt', '9cadt')
 
 # Loop over file types1
 for (st_v_or_c_opti in c('vopti','copti')) {
   for (bl_per_capita in ls_bl_per_capita) {
     for (st_which_solu in ls_st_file_suffix) {
+
+      # Max Phase Out given 1200*2 + 500*4 = 4400
+      fl_max_phaseout_trump_biden = 225000
+      fl_max_phaseout_bush = 225000
+      # Meaning of Ymin Ymax simulated interval of 1
+      fl_multiple_trump_biden = 62502
+      # fl_multiple_trump_biden = 58056
+      fl_multiple_bush = 54831
+      if (grepl('bushchck', st_which_solu)) {
+        fl_multiple <- fl_multiple_bush
+        fl_max_phaseout <- fl_max_phaseout_bush
+        st_stimulus_or_rebate <- "Tax rebate"
+
+      } else {
+        fl_multiple <- fl_multiple_trump_biden
+        fl_max_phaseout <- fl_max_phaseout_trump_biden
+
+        if (st_v_or_c_opti == "vopti") {
+          st_stimulus_or_rebate <- "Check"
+        } else if (st_v_or_c_opti == "copti") {
+          st_stimulus_or_rebate <- "Stimulus check"
+        }
+
+      }
+
       for (st_bound_files in ls_st_bound_files) {
         for (it_rho_combo_type in ls_it_rho_combo_type) {
 
@@ -71,6 +65,7 @@ for (st_v_or_c_opti in c('vopti','copti')) {
           # 2. Three lines: Rawlsian, Utilitarian, and actual policy.
           # 3. Three lines: Rawlsian, Utilitarian, and benhcmark (intermediate=-1).
           # 4. Four lines: Rawlsian, Utilitarian, benchmark, and actual policy.
+          fl_rho_val_select <- 1
           if (it_rho_combo_type == 1) {
             ar_rho <- c(1, -99)
             bl_include_actual <- FALSE
@@ -85,6 +80,15 @@ for (st_v_or_c_opti in c('vopti','copti')) {
 
           } else if (it_rho_combo_type == 4) {
             ar_rho <- c(1, -1, -99)
+            bl_include_actual <- TRUE
+
+          } else if (it_rho_combo_type == 5) {
+            fl_rho_val_select <- -1
+            ar_rho <- c(-1)
+            bl_include_actual <- TRUE
+
+          } else if (it_rho_combo_type == 6) {
+            ar_rho <- c(1)
             bl_include_actual <- TRUE
           }
 
@@ -176,7 +180,7 @@ for (st_v_or_c_opti in c('vopti','copti')) {
 
           # Get value for minimum and maximum income levels for each bin
           df_alloc_use <- df_alloc_use %>%
-            filter(rho_val == 1) %>% rowwise() %>%
+            filter(rho_val == fl_rho_val_select) %>% rowwise() %>%
             mutate(y_group_min = substring(strsplit(ymin_group, ",")[[1]][1], 2),
                    y_group_max = gsub(strsplit(ymin_group, ",")[[1]][2],  pattern = "]", replacement = "")) %>%
             ungroup() %>%
@@ -224,11 +228,11 @@ for (st_v_or_c_opti in c('vopti','copti')) {
           # X and Y labels and Legends etc.
           x.labels <- c('0', '50K', '100K', '150K', '200K')
           x.breaks <- c(0,
-                        50000/58056,
-                        100000/58056,
-                        150000/58056,
-                        200000/58056)
-          x.bounds <- c(0, 200000/58056)
+                        50000/fl_multiple,
+                        100000/fl_multiple,
+                        150000/fl_multiple,
+                        200000/fl_multiple)
+          x.bounds <- c(0, fl_max_phaseout/fl_multiple)
 
           y.labels <- c('0', '2000', '4000', '6000', '8000')
           y.breaks <- c(0,
@@ -242,15 +246,20 @@ for (st_v_or_c_opti in c('vopti','copti')) {
           plt_cur <- plt_cur +
             scale_x_continuous(labels = x.labels, breaks = x.breaks,
                                limits = x.bounds)
-          # limits = c(0, 240000/58056)
+          # limits = c(0, 240000/fl_multiple)
 
           # Legend Labeling
           # \u2013 allows for en-dash
+          if (st_v_or_c_opti == "vopti") {
+            st_efficient_planner <- 'lambda=1'
+          } else if (st_v_or_c_opti == "copti") {
+            st_efficient_planner <- 'Stimulus'
+          }
           st_actual <- "Actual"
           st_actual_color <- "#F8766D"
           it_actual_shape <- 16
 
-          st_util <- "Stimulus"
+          st_util <- st_efficient_planner
           st_util_color <- "#33cc33"
           it_util_shape <- 17
 
@@ -282,6 +291,16 @@ for (st_v_or_c_opti in c('vopti','copti')) {
             ar_st_colours <- c(st_actual_color, st_util_color, st_inter_color, st_rawl_color)
             ar_it_shape_val <- c(it_actual_shape, it_util_shape, it_inter_shape, it_rawl_shape)
 
+          } else if (it_rho_combo_type == 5) {
+            ar_st_age_group_leg_labels <- c(st_actual, st_inter)
+            ar_st_colours <- c(st_actual_color, st_inter_color)
+            ar_it_shape_val <- c(it_actual_shape, it_inter_shape)
+
+          } else if (it_rho_combo_type == 6) {
+            ar_st_age_group_leg_labels <- c(st_actual, st_util)
+            ar_st_colours <- c(st_actual_color, st_util_color)
+            ar_it_shape_val <- c(it_actual_shape, it_util_shape)
+
           }
 
           # custom theme
@@ -312,7 +331,7 @@ for (st_v_or_c_opti in c('vopti','copti')) {
 
           # X and Y Titling
           stg_x_title_hhinc <- 'Household income (thousands of 2012 USD)'
-          stg_y_title_checks <- 'Stimulus check amount (2012 USD)'
+          stg_y_title_checks <- paste0(st_stimulus_or_rebate, ' amount (2012 USD)')
           plt_cur <- plt_cur + labs(x = stg_x_title_hhinc, y = stg_y_title_checks)
 
           # Image height

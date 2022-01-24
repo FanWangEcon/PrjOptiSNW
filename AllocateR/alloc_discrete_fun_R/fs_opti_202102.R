@@ -43,7 +43,8 @@ ls_st_file_suffix_bidenchk_mixturealter <-
 ls_st_file_suffix_bidenchk_mixturealter <- rev(ls_st_file_suffix_bidenchk_mixturealter)
 
 ls_st_file_suffix_bchkbnoui <-
-  c('snwx_bchknoui_moredense_a65zh266zs5_b1_xi0_manna_168')
+  c('snwx_bcklknou_moredense_a65zh266zs5_b1_xi0_manna_168',
+    'snwx_bchklkr2_moredense_a65zh266zs5_b1_xi0_manna_168')
 
 ls_st_file_suffix_bchklock <-
   c('snwx_bchklock_moredense_a65zh266zs5_b1_xi0_manna_168_bt95',

@@ -9,34 +9,54 @@
 # - merge over edu by beta
 
 # rm(list = ls())
-
 library(tidyverse)
 library(readr)
 
-# library(foreach)
-# library(doParallel)
-# it_no_cores <- detectCores(logical = TRUE)
-# cl <- makeCluster(3)
-# registerDoParallel(cl)
+# if parallel
+library(foreach)
+library(doParallel)
+it_no_cores <- detectCores(logical = TRUE)
+cl <- makeCluster(5)
+registerDoParallel(cl)
 
-# Parameters
-# st_biden_or_trump <- 'bidenchk'
-# st_biden_or_trump <- 'trumpchk'
-# st_biden_or_trump <- 'bchklock'
-# st_biden_or_trump <- 'bchknoui'
+# Part 1, Set how to weight and aggregate specs ------------
+# do 1,2,3,4 for JEDC revision
+it_solve_jedc <- 4
 
-# New Strings, COVID three simulations
-st_biden_or_trump <- 'bchklock'
-# st_biden_or_trump <- 'bchklkr2'
-# st_biden_or_trump <- 'bcklknou'
+# Listing below Relevant merging operations for Biden check problems
+# Then Bush check problems
+if (it_solve_jedc == 1) {
+  # BIDEN: BCHKLOCK is the lockdown problem under biden, the core 2021 problem
+  # For bchklock, generate varioius robust mixtures
+  st_biden_or_trump <- 'bchklock'
+  ls_it_betaetc_grp <- c(1)
+  ls_it_mixture_grp <- c(1,2,3,4,5)
+  n_welfchecksgrid <- 169
 
-n_welfchecksgrid = 169
-# ls_it_betaetc_grp <- c(1,2,3,4,5)
-ls_it_betaetc_grp <- c(1)
-# ls_it_mixture_grp <- c(1,2,3,4,5)
-ls_it_mixture_grp <- c(1)
+} else if (it_solve_jedc == 2) {
+  # BIDEN: solve low interest rate version of biden check problem
+  st_biden_or_trump <- 'bchklkr2'
+  ls_it_betaetc_grp <- c(1)
+  ls_it_mixture_grp <- c(1)
+  n_welfchecksgrid <- 169
+
+} else if (it_solve_jedc == 3) {
+  # BIDEN: solve low interest rate version of biden check problem
+  st_biden_or_trump <- 'bcklknou'
+  ls_it_betaetc_grp <- c(1)
+  ls_it_mixture_grp <- c(1)
+  n_welfchecksgrid <- 169
+
+} else if (it_solve_jedc == 4) {
+  # BUSH: BUSH problem, this is the core MPC problem so solve fully across groups
+  st_biden_or_trump <- 'bushchck'
+  ls_it_betaetc_grp <- c(1,2,3,4,5)
+  ls_it_mixture_grp <- c(1)
+  n_welfchecksgrid <- 97
+}
+
+# Part 2, Other specs ------------
 fl_rho <- 1
-
 st_rho <- ''
 # if (fl_rho == 1) {
 #   st_rho <- '_rho1'
@@ -44,13 +64,27 @@ st_rho <- ''
 #   st_rho <- '_rhoneg1'
 # }
 
+# Part 3, Merging loops ------------
 # Loop over, consider different beta groups
 for (it_mixture_grp in ls_it_mixture_grp) {
+
   for (it_betaetc_grp in ls_it_betaetc_grp) {
+  # For some reason
   # foreach (it_betaetc_grp=ls_it_betaetc_grp) %dopar% {
+
     # Conditionally change beta lists to consider, with different names
     st_beta <- ''
     st_marital <- ''
+
+    # 1. For core file combine in firve ways
+    # it_betaetc_grp = 1: combine four groups listed below
+    #   - (beta_low, marry_low)
+    #   - (beta_low, edu_high)
+    #   - (beta_high, edu_low)
+    #   - (beta_high, edu_high)
+    # it_betaetc_grp = 2 and 3: given combined file from (1) generate married and unmarried files
+    # it_betaetc_grp = 4 and 5: generate low and high beta specific files
+
     if (it_betaetc_grp <= 3) {
       ls_fl_beta_val=c(0.60, 0.95)
       if (it_betaetc_grp == 2) {

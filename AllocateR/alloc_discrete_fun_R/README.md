@@ -1,15 +1,20 @@
-fun_R: no RMD looped possibly parallel run.
+# fs_opti.R
 
+Solve for optimal allocation results
 
-# fs_opti
+## fs_opti_202111_bush.R
 
-Solve for optimal allocatio nresults
+The allocation file that handles the Bush era tax-rebate problem.
 
+# fs_mpc_tables_aggregator
 
-# fs_mpc_tables.R
+## fs_mpc_tables_aggregator_202102.R
 
-This file saves MPC tables
+Aggregates various MPC files from different folders to a single file, where each row is the aggregate MPC results, weighted across household types.
 
+## fs_mpc_tables_aggregator_202111.R
+
+202111 version for JEDC revisions.
 
 # fs_mpc_tables_increments.R
 
@@ -19,4 +24,4 @@ Each MPC Increment by increment.
 
 ## fs_mpc_tables_increments_202101.R
 
-File created with new csv file names for 2021 Jan robustness check runs
+File created with new csv file names for 2021 Jan robustness check runs.

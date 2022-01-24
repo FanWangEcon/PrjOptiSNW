@@ -166,6 +166,7 @@ fs_opti_support_202111 <- function(st_which_solu='snwx_trumpchk_moredense_a65zh2
                     srt_img_save_root=srt_img_save_root,
                     srt_img_aggregator_save_root=srt_img_aggregator_save_root,
                     srt_img_aggcsvsolu_save_root=srt_img_aggcsvsolu_save_root,
+                    srt_mpcapc_baseroot=file.path(srt_root, snm_apcmpc_folder, '/'),
                     srt_imgcsv_mpcapc_root=srt_imgcsv_mpcapc_root,
                     srt_imgcsv_rev_root=srt_imgcsv_rev_root,
                     srt_imgcsv_perturb_root=srt_imgcsv_perturb_root,

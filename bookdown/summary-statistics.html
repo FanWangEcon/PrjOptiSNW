@@ -5,32 +5,26 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 13 Summary Statistics | NSW Dynamic Life Cycle and Stimulus Checks Code Companion</title>
-  <meta name="description" content="<p>Summarize overall model distributional and inequality statistics from covid-less times.
-Statistics, including first check MPC, by marital status, children count, and income groups.
-See <a href="https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/stats/snwx_evuvw19_jmky_mpc_allocated_m.m">snwx_evuvw19_jmky_mpc_allocated_m</a> for summarizing function over optimal allocation results.</p>" />
-  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+  <meta name="description" content="This function solves for the V(states) for individuals at lower and higher discount factor . We allow for heterogeneity in the model to consider both patient and impatient households. The key difference is that patient households are more willing to save and will consume less." />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 13 Summary Statistics | NSW Dynamic Life Cycle and Stimulus Checks Code Companion" />
   <meta property="og:type" content="book" />
   
   
-  <meta property="og:description" content="<p>Summarize overall model distributional and inequality statistics from covid-less times.
-Statistics, including first check MPC, by marital status, children count, and income groups.
-See <a href="https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/stats/snwx_evuvw19_jmky_mpc_allocated_m.m">snwx_evuvw19_jmky_mpc_allocated_m</a> for summarizing function over optimal allocation results.</p>" />
+  <meta property="og:description" content="This function solves for the V(states) for individuals at lower and higher discount factor . We allow for heterogeneity in the model to consider both patient and impatient households. The key difference is that patient households are more willing to save and will consume less." />
   <meta name="github-repo" content="fanwangecon/PrjOptiSNW" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Chapter 13 Summary Statistics | NSW Dynamic Life Cycle and Stimulus Checks Code Companion" />
   
-  <meta name="twitter:description" content="<p>Summarize overall model distributional and inequality statistics from covid-less times.
-Statistics, including first check MPC, by marital status, children count, and income groups.
-See <a href="https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/stats/snwx_evuvw19_jmky_mpc_allocated_m.m">snwx_evuvw19_jmky_mpc_allocated_m</a> for summarizing function over optimal allocation results.</p>" />
+  <meta name="twitter:description" content="This function solves for the V(states) for individuals at lower and higher discount factor . We allow for heterogeneity in the model to consider both patient and impatient households. The key difference is that patient households are more willing to save and will consume less." />
   
 
 <meta name="author" content="Vegard M. Nygård, Bent E. Sørensen, and Fan Wang" />
 
 
-<meta name="date" content="2021-05-14" />
+<meta name="date" content="2022-01-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -38,9 +32,10 @@ See <a href="https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/st
   
   
 <link rel="prev" href="calibration.html"/>
-<link rel="next" href="index-and-code-links.html"/>
-<script src="libs/header-attrs-2.5/header-attrs.js"></script>
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link rel="next" href="selected-comparative-statistics.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -56,9 +51,8 @@ See <a href="https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/st
 
 
 
-
-<link href="libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-92953468-10"></script>
 <script>
@@ -69,6 +63,29 @@ See <a href="https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/st
 </script>
 
 
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -94,6 +111,7 @@ See <a href="https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/st
 <li class="chapter" data-level="1.1.1" data-path="introduction.html"><a href="introduction.html#flat-script-and-code-package"><i class="fa fa-check"></i><b>1.1.1</b> Flat Script and Code Package</a></li>
 <li class="chapter" data-level="1.1.2" data-path="introduction.html"><a href="introduction.html#dynamic-programming-solution-structure-covidless-world"><i class="fa fa-check"></i><b>1.1.2</b> Dynamic Programming Solution Structure COVIDless World</a></li>
 <li class="chapter" data-level="1.1.3" data-path="introduction.html"><a href="introduction.html#dynamic-programming-solution-structure-during-covid-year"><i class="fa fa-check"></i><b>1.1.3</b> Dynamic Programming Solution Structure during COVID Year</a></li>
+<li class="chapter" data-level="1.1.4" data-path="introduction.html"><a href="introduction.html#dynamic-programming-solution-structure-bush-stimulus-checks"><i class="fa fa-check"></i><b>1.1.4</b> Dynamic Programming Solution Structure Bush Stimulus Checks</a></li>
 </ul></li>
 <li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#values-of-checks-conditional-on-2019-information"><i class="fa fa-check"></i><b>1.2</b> Values of Checks Conditional on 2019 Information</a>
 <ul>
@@ -173,16 +191,24 @@ See <a href="https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/st
 <li class="chapter" data-level="5.1.4" data-path="solution-with-unemployment.html"><a href="solution-with-unemployment.html#analyze-kids-and-marriage-and-age-4"><i class="fa fa-check"></i><b>5.1.4</b> Analyze Kids and Marriage and Age</a></li>
 <li class="chapter" data-level="5.1.5" data-path="solution-with-unemployment.html"><a href="solution-with-unemployment.html#analyze-education-and-marriage-and-age-4"><i class="fa fa-check"></i><b>5.1.5</b> Analyze Education and Marriage and Age</a></li>
 </ul></li>
+<li class="chapter" data-level="5.2" data-path="solution-with-unemployment.html"><a href="solution-with-unemployment.html#life-cycle-dynamic-programming-under-great-recession-unemployment-shock"><i class="fa fa-check"></i><b>5.2</b> Life Cycle Dynamic Programming under Great Recession Unemployment Shock</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="solution-with-unemployment.html"><a href="solution-with-unemployment.html#test-snw_v08p08_jaeemk"><i class="fa fa-check"></i><b>5.2.1</b> Test SNW_V08P08_JAEEMK</a></li>
+<li class="chapter" data-level="5.2.2" data-path="solution-with-unemployment.html"><a href="solution-with-unemployment.html#define-parameter-frames-1"><i class="fa fa-check"></i><b>5.2.2</b> Define Parameter Frames</a></li>
+<li class="chapter" data-level="5.2.3" data-path="solution-with-unemployment.html"><a href="solution-with-unemployment.html#analyze-savings-and-shocks-6"><i class="fa fa-check"></i><b>5.2.3</b> Analyze Savings and Shocks</a></li>
+<li class="chapter" data-level="5.2.4" data-path="solution-with-unemployment.html"><a href="solution-with-unemployment.html#analyze-kids-and-marriage-and-age-5"><i class="fa fa-check"></i><b>5.2.4</b> Analyze Kids and Marriage and Age</a></li>
+<li class="chapter" data-level="5.2.5" data-path="solution-with-unemployment.html"><a href="solution-with-unemployment.html#analyze-education-and-marriage-and-age-5"><i class="fa fa-check"></i><b>5.2.5</b> Analyze Education and Marriage and Age</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="solution-with-first-and-second-rounds-cares-stimulus.html"><a href="solution-with-first-and-second-rounds-cares-stimulus.html"><i class="fa fa-check"></i><b>6</b> Solution with First and Second Rounds CARES Stimulus</a>
 <ul>
 <li class="chapter" data-level="6.1" data-path="solution-with-first-and-second-rounds-cares-stimulus.html"><a href="solution-with-first-and-second-rounds-cares-stimulus.html#life-cycle-dynamic-programming-under-with-cares-act-stimulus-checks"><i class="fa fa-check"></i><b>6.1</b> Life Cycle Dynamic Programming under with CARES Act Stimulus Checks</a>
 <ul>
 <li class="chapter" data-level="6.1.1" data-path="solution-with-first-and-second-rounds-cares-stimulus.html"><a href="solution-with-first-and-second-rounds-cares-stimulus.html#test-snw_vfi_main_bisec_vec_stimulus"><i class="fa fa-check"></i><b>6.1.1</b> Test SNW_VFI_MAIN_BISEC_VEC_STIMULUS</a></li>
-<li class="chapter" data-level="6.1.2" data-path="solution-with-first-and-second-rounds-cares-stimulus.html"><a href="solution-with-first-and-second-rounds-cares-stimulus.html#define-parameter-frames-1"><i class="fa fa-check"></i><b>6.1.2</b> Define Parameter Frames</a></li>
-<li class="chapter" data-level="6.1.3" data-path="solution-with-first-and-second-rounds-cares-stimulus.html"><a href="solution-with-first-and-second-rounds-cares-stimulus.html#analyze-savings-and-shocks-6"><i class="fa fa-check"></i><b>6.1.3</b> Analyze Savings and Shocks</a></li>
-<li class="chapter" data-level="6.1.4" data-path="solution-with-first-and-second-rounds-cares-stimulus.html"><a href="solution-with-first-and-second-rounds-cares-stimulus.html#analyze-kids-and-marriage-and-age-5"><i class="fa fa-check"></i><b>6.1.4</b> Analyze Kids and Marriage and Age</a></li>
-<li class="chapter" data-level="6.1.5" data-path="solution-with-first-and-second-rounds-cares-stimulus.html"><a href="solution-with-first-and-second-rounds-cares-stimulus.html#analyze-education-and-marriage-and-age-5"><i class="fa fa-check"></i><b>6.1.5</b> Analyze Education and Marriage and Age</a></li>
+<li class="chapter" data-level="6.1.2" data-path="solution-with-first-and-second-rounds-cares-stimulus.html"><a href="solution-with-first-and-second-rounds-cares-stimulus.html#define-parameter-frames-2"><i class="fa fa-check"></i><b>6.1.2</b> Define Parameter Frames</a></li>
+<li class="chapter" data-level="6.1.3" data-path="solution-with-first-and-second-rounds-cares-stimulus.html"><a href="solution-with-first-and-second-rounds-cares-stimulus.html#analyze-savings-and-shocks-7"><i class="fa fa-check"></i><b>6.1.3</b> Analyze Savings and Shocks</a></li>
+<li class="chapter" data-level="6.1.4" data-path="solution-with-first-and-second-rounds-cares-stimulus.html"><a href="solution-with-first-and-second-rounds-cares-stimulus.html#analyze-kids-and-marriage-and-age-6"><i class="fa fa-check"></i><b>6.1.4</b> Analyze Kids and Marriage and Age</a></li>
+<li class="chapter" data-level="6.1.5" data-path="solution-with-first-and-second-rounds-cares-stimulus.html"><a href="solution-with-first-and-second-rounds-cares-stimulus.html#analyze-education-and-marriage-and-age-6"><i class="fa fa-check"></i><b>6.1.5</b> Analyze Education and Marriage and Age</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html"><i class="fa fa-check"></i><b>7</b> Household Life Cycle Distribution</a>
@@ -209,6 +235,7 @@ See <a href="https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/st
 <ul>
 <li class="chapter" data-level="7.3.1" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#test-snw_ds_main_vec"><i class="fa fa-check"></i><b>7.3.1</b> Test SNW_DS_MAIN_VEC</a></li>
 <li class="chapter" data-level="7.3.2" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#show-all-info-in-mp_dsvfi_results"><i class="fa fa-check"></i><b>7.3.2</b> Show All Info in mp_dsvfi_results</a></li>
+<li class="chapter" data-level="7.3.3" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#show-distribution-by-age"><i class="fa fa-check"></i><b>7.3.3</b> Show Distribution by Age</a></li>
 </ul></li>
 <li class="chapter" data-level="7.4" data-path="household-life-cycle-distribution.html"><a href="household-life-cycle-distribution.html#distribution-with-one-period-policy-shift"><i class="fa fa-check"></i><b>7.4</b> Distribution with One Period Policy Shift</a>
 <ul>
@@ -227,7 +254,7 @@ See <a href="https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/st
 <li class="chapter" data-level="8.1.1" data-path="value-of-each-check.html"><a href="value-of-each-check.html#test-snw_a4chk_wrk_bisec_vec-defaults-dense"><i class="fa fa-check"></i><b>8.1.1</b> Test SNW_A4CHK_WRK_BISEC_VEC Defaults Dense</a></li>
 <li class="chapter" data-level="8.1.2" data-path="value-of-each-check.html"><a href="value-of-each-check.html#dense-param-results-define-frames"><i class="fa fa-check"></i><b>8.1.2</b> Dense Param Results Define Frames</a></li>
 <li class="chapter" data-level="8.1.3" data-path="value-of-each-check.html"><a href="value-of-each-check.html#analyze-difference-in-v-and-c-with-check"><i class="fa fa-check"></i><b>8.1.3</b> Analyze Difference in V and C with Check</a></li>
-<li class="chapter" data-level="8.1.4" data-path="value-of-each-check.html"><a href="value-of-each-check.html#analyze-kids-and-marriage-and-age-6"><i class="fa fa-check"></i><b>8.1.4</b> Analyze Kids and Marriage and Age</a></li>
+<li class="chapter" data-level="8.1.4" data-path="value-of-each-check.html"><a href="value-of-each-check.html#analyze-kids-and-marriage-and-age-7"><i class="fa fa-check"></i><b>8.1.4</b> Analyze Kids and Marriage and Age</a></li>
 <li class="chapter" data-level="8.1.5" data-path="value-of-each-check.html"><a href="value-of-each-check.html#analyze-education-and-marriage"><i class="fa fa-check"></i><b>8.1.5</b> Analyze Education and Marriage</a></li>
 </ul></li>
 <li class="chapter" data-level="8.2" data-path="value-of-each-check.html"><a href="value-of-each-check.html#v-and-c-with-unemployment"><i class="fa fa-check"></i><b>8.2</b> 2020 V and C with Unemployment</a>
@@ -235,36 +262,60 @@ See <a href="https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/st
 <li class="chapter" data-level="8.2.1" data-path="value-of-each-check.html"><a href="value-of-each-check.html#test-snw_a4chk_unemp_bisec_vec-defaults"><i class="fa fa-check"></i><b>8.2.1</b> Test SNW_A4CHK_UNEMP_BISEC_VEC Defaults</a></li>
 <li class="chapter" data-level="8.2.2" data-path="value-of-each-check.html"><a href="value-of-each-check.html#dense-param-results-define-frames-1"><i class="fa fa-check"></i><b>8.2.2</b> Dense Param Results Define Frames</a></li>
 <li class="chapter" data-level="8.2.3" data-path="value-of-each-check.html"><a href="value-of-each-check.html#analyze-difference-in-v-and-c-with-check-1"><i class="fa fa-check"></i><b>8.2.3</b> Analyze Difference in V and C with Check</a></li>
-<li class="chapter" data-level="8.2.4" data-path="value-of-each-check.html"><a href="value-of-each-check.html#analyze-kids-and-marriage-and-age-7"><i class="fa fa-check"></i><b>8.2.4</b> Analyze Kids and Marriage and Age</a></li>
+<li class="chapter" data-level="8.2.4" data-path="value-of-each-check.html"><a href="value-of-each-check.html#analyze-kids-and-marriage-and-age-8"><i class="fa fa-check"></i><b>8.2.4</b> Analyze Kids and Marriage and Age</a></li>
 <li class="chapter" data-level="8.2.5" data-path="value-of-each-check.html"><a href="value-of-each-check.html#analyze-education-and-marriage-1"><i class="fa fa-check"></i><b>8.2.5</b> Analyze Education and Marriage</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html"><i class="fa fa-check"></i><b>9</b> 2020 Outcomes Full State Space with Savings, Shocks and Education</a>
+<li class="chapter" data-level="9" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html"><i class="fa fa-check"></i><b>9</b> 2019/2020 and 2007/2008 V and C Full State Space</a>
 <ul>
-<li class="chapter" data-level="9.1" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#full-states-ev-and-ec-of-one-check"><i class="fa fa-check"></i><b>9.1</b> 2020 Full States EV and EC of One Check</a>
+<li class="chapter" data-level="9.1" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#full-states-ev-and-ec-of-one-check"><i class="fa fa-check"></i><b>9.1</b> 2020 Full States EV and EC of One Check</a>
 <ul>
-<li class="chapter" data-level="9.1.1" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#test-snw_evuvw20_jaeemk-defaults"><i class="fa fa-check"></i><b>9.1.1</b> Test SNW_EVUVW20_JAEEMK Defaults</a></li>
-<li class="chapter" data-level="9.1.2" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#precompute"><i class="fa fa-check"></i><b>9.1.2</b> Precompute</a></li>
-<li class="chapter" data-level="9.1.3" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#solve-for-2020-evuvw-with-0-and-2-checks"><i class="fa fa-check"></i><b>9.1.3</b> Solve for 2020 Evuvw With 0 and 2 Checks</a></li>
-<li class="chapter" data-level="9.1.4" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#param-results-define-frames"><i class="fa fa-check"></i><b>9.1.4</b> Param Results Define Frames</a></li>
-<li class="chapter" data-level="9.1.5" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#analyze-difference-in-v-and-c-with-check-2"><i class="fa fa-check"></i><b>9.1.5</b> Analyze Difference in V and C with Check</a></li>
-<li class="chapter" data-level="9.1.6" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#analyze-marginal-value-and-mpc-over-yaeta-conditional-on-kids-marry-age-education"><i class="fa fa-check"></i><b>9.1.6</b> Analyze Marginal Value and MPC over Y(a,eta), Conditional On Kids, Marry, Age, Education</a></li>
-<li class="chapter" data-level="9.1.7" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#marginal-value-gains-color-as-shock-conditional-on-age-marital-kids-and-education"><i class="fa fa-check"></i><b>9.1.7</b> Marginal Value Gains, Color as Shock, Conditional on Age, Marital, Kids, and Education</a></li>
-<li class="chapter" data-level="9.1.8" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#marginal-consumption-gains-color-as-shock-conditional-on-age-marital-kids-and-education"><i class="fa fa-check"></i><b>9.1.8</b> Marginal Consumption Gains, Color as Shock, Conditional on Age, Marital, Kids, and Education</a></li>
-<li class="chapter" data-level="9.1.9" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#analyze-kids-and-marriage-and-age-8"><i class="fa fa-check"></i><b>9.1.9</b> Analyze Kids and Marriage and Age</a></li>
-<li class="chapter" data-level="9.1.10" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#analyze-education-and-marriage-2"><i class="fa fa-check"></i><b>9.1.10</b> Analyze Education and Marriage</a></li>
+<li class="chapter" data-level="9.1.1" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#test-snw_evuvw20_jaeemk-defaults"><i class="fa fa-check"></i><b>9.1.1</b> Test SNW_EVUVW20_JAEEMK Defaults</a></li>
+<li class="chapter" data-level="9.1.2" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#precompute"><i class="fa fa-check"></i><b>9.1.2</b> Precompute</a></li>
+<li class="chapter" data-level="9.1.3" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#solve-for-2020-evuvw-with-0-and-2-checks"><i class="fa fa-check"></i><b>9.1.3</b> Solve for 2020 Evuvw With 0 and 2 Checks</a></li>
+<li class="chapter" data-level="9.1.4" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#param-results-define-frames"><i class="fa fa-check"></i><b>9.1.4</b> Param Results Define Frames</a></li>
+<li class="chapter" data-level="9.1.5" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#analyze-difference-in-v-and-c-with-check-2"><i class="fa fa-check"></i><b>9.1.5</b> Analyze Difference in V and C with Check</a></li>
+<li class="chapter" data-level="9.1.6" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#analyze-marginal-value-and-mpc-over-yaeta-conditional-on-kids-marry-age-education"><i class="fa fa-check"></i><b>9.1.6</b> Analyze Marginal Value and MPC over Y(a,eta), Conditional On Kids, Marry, Age, Education</a></li>
+<li class="chapter" data-level="9.1.7" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#marginal-value-gains-color-as-shock-conditional-on-age-marital-kids-and-education"><i class="fa fa-check"></i><b>9.1.7</b> Marginal Value Gains, Color as Shock, Conditional on Age, Marital, Kids, and Education</a></li>
+<li class="chapter" data-level="9.1.8" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#marginal-consumption-gains-color-as-shock-conditional-on-age-marital-kids-and-education"><i class="fa fa-check"></i><b>9.1.8</b> Marginal Consumption Gains, Color as Shock, Conditional on Age, Marital, Kids, and Education</a></li>
+<li class="chapter" data-level="9.1.9" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#analyze-kids-and-marriage-and-age-9"><i class="fa fa-check"></i><b>9.1.9</b> Analyze Kids and Marriage and Age</a></li>
+<li class="chapter" data-level="9.1.10" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#analyze-education-and-marriage-2"><i class="fa fa-check"></i><b>9.1.10</b> Analyze Education and Marriage</a></li>
 </ul></li>
-<li class="chapter" data-level="9.2" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#full-states-ev-and-ec-of-one-check-1"><i class="fa fa-check"></i><b>9.2</b> 2019 Full States EV and EC of One Check</a>
+<li class="chapter" data-level="9.2" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#bidentrump-checks-full-states-ev-and-ec-of-two-checks"><i class="fa fa-check"></i><b>9.2</b> 2019 (Biden/Trump Checks) Full States EV and EC of Two Checks</a>
 <ul>
-<li class="chapter" data-level="9.2.1" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#test-snw_evuvw19_jaeemk-defaults"><i class="fa fa-check"></i><b>9.2.1</b> Test SNW_EVUVW19_JAEEMK Defaults</a></li>
-<li class="chapter" data-level="9.2.2" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#solve-for-2019-evuvw-with-0-and-2-checks"><i class="fa fa-check"></i><b>9.2.2</b> Solve for 2019 Evuvw With 0 and 2 Checks</a></li>
-<li class="chapter" data-level="9.2.3" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#param-results-define-frames-1"><i class="fa fa-check"></i><b>9.2.3</b> Param Results Define Frames</a></li>
-<li class="chapter" data-level="9.2.4" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#analyze-difference-in-v-and-c-with-check-3"><i class="fa fa-check"></i><b>9.2.4</b> Analyze Difference in V and C with Check</a></li>
-<li class="chapter" data-level="9.2.5" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#analyze-marginal-value-and-mpc-over-yaeta-conditional-on-kids-marry-age-education-1"><i class="fa fa-check"></i><b>9.2.5</b> Analyze Marginal Value and MPC over Y(a,eta), Conditional On Kids, Marry, Age, Education</a></li>
-<li class="chapter" data-level="9.2.6" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#marginal-value-gains-color-as-shock-conditional-on-age-marital-kids-and-education-1"><i class="fa fa-check"></i><b>9.2.6</b> Marginal Value Gains, Color as Shock, Conditional on Age, Marital, Kids, and Education</a></li>
-<li class="chapter" data-level="9.2.7" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#marginal-consumption-gains-color-as-shock-conditional-on-age-marital-kids-and-education-1"><i class="fa fa-check"></i><b>9.2.7</b> Marginal Consumption Gains, Color as Shock, Conditional on Age, Marital, Kids, and Education</a></li>
-<li class="chapter" data-level="9.2.8" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#analyze-kids-and-marriage-and-age-9"><i class="fa fa-check"></i><b>9.2.8</b> Analyze Kids and Marriage and Age</a></li>
-<li class="chapter" data-level="9.2.9" data-path="outcomes-full-state-space-with-savings-shocks-and-education.html"><a href="outcomes-full-state-space-with-savings-shocks-and-education.html#analyze-education-and-marriage-3"><i class="fa fa-check"></i><b>9.2.9</b> Analyze Education and Marriage</a></li>
+<li class="chapter" data-level="9.2.1" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#test-snw_evuvw19_jaeemk-defaults-for-2019"><i class="fa fa-check"></i><b>9.2.1</b> Test SNW_EVUVW19_JAEEMK Defaults for 2019</a></li>
+<li class="chapter" data-level="9.2.2" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#solve-for-2019-evuvw-with-0-and-2-checks"><i class="fa fa-check"></i><b>9.2.2</b> Solve for 2019 Evuvw With 0 and 2 Checks</a></li>
+<li class="chapter" data-level="9.2.3" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#param-results-define-frames-1"><i class="fa fa-check"></i><b>9.2.3</b> Param Results Define Frames</a></li>
+<li class="chapter" data-level="9.2.4" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#analyze-difference-in-v-and-c-with-check-3"><i class="fa fa-check"></i><b>9.2.4</b> Analyze Difference in V and C with Check</a></li>
+<li class="chapter" data-level="9.2.5" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#analyze-marginal-value-and-mpc-over-yaeta-conditional-on-kids-marry-age-education-1"><i class="fa fa-check"></i><b>9.2.5</b> Analyze Marginal Value and MPC over Y(a,eta), Conditional On Kids, Marry, Age, Education</a></li>
+<li class="chapter" data-level="9.2.6" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#marginal-value-gains-color-as-shock-conditional-on-age-marital-kids-and-education-1"><i class="fa fa-check"></i><b>9.2.6</b> Marginal Value Gains, Color as Shock, Conditional on Age, Marital, Kids, and Education</a></li>
+<li class="chapter" data-level="9.2.7" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#marginal-consumption-gains-color-as-shock-conditional-on-age-marital-kids-and-education-1"><i class="fa fa-check"></i><b>9.2.7</b> Marginal Consumption Gains, Color as Shock, Conditional on Age, Marital, Kids, and Education</a></li>
+<li class="chapter" data-level="9.2.8" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#analyze-kids-and-marriage-and-age-10"><i class="fa fa-check"></i><b>9.2.8</b> Analyze Kids and Marriage and Age</a></li>
+<li class="chapter" data-level="9.2.9" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#analyze-education-and-marriage-3"><i class="fa fa-check"></i><b>9.2.9</b> Analyze Education and Marriage</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#value-and-optimal-savings-and-consumption-given-stimulus"><i class="fa fa-check"></i><b>9.3</b> 2008 Value and Optimal Savings and Consumption Given Stimulus</a>
+<ul>
+<li class="chapter" data-level="9.3.1" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#solve-2008-value-and-policy-function-with-snw_v08p08_jaeemk"><i class="fa fa-check"></i><b>9.3.1</b> Solve 2008 Value and Policy Function with SNW_V08p08_JAEEMK</a></li>
+<li class="chapter" data-level="9.3.2" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#solve-for-2008-value-and-consumption-with-0-and-2-checks"><i class="fa fa-check"></i><b>9.3.2</b> Solve for 2008 Value and Consumption with 0 and 2 Checks</a></li>
+<li class="chapter" data-level="9.3.3" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#param-results-define-frames-2"><i class="fa fa-check"></i><b>9.3.3</b> Param Results Define Frames</a></li>
+<li class="chapter" data-level="9.3.4" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#analyze-difference-in-v-and-c-with-check-4"><i class="fa fa-check"></i><b>9.3.4</b> Analyze Difference in V and C with Check</a></li>
+<li class="chapter" data-level="9.3.5" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#analyze-marginal-value-and-mpc-over-yaeta-conditional-on-kids-marry-age-education-2"><i class="fa fa-check"></i><b>9.3.5</b> Analyze Marginal Value and MPC over Y(a,eta), Conditional On Kids, Marry, Age, Education</a></li>
+<li class="chapter" data-level="9.3.6" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#marginal-value-gains-color-as-shock-conditional-on-age-marital-kids-and-education-2"><i class="fa fa-check"></i><b>9.3.6</b> Marginal Value Gains, Color as Shock, Conditional on Age, Marital, Kids, and Education</a></li>
+<li class="chapter" data-level="9.3.7" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#marginal-consumption-gains-color-as-shock-conditional-on-age-marital-kids-and-education-2"><i class="fa fa-check"></i><b>9.3.7</b> Marginal Consumption Gains, Color as Shock, Conditional on Age, Marital, Kids, and Education</a></li>
+<li class="chapter" data-level="9.3.8" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#analyze-kids-and-marriage-and-age-11"><i class="fa fa-check"></i><b>9.3.8</b> Analyze Kids and Marriage and Age</a></li>
+<li class="chapter" data-level="9.3.9" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#analyze-education-and-marriage-4"><i class="fa fa-check"></i><b>9.3.9</b> Analyze Education and Marriage</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#bush-2008-stimulus-full-states-ev-and-ec-of-two-checks"><i class="fa fa-check"></i><b>9.4</b> 2007 (Bush 2008 Stimulus) Full States EV and EC of Two Checks</a>
+<ul>
+<li class="chapter" data-level="9.4.1" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#test-snw_evuvw19_jaeemk-defaults-for-2019-1"><i class="fa fa-check"></i><b>9.4.1</b> Test SNW_EVUVW19_JAEEMK Defaults for 2019</a></li>
+<li class="chapter" data-level="9.4.2" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#solve-for-2019-evuvw-with-0-and-2-checks-1"><i class="fa fa-check"></i><b>9.4.2</b> Solve for 2019 Evuvw With 0 and 2 Checks</a></li>
+<li class="chapter" data-level="9.4.3" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#param-results-define-frames-3"><i class="fa fa-check"></i><b>9.4.3</b> Param Results Define Frames</a></li>
+<li class="chapter" data-level="9.4.4" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#analyze-difference-in-v-and-c-with-check-5"><i class="fa fa-check"></i><b>9.4.4</b> Analyze Difference in V and C with Check</a></li>
+<li class="chapter" data-level="9.4.5" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#analyze-marginal-value-and-mpc-over-yaeta-conditional-on-kids-marry-age-education-3"><i class="fa fa-check"></i><b>9.4.5</b> Analyze Marginal Value and MPC over Y(a,eta), Conditional On Kids, Marry, Age, Education</a></li>
+<li class="chapter" data-level="9.4.6" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#marginal-value-gains-color-as-shock-conditional-on-age-marital-kids-and-education-3"><i class="fa fa-check"></i><b>9.4.6</b> Marginal Value Gains, Color as Shock, Conditional on Age, Marital, Kids, and Education</a></li>
+<li class="chapter" data-level="9.4.7" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#marginal-consumption-gains-color-as-shock-conditional-on-age-marital-kids-and-education-3"><i class="fa fa-check"></i><b>9.4.7</b> Marginal Consumption Gains, Color as Shock, Conditional on Age, Marital, Kids, and Education</a></li>
+<li class="chapter" data-level="9.4.8" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#analyze-kids-and-marriage-and-age-12"><i class="fa fa-check"></i><b>9.4.8</b> Analyze Kids and Marriage and Age</a></li>
+<li class="chapter" data-level="9.4.9" data-path="and-20072008-v-and-c-full-state-space.html"><a href="and-20072008-v-and-c-full-state-space.html#analyze-education-and-marriage-5"><i class="fa fa-check"></i><b>9.4.9</b> Analyze Education and Marriage</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="10" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html"><i class="fa fa-check"></i><b>10</b> 2019 Expectations Given Income, Age, Kids and Marital Status</a>
@@ -274,33 +325,47 @@ See <a href="https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/st
 <li class="chapter" data-level="10.1.1" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#test-snw_evuvw19_jmky-defaults-dense"><i class="fa fa-check"></i><b>10.1.1</b> Test SNW_EVUVW19_JMKY Defaults Dense</a></li>
 <li class="chapter" data-level="10.1.2" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#solve-vfi-and-distributon"><i class="fa fa-check"></i><b>10.1.2</b> Solve VFI and Distributon</a></li>
 <li class="chapter" data-level="10.1.3" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#pre-compute-matrixes-and-ymky-mass"><i class="fa fa-check"></i><b>10.1.3</b> Pre-Compute Matrixes and YMKY Mass</a></li>
-<li class="chapter" data-level="10.1.4" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#solve-for-2019-evuvw-with-0-and-2-checks-1"><i class="fa fa-check"></i><b>10.1.4</b> Solve for 2019 Evuvw With 0 and 2 Checks</a></li>
+<li class="chapter" data-level="10.1.4" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#solve-for-2019-evuvw-with-0-and-2-checks-2"><i class="fa fa-check"></i><b>10.1.4</b> Solve for 2019 Evuvw With 0 and 2 Checks</a></li>
 <li class="chapter" data-level="10.1.5" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#dense-param-results-define-frames-2"><i class="fa fa-check"></i><b>10.1.5</b> Dense Param Results Define Frames</a></li>
-<li class="chapter" data-level="10.1.6" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#analyze-marginal-value-and-mpc-over-yaeta-conditional-on-kids-marry-age-education-2"><i class="fa fa-check"></i><b>10.1.6</b> Analyze Marginal Value and MPC over Y(a,eta), Conditional On Kids, Marry, Age, Education</a></li>
+<li class="chapter" data-level="10.1.6" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#analyze-marginal-value-and-mpc-over-yaeta-conditional-on-kids-marry-age-education-4"><i class="fa fa-check"></i><b>10.1.6</b> Analyze Marginal Value and MPC over Y(a,eta), Conditional On Kids, Marry, Age, Education</a></li>
 </ul></li>
-<li class="chapter" data-level="10.2" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#age-income-kids-marry-ev-and-ec-all-checks"><i class="fa fa-check"></i><b>10.2</b> 2019 Age, Income, Kids, Marry EV and EC All Checks</a>
+<li class="chapter" data-level="10.2" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#age-income-kids-marry-ev-and-ec-all-checks-biden-checks"><i class="fa fa-check"></i><b>10.2</b> 2019/2020 Age, Income, Kids, Marry EV and EC All Checks (Biden Checks)</a>
 <ul>
-<li class="chapter" data-level="10.2.1" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#test-snw_evuvw19_jmky_allchecks-parameters"><i class="fa fa-check"></i><b>10.2.1</b> Test SNW_EVUVW19_JMKY_ALLCHECKS Parameters</a></li>
-<li class="chapter" data-level="10.2.2" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#snw_evuvw19_jmky_allchecks-low-storage-invoke"><i class="fa fa-check"></i><b>10.2.2</b> SNW_EVUVW19_JMKY_ALLCHECKS Low Storage Invoke</a></li>
+<li class="chapter" data-level="10.2.1" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#test-snw_evuvw19_jmky_allchecks-parameters-for-biden-checks"><i class="fa fa-check"></i><b>10.2.1</b> Test SNW_EVUVW19_JMKY_ALLCHECKS Parameters for Biden Checks</a></li>
+<li class="chapter" data-level="10.2.2" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#snw_evuvw19_jmky_allchecks-low-storage-invoke-for-biden-checks"><i class="fa fa-check"></i><b>10.2.2</b> SNW_EVUVW19_JMKY_ALLCHECKS Low Storage Invoke for Biden Checks</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#age-income-kids-marry-ev-and-ec-all-checks-bush-checks"><i class="fa fa-check"></i><b>10.3</b> 2007 Age, Income, Kids, Marry EV and EC All Checks (Bush Checks)</a>
+<ul>
+<li class="chapter" data-level="10.3.1" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#test-snw_evuvw19_jmky_allchecks-parameters-for-bush-checks"><i class="fa fa-check"></i><b>10.3.1</b> Test SNW_EVUVW19_JMKY_ALLCHECKS Parameters for Bush Checks</a></li>
+<li class="chapter" data-level="10.3.2" data-path="expectations-given-income-age-kids-and-marital-status.html"><a href="expectations-given-income-age-kids-and-marital-status.html#snw_evuvw19_jmky_allchecks-low-storage-invoke-for-bush-checks"><i class="fa fa-check"></i><b>10.3.2</b> SNW_EVUVW19_JMKY_ALLCHECKS Low Storage Invoke for Bush Checks</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="11" data-path="taxes.html"><a href="taxes.html"><i class="fa fa-check"></i><b>11</b> Taxes</a>
+<li class="chapter" data-level="11" data-path="taxes-and-stimulus.html"><a href="taxes-and-stimulus.html"><i class="fa fa-check"></i><b>11</b> Taxes and Stimulus</a>
 <ul>
-<li class="chapter" data-level="11.1" data-path="taxes.html"><a href="taxes.html#compute-for-equilibrium-tax"><i class="fa fa-check"></i><b>11.1</b> Compute for Equilibrium Tax</a>
+<li class="chapter" data-level="11.1" data-path="taxes-and-stimulus.html"><a href="taxes-and-stimulus.html#compute-for-equilibrium-tax"><i class="fa fa-check"></i><b>11.1</b> Compute for Equilibrium Tax</a>
 <ul>
-<li class="chapter" data-level="11.1.1" data-path="taxes.html"><a href="taxes.html#parameter-controls"><i class="fa fa-check"></i><b>11.1.1</b> Parameter Controls</a></li>
-<li class="chapter" data-level="11.1.2" data-path="taxes.html"><a href="taxes.html#solve-for-new-tax-rate"><i class="fa fa-check"></i><b>11.1.2</b> Solve for New Tax Rate</a></li>
+<li class="chapter" data-level="11.1.1" data-path="taxes-and-stimulus.html"><a href="taxes-and-stimulus.html#parameter-controls"><i class="fa fa-check"></i><b>11.1.1</b> Parameter Controls</a></li>
+<li class="chapter" data-level="11.1.2" data-path="taxes-and-stimulus.html"><a href="taxes-and-stimulus.html#solve-for-new-tax-rate"><i class="fa fa-check"></i><b>11.1.2</b> Solve for New Tax Rate</a></li>
 </ul></li>
-<li class="chapter" data-level="11.2" data-path="taxes.html"><a href="taxes.html#existing-stimulus-as-a-function-of-income-and-family-status"><i class="fa fa-check"></i><b>11.2</b> Existing Stimulus as a Function of Income and Family Status</a>
+<li class="chapter" data-level="11.2" data-path="taxes-and-stimulus.html"><a href="taxes-and-stimulus.html#existing-stimulus-as-a-function-of-income-and-family-status"><i class="fa fa-check"></i><b>11.2</b> Existing Stimulus as a Function of Income and Family Status</a>
 <ul>
-<li class="chapter" data-level="11.2.1" data-path="taxes.html"><a href="taxes.html#trump-stimulus-checks-for-unmarried-households"><i class="fa fa-check"></i><b>11.2.1</b> Trump Stimulus Checks for Unmarried Households</a></li>
-<li class="chapter" data-level="11.2.2" data-path="taxes.html"><a href="taxes.html#trump-stimulus-checks-for-arried-households"><i class="fa fa-check"></i><b>11.2.2</b> Trump Stimulus Checks for arried Households</a></li>
-<li class="chapter" data-level="11.2.3" data-path="taxes.html"><a href="taxes.html#biden-stimulus-checks-for-unmarried-and-married-households"><i class="fa fa-check"></i><b>11.2.3</b> Biden Stimulus Checks for Unmarried and Married Households</a></li>
+<li class="chapter" data-level="11.2.1" data-path="taxes-and-stimulus.html"><a href="taxes-and-stimulus.html#trump-stimulus-checks-for-unmarried-households"><i class="fa fa-check"></i><b>11.2.1</b> Trump Stimulus Checks for Unmarried Households</a></li>
+<li class="chapter" data-level="11.2.2" data-path="taxes-and-stimulus.html"><a href="taxes-and-stimulus.html#trump-stimulus-checks-for-married-households"><i class="fa fa-check"></i><b>11.2.2</b> Trump Stimulus Checks for Married Households</a></li>
 </ul></li>
-<li class="chapter" data-level="11.3" data-path="taxes.html"><a href="taxes.html#existing-stimulus-as-a-function-of-income-and-family-status-1"><i class="fa fa-check"></i><b>11.3</b> Existing Stimulus as a Function of Income and Family Status</a>
+<li class="chapter" data-level="11.3" data-path="taxes-and-stimulus.html"><a href="taxes-and-stimulus.html#existing-stimulus-as-a-function-of-income-and-family-status-1"><i class="fa fa-check"></i><b>11.3</b> Existing Stimulus as a Function of Income and Family Status</a>
 <ul>
-<li class="chapter" data-level="11.3.1" data-path="taxes.html"><a href="taxes.html#biden-stimulus-checks-for-unmarried-households"><i class="fa fa-check"></i><b>11.3.1</b> Biden Stimulus Checks for Unmarried Households</a></li>
-<li class="chapter" data-level="11.3.2" data-path="taxes.html"><a href="taxes.html#biden-stimulus-checks-for-married-households"><i class="fa fa-check"></i><b>11.3.2</b> Biden Stimulus Checks for Married Households</a></li>
+<li class="chapter" data-level="11.3.1" data-path="taxes-and-stimulus.html"><a href="taxes-and-stimulus.html#biden-stimulus-checks-for-unmarried-households"><i class="fa fa-check"></i><b>11.3.1</b> Biden Stimulus Checks for Unmarried Households</a></li>
+<li class="chapter" data-level="11.3.2" data-path="taxes-and-stimulus.html"><a href="taxes-and-stimulus.html#biden-stimulus-checks-for-married-households"><i class="fa fa-check"></i><b>11.3.2</b> Biden Stimulus Checks for Married Households</a></li>
+</ul></li>
+<li class="chapter" data-level="11.4" data-path="taxes-and-stimulus.html"><a href="taxes-and-stimulus.html#taxable-income-and-tax-liabilities-in-2008"><i class="fa fa-check"></i><b>11.4</b> Taxable Income and Tax Liabilities in 2008</a>
+<ul>
+<li class="chapter" data-level="11.4.1" data-path="taxes-and-stimulus.html"><a href="taxes-and-stimulus.html#taxable-income-and-tax-liabilities-in-2008-for-4-income-levels"><i class="fa fa-check"></i><b>11.4.1</b> Taxable Income and Tax Liabilities in 2008 for 4 Income Levels</a></li>
+<li class="chapter" data-level="11.4.2" data-path="taxes-and-stimulus.html"><a href="taxes-and-stimulus.html#taxable-income-and-tax-liabilities-in-2008-for-50-income-levels"><i class="fa fa-check"></i><b>11.4.2</b> Taxable Income and Tax Liabilities in 2008 for 50 Income Levels</a></li>
+</ul></li>
+<li class="chapter" data-level="11.5" data-path="taxes-and-stimulus.html"><a href="taxes-and-stimulus.html#bush-2008-stimulus-as-a-function-of-income-and-family-status"><i class="fa fa-check"></i><b>11.5</b> Bush 2008 Stimulus as a Function of Income and Family Status</a>
+<ul>
+<li class="chapter" data-level="11.5.1" data-path="taxes-and-stimulus.html"><a href="taxes-and-stimulus.html#bush-stimulus-checks-for-unmarried-households"><i class="fa fa-check"></i><b>11.5.1</b> Bush Stimulus Checks for Unmarried Households</a></li>
+<li class="chapter" data-level="11.5.2" data-path="taxes-and-stimulus.html"><a href="taxes-and-stimulus.html#bush-stimulus-checks-for-married-households"><i class="fa fa-check"></i><b>11.5.2</b> Bush Stimulus Checks for Married Households</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="12" data-path="calibration.html"><a href="calibration.html"><i class="fa fa-check"></i><b>12</b> Calibration</a>
@@ -314,6 +379,11 @@ See <a href="https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/st
 <ul>
 <li class="chapter" data-level="12.2.1" data-path="calibration.html"><a href="calibration.html#lock-down-impact-on-consumption"><i class="fa fa-check"></i><b>12.2.1</b> Lock Down Impact on Consumption</a></li>
 <li class="chapter" data-level="12.2.2" data-path="calibration.html"><a href="calibration.html#graphical-illustraiton-for-gamma2-docdense-and-gamma1-dense"><i class="fa fa-check"></i><b>12.2.2</b> Graphical Illustraiton for Gamma=2 (docdense) and Gamma=1 (dense)</a></li>
+</ul></li>
+<li class="chapter" data-level="12.3" data-path="calibration.html"><a href="calibration.html#ui-benefit-unemployment-lost-wage-recovery-parameter-b-calibration"><i class="fa fa-check"></i><b>12.3</b> UI Benefit Unemployment Lost Wage Recovery Parameter b Calibration</a>
+<ul>
+<li class="chapter" data-level="12.3.1" data-path="calibration.html"><a href="calibration.html#calibrate-b-with-2.1-ui-benefits-to-wages-ratio-and-xi-0.532"><i class="fa fa-check"></i><b>12.3.1</b> Calibrate b with 2.1% UI Benefits to Wages Ratio and <span class="math inline">\(\xi =0.532\)</span></a></li>
+<li class="chapter" data-level="12.3.2" data-path="calibration.html"><a href="calibration.html#calibrate-b-with-5.68-ui-benefits-to-wages-ratio-and-xi-0.651"><i class="fa fa-check"></i><b>12.3.2</b> Calibrate b with 5.68% UI Benefits to Wages Ratio and <span class="math inline">\(\xi =0.651\)</span></a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="13" data-path="summary-statistics.html"><a href="summary-statistics.html"><i class="fa fa-check"></i><b>13</b> Summary Statistics</a>
@@ -335,22 +405,43 @@ See <a href="https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/st
 <li class="chapter" data-level="13.1.13" data-path="summary-statistics.html"><a href="summary-statistics.html#store-key-stats-to-compare-to-key-us-distributional-statistics"><i class="fa fa-check"></i><b>13.1.13</b> Store Key Stats to Compare to Key US Distributional Statistics</a></li>
 </ul></li>
 </ul></li>
+<li class="chapter" data-level="14" data-path="selected-comparative-statistics.html"><a href="selected-comparative-statistics.html"><i class="fa fa-check"></i><b>14</b> Selected Comparative Statistics</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="selected-comparative-statistics.html"><a href="selected-comparative-statistics.html#value-and-consumption-low-vs-higher-interest-rates-results-comparison"><i class="fa fa-check"></i><b>14.1</b> Value and Consumption Low vs Higher Interest Rates Results Comparison</a>
+<ul>
+<li class="chapter" data-level="14.1.1" data-path="selected-comparative-statistics.html"><a href="selected-comparative-statistics.html#solve-model-at-4-percent-interest-rate"><i class="fa fa-check"></i><b>14.1.1</b> Solve Model at 4 Percent Interest Rate</a></li>
+<li class="chapter" data-level="14.1.2" data-path="selected-comparative-statistics.html"><a href="selected-comparative-statistics.html#solve-model-at-2-percent-interest-rate"><i class="fa fa-check"></i><b>14.1.2</b> Solve Model at 2 Percent Interest Rate</a></li>
+<li class="chapter" data-level="14.1.3" data-path="selected-comparative-statistics.html"><a href="selected-comparative-statistics.html#generate-interest-rate-comparison-matrixes"><i class="fa fa-check"></i><b>14.1.3</b> Generate Interest Rate Comparison Matrixes</a></li>
+<li class="chapter" data-level="14.1.4" data-path="selected-comparative-statistics.html"><a href="selected-comparative-statistics.html#dense-param-results-define-frames-3"><i class="fa fa-check"></i><b>14.1.4</b> Dense Param Results Define Frames</a></li>
+<li class="chapter" data-level="14.1.5" data-path="selected-comparative-statistics.html"><a href="selected-comparative-statistics.html#analyze-difference-in-v-and-c-with-higher-and-lower-savings-interest-rate"><i class="fa fa-check"></i><b>14.1.5</b> Analyze Difference in V and C with Higher and Lower Savings Interest Rate</a></li>
+<li class="chapter" data-level="14.1.6" data-path="selected-comparative-statistics.html"><a href="selected-comparative-statistics.html#analyze-kids-and-marriage-and-age-13"><i class="fa fa-check"></i><b>14.1.6</b> Analyze Kids and Marriage and Age</a></li>
+<li class="chapter" data-level="14.1.7" data-path="selected-comparative-statistics.html"><a href="selected-comparative-statistics.html#analyze-education-and-marriage-6"><i class="fa fa-check"></i><b>14.1.7</b> Analyze Education and Marriage</a></li>
+</ul></li>
+<li class="chapter" data-level="14.2" data-path="selected-comparative-statistics.html"><a href="selected-comparative-statistics.html#value-and-consumption-low-vs-higher-unemployment-insurance-comparison"><i class="fa fa-check"></i><b>14.2</b> Value and Consumption Low vs Higher Unemployment Insurance Comparison</a>
+<ul>
+<li class="chapter" data-level="14.2.1" data-path="selected-comparative-statistics.html"><a href="selected-comparative-statistics.html#solve-the-steady-state-non-unemployment-problem"><i class="fa fa-check"></i><b>14.2.1</b> Solve the Steady-State non-unemployment Problem</a></li>
+<li class="chapter" data-level="14.2.2" data-path="selected-comparative-statistics.html"><a href="selected-comparative-statistics.html#solve-problem-in-mit-unemployed-state-with-high-and-low-unemployment-insurance"><i class="fa fa-check"></i><b>14.2.2</b> Solve Problem in MIT Unemployed State with High and Low Unemployment Insurance</a></li>
+<li class="chapter" data-level="14.2.3" data-path="selected-comparative-statistics.html"><a href="selected-comparative-statistics.html#generate-ui-comparison-matrixes"><i class="fa fa-check"></i><b>14.2.3</b> Generate UI Comparison Matrixes</a></li>
+<li class="chapter" data-level="14.2.4" data-path="selected-comparative-statistics.html"><a href="selected-comparative-statistics.html#dense-param-results-define-frames-4"><i class="fa fa-check"></i><b>14.2.4</b> Dense Param Results Define Frames</a></li>
+<li class="chapter" data-level="14.2.5" data-path="selected-comparative-statistics.html"><a href="selected-comparative-statistics.html#analyze-difference-in-v-and-c-with-higher-and-lower-ui"><i class="fa fa-check"></i><b>14.2.5</b> Analyze Difference in V and C with Higher and Lower UI</a></li>
+<li class="chapter" data-level="14.2.6" data-path="selected-comparative-statistics.html"><a href="selected-comparative-statistics.html#analyze-kids-and-marriage-and-age-14"><i class="fa fa-check"></i><b>14.2.6</b> Analyze Kids and Marriage and Age</a></li>
+<li class="chapter" data-level="14.2.7" data-path="selected-comparative-statistics.html"><a href="selected-comparative-statistics.html#analyze-education-and-marriage-7"><i class="fa fa-check"></i><b>14.2.7</b> Analyze Education and Marriage</a></li>
+</ul></li>
+<li class="chapter" data-level="14.3" data-path="selected-comparative-statistics.html"><a href="selected-comparative-statistics.html#value-and-consumption-low-vs-higher-discount-factor-comparison"><i class="fa fa-check"></i><b>14.3</b> Value and Consumption Low vs Higher Discount Factor Comparison</a>
+<ul>
+<li class="chapter" data-level="14.3.1" data-path="selected-comparative-statistics.html"><a href="selected-comparative-statistics.html#solve-model-at-beta-0.95"><i class="fa fa-check"></i><b>14.3.1</b> Solve Model at <span class="math inline">\(\beta =0.95\)</span></a></li>
+<li class="chapter" data-level="14.3.2" data-path="selected-comparative-statistics.html"><a href="selected-comparative-statistics.html#solve-model-at-beta-0.60"><i class="fa fa-check"></i><b>14.3.2</b> Solve Model at <span class="math inline">\(\beta =0.60\)</span></a></li>
+<li class="chapter" data-level="14.3.3" data-path="selected-comparative-statistics.html"><a href="selected-comparative-statistics.html#generate-beta-comparison-matrixes"><i class="fa fa-check"></i><b>14.3.3</b> Generate <span class="math inline">\(\beta\)</span> Comparison Matrixes</a></li>
+<li class="chapter" data-level="14.3.4" data-path="selected-comparative-statistics.html"><a href="selected-comparative-statistics.html#dense-param-results-define-frames-5"><i class="fa fa-check"></i><b>14.3.4</b> Dense Param Results Define Frames</a></li>
+<li class="chapter" data-level="14.3.5" data-path="selected-comparative-statistics.html"><a href="selected-comparative-statistics.html#analyze-difference-in-v-and-c-with-higher-and-lower-beta"><i class="fa fa-check"></i><b>14.3.5</b> Analyze Difference in V and C with Higher and Lower <span class="math inline">\(\beta\)</span></a></li>
+<li class="chapter" data-level="14.3.6" data-path="selected-comparative-statistics.html"><a href="selected-comparative-statistics.html#analyze-kids-and-marriage-and-age-15"><i class="fa fa-check"></i><b>14.3.6</b> Analyze Kids and Marriage and Age</a></li>
+<li class="chapter" data-level="14.3.7" data-path="selected-comparative-statistics.html"><a href="selected-comparative-statistics.html#analyze-education-and-marriage-8"><i class="fa fa-check"></i><b>14.3.7</b> Analyze Education and Marriage</a></li>
+</ul></li>
+</ul></li>
 <li class="appendix"><span><b>Appendix</b></span></li>
 <li class="chapter" data-level="A" data-path="index-and-code-links.html"><a href="index-and-code-links.html"><i class="fa fa-check"></i><b>A</b> Index and Code Links</a>
 <ul>
-<li class="chapter" data-level="A.1" data-path="index-and-code-links.html"><a href="index-and-code-links.html#introduction-links"><i class="fa fa-check"></i><b>A.1</b> Introduction links</a></li>
-<li class="chapter" data-level="A.2" data-path="index-and-code-links.html"><a href="index-and-code-links.html#parameters-links"><i class="fa fa-check"></i><b>A.2</b> Parameters links</a></li>
-<li class="chapter" data-level="A.3" data-path="index-and-code-links.html"><a href="index-and-code-links.html#solving-the-dynamic-life-cycle-problem-links"><i class="fa fa-check"></i><b>A.3</b> Solving the Dynamic Life Cycle Problem links</a></li>
-<li class="chapter" data-level="A.4" data-path="index-and-code-links.html"><a href="index-and-code-links.html#alternative-value-function-solution-testing-links"><i class="fa fa-check"></i><b>A.4</b> Alternative Value Function Solution Testing links</a></li>
-<li class="chapter" data-level="A.5" data-path="index-and-code-links.html"><a href="index-and-code-links.html#solution-with-unemployment-links"><i class="fa fa-check"></i><b>A.5</b> Solution with Unemployment links</a></li>
-<li class="chapter" data-level="A.6" data-path="index-and-code-links.html"><a href="index-and-code-links.html#solution-with-first-and-second-rounds-cares-stimulus-links"><i class="fa fa-check"></i><b>A.6</b> Solution with First and Second Rounds CARES Stimulus links</a></li>
-<li class="chapter" data-level="A.7" data-path="index-and-code-links.html"><a href="index-and-code-links.html#household-life-cycle-distribution-links"><i class="fa fa-check"></i><b>A.7</b> Household Life Cycle Distribution links</a></li>
-<li class="chapter" data-level="A.8" data-path="index-and-code-links.html"><a href="index-and-code-links.html#value-of-each-check-links"><i class="fa fa-check"></i><b>A.8</b> Value of Each Check links</a></li>
-<li class="chapter" data-level="A.9" data-path="index-and-code-links.html"><a href="index-and-code-links.html#outcomes-full-state-space-with-savings-shocks-and-education-links"><i class="fa fa-check"></i><b>A.9</b> Outcomes Full State Space with Savings, Shocks and Education links</a></li>
-<li class="chapter" data-level="A.10" data-path="index-and-code-links.html"><a href="index-and-code-links.html#expectations-given-income-age-kids-and-marital-status-links"><i class="fa fa-check"></i><b>A.10</b> Expectations Given Income, Age, Kids and Marital Status links</a></li>
-<li class="chapter" data-level="A.11" data-path="index-and-code-links.html"><a href="index-and-code-links.html#taxes-links"><i class="fa fa-check"></i><b>A.11</b> Taxes links</a></li>
-<li class="chapter" data-level="A.12" data-path="index-and-code-links.html"><a href="index-and-code-links.html#calibration-links"><i class="fa fa-check"></i><b>A.12</b> Calibration links</a></li>
-<li class="chapter" data-level="A.13" data-path="index-and-code-links.html"><a href="index-and-code-links.html#summary-statistics-links"><i class="fa fa-check"></i><b>A.13</b> Summary Statistics links</a></li>
+<li class="chapter" data-level="A.1" data-path="index-and-code-links.html"><a href="index-and-code-links.html#selected-comparative-statistics-linksselected-comparative-statistics-links"><i class="fa fa-check"></i><b>A.1</b> <span>## Selected Comparative Statistics links</span> links</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://fanwangecon.github.io/PrjOptiSNW/bookdown/index.html" target="blank">PrjOptiSNW Bookdown</a></li>
@@ -377,12 +468,24 @@ See <a href="https://github.com/FanWangEcon/PrjOptiSNW/blob/master/PrjOptiSNW/st
 
 <div id="full-states-mpc-and-distributional-statistics-by-marital-kids-and-income-groups." class="section level2" number="13.1">
 <h2><span class="header-section-number">13.1</span> 2019 Full States MPC and Distributional Statistics by Marital, Kids, and Income Groups.</h2>
+<div class="par">
+<div class="flushleft">
 <p>In the file here, we consider marital, kids and income groups, and
 summarize various statistics for each bin.</p>
+</div>
+</div>
 <div id="test-snw_evuvw19_jaeemk-defaults-dense" class="section level3" number="13.1.1">
 <h3><span class="header-section-number">13.1.1</span> Test SNW_EVUVW19_JAEEMK Defaults Dense</h3>
+<div class="par">
+<div class="flushleft">
 <p>VFI and Distribution</p>
+</div>
+</div>
+<div class="par">
+<div class="flushleft">
 <p>Call the function with defaults.</p>
+</div>
+</div>
 <pre><code>clear all;
 st_solu_type = &#39;bisec_vec&#39;;
 bl_save_csv = false;
@@ -793,13 +896,21 @@ Completed SNW_A4CHK_WRK_BISEC_VEC;welf_checks=1;TR=0.0017225;SNW_MP_PARAM=defaul
 Completed SNW_A4CHK_UNEMP_BISEC_VEC;welf_checks=1;TR=0.0017225;xi=0.5;b=1;SNW_MP_PARAM=default_moredense_a65zh133zs5_e2m2;SNW_MP_CONTROL=default_test;time cost=113.1519
 Completed SNW_EVUVW20_JAEEMK;SNW_MP_PARAM=default_moredense_a65zh133zs5_e2m2;SNW_MP_CONTROL=default_test;timeEUEC=14.1367
 Completed SNW_EVUVW19_JAEEMK_FOC;SNW_MP_PARAM=default_moredense_a65zh133zs5_e2m2;SNW_MP_CONTROL=default_test;time=23.3214</code></pre>
+<div class="par">
+<div class="flushleft">
 <p>Differences between Checks in Expected Value and Expected Consumption</p>
+</div>
+</div>
 <pre><code>mn_V_U_gain_check = ev19_jaeemk_check2 - ev19_jaeemk_check0;
 mn_MPC_C_gain_share_check = (ec19_jaeemk_check2 - ec19_jaeemk_check0)./(welf_checks*mp_params(&#39;TR&#39;));</code></pre>
 </div>
 <div id="additional-variables" class="section level3" number="13.1.3">
 <h3><span class="header-section-number">13.1.3</span> Additional Variables</h3>
+<div class="par">
+<div class="flushleft">
 <p>Create additional Staet-Spac Arrays</p>
+</div>
+</div>
 <pre><code>% (n_jgrid,n_agrid,n_etagrid,n_educgrid,n_marriedgrid,n_kidsgrid);
 % Children Array
 ar_kids = (1:mp_params(&#39;n_kidsgrid&#39;)) - 1;
@@ -958,7 +1069,11 @@ tb_dist_stats_all = mp_cl_mt_xyz_of_s(&#39;tb_outcomes&#39;);</code></pre>
 </div>
 <div id="distributional-statistics-overall-18-to-64" class="section level3" number="13.1.8">
 <h3><span class="header-section-number">13.1.8</span> Distributional Statistics Overall 18 to 64</h3>
+<div class="par">
+<div class="flushleft">
 <p>Statistics overall distributionally for 18 to 64 year olds.</p>
+</div>
+</div>
 <pre><code>% construct input data
 marital_grp = marital_ss(min_age:max_age, :, :, : ,: ,:);
 y_all_grp = y_all(min_age:max_age, :, :, : ,: ,:);
@@ -1060,7 +1175,11 @@ tb_dist_stats_all_18to64 = mp_cl_mt_xyz_of_s(&#39;tb_outcomes&#39;);</code></pre
 </div>
 <div id="distributional-statistics-by-kids-count" class="section level3" number="13.1.9">
 <h3><span class="header-section-number">13.1.9</span> Distributional Statistics By Kids Count</h3>
+<div class="par">
+<div class="flushleft">
 <p>Various statistics, including MPC (of the first check) by Children Count</p>
+</div>
+</div>
 <pre><code>it_row_ctr = 0;
 for it_ctr=1:mp_params(&#39;n_kidsgrid&#39;)
     display([&#39;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#39;]);
@@ -1450,8 +1569,12 @@ xxx tb_outcomes: all stats xxx
 </div>
 <div id="distributional-statistics-by-marital-status-and-kids-count" class="section level3" number="13.1.10">
 <h3><span class="header-section-number">13.1.10</span> Distributional Statistics By Marital Status and Kids Count</h3>
+<div class="par">
+<div class="flushleft">
 <p>Various statistics, including MPC (of the first check) by Marital Status
 and Kids COunt</p>
+</div>
+</div>
 <pre><code>it_row_ctr = 0;
 for it_marry_ctr=1:mp_params(&#39;n_marriedgrid&#39;)
     
@@ -1921,8 +2044,12 @@ xxx tb_outcomes: all stats xxx
 </div>
 <div id="distributional-statistics-by-marital-status-kids-count-and-income-bins" class="section level3" number="13.1.11">
 <h3><span class="header-section-number">13.1.11</span> Distributional Statistics By Marital Status, Kids Count and Income Bins</h3>
+<div class="par">
+<div class="flushleft">
 <p>Various statistics, including MPC (of the first check) by Marital Status
 and Kids COunt and income bins</p>
+</div>
+</div>
 <pre><code>it_row_ctr = 0;
 for it_marry_ctr=1:mp_params(&#39;n_marriedgrid&#39;)
     
@@ -2431,13 +2558,27 @@ xxx tb_outcomes: all stats xxx
 </div>
 <div id="store-aggregate-to-file" class="section level3" number="13.1.12">
 <h3><span class="header-section-number">13.1.12</span> Store Aggregate To File</h3>
+<div class="par">
+<div class="flushleft">
 <p>Store Several Files:</p>
+</div>
+</div>
 <ol style="list-style-type: decimal">
-<li><p>Overall Aggregate Statistics All Distribution</p></li>
-<li><p>Aggregate Statistics Only for 18 to 64 year olds</p></li>
-<li><p>Group Statistics by Kids</p></li>
-<li><p>Group Statistics by Marital + Kids</p></li>
-<li><p>Group Statistics by Marital + Kids + Income Bins</p></li>
+<li><div class="flushleft">
+<p>Overall Aggregate Statistics All Distribution</p>
+</div></li>
+<li><div class="flushleft">
+<p>Aggregate Statistics Only for 18 to 64 year olds</p>
+</div></li>
+<li><div class="flushleft">
+<p>Group Statistics by Kids</p>
+</div></li>
+<li><div class="flushleft">
+<p>Group Statistics by Marital + Kids</p>
+</div></li>
+<li><div class="flushleft">
+<p>Group Statistics by Marital + Kids + Income Bins</p>
+</div></li>
 </ol>
 <!-- -->
 <pre><code>if (bl_save_csv)
@@ -2492,10 +2633,22 @@ end</code></pre>
 </div>
 <div id="store-key-stats-to-compare-to-key-us-distributional-statistics" class="section level3" number="13.1.13">
 <h3><span class="header-section-number">13.1.13</span> Store Key Stats to Compare to Key US Distributional Statistics</h3>
+<div class="par">
+<div class="flushleft">
 <p>Earning, income and Wealth.</p>
+</div>
+</div>
+<div class="par">
+<div class="flushleft">
 <p>Income = interest earnings + Social Security + labor income + spousal
 income. This is equal to y_all.</p>
+</div>
+</div>
+<div class="par">
+<div class="flushleft">
 <p>Earnings = labor income + spousal income.</p>
+</div>
+</div>
 <pre><code>% Income Variable
 if (min(abs(total_inc_VFI*58.056 - y_all), [], &#39;all&#39;)&gt;0)
     error(&#39;someothing is wrong, total_inc_VFI should be equal to y_all&#39;);
@@ -2506,8 +2659,12 @@ income = y_all;
 earning = (mp_valpol_more_ss(&#39;earn_VFI&#39;) + spouse_inc_VFI)*58.056;
 % Wealth Varaible 
 wealth = a_ss;</code></pre>
+<div class="par">
+<div class="flushleft">
 <p>Generate Key Statistics for these three variables only, distributional
 Statistics Overall All Ages:</p>
+</div>
+</div>
 <pre><code>% construct input data
 income_grp = income(min_age:82, :, :, : ,: ,:);
 earning_grp = earning(min_age:82, :, :, : ,: ,:);
@@ -2635,7 +2792,11 @@ if (bl_save_csv)
     spt_simu_results_csv = mp_path(&#39;spt_simu_results_csv&#39;);
     writetable(tb_dist_stats_all_save(:, ar_st_columns), [spt_simu_results_csv &#39;stats_all_allages_vrrcore.csv&#39;], &#39;WriteRowNames&#39;, true);
 end</code></pre>
+<div class="par">
+<div class="flushleft">
 <p>Statistics overall distributionally for 18 to 64 year olds.</p>
+</div>
+</div>
 <pre><code>% construct input data
 income_grp = income(min_age:max_age, :, :, : ,: ,:);
 earning_grp = earning(min_age:max_age, :, :, : ,: ,:);
@@ -2767,20 +2928,16 @@ end</code></pre>
 </div>
 </div>
 </div>
-
-
-
             </section>
 
           </div>
         </div>
       </div>
 <a href="calibration.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="index-and-code-links.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="selected-comparative-statistics.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -2799,6 +2956,7 @@ gitbook.start({
 "weibo": false,
 "instapaper": false,
 "vk": false,
+"whatsapp": false,
 "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
@@ -2819,6 +2977,10 @@ gitbook.start({
 "text": null
 },
 "download": [["NSW-Dynamic-Life-Cycle-and-Stimulus-Checks-Code-Companion.pdf", "PDF"]],
+"search": {
+"engine": "fuse",
+"options": null
+},
 "toc": {
 "collapse": "subsection"
 }
@@ -2826,6 +2988,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

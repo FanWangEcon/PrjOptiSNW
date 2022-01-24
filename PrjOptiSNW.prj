@@ -1,13 +1,13 @@
 <deployment-project plugin="plugin.toolbox" plugin-version="1.0">
-  <configuration build-checksum="4273408108" file="C:\Users\fan\PrjOptiSNW\PrjOptiSNW.prj" location="C:\Users\fan\PrjOptiSNW" name="PrjOptiSNW" target="target.toolbox" target-name="Package Toolbox">
+  <configuration build-checksum="3880611743" file="G:\repos\PrjOptiSNW\PrjOptiSNW.prj" location="G:\repos\PrjOptiSNW" name="PrjOptiSNW" target="target.toolbox" target-name="Package Toolbox">
     <param.appname>PrjOptiSNW</param.appname>
     <param.authnamewatermark>V. Nygaard, B. Sorensen, Fan Wang</param.authnamewatermark>
     <param.email>fanwangecon@gmail.com</param.email>
     <param.company>Univerity of Houston</param.company>
-    <param.summary>Dynamic Life Cycle US Simulation and Stimulus Checks COVID-19</param.summary>
+    <param.summary>Dynamic Life Cycle US Simulation and Stimulus Checks (Bush Tax Rebates and Covid Stimulus Checks)</param.summary>
     <param.description>Dynamic Life Cycle US Simulation and Welfare Checks COVID-19</param.description>
     <param.screenshot>${PROJECT_ROOT}\img\toolboxlogo.png</param.screenshot>
-    <param.version>0.1.10</param.version>
+    <param.version>0.1.12</param.version>
     <param.output>${PROJECT_ROOT}\PrjOptiSNW.mltbx</param.output>
     <param.products.name />
     <param.products.id />
@@ -213,14 +213,15 @@ htmlpdfm/*
     <fileset.depfun.excluded />
     <fileset.package />
     <build-deliverables>
-      <file location="${PROJECT_ROOT}" name="PrjOptiSNW.mltbx" optional="false">C:\Users\fan\PrjOptiSNW\PrjOptiSNW.mltbx</file>
+      <file location="${PROJECT_ROOT}" name="PrjOptiSNW.mltbx" optional="false">G:\repos\PrjOptiSNW\PrjOptiSNW.mltbx</file>
     </build-deliverables>
     <workflow />
     <matlab>
-      <root>C:\Program Files\MATLAB\R2020b</root>
+      <root>G:\ProgramData\MATLAB\R2020b</root>
       <toolboxes>
         <toolbox name="matlabcoder" />
         <toolbox name="gpucoder" />
+        <toolbox name="neuralnetwork" />
       </toolboxes>
       <toolbox>
         <matlabcoder>
@@ -231,6 +232,11 @@ htmlpdfm/*
         <gpucoder>
           <enabled>true</enabled>
         </gpucoder>
+      </toolbox>
+      <toolbox>
+        <neuralnetwork>
+          <enabled>true</enabled>
+        </neuralnetwork>
       </toolbox>
     </matlab>
     <platform>

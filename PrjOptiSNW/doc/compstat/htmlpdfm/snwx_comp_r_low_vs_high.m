@@ -2,13 +2,13 @@
 % This is the example vignette for function: <https://github.com/FanWangEcon/PrjOptiSNW/tree/master/PrjOptiSNW/svalpol/snw_vfi_main_bisec_vec.m 
 % *snw_vfi_main_bisec_vec*> from the <https://fanwangecon.github.io/PrjOptiSNW/ 
 % *PrjOptiSNW Package*>*.* This function solves for the V(states) for individuals 
-% at lower and higher savings interest rate. Note that welfare improves for all 
-% when interest rate goes up for savings in a model where borrowing is not allowed. 
-% However, an increase change in the interest rate generates both an income effect 
-% (higher resources) and also changes relative price of consumption today vs tomorrow. 
-% The change in income increases incentive to consume, the change in relative 
-% price depresses incentives to consume today. The combined effect of rising interest 
-% rate on savings on consumption/savings differs by the state-space, households 
+% at lower and higher savings interest rates. Note that welfare improves for all 
+% when interest rates go up for savings in a model where borrowing is not allowed. 
+% However, a change in the interest rate generates an income effect (higher resources) 
+% and changes the relative price of consumption today vs. tomorrow. The change 
+% in income increases the incentive to consume, but the change in relative price 
+% depresses incentives to consume today. The combined effect of rising interest 
+% rate on savings on consumption/savings differs by the state-space; households 
 % might overall consume more or less depending on their state-space.
 %% Solve Model at 4 Percent Interest Rate
 % Solve the benchmark model at 4 percent savings interest rate.
